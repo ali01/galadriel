@@ -1,0 +1,3 @@
+[submodule "src/simone"]
+	path = src/simone
+	url = ali01.com:/rep/simone.git

@@ -60,6 +60,9 @@ void yyerror(const char *msg); // standard error-handling routine
 %token   T_And T_Or T_Null T_Extends T_This T_Interface T_Implements
 %token   T_While T_For T_If T_Else T_Return T_Break
 %token   T_New T_NewArray T_Print T_ReadInteger T_ReadLine
+%token   T_UnaryMinus
+%token   T_PostIncrement T_PostDecrement
+%token   T_Switch T_SwitchCase T_SwitchDefaultCase
 
 %token   <identifier> T_Identifier
 %token   <stringConstant> T_StringConstant 
@@ -105,7 +108,9 @@ DeclList  :    DeclList Decl        { ($$=$1)->Append($2); }
           |    Decl                 { ($$ = new List<Decl*>)->Append($1); }
           ;
 
-Decl      :    T_Void               { /* pp2: replace with correct rules  */ } 
+Decl      :    VariableDecl  {} 
+          |    FunctionDecl  {}
+          |    ClassDecl
           ;
           
 
