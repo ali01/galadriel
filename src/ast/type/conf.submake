@@ -1,0 +1,10 @@
+DIR_EH5KQK70 := ast/type
+SUB_EH5KQK70 := named
+
+SRCS += $(wildcard $(DIR_EH5KQK70)/*.$(EXT))
+
+MK_EH5KQK70 := $(foreach sdir,$(SUB_EH5KQK70),$(wildcard $(DIR_EH5KQK70)/$(sdir)/*.$(SUBDIR_EXT)))
+ifneq ($(MK_EH5KQK70),)
+$(info -- including subdirectory makefiles ($(DIR_EH5KQK70)): $(MK_EH5KQK70))
+include $(MK_EH5KQK70)
+endif

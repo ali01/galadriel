@@ -14,7 +14,7 @@
 #define _errors_h_
 
 #include <string>
-#include "location.h"
+#include "lex_loc.h"
 using namespace std;
 
 /**

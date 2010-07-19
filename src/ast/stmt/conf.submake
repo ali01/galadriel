@@ -1,0 +1,10 @@
+DIR_7ISS27HH := ast/stmt
+SUB_7ISS27HH := conditional expr switch
+
+SRCS += $(wildcard $(DIR_7ISS27HH)/*.$(EXT))
+
+MK_7ISS27HH := $(foreach sdir,$(SUB_7ISS27HH),$(wildcard $(DIR_7ISS27HH)/$(sdir)/*.$(SUBDIR_EXT)))
+ifneq ($(MK_7ISS27HH),)
+$(info -- including subdirectory makefiles ($(DIR_7ISS27HH)): $(MK_7ISS27HH))
+include $(MK_7ISS27HH)
+endif

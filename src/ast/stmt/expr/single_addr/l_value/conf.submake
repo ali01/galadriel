@@ -1,0 +1,10 @@
+DIR_HBUJE5LO := ast/stmt/expr/single_addr/l_value
+SUB_HBUJE5LO := field_access
+
+SRCS += $(wildcard $(DIR_HBUJE5LO)/*.$(EXT))
+
+MK_HBUJE5LO := $(foreach sdir,$(SUB_HBUJE5LO),$(wildcard $(DIR_HBUJE5LO)/$(sdir)/*.$(SUBDIR_EXT)))
+ifneq ($(MK_HBUJE5LO),)
+$(info -- including subdirectory makefiles ($(DIR_HBUJE5LO)): $(MK_HBUJE5LO))
+include $(MK_HBUJE5LO)
+endif

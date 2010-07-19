@@ -1,87 +1,55 @@
-/**
- * File: ast.h
- * ----------- 
- * This file defines the abstract base class Node and the concrete 
- * Identifier and Error node subclasses that are used through the tree as 
- * leaf nodes. A parse tree is a hierarchical collection of ast nodes (or, 
- * more correctly, of instances of concrete subclassses such as VarDecl,
- * ForStmt, and AssignExpr).
- * 
- * Location: Each node maintains its lexical location (line and columns in 
- * file), that location can be NULL for those nodes that don't care/use 
- * locations. The location is typcially set by the node constructor.  The 
- * location is used to provide the context when reporting semantic errors.
- *
- * Parent: Each node has a pointer to its parent. For a Program node, the 
- * parent is NULL, for all other nodes it is the pointer to the node one level
- * up in the parse tree.  The parent is not set in the constructor (during a 
- * bottom-up parse we don't know the parent at the time of construction) but 
- * instead we wait until assigning the children into the parent node and then 
- * set up links in both directions. The parent link is typically not used 
- * during parsing, but is more important in later phases.
- *
- * Printing: The only interesting behavior of the node classes for pp2 is the 
- * bility to print the tree using an in-order walk.  Each node class is 
- * responsible for printing itself/children by overriding the virtual 
- * PrintChildren() and GetPrintNameForNode() methods. All the classes we 
- * provide already implement these methods, so your job is to construct the
- * nodes and wire them up during parsing. Once that's done, printing is a snap!
+#ifndef AST_H_49460SW5
+#define AST_H_49460SW5
 
- */
+/* ast includes */
+#include "ast/identifier.h"
+#include "ast/operator.h"
+#include "ast/program.h"
 
-#ifndef _H_ast
-#define _H_ast
+/* ast/decl includes */
+#include "ast/decl/fn_decl.h"
+#include "ast/decl/var_decl.h"
+#include "ast/decl/object/class_decl.h"
+#include "ast/decl/object/interface_decl.h"
 
-#include <stdlib.h>   // for NULL
-#include "location.h"
+/* ast/stmt includes */
+#include "ast/stmt/break_stmt.h"
+#include "ast/stmt/print_stmt.h"
+#include "ast/stmt/return_stmt.h"
+#include "ast/stmt/stmt_block.h"
+#include "ast/stmt/conditional/conditional_stmt.h"
+#include "ast/stmt/conditional/if_stmt.h"
+#include "ast/stmt/conditional/loop/for_stmt.h"
+#include "ast/stmt/conditional/loop/while_stmt.h"
+#include "ast/stmt/expr/assignment_expr.h"
+#include "ast/stmt/expr/call_expr.h"
+#include "ast/stmt/expr/empty_expr.h"
+#include "ast/stmt/expr/null_expr.h"
+#include "ast/stmt/expr/single_addr/bool_const_expr.h"
+#include "ast/stmt/expr/single_addr/dbl_const_expr.h"
+#include "ast/stmt/expr/single_addr/int_const_expr.h"
+#include "ast/stmt/expr/single_addr/new_expr.h"
+#include "ast/stmt/expr/single_addr/new_array_expr.h"
+#include "ast/stmt/expr/single_addr/read_integer_expr.h"
+#include "ast/stmt/expr/single_addr/read_line_expr.h"
+#include "ast/stmt/expr/single_addr/str_const_expr.h"
+#include "ast/stmt/expr/single_addr/compound/arithmetic_expr.h"
+#include "ast/stmt/expr/single_addr/compound/equality_expr.h"
+#include "ast/stmt/expr/single_addr/compound/logical_expr.h"
+#include "ast/stmt/expr/single_addr/compound/postfix_expr.h"
+#include "ast/stmt/expr/single_addr/compound/relational_expr.h"
+#include "ast/stmt/expr/single_addr/l_value/array_access_expr.h"
+#include "ast/stmt/expr/single_addr/l_value/field_access/field_access_expr.h"
+#include "ast/stmt/expr/single_addr/l_value/field_access/this_expr.h"
+#include "ast/stmt/switch/switch_stmt.h"
+#include "ast/stmt/switch/switch_case_stmt.h"
 
-class Node  {
-  protected:
-    yyltype *location;
-    Node *parent;
-
-  public:
-    Node(yyltype loc);
-    Node();
-    virtual ~Node() {}
-    
-    yyltype *GetLocation()   { return location; }
-    void SetParent(Node *p)  { parent = p; }
-    Node *GetParent()        { return parent; }
-
-    virtual const char *GetPrintNameForNode() = 0;
-    
-    // Print() is deliberately _not_ virtual
-    // subclasses should override PrintChildren() instead
-    void Print(int indentLevel, const char *label = NULL); 
-    virtual void PrintChildren(int indentLevel)  {}
-};
-   
-
-class Identifier : public Node 
-{
-  protected:
-    char *name;
-    
-  public:
-    Identifier(yyltype loc, const char *name);
-    const char *GetPrintNameForNode()   { return "Identifier"; }
-    void PrintChildren(int indentLevel);
-};
-
-
-// This node class is designed to represent a portion of the tree that 
-// encountered syntax errors during parsing. The partial completed tree
-// is discarded along with the states being popped, and an instance of
-// the Error class can stand in as the placeholder in the parse tree
-// when your parser can continue after an error.
-class Error : public Node
-{
-  public:
-    Error() : Node() {}
-    const char *GetPrintNameForNode()   { return "Error"; }
-};
-
-
+/* ast/type includes */
+#include "ast/type/array_type.h"
+#include "ast/type/error_type.h"
+#include "ast/type/null_type.h"
+#include "ast/type/void_type.h"
+#include "ast/type/named/class_type.h"
+#include "ast/type/named/interface_type.h"
 
 #endif

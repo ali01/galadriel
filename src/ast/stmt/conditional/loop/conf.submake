@@ -1,0 +1,10 @@
+DIR_L1O9BV8R := ast/stmt/conditional/loop
+SUB_L1O9BV8R :=
+
+SRCS += $(wildcard $(DIR_L1O9BV8R)/*.$(EXT))
+
+MK_L1O9BV8R := $(foreach sdir,$(SUB_L1O9BV8R),$(wildcard $(DIR_L1O9BV8R)/$(sdir)/*.$(SUBDIR_EXT)))
+ifneq ($(MK_L1O9BV8R),)
+$(info -- including subdirectory makefiles ($(DIR_L1O9BV8R)): $(MK_L1O9BV8R))
+include $(MK_L1O9BV8R)
+endif

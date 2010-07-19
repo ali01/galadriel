@@ -1,0 +1,10 @@
+DIR_51952WLM := parser
+SUB_51952WLM := 
+
+SRCS += $(wildcard $(DIR_51952WLM)/*.$(EXT))
+
+MK_51952WLM := $(foreach sdir,$(SUB_51952WLM),$(wildcard $(DIR_51952WLM)/$(sdir)/*.$(SUBDIR_EXT)))
+ifneq ($(MK_51952WLM),)
+$(info -- including subdirectory makefiles ($(DIR_51952WLM)): $(MK_51952WLM)) 
+include $(MK_51952WLM)
+endif

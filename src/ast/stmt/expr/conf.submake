@@ -1,0 +1,10 @@
+DIR_J4DDNKKK := ast/stmt/expr
+SUB_J4DDNKKK := single_addr
+
+SRCS += $(wildcard $(DIR_J4DDNKKK)/*.$(EXT))
+
+MK_J4DDNKKK := $(foreach sdir,$(SUB_J4DDNKKK),$(wildcard $(DIR_J4DDNKKK)/$(sdir)/*.$(SUBDIR_EXT)))
+ifneq ($(MK_J4DDNKKK),)
+$(info -- including subdirectory makefiles ($(DIR_J4DDNKKK)): $(MK_J4DDNKKK))
+include $(MK_J4DDNKKK)
+endif

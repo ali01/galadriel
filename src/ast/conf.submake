@@ -1,0 +1,10 @@
+DIR_6XB3HK4C := ast
+SUB_6XB3HK4C := decl stmt type
+
+SRCS += $(wildcard $(DIR_6XB3HK4C)/*.$(EXT))
+
+MK_6XB3HK4C := $(foreach sdir,$(SUB_6XB3HK4C),$(wildcard $(DIR_6XB3HK4C)/$(sdir)/*.$(SUBDIR_EXT)))
+ifneq ($(MK_6XB3HK4C),)
+$(info -- including subdirectory makefiles ($(DIR_6XB3HK4C)): $(MK_6XB3HK4C))
+include $(MK_6XB3HK4C)
+endif

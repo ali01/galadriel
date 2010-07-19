@@ -1,0 +1,10 @@
+DIR_BV08ISJ4 := ast/stmt/expr/single_addr/compound
+SUB_BV08ISJ4 :=
+
+SRCS += $(wildcard $(DIR_BV08ISJ4)/*.$(EXT))
+
+MK_BV08ISJ4 := $(foreach sdir,$(SUB_BV08ISJ4),$(wildcard $(DIR_BV08ISJ4)/$(sdir)/*.$(SUBDIR_EXT)))
+ifneq ($(MK_BV08ISJ4),)
+$(info -- including subdirectory makefiles ($(DIR_BV08ISJ4)): $(MK_BV08ISJ4))
+include $(MK_BV08ISJ4)
+endif

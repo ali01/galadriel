@@ -1,0 +1,10 @@
+DIR_IE8NF651 := ast/stmt/expr/single_addr/l_value/field_access
+SUB_IE8NF651 :=
+
+SRCS += $(wildcard $(DIR_IE8NF651)/*.$(EXT))
+
+MK_IE8NF651 := $(foreach sdir,$(SUB_IE8NF651),$(wildcard $(DIR_IE8NF651)/$(sdir)/*.$(SUBDIR_EXT)))
+ifneq ($(MK_IE8NF651),)
+$(info -- including subdirectory makefiles ($(DIR_IE8NF651)): $(MK_IE8NF651))
+include $(MK_IE8NF651)
+endif

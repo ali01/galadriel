@@ -1,0 +1,23 @@
+#include "new_expr.h"
+
+/* simone includes */
+#include <simone/utility.h>
+
+/* project includes */
+#include <lex_loc.h>
+
+/* ast/decl includes */
+#include "../../../decl/object/class_decl.h"
+
+/* ast/type/named includes */
+#include "../../../type/named/named_type.h"
+
+/* ast/stmt/expr/single_addr includes */
+#include "single_addr_expr.h"
+
+
+NewExpr::NewExpr(yyltype loc, NamedType *c) :
+  SingleAddrExpr(loc), type_(c)
+{
+  assert(type_);
+}

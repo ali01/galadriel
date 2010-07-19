@@ -1,0 +1,10 @@
+DIR_V5AHNSXU := ast/decl
+SUB_V5AHNSXU := object
+
+SRCS += $(wildcard $(DIR_V5AHNSXU)/*.$(EXT))
+
+MK_V5AHNSXU := $(foreach sdir,$(SUB_V5AHNSXU),$(wildcard $(DIR_V5AHNSXU)/$(sdir)/*.$(SUBDIR_EXT)))
+ifneq ($(MK_V5AHNSXU),)
+$(info -- including subdirectory makefiles ($(DIR_V5AHNSXU)): $(MK_V5AHNSXU))
+include $(MK_V5AHNSXU)
+endif

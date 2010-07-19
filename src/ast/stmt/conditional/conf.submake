@@ -1,0 +1,10 @@
+DIR_QBWTT59Q := ast/stmt/conditional
+SUB_QBWTT59Q := loop
+
+SRCS += $(wildcard $(DIR_QBWTT59Q)/*.$(EXT))
+
+MK_QBWTT59Q := $(foreach sdir,$(SUB_QBWTT59Q),$(wildcard $(DIR_QBWTT59Q)/$(sdir)/*.$(SUBDIR_EXT)))
+ifneq ($(MK_QBWTT59Q),)
+$(info -- including subdirectory makefiles ($(DIR_QBWTT59Q)): $(MK_QBWTT59Q))
+include $(MK_QBWTT59Q)
+endif

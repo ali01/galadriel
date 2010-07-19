@@ -1,0 +1,10 @@
+DIR_K3XVDTYU := ast/stmt/switch
+SUB_K3XVDTYU :=
+
+SRCS += $(wildcard $(DIR_K3XVDTYU)/*.$(EXT))
+
+MK_K3XVDTYU := $(foreach sdir,$(SUB_K3XVDTYU),$(wildcard $(DIR_K3XVDTYU)/$(sdir)/*.$(SUBDIR_EXT)))
+ifneq ($(MK_K3XVDTYU),)
+$(info -- including subdirectory makefiles ($(DIR_K3XVDTYU)): $(MK_K3XVDTYU))
+include $(MK_K3XVDTYU)
+endif

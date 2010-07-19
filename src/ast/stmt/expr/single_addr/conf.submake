@@ -1,0 +1,10 @@
+DIR_E3HA8KZ8 := ast/stmt/expr/single_addr
+SUB_E3HA8KZ8 := compound l_value
+
+SRCS += $(wildcard $(DIR_E3HA8KZ8)/*.$(EXT))
+
+MK_E3HA8KZ8 := $(foreach sdir,$(SUB_E3HA8KZ8),$(wildcard $(DIR_E3HA8KZ8)/$(sdir)/*.$(SUBDIR_EXT)))
+ifneq ($(MK_E3HA8KZ8),)
+$(info -- including subdirectory makefiles ($(DIR_E3HA8KZ8)): $(MK_E3HA8KZ8))
+include $(MK_E3HA8KZ8)
+endif
