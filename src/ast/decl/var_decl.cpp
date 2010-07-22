@@ -6,6 +6,6 @@
 /* ast/type includes */
 #include "../type/type.h"
 
-VarDecl::VarDecl(Identifier *n, Type *t) : Decl(n), type_(t) {
+VarDecl::VarDecl(Identifier::Ptr n, Type::Ptr t) : Decl(n), type_(t) {
   assert(n != NULL && t != NULL);
 }

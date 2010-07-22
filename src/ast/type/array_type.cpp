@@ -3,6 +3,7 @@
 /* simone includes */
 #include <simone/utility.h>
 
-ArrayType::ArrayType(yyltype loc, Type *et) : Type(loc) {
+// TODO: assign data member
+ArrayType::ArrayType(yyltype loc, Type::Ptr et) : Type(loc) {
   assert(et != NULL);
 }

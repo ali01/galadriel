@@ -1,6 +1,9 @@
 #ifndef ARRAY_ACCESS_H_M0ABFQJ4
 #define ARRAY_ACCESS_H_M0ABFQJ4
 
+/* simone includes */
+#include <simone/ptr_interface.h>
+
 /* project includes */
 #include <lex_loc.h>
 
@@ -12,10 +15,23 @@ class Expr;
 
 class ArrayAccessExpr : public LValueExpr {
 public:
-  ArrayAccessExpr(yyltype loc, Expr *base, Expr *subscript);
+  typedef Simone::Ptr<const ArrayAccessExpr> PtrConst;
+  typedef Simone::Ptr<ArrayAccessExpr> Ptr;
+
+  static Ptr ArrayAccessExprNew(yyltype loc,
+                                Expr::Ptr base,
+                                Expr::Ptr subscript) {
+    return new ArrayAccessExpr(loc, base, subscript);
+  }
+  
+
+  ArrayAccessExpr(yyltype loc, Expr::Ptr base, Expr::Ptr subscript);
+
+  /* support for double dispatch */
+  void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 protected:
-  Expr *base, *subscript;
+  Expr::Ptr base, subscript;
 };
 
 #endif

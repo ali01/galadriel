@@ -15,8 +15,9 @@ using Simone::Deque;
 /* ast/stmt includes */
 #include "stmt.h"
 
-StmtBlock::StmtBlock(Deque<VarDecl*>::Ptr d, Deque<Stmt*>::Ptr s) :
-  Stmt(), decls(d), stmts(s)
+StmtBlock::StmtBlock(Deque<VarDecl::Ptr>::Ptr var_decls,
+                     Deque<Stmt::Ptr>::Ptr stmts) :
+  Stmt(), decls(var_decls), stmts(stmts)
 {
-  assert(d != NULL && s != NULL);
+  assert(var_decls != NULL && stmts != NULL);
 }

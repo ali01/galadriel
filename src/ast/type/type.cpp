@@ -14,10 +14,13 @@
  * creates lots of copies.
  */
 
-Type *Type::intType     = new Type("int");
-Type *Type::doubleType  = new Type("double");
-Type *Type::boolType    = new Type("bool");
-Type *Type::stringType  = new Type("string");
+Type::Ptr Type::kInt    = Type::TypeNew("int");
+Type::Ptr Type::kDouble = Type::TypeNew("double");
+Type::Ptr Type::kBool   = Type::TypeNew("bool");
+Type::Ptr Type::kString = Type::TypeNew("string");
+Type::Ptr Type::kVoid   = Type::TypeNew("void");
+Type::Ptr Type::kNull   = Type::TypeNew("null");
+Type::Ptr Type::kError  = Type::TypeNew("error");
 
 Type::Type(yyltype loc, const char *n) : Node(loc), typeName(strdup(n)) {
   assert(typeName);

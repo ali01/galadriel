@@ -3,6 +3,7 @@
 
 /* simone includes */
 #include <simone/deque.h>
+#include <simone/ptr_interface.h>
 using Simone::Deque;
 
 /* ast includes */
@@ -16,7 +17,18 @@ class Identifier;
 
 class InterfaceDecl : public ObjectDecl {
 public:
-  InterfaceDecl(Identifier *name, Deque<Decl*>::Ptr members);
+  typedef Simone::Ptr<const InterfaceDecl> PtrConst;
+  typedef Simone::Ptr<InterfaceDecl> Ptr;
+  
+  static Ptr InterfaceDeclNew(Simone::Ptr<Identifier> name, 
+                              Deque<Decl::Ptr>::Ptr members) {
+    return new InterfaceDecl(name, members);
+  }
+
+  InterfaceDecl(Simone::Ptr<Identifier> name, Deque<Decl::Ptr>::Ptr members);
+
+  /* support for double dispatch */
+  void apply(Functor::Ptr _functor) { (*_functor)(this); }
 };
 
 #endif

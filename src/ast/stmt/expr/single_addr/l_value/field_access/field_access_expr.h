@@ -1,11 +1,11 @@
 #ifndef FIELD_ACCESS_H_ZGC2WBOI
 #define FIELD_ACCESS_H_ZGC2WBOI
 
+/* simone includes */
+#include <simone/ptr_interface.h>
+
 /* project includes */
 #include <lex_loc.h>
-
-/* ast includes */
-#include "../../../../../identifier.h"
 
 /* ast/stmt/expr/single_addr/l_value includes */
 #include "../l_value_expr.h"
@@ -22,13 +22,25 @@ class Type;
  * and sort it out later. */
 class FieldAccessExpr : public LValueExpr {
 public:
+  typedef Simone::Ptr<const FieldAccessExpr> PtrConst;
+  typedef Simone::Ptr<FieldAccessExpr> Ptr;
+
+  static Ptr FieldAccessExprNew(yyltype loc) {
+    return new FieldAccessExpr(loc);
+  }
+
   FieldAccessExpr(yyltype loc);
-  FieldAccessExpr(Expr *base, Identifier *field); //ok to pass NULL base
+
+  /* ok to pass in NULL base */
+  FieldAccessExpr(Expr::Ptr base, Simone::Ptr<Identifier> field);
+
+  /* support for double dispatch */
+  void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 protected:
-  Expr *base_; // will be NULL if no explicit base
-  Identifier *field_;
-  Type *field_type_;
+  Expr::Ptr base_; /* will be NULL if no explicit base */
+  Simone::Ptr<Identifier> field_;
+  Simone::Ptr<Type> field_type_;
 };
 
 #endif

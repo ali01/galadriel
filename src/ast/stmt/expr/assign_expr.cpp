@@ -1,4 +1,4 @@
-#include "assignment_expr.h"
+#include "assign_expr.h"
 
 /* simone includes */
 #include <simone/utility.h>
@@ -13,8 +13,8 @@
 #include "single_addr/single_addr_expr.h"
 #include "single_addr/l_value/l_value_expr.h"
 
-AssignExpr::AssignExpr(Expr *l, Expr *r) :
-  Expr(Join(l->lexLoc(), r->lexLoc())), left(l), right(r)
+AssignExpr::AssignExpr(Expr::Ptr lhs, Expr::Ptr rhs) :
+  Expr(Join(lhs->lexLoc(), rhs->lexLoc())), left(lhs), right(rhs)
 {
-  assert(l != NULL && r != NULL);
+  assert(lhs != NULL && rhs != NULL);
 }

@@ -3,21 +3,25 @@
 
 /* simone includes */
 #include <simone/deque.h>
+#include <simone/ptr_interface.h>
 using Simone::Deque;
 
-/* forward declarations */
-class Expr;
-
-/* ast/stmt includes */
+/* local includes */
 #include "stmt.h"
+
+/* expr includes */
+#include "expr/expr.h"
 
 class PrintStmt : public Stmt {
 public:
-  PrintStmt(Deque<Expr*>::Ptr arguments);
+  PrintStmt(Deque<Expr::Ptr>::Ptr arguments);
+
+  /* support for double dispatch */
+  void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
   /* data members */
-  Deque<Expr*>::Ptr args;
+  Deque<Expr::Ptr>::Ptr args;
 };
 
 #endif

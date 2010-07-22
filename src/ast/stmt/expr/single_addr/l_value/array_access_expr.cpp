@@ -3,5 +3,5 @@
 /* ast/stmt/expr includes */
 #include "../../expr.h"
 
-ArrayAccessExpr::ArrayAccessExpr(yyltype loc, Expr *b, Expr *s) :
+ArrayAccessExpr::ArrayAccessExpr(yyltype loc, Expr::Ptr b, Expr::Ptr s) :
   LValueExpr(loc), base(b), subscript(s) {}

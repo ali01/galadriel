@@ -39,7 +39,7 @@ class Decl;
 class Stmt;
 struct yyltype;
 
-class Node {
+class Node : public Simone::PtrInterface<Node> {
 public:
   Node(yyltype loc);
   Node();
@@ -141,6 +141,11 @@ public:
     virtual void operator()(const ClassType *) {}
     virtual void operator()(const InterfaceType *) {}
   };
+
+  /* -- pure virtual interface -- */
+
+  /* support for double dispatch */
+  virtual void apply(Functor::Ptr _functor) = 0;
 
 protected:
   /* data members */

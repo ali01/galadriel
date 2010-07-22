@@ -6,6 +6,8 @@
 /* ast/stmt/expr includes */
 #include "expr/expr.h"
 
-ReturnStmt::ReturnStmt(yyltype loc, Expr *e) : Stmt(loc), expr(e) {
-  assert(e != NULL);
+ReturnStmt::ReturnStmt(yyltype loc, Simone::Ptr<Expr> expr) :
+  Stmt(loc), expr(expr)
+{
+  assert(expr != NULL);
 }

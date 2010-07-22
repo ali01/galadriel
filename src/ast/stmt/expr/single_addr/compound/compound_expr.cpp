@@ -12,19 +12,19 @@
 /* single-addr includes */
 #include "../single_addr_expr.h"
 
-CompoundExpr::CompoundExpr(Expr *l, Operator *o, Expr *r) :
+CompoundExpr::CompoundExpr(Expr::Ptr l, Operator::Ptr o, Expr::Ptr r) :
   SingleAddrExpr(Join(l->lexLoc(), r->lexLoc())), op(o), left(l), right(r)
 {
   assert(l != NULL && o != NULL && r != NULL);
 }
 
-CompoundExpr::CompoundExpr(Operator *o, Expr *r) :
+CompoundExpr::CompoundExpr(Operator::Ptr o, Expr::Ptr r) :
   SingleAddrExpr(Join(o->lexLoc(), r->lexLoc())), op(o), left(NULL), right(r)
 {
   assert(o != NULL && r != NULL);
 }
 
-CompoundExpr::CompoundExpr(Expr *lhs, Operator *o) :
+CompoundExpr::CompoundExpr(Expr::Ptr lhs, Operator::Ptr o) :
   SingleAddrExpr(Join(o->lexLoc(), lhs->lexLoc())),
   op(o), left(lhs), right(NULL)
 {

@@ -13,7 +13,7 @@
 #include "../../../../../decl/object/class_decl.h"
 
 /* ast/type/named includes */
-#include "../../../../../type/named/named_type.h"
+#include "../../../../../type/named_type.h"
 
 /* ast/stmt/expr includes */
 #include "../../../expr.h"
@@ -26,7 +26,7 @@ FieldAccessExpr::FieldAccessExpr(yyltype loc) :
   LValueExpr(loc), base_(NULL), field_(NULL), field_type_(NULL) {}
 
 
-FieldAccessExpr::FieldAccessExpr(Expr *b, Identifier *f) :
+FieldAccessExpr::FieldAccessExpr(Expr::Ptr b, Identifier::Ptr f) :
   LValueExpr(b ?  Join(b->lexLoc(), f->lexLoc()) : *f->lexLoc()),
   base_(b), field_(f), field_type_(NULL)
 {

@@ -14,13 +14,14 @@
 #include "../type/type.h"
 
 
-FnDecl::FnDecl(Identifier *n, Type *r, Deque<VarDecl*>::Ptr *d) : Decl(n) {
+FnDecl::FnDecl(Identifier::Ptr n, Type::Ptr r,
+               Deque<VarDecl::Ptr>::Ptr d) : Decl(n) {
   assert(n != NULL && r!= NULL && d != NULL);
   body = NULL;
 }
 
 void
-FnDecl::SetFunctionBody(StmtBlock *b) {
+FnDecl::SetFunctionBody(StmtBlock::Ptr b) {
   // TODO: implement
   assert(b != NULL);
 }

@@ -81,6 +81,7 @@ void ReportError::UnrecogChar(yyltype *loc, char ch) {
  * message.
  */
 
-void yyerror(const char *msg) {
-    ReportError::Formatted(&yylloc, "%s", msg);
+void yyerror(const char *msg, yyltype *loc) {
+    yyltype *location = (loc) ? loc : &yylloc;
+    ReportError::Formatted(location, "%s", msg);
 }

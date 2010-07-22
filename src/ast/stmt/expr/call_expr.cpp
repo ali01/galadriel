@@ -14,10 +14,12 @@ using Simone::Deque;
 /* ast/stmt/expr includes */
 #include "expr.h"
 
-CallExpr::CallExpr(yyltype loc, Expr *b, Identifier *f, Deque<Expr*>::Ptr a) :
-  Expr(loc), field(f), actuals(a)
+CallExpr::CallExpr(yyltype loc,
+                   Expr::Ptr base,
+                   Identifier::Ptr field,
+                   Deque<Expr::Ptr>::Ptr args) :
+  Expr(loc), base(base), field(field), actuals(args)
 {
   /* b can be null (just means no explicit base) */
-  assert(f != NULL && a != NULL);
-  base = b;
+  assert(field != NULL && args != NULL);
 }

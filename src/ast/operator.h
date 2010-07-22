@@ -5,6 +5,8 @@
 #include <ostream>
 using std::ostream;
 
+/* simone includes */
+#include <simone/ptr_interface.h>
 
 /* project includes */
 #include <lex_loc.h>
@@ -14,11 +16,21 @@ using std::ostream;
 
 class Operator : public Node {
 public:
+  typedef Simone::Ptr<const Operator> PtrConst;
+  typedef Simone::Ptr<Operator> Ptr;
+
+  static Ptr OperatorNew(yyltype loc, const char *tok) {
+    return new Operator(loc, tok);
+  }
+
   Operator(yyltype loc, const char *tok);
 
   friend ostream& operator<<(ostream& out, Operator *o) {
     return out << o->_tokenString;
   }
+
+  /* support for double dispatch */
+  void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 protected:
   char _tokenString[4];

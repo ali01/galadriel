@@ -9,7 +9,7 @@
 /* ast/stmt includes */
 #include "../stmt.h"
 
-ConditionalStmt::ConditionalStmt(Expr *t, Stmt *b) :
+ConditionalStmt::ConditionalStmt(Expr::Ptr t, Stmt::Ptr b) :
   Stmt(), test(t), body(b)
 {
   assert(test != NULL && body != NULL);

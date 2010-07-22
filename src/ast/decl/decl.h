@@ -15,6 +15,9 @@
 #include <ostream>
 using std::ostream;
 
+/* simone includes */
+#include <simone/ptr_interface.h>
+
 /* ast includes */
 #include "../node.h"
 
@@ -23,12 +26,19 @@ class Identifier;
 
 class Decl : public Node {
 public:
-  Decl(Identifier *name);
-
-  friend ostream& operator<<(ostream& out, Decl *d) { return out << d->id_; }
+  typedef Simone::Ptr<const Decl> PtrConst;
+  typedef Simone::Ptr<Decl> Ptr;
 
 protected:
-  Identifier *id_;
+  Decl(Simone::Ptr<Identifier> name);
+
+  /* data members */
+  Simone::Ptr<Identifier> id_;
+  
+  /* friends */
+  friend ostream& operator<<(ostream& out, const Decl& d) {
+    return out << d.id_;
+  }
 };
 
 #endif

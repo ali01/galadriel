@@ -1,6 +1,9 @@
 #ifndef READ_LINE_EXPR_H_VCPJ04FG
 #define READ_LINE_EXPR_H_VCPJ04FG
 
+/* simone includes */
+#include <simone/ptr_interface.h>
+
 /* project includes */
 #include <lex_loc.h>
 
@@ -9,7 +12,17 @@
 
 class ReadLineExpr : public SingleAddrExpr {
 public:
+  typedef Simone::Ptr<const ReadLineExpr> PtrConst;
+  typedef Simone::Ptr<ReadLineExpr> Ptr;
+
+  static Ptr ReadLineExprNew(yyltype loc) {
+    return new ReadLineExpr(loc);
+  }
+
   ReadLineExpr(yyltype loc) : SingleAddrExpr(loc) {}
+
+  /* support for double dispatch */
+  void apply(Functor::Ptr _functor) { (*_functor)(this); }
 };
 
 #endif

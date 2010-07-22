@@ -21,10 +21,10 @@
 #include "ast/stmt/conditional/if_stmt.h"
 #include "ast/stmt/conditional/loop/for_stmt.h"
 #include "ast/stmt/conditional/loop/while_stmt.h"
-#include "ast/stmt/expr/assignment_expr.h"
+#include "ast/stmt/expr/assign_expr.h"
 #include "ast/stmt/expr/call_expr.h"
 #include "ast/stmt/expr/empty_expr.h"
-#include "ast/stmt/expr/null_expr.h"
+#include "ast/stmt/expr/null_const_expr.h"
 #include "ast/stmt/expr/single_addr/bool_const_expr.h"
 #include "ast/stmt/expr/single_addr/dbl_const_expr.h"
 #include "ast/stmt/expr/single_addr/int_const_expr.h"
@@ -45,11 +45,8 @@
 #include "ast/stmt/switch/switch_case_stmt.h"
 
 /* ast/type includes */
+#include "ast/type/type.h"
 #include "ast/type/array_type.h"
-#include "ast/type/error_type.h"
-#include "ast/type/null_type.h"
-#include "ast/type/void_type.h"
-#include "ast/type/named/class_type.h"
-#include "ast/type/named/interface_type.h"
+#include "ast/type/named_type.h"
 
 #endif

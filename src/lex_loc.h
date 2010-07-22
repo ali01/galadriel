@@ -1,3 +1,7 @@
+#ifndef LEX_LOC_H_VMHXC2K9
+#define LEX_LOC_H_VMHXC2K9
+
+
 /* File: lex_loc.h
  * ----------------
  * This file just contains features relative to the location structure
@@ -57,3 +61,5 @@ inline yyltype Join(yyltype *firstPtr, yyltype *lastPtr)
 
 #endif
 
+
+#endif

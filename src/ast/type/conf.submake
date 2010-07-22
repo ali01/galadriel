@@ -1,5 +1,5 @@
 DIR_EH5KQK70 := ast/type
-SUB_EH5KQK70 := named
+SUB_EH5KQK70 :=
 
 SRCS += $(wildcard $(DIR_EH5KQK70)/*.$(EXT))
 

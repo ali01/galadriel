@@ -10,6 +10,7 @@
 #define TYPE_H_Y3MLXI9M
 
 /* simone includes */
+#include <simone/ptr_interface.h>
 #include <simone/utility.h>
 
 /* project includes */
@@ -18,24 +19,31 @@
 /* ast includes */
 #include "../node.h"
 
-#define kIntType      Type::intType
-#define kDoubleType   Type::doubleType
-#define kBoolType     Type::boolType
-#define kStringType   Type::stringType
-
 class Type : public Node  {
 public:
-  static Type *intType, *doubleType, *boolType, *stringType;
+  typedef Simone::Ptr<const Type> PtrConst;
+  typedef Simone::Ptr<Type> Ptr;
 
-  Type(yyltype loc) : Node(loc) {}
-  Type(const char *str) : Node(), typeName(strdup(str)) { assert(typeName); }
-  Type(yyltype loc, const char *str);
+  static Type::Ptr kInt, kDouble, kBool, kString,
+                   kVoid, kNull, kError;
+
+  // TODO: change char * to string
+  static Ptr TypeNew(const char *str) {
+    return new Type(str);
+  }
 
   const char *name() { return typeName; }
 
   friend ostream& operator<<(ostream& out, Type *t);
 
+  /* support for double dispatch */
+  void apply(Functor::Ptr _functor) { (*_functor)(this); }
+
 protected:
+  Type(yyltype loc) : Node(loc) {}
+  Type(yyltype loc, const char *str);
+  Type(const char *str) : Node(), typeName(strdup(str)) { assert(typeName); }
+
   /* data members */
   char *typeName;
 };

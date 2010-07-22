@@ -4,5 +4,9 @@
 #include <simone/deque.h>
 using Simone::Deque;
 
-InterfaceDecl::InterfaceDecl(Identifier *n, Deque<Decl*>::Ptr m) :
-  ObjectDecl(n, m) {}
+/* project includes */
+#include "../../identifier.h"
+
+InterfaceDecl::InterfaceDecl(Identifier::Ptr name,
+                             Deque<Decl::Ptr>::Ptr members) :
+  ObjectDecl(name, members) {}

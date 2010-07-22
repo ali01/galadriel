@@ -3,6 +3,7 @@
 
 /* simone includes */
 #include <simone/deque.h>
+#include <simone/ptr_interface.h>
 using Simone::Deque;
 
 /* project includes */
@@ -12,7 +13,6 @@ using Simone::Deque;
 #include "expr.h"
 
 /* forward declarations */
-class Expr;
 class Identifier;
 
 /* Like field access, call is used both for qualified base.field()
@@ -22,13 +22,30 @@ class Identifier;
 
 class CallExpr : public Expr {
 public:
-  CallExpr(yyltype loc, Expr *base, Identifier *field, Deque<Expr*>::Ptr args);
+  typedef Simone::Ptr<const CallExpr> PtrConst;
+  typedef Simone::Ptr<CallExpr> Ptr;
+
+  static Ptr CallExprNew(yyltype loc,
+                         Expr::Ptr base,
+                         Simone::Ptr<Identifier> field,
+                         Deque<Expr::Ptr>::Ptr args) {
+    return new CallExpr(loc, base, field, args);
+  }
+  
+
+  CallExpr(yyltype loc,
+           Expr::Ptr base,
+           Simone::Ptr<Identifier> field,
+           Deque<Expr::Ptr>::Ptr args);
+
+  /* support for double dispatch */
+  void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 protected:
   /* base will be null if no explicit base */
-  Expr *base;
-  Identifier *field;
-  Deque<Expr*>::Ptr actuals;
+  Expr::Ptr base;
+  Simone::Ptr<Identifier> field;
+  Deque<Expr::Ptr>::Ptr actuals;
   /* data type compatible with return type of field */
 };
 

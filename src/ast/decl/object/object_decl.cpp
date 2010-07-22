@@ -9,12 +9,12 @@ using Simone::Deque;
 #include "../decl.h"
 
 /* ast/type/named includes */
-#include "../../type/named/named_type.h"
+#include "../../type/named_type.h"
 
 /* forward declarations */
 class Identifier;
 
-ObjectDecl::ObjectDecl(Identifier *n, Deque<Decl*>::Ptr m) :
+ObjectDecl::ObjectDecl(Simone::Ptr<Identifier> n, Deque<Decl::Ptr>::Ptr m) :
   Decl(n), members(m)
 {
   assert(members); // n verified by superclass
