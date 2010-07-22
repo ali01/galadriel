@@ -19,7 +19,9 @@ using Simone::Deque;
 
 /* project includes */
 #include "parser.h"
-#include "scanner.h" // for yylex
+#include "scanner.h" /* for yylex */
+#include "parse_printer.h"
+
 #include "errors.h"
 #include "../utility.h"
 

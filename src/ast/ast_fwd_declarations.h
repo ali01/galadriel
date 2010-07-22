@@ -79,14 +79,6 @@ class SwitchCaseStmt;
 /* -- type -- */
 
 class Type;
-class VoidType;
-class NullType;
-class ArrayType;
-class ErrorType;
-
-/* type/named */
 class NamedType;
-class ClassType;
-class InterfaceType;
 
 #endif

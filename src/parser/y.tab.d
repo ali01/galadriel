@@ -52,8 +52,8 @@ parser/y.tab.o: parser/y.tab.c simone/ptr_interface.h simone/exception.h \
   ast/stmt/switch/switch_case_stmt.h \
   ast/stmt/switch/../expr/single_addr/int_const_expr.h \
   ast/stmt/switch/switch_case_stmt.h ast/type/type.h \
-  ast/type/array_type.h ast/type/type.h ast/type/named_type.h errors.h \
-  lex_loc.h parser/../utility.h
+  ast/type/array_type.h ast/type/type.h ast/type/named_type.h \
+  parser/parse_printer.h ast.h errors.h lex_loc.h parser/../utility.h
 
 simone/ptr_interface.h:
 
@@ -234,6 +234,10 @@ ast/type/array_type.h:
 ast/type/type.h:
 
 ast/type/named_type.h:
+
+parser/parse_printer.h:
+
+ast.h:
 
 errors.h:
 
