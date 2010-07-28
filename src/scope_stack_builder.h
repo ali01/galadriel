@@ -32,33 +32,33 @@ public:
 
       /* -- top level -- */
 
-      void operator()(const Program *);
+      void operator()(Program *);
 
 
       /* -- decl -- */
 
-      void operator()(const FnDecl *);
-      void operator()(const VarDecl *);
+      void operator()(FnDecl *);
+      void operator()(VarDecl *);
 
       /* decl/object */
-      void operator()(const ClassDecl *);
-      void operator()(const InterfaceDecl *);
+      void operator()(ClassDecl *);
+      void operator()(InterfaceDecl *);
 
 
       /* -- stmt -- */
 
-      void operator()(const StmtBlock *);
+      void operator()(StmtBlock *);
 
       /* stmt/conditional */
-      void operator()(const IfStmt *);
+      void operator()(IfStmt *);
 
       /* stmt/conditional/loop */
-      void operator()(const ForStmt *);
-      void operator()(const WhileStmt *);
+      void operator()(ForStmt *);
+      void operator()(WhileStmt *);
 
       /* stmt/switch */
-      void operator()(const SwitchStmt *);
-      void operator()(const SwitchCaseStmt *);
+      void operator()(SwitchStmt *);
+      void operator()(SwitchCaseStmt *);
 
 
     private:

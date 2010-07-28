@@ -22,7 +22,7 @@ public:
   ArrayType(yyltype loc, Type::Ptr elem_type);
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) const { (*_functor)(this); }
+  void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 protected:
   /* data members */

@@ -25,7 +25,7 @@ public:
   ReturnStmt(yyltype loc, Simone::Ptr<Expr> expr);
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) const { (*_functor)(this); }
+  void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
   /* data members */

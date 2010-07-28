@@ -20,7 +20,8 @@ public:
 
   Scope::Ptr scope() const;
   Scope::Ptr scopeNew();
-  void scopeDel();
+
+  void scopePop();
 
 private:
   ScopeStack() {}

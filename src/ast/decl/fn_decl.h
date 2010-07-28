@@ -10,6 +10,9 @@ using Simone::Deque;
 #include "decl.h"
 #include "var_decl.h"
 
+/* project includes */
+#include <scope.h>
+
 /* forward declarations */
 class Identifier;
 class StmtBlock;
@@ -31,6 +34,8 @@ public:
          Simone::Ptr<Type> returnType,
          Deque<VarDecl::Ptr>::Ptr formals);
 
+  /* iterator support */
+
   formal_iter formalsBegin() { return formals_->begin(); }
   const_formal_iter formalsBegin() const { return formals_->begin(); }
 
@@ -40,16 +45,24 @@ public:
   Simone::Ptr<Type> returnType() const;
   Simone::Ptr<StmtBlock> body() const;
 
+
+  /* attribute member functions */
+
   void bodyIs(Simone::Ptr<StmtBlock> b);
 
+  Scope::Ptr scope() const { return scope_; }
+  void scopeIs(Scope::Ptr _s) { scope_ = _s; }
+
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) const { (*_functor)(this); }
+  void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
   /* data members */
   Deque<VarDecl::Ptr>::Ptr formals_;
   Simone::Ptr<Type> return_type_;
   Simone::Ptr<StmtBlock> body_;
+
+  Scope::Ptr scope_;
 };
 
 #endif

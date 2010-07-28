@@ -8,14 +8,20 @@ ScopeStackBuilder::ScopeStackBuilder(Program::Ptr _program) {
 }
 
 void
-ScopeStackBuilder::NodeFunctor::operator()(const Program *nd) {
-  Decl::PtrConst decl;
+ScopeStackBuilder::NodeFunctor::operator()(Program *nd) {
+  /* initialize global scope */
+  Scope::Ptr scope = scope_stack_->scopeNew();
+  nd->scopeIs(scope);
+
+  Decl::Ptr decl;
   Program::const_decl_iter it = nd->declsBegin();
 
   for (; it != nd->declsEnd(); ++it) {
     decl = *it;
     decl->apply(this);
   }
+
+  scope_stack_->scopePop();
 }
 
 
@@ -23,11 +29,14 @@ ScopeStackBuilder::NodeFunctor::operator()(const Program *nd) {
 /* -- decl -- */
 
 void
-ScopeStackBuilder::NodeFunctor::operator()(const FnDecl *nd) {
-  VarDecl::PtrConst decl;
+ScopeStackBuilder::NodeFunctor::operator()(FnDecl *nd) {
+  /* initialize function parameter scope */
+  Scope::Ptr scope = scope_stack_->scopeNew();
+  nd->scopeIs(scope);
+
+  VarDecl::Ptr decl;
   FnDecl::const_formal_iter it = nd->formalsBegin();
 
-  scope_stack_->scopeNew();
   for (; it != nd->formalsEnd(); ++it) {
     decl = *it;
     decl->apply(this);
@@ -38,10 +47,12 @@ ScopeStackBuilder::NodeFunctor::operator()(const FnDecl *nd) {
     /* stmt_block could be NULL in the case of a function prototype */
     stmt_block->apply(this);
   }
+
+  scope_stack_->scopePop();
 }
 
 void
-ScopeStackBuilder::NodeFunctor::operator()(const VarDecl *nd) {
+ScopeStackBuilder::NodeFunctor::operator()(VarDecl *nd) {
   Scope::Ptr scope = scope_stack_->scope();
   scope->declIs(nd);
 }
@@ -49,27 +60,36 @@ ScopeStackBuilder::NodeFunctor::operator()(const VarDecl *nd) {
 
 /* decl/object */
 void
-ScopeStackBuilder::NodeFunctor::operator()(const ClassDecl *nd) {
-  scope_stack_->scopeNew();
+ScopeStackBuilder::NodeFunctor::operator()(ClassDecl *nd) {
+  /* initialize class scope */
+  Scope::Ptr scope = scope_stack_->scopeNew();
+  nd->scopeIs(scope);
+  
 
-  Decl::PtrConst decl;
+  Decl::Ptr decl;
   ClassDecl::const_member_iter it = nd->membersBegin();
   for (; it != nd->membersEnd(); ++it) {
     decl = *it;
     decl->apply(this);
   }
+
+  scope_stack_->scopePop();
 }
 
 void
-ScopeStackBuilder::NodeFunctor::operator()(const InterfaceDecl *nd) {
-  scope_stack_->scopeNew();
+ScopeStackBuilder::NodeFunctor::operator()(InterfaceDecl *nd) {
+  /* initialize interface scope */
+  Scope::Ptr scope = scope_stack_->scopeNew();
+  nd->scopeIs(scope);
 
-  FnDecl::PtrConst fn_decl;
+  FnDecl::Ptr fn_decl;
   InterfaceDecl::const_member_iter it = nd->membersBegin();
   for (; it != nd->membersEnd(); ++it) {
     fn_decl = *it;
     fn_decl->apply(this);
   }
+
+  scope_stack_->scopePop();
 }
 
 
@@ -77,32 +97,36 @@ ScopeStackBuilder::NodeFunctor::operator()(const InterfaceDecl *nd) {
 /* -- stmt -- */
 
 void
-ScopeStackBuilder::NodeFunctor::operator()(const StmtBlock *nd) {
-  scope_stack_->scopeNew();
+ScopeStackBuilder::NodeFunctor::operator()(StmtBlock *nd) {
+  /* initialize stmt_block scope */
+  Scope::Ptr scope = scope_stack_->scopeNew();
+  nd->scopeIs(scope);
 
-  VarDecl::PtrConst var_decl;
+  VarDecl::Ptr var_decl;
   StmtBlock::const_decl_iter decl_it = nd->declsBegin();
   for (; decl_it != nd->declsEnd(); ++decl_it) {
     var_decl = *decl_it;
     var_decl->apply(this);
   }
 
-  Stmt::PtrConst stmt;
+  Stmt::Ptr stmt;
   StmtBlock::const_stmt_iter stmt_it = nd->stmtsBegin();
   for (; stmt_it != nd->stmtsEnd(); ++stmt_it) {
     stmt = *stmt_it;
     stmt->apply(this);
   }
+
+  scope_stack_->scopePop();
 }
 
 
 /* stmt/conditional */
 void
-ScopeStackBuilder::NodeFunctor::operator()(const IfStmt *nd) {
-  Stmt::PtrConst body = nd->body();
+ScopeStackBuilder::NodeFunctor::operator()(IfStmt *nd) {
+  Stmt::Ptr body = nd->body();
   body->apply(this);
 
-  Stmt::PtrConst else_body = nd->elseBody();
+  Stmt::Ptr else_body = nd->elseBody();
   if (else_body != NULL)
     else_body->apply(this);
 }
@@ -110,22 +134,22 @@ ScopeStackBuilder::NodeFunctor::operator()(const IfStmt *nd) {
 
 /* stmt/conditional/loop */
 void
-ScopeStackBuilder::NodeFunctor::operator()(const ForStmt *nd) {
-  Stmt::PtrConst body = nd->body();
+ScopeStackBuilder::NodeFunctor::operator()(ForStmt *nd) {
+  Stmt::Ptr body = nd->body();
   body->apply(this);
 }
 
 void
-ScopeStackBuilder::NodeFunctor::operator()(const WhileStmt *nd) {
-  Stmt::PtrConst body = nd->body();
+ScopeStackBuilder::NodeFunctor::operator()(WhileStmt *nd) {
+  Stmt::Ptr body = nd->body();
   body->apply(this);
 }
 
 
 /* stmt/switch */
 void
-ScopeStackBuilder::NodeFunctor::operator()(const SwitchStmt *nd) {
-  SwitchCaseStmt::PtrConst case_stmt;
+ScopeStackBuilder::NodeFunctor::operator()(SwitchStmt *nd) {
+  SwitchCaseStmt::Ptr case_stmt;
   SwitchStmt::const_case_iter it = nd->casesBegin();
   for (; it != nd->casesEnd(); ++it) {
     case_stmt = *it;
@@ -138,8 +162,8 @@ ScopeStackBuilder::NodeFunctor::operator()(const SwitchStmt *nd) {
 }
 
 void
-ScopeStackBuilder::NodeFunctor::operator()(const SwitchCaseStmt *nd) {
-  Stmt::PtrConst stmt;
+ScopeStackBuilder::NodeFunctor::operator()(SwitchCaseStmt *nd) {
+  Stmt::Ptr stmt;
   SwitchCaseStmt::const_stmt_iter it = nd->stmtsBegin();
   for (; it != nd->stmtsEnd(); ++it) {
     stmt = *it;

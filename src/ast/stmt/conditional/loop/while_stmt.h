@@ -22,7 +22,7 @@ public:
   WhileStmt(Simone::Ptr<Expr> test, Stmt::Ptr body) : LoopStmt(test, body) {}
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) const { (*_functor)(this); }
+  void apply(Functor::Ptr _functor) { (*_functor)(this); }
 };
 
 #endif

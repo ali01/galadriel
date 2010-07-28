@@ -41,7 +41,7 @@ public:
   SwitchCaseStmt::Ptr defaultCase() const { return default_case_; }
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) const { (*_functor)(this); }
+  void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 protected:
   Simone::Ptr<Expr> test_;

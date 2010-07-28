@@ -10,6 +10,9 @@ using Simone::Deque;
 #include "decl.h"
 #include "fn_decl.h"
 
+/* project includes */
+#include <scope.h>
+
 /* forward declarations */
 class Identifier;
 
@@ -28,18 +31,30 @@ public:
 
   InterfaceDecl(Simone::Ptr<Identifier> name, Deque<FnDecl::Ptr>::Ptr members);
 
+
+  /* iterator support */
+
   const_member_iter membersBegin() const { return members_->begin(); }
   member_iter membersBegin() { return members_->begin(); }
 
   const_member_iter membersEnd() const { return members_->end(); }
   member_iter membersEnd() { return members_->end(); }
 
+
+  /* attribute member functions */
+
+  Scope::Ptr scope() const { return scope_; }
+  void scopeIs(Scope::Ptr _s) { scope_ = _s; }
+
+
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) const { (*_functor)(this); }
+  void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
   /* data members */
   Deque<FnDecl::Ptr>::Ptr members_;
+
+  Scope::Ptr scope_;
   
   /* operations disallowed */
   InterfaceDecl(const InterfaceDecl&);

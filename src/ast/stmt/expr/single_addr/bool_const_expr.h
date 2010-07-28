@@ -22,7 +22,7 @@ public:
   BoolConstExpr(yyltype loc, bool val) : SingleAddrExpr(loc) { value = val; }
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) const { (*_functor)(this); }
+  void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 protected:
   /* data members */

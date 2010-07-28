@@ -17,18 +17,17 @@ ScopeStack::scope() const {
 
 Scope::Ptr
 ScopeStack::scopeNew() {
-  Scope::Ptr scope = new Scope();
+  Scope::Ptr scope = new Scope(this->scope());
   scope_stack_.pushBack(scope);
-  // TODO: copy parent scope
   return scope;
 }
 
 void
-ScopeStack::scopeDel() {
+ScopeStack::scopePop() {
   if (scope_stack_.size() > 0) {
     scope_stack_.popBack();
   } else {
-    string msg = "scopeDel() called on empty ScopeStack";
+    string msg = "scopePop() called on empty ScopeStack";
     throw Simone::RangeException(__FILE__, __LINE__, msg);
   }
 }

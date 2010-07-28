@@ -39,7 +39,7 @@ public:
   friend ostream& operator<<(ostream& out, Type *t);
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) const { (*_functor)(this); }
+  void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 protected:
   Type(yyltype loc) : Node(loc) {}

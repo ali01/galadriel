@@ -55,92 +55,92 @@ public:
 
     /* -- top level -- */
 
-    virtual void operator()(const Node *) { ABORT(); }
-    virtual void operator()(const Program *) { ABORT(); }
-    virtual void operator()(const Identifier *) { ABORT(); }
-    virtual void operator()(const Operator *) { ABORT(); }
+    virtual void operator()(Node *) { ABORT(); }
+    virtual void operator()(Program *) { ABORT(); }
+    virtual void operator()(Identifier *) { ABORT(); }
+    virtual void operator()(Operator *) { ABORT(); }
 
 
     /* -- decl -- */
 
-    virtual void operator()(const Decl *) { ABORT(); }
-    virtual void operator()(const FnDecl *) { ABORT(); }
-    virtual void operator()(const VarDecl *) { ABORT(); }
+    virtual void operator()(Decl *) { ABORT(); }
+    virtual void operator()(FnDecl *) { ABORT(); }
+    virtual void operator()(VarDecl *) { ABORT(); }
 
     /* decl/object */
-    virtual void operator()(const ObjectDecl *) { ABORT(); }
-    virtual void operator()(const ClassDecl *) { ABORT(); }
-    virtual void operator()(const InterfaceDecl *) { ABORT(); }
+    virtual void operator()(ObjectDecl *) { ABORT(); }
+    virtual void operator()(ClassDecl *) { ABORT(); }
+    virtual void operator()(InterfaceDecl *) { ABORT(); }
 
 
     /* -- stmt -- */
 
-    virtual void operator()(const Stmt *) { ABORT(); }
-    virtual void operator()(const BreakStmt *) { ABORT(); }
-    virtual void operator()(const PrintStmt *) { ABORT(); }
-    virtual void operator()(const ReturnStmt *) { ABORT(); }
-    virtual void operator()(const StmtBlock *) { ABORT(); }
+    virtual void operator()(Stmt *) { ABORT(); }
+    virtual void operator()(BreakStmt *) { ABORT(); }
+    virtual void operator()(PrintStmt *) { ABORT(); }
+    virtual void operator()(ReturnStmt *) { ABORT(); }
+    virtual void operator()(StmtBlock *) { ABORT(); }
 
     /* stmt/conditional */
-    virtual void operator()(const ConditionalStmt *) { ABORT(); }
-    virtual void operator()(const IfStmt *) { ABORT(); }
+    virtual void operator()(ConditionalStmt *) { ABORT(); }
+    virtual void operator()(IfStmt *) { ABORT(); }
 
     /* stmt/conditional/loop */
-    virtual void operator()(const LoopStmt *) { ABORT(); }
-    virtual void operator()(const ForStmt *) { ABORT(); }
-    virtual void operator()(const WhileStmt *) { ABORT(); }
+    virtual void operator()(LoopStmt *) { ABORT(); }
+    virtual void operator()(ForStmt *) { ABORT(); }
+    virtual void operator()(WhileStmt *) { ABORT(); }
 
     /* stmt/expr */
-    virtual void operator()(const Expr *) { ABORT(); }
-    virtual void operator()(const AssignExpr *) { ABORT(); }
-    virtual void operator()(const CallExpr *) { ABORT(); }
-    virtual void operator()(const EmptyExpr *) { ABORT(); }
-    virtual void operator()(const NullExpr *) { ABORT(); }
+    virtual void operator()(Expr *) { ABORT(); }
+    virtual void operator()(AssignExpr *) { ABORT(); }
+    virtual void operator()(CallExpr *) { ABORT(); }
+    virtual void operator()(EmptyExpr *) { ABORT(); }
+    virtual void operator()(NullExpr *) { ABORT(); }
 
     /* stmt/expr/single_addr */
-    virtual void operator()(const SingleAddrExpr *) { ABORT(); }
-    virtual void operator()(const BoolConstExpr *) { ABORT(); }
-    virtual void operator()(const IntConstExpr *) { ABORT(); }
-    virtual void operator()(const DblConstExpr *) { ABORT(); }
-    virtual void operator()(const StrConstExpr *) { ABORT(); }
-    virtual void operator()(const NewExpr *) { ABORT(); }
-    virtual void operator()(const NewArrayExpr *) { ABORT(); }
-    virtual void operator()(const ReadLineExpr *) { ABORT(); }
+    virtual void operator()(SingleAddrExpr *) { ABORT(); }
+    virtual void operator()(BoolConstExpr *) { ABORT(); }
+    virtual void operator()(IntConstExpr *) { ABORT(); }
+    virtual void operator()(DblConstExpr *) { ABORT(); }
+    virtual void operator()(StrConstExpr *) { ABORT(); }
+    virtual void operator()(NewExpr *) { ABORT(); }
+    virtual void operator()(NewArrayExpr *) { ABORT(); }
+    virtual void operator()(ReadLineExpr *) { ABORT(); }
 
     /* stmt/expr/single_addr/compound */
-    virtual void operator()(const CompoundExpr *) { ABORT(); }
-    virtual void operator()(const ArithmeticExpr *) { ABORT(); }
-    virtual void operator()(const EqualityExpr *) { ABORT(); }
-    virtual void operator()(const LogicalExpr *) { ABORT(); }
-    virtual void operator()(const RelationalExpr *) { ABORT(); }
-    virtual void operator()(const PostfixExpr *) { ABORT(); }
+    virtual void operator()(CompoundExpr *) { ABORT(); }
+    virtual void operator()(ArithmeticExpr *) { ABORT(); }
+    virtual void operator()(EqualityExpr *) { ABORT(); }
+    virtual void operator()(LogicalExpr *) { ABORT(); }
+    virtual void operator()(RelationalExpr *) { ABORT(); }
+    virtual void operator()(PostfixExpr *) { ABORT(); }
 
     /* stmt/expr/single_addr/l_value */
-    virtual void operator()(const LValueExpr *) { ABORT(); }
-    virtual void operator()(const ArrayAccessExpr *) { ABORT(); }
+    virtual void operator()(LValueExpr *) { ABORT(); }
+    virtual void operator()(ArrayAccessExpr *) { ABORT(); }
 
     /* stmt/expr/single_addr/l_value/field_access */
-    virtual void operator()(const FieldAccessExpr *) { ABORT(); }
-    virtual void operator()(const ThisExpr *) { ABORT(); }
+    virtual void operator()(FieldAccessExpr *) { ABORT(); }
+    virtual void operator()(ThisExpr *) { ABORT(); }
 
     /* stmt/switch */
-    virtual void operator()(const SwitchStmt *) { ABORT(); }
-    virtual void operator()(const SwitchCaseStmt *) { ABORT(); }
+    virtual void operator()(SwitchStmt *) { ABORT(); }
+    virtual void operator()(SwitchCaseStmt *) { ABORT(); }
 
 
     /* -- type -- */
 
-    virtual void operator()(const Type *) { ABORT(); }
+    virtual void operator()(Type *) { ABORT(); }
 
     /* type/named */
-    virtual void operator()(const NamedType *) { ABORT(); }
+    virtual void operator()(NamedType *) { ABORT(); }
   };
 
 
   /* -- pure virtual interface -- */
 
   /* support for double dispatch */
-  virtual void apply(Functor::Ptr _functor) const = 0;
+  virtual void apply(Functor::Ptr _functor) = 0;
 
 protected:
   /* data members */

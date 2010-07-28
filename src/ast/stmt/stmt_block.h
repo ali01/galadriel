@@ -12,6 +12,9 @@ using Simone::Deque;
 /* ast/decl includes */
 #include "../decl/var_decl.h"
 
+/* project includes */
+#include <scope.h>
+
 class StmtBlock : public Stmt {
 public:
   typedef Simone::Ptr<const StmtBlock> PtrConst;
@@ -31,6 +34,8 @@ public:
   StmtBlock(Deque<VarDecl::Ptr>::Ptr var_decls,
             Deque<Stmt::Ptr>::Ptr stmts);
 
+  /* iterator support */
+
   const_decl_iter declsBegin() const { return decls_->begin(); }
   decl_iter declsBegin() { return decls_->begin(); }
 
@@ -43,13 +48,21 @@ public:
   const_stmt_iter stmtsEnd() const { return stmts_->end(); }
   stmt_iter stmtsEnd() { return stmts_->end(); }
 
+
+  /* attribute member functions */
+
+  Scope::Ptr scope() const { return scope_; }
+  void scopeIs(Scope::Ptr _s) { scope_ = _s; }
+
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) const { (*_functor)(this); }
+  void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
   /* data members */
   Deque<VarDecl::Ptr>::Ptr decls_;
   Deque<Stmt::Ptr>::Ptr stmts_;
+
+  Scope::Ptr scope_;
 };
 
 #endif
