@@ -7,16 +7,11 @@ using std::ostream;
 /* project includes */
 #include <lex_loc.h>
 
-Identifier::Identifier(yyltype loc, const char *n) : Node(loc) {
-  assert(n);
-  _name = strdup(n);
-}
+Identifier::Identifier(yyltype loc, const string& n) : Node(loc), name_(n) {}
 
 bool
 Identifier::operator==(const Identifier& other) const {
-  assert(_name);
-  assert(other._name);
-  return strcmp(_name, other._name) == 0;
+  return name_ == other.name_;
 }
 
 ostream&

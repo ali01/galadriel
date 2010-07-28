@@ -22,7 +22,7 @@ public:
   IntConstExpr(yyltype loc, int val) : SingleAddrExpr(loc) { value = val; }
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) { (*_functor)(this); }
+  void apply(Functor::Ptr _functor) const { (*_functor)(this); }
 
 private:  
   /* data members */

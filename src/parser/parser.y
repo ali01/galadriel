@@ -18,9 +18,11 @@
 using Simone::Deque;
 
 /* project includes */
+#include <semantic_analyser/semantic_analyser.h>
+
+/* parser includes */
 #include "parser.h"
 #include "scanner.h" /* for yylex */
-#include "parse_printer.h"
 
 #include "errors.h"
 #include "../utility.h"
@@ -78,6 +80,7 @@ void yyerror(const char *msg, yyltype *loc = NULL);
 
   /* other lists */
   Deque<VarDecl::Ptr> *var_decl_list;
+  Deque<FnDecl::Ptr> *fn_decl_list;
   Deque<NamedType::Ptr> *named_type_list;
   Deque<SwitchCaseStmt::Ptr> *switch_case_list;
 }
@@ -123,9 +126,9 @@ void yyerror(const char *msg, yyltype *loc = NULL);
 %type <stmt_block> StmtBlock
 
 /* decl */
-%type <decl> Decl Prototype Field
+%type <decl> Decl Field
 %type <var_decl> VariableDecl Variable
-%type <fn_decl> FunctionDecl
+%type <fn_decl> FunctionDecl Prototype
 %type <class_decl> ClassDecl
 %type <interface_decl> InterfaceDecl
 
@@ -140,10 +143,11 @@ void yyerror(const char *msg, yyltype *loc = NULL);
 /* top level lists */
 %type <stmt_list> StmtList
 %type <expr_list> Actuals ExprList
-%type <decl_list> DeclList FieldList PrototypeList
+%type <decl_list> DeclList FieldList
 
 /* other lists */
 %type <var_decl_list> VariableList VariableDeclList Formals
+%type <fn_decl_list> PrototypeList
 %type <named_type_list> Implements Protocol
 %type <switch_case_list> SwitchCaseList
 
@@ -177,7 +181,9 @@ void yyerror(const char *msg, yyltype *loc = NULL);
  
 Program           : DeclList {
                       Program::Ptr program = Program::ProgramNew($1);
-                      
+                      // TODO: if(parse errors)
+                      SemanticAnalyser::Ptr semantic_analyser =
+                        SemanticAnalyser::SemanticAnalyserNew(program);
                     }
                   ;
 
@@ -224,7 +230,7 @@ FunctionDecl      : Type T_Identifier '(' Formals ')' StmtBlock {
                       name = Identifier::IdentifierNew(@2, $2);
 
                       FnDecl *fn = new FnDecl(name, $1, $4);
-                      fn->SetFunctionBody($6);
+                      fn->bodyIs($6);
                       $$ = fn;
                     }
                   | T_Void T_Identifier '(' Formals ')' StmtBlock {
@@ -232,7 +238,7 @@ FunctionDecl      : Type T_Identifier '(' Formals ')' StmtBlock {
                       name = Identifier::IdentifierNew(@2, $2);
 
                       $$ = new FnDecl(name, Type::kVoid, $4);
-                      $$->SetFunctionBody($6);
+                      $$->bodyIs($6);
                     }
                   ;
 
@@ -318,7 +324,8 @@ InterfaceDecl     : T_Interface T_Identifier '{' PrototypeList '}' {
                     }
                   | T_Interface T_Identifier '{' '}' {
                       Identifier::Ptr name = Identifier::IdentifierNew(@2, $2);
-                      Deque<Decl::Ptr>::Ptr decl_list = new Deque<Decl::Ptr>();
+                      Deque<FnDecl::Ptr>::Ptr decl_list;
+                      decl_list = new Deque<FnDecl::Ptr>();
                       $$ = new InterfaceDecl(name, decl_list);
                     }
                   ;
@@ -328,7 +335,7 @@ PrototypeList     : PrototypeList Prototype {
                       $$->pushBack($2);
                     }
                   | Prototype {
-                      $$ = new Deque<Decl::Ptr>();
+                      $$ = new Deque<FnDecl::Ptr>();
                       $$->pushBack($1);
                     }
                   ;

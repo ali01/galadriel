@@ -1,6 +1,9 @@
 #ifndef IDENTIFIER_H_15V2NB3Y
 #define IDENTIFIER_H_15V2NB3Y
 
+/* stl includes */
+#include <string>
+
 /* simone includes */
 #include <simone/ptr_interface.h>
 
@@ -15,21 +18,21 @@ public:
   typedef Simone::Ptr<const Identifier> PtrConst;
   typedef Simone::Ptr<Identifier> Ptr;
 
-  static Ptr IdentifierNew(yyltype loc, const char *name) {
+  static Ptr IdentifierNew(yyltype loc, const string& name) {
     return new Identifier(loc, name);
   }
 
-  char *name() const { return _name; }
+  const string& name() const { return name_; }
   bool operator==(const Identifier&) const;
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) { (*_functor)(this); }
+  void apply(Functor::Ptr _functor) const { (*_functor)(this); }
 
 private:
-  Identifier(yyltype loc, const char *name);
+  Identifier(yyltype loc, const string& name);
   
   /* data members */
-  char *_name;
+  const string name_;
 
   /* friends */
   friend ostream& operator<<(ostream& out, const Identifier &id);

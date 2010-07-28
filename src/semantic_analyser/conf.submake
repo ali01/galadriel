@@ -1,0 +1,10 @@
+DIR_LR39IYRP := semantic_analyser
+SUB_LR39IYRP := 
+
+SRCS += $(wildcard $(DIR_LR39IYRP)/*.$(EXT))
+
+MK_LR39IYRP := $(foreach sdir,$(SUB_LR39IYRP),$(wildcard $(DIR_LR39IYRP)/$(sdir)/*.$(SUBDIR_EXT)))
+ifneq ($(MK_LR39IYRP),)
+$(info -- including subdirectory makefiles ($(DIR_LR39IYRP)): $(MK_LR39IYRP)) 
+include $(MK_LR39IYRP)
+endif

@@ -26,7 +26,7 @@ public:
   LogicalExpr(Operator::Ptr op, Expr::Ptr rhs) : CompoundExpr(op,rhs) {}
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) { (*_functor)(this); }
+  void apply(Functor::Ptr _functor) const { (*_functor)(this); }
 };
 
 #endif

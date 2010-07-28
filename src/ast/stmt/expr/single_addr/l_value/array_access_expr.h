@@ -28,7 +28,7 @@ public:
   ArrayAccessExpr(yyltype loc, Expr::Ptr base, Expr::Ptr subscript);
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) { (*_functor)(this); }
+  void apply(Functor::Ptr _functor) const { (*_functor)(this); }
 
 protected:
   Expr::Ptr base, subscript;

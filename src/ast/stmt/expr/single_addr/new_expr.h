@@ -26,7 +26,7 @@ public:
   NewExpr(yyltype loc, Simone::Ptr<NamedType> class_type);
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) { (*_functor)(this); }
+  void apply(Functor::Ptr _functor) const { (*_functor)(this); }
 
 private:
   /* data members */

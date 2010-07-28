@@ -28,7 +28,7 @@ public:
                  bool _is_default=false);
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) { (*_functor)(this); }
+  void apply(Functor::Ptr _functor) const { (*_functor)(this); }
 
 protected:
   IntConstExpr::Ptr case_label_;

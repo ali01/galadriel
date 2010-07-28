@@ -56,91 +56,91 @@ public:
     /* -- top level -- */
 
     virtual void operator()(const Node *) { ABORT(); }
-    virtual void operator()(const Program *) = 0;
-    virtual void operator()(const Identifier *) = 0;
-    virtual void operator()(const Operator *) = 0;
+    virtual void operator()(const Program *) { ABORT(); }
+    virtual void operator()(const Identifier *) { ABORT(); }
+    virtual void operator()(const Operator *) { ABORT(); }
 
 
     /* -- decl -- */
 
     virtual void operator()(const Decl *) { ABORT(); }
-    virtual void operator()(const FnDecl *) = 0;
-    virtual void operator()(const VarDecl *) = 0;
+    virtual void operator()(const FnDecl *) { ABORT(); }
+    virtual void operator()(const VarDecl *) { ABORT(); }
 
     /* decl/object */
     virtual void operator()(const ObjectDecl *) { ABORT(); }
-    virtual void operator()(const ClassDecl *) = 0;
-    virtual void operator()(const InterfaceDecl *) = 0;
+    virtual void operator()(const ClassDecl *) { ABORT(); }
+    virtual void operator()(const InterfaceDecl *) { ABORT(); }
 
 
     /* -- stmt -- */
 
     virtual void operator()(const Stmt *) { ABORT(); }
-    virtual void operator()(const BreakStmt *) = 0;
-    virtual void operator()(const PrintStmt *) = 0;
-    virtual void operator()(const ReturnStmt *) = 0;
-    virtual void operator()(const StmtBlock *) = 0;
+    virtual void operator()(const BreakStmt *) { ABORT(); }
+    virtual void operator()(const PrintStmt *) { ABORT(); }
+    virtual void operator()(const ReturnStmt *) { ABORT(); }
+    virtual void operator()(const StmtBlock *) { ABORT(); }
 
     /* stmt/conditional */
     virtual void operator()(const ConditionalStmt *) { ABORT(); }
-    virtual void operator()(const IfStmt *) = 0;
+    virtual void operator()(const IfStmt *) { ABORT(); }
 
     /* stmt/conditional/loop */
     virtual void operator()(const LoopStmt *) { ABORT(); }
-    virtual void operator()(const ForStmt *) = 0;
-    virtual void operator()(const WhileStmt *) = 0;
+    virtual void operator()(const ForStmt *) { ABORT(); }
+    virtual void operator()(const WhileStmt *) { ABORT(); }
 
     /* stmt/expr */
     virtual void operator()(const Expr *) { ABORT(); }
-    virtual void operator()(const AssignExpr *) = 0;
-    virtual void operator()(const CallExpr *) = 0;
-    virtual void operator()(const EmptyExpr *) = 0;
-    virtual void operator()(const NullExpr *) = 0;
+    virtual void operator()(const AssignExpr *) { ABORT(); }
+    virtual void operator()(const CallExpr *) { ABORT(); }
+    virtual void operator()(const EmptyExpr *) { ABORT(); }
+    virtual void operator()(const NullExpr *) { ABORT(); }
 
     /* stmt/expr/single_addr */
     virtual void operator()(const SingleAddrExpr *) { ABORT(); }
-    virtual void operator()(const BoolConstExpr *) = 0;
-    virtual void operator()(const IntConstExpr *) = 0;
-    virtual void operator()(const DblConstExpr *) = 0;
-    virtual void operator()(const StrConstExpr *) = 0;
-    virtual void operator()(const NewExpr *) = 0;
-    virtual void operator()(const NewArrayExpr *) = 0;
-    virtual void operator()(const ReadLineExpr *) = 0;
+    virtual void operator()(const BoolConstExpr *) { ABORT(); }
+    virtual void operator()(const IntConstExpr *) { ABORT(); }
+    virtual void operator()(const DblConstExpr *) { ABORT(); }
+    virtual void operator()(const StrConstExpr *) { ABORT(); }
+    virtual void operator()(const NewExpr *) { ABORT(); }
+    virtual void operator()(const NewArrayExpr *) { ABORT(); }
+    virtual void operator()(const ReadLineExpr *) { ABORT(); }
 
     /* stmt/expr/single_addr/compound */
     virtual void operator()(const CompoundExpr *) { ABORT(); }
-    virtual void operator()(const ArithmeticExpr *) = 0;
-    virtual void operator()(const EqualityExpr *) = 0;
-    virtual void operator()(const LogicalExpr *) = 0;
-    virtual void operator()(const RelationalExpr *) = 0;
-    virtual void operator()(const PostfixExpr *) = 0;
+    virtual void operator()(const ArithmeticExpr *) { ABORT(); }
+    virtual void operator()(const EqualityExpr *) { ABORT(); }
+    virtual void operator()(const LogicalExpr *) { ABORT(); }
+    virtual void operator()(const RelationalExpr *) { ABORT(); }
+    virtual void operator()(const PostfixExpr *) { ABORT(); }
 
     /* stmt/expr/single_addr/l_value */
     virtual void operator()(const LValueExpr *) { ABORT(); }
-    virtual void operator()(const ArrayAccessExpr *) = 0;
+    virtual void operator()(const ArrayAccessExpr *) { ABORT(); }
 
     /* stmt/expr/single_addr/l_value/field_access */
-    virtual void operator()(const FieldAccessExpr *) = 0;
-    virtual void operator()(const ThisExpr *) = 0;
+    virtual void operator()(const FieldAccessExpr *) { ABORT(); }
+    virtual void operator()(const ThisExpr *) { ABORT(); }
 
     /* stmt/switch */
-    virtual void operator()(const SwitchStmt *) = 0;
-    virtual void operator()(const SwitchCaseStmt *) = 0;
+    virtual void operator()(const SwitchStmt *) { ABORT(); }
+    virtual void operator()(const SwitchCaseStmt *) { ABORT(); }
 
 
     /* -- type -- */
 
-    virtual void operator()(const Type *) = 0;
+    virtual void operator()(const Type *) { ABORT(); }
 
     /* type/named */
-    virtual void operator()(const NamedType *) = 0;
+    virtual void operator()(const NamedType *) { ABORT(); }
   };
 
 
   /* -- pure virtual interface -- */
 
   /* support for double dispatch */
-  virtual void apply(Functor::Ptr _functor) = 0;
+  virtual void apply(Functor::Ptr _functor) const = 0;
 
 protected:
   /* data members */

@@ -10,28 +10,23 @@
 /* ast/decl includes */
 #include "decl.h"
 
-/* ast/type includes */
-#include "../type/type.h"
-
 class VarDecl : public Decl {
 public:
   typedef Simone::Ptr<const VarDecl> PtrConst;
   typedef Simone::Ptr<VarDecl> Ptr;
 
-  static Ptr VarDeclNew(Identifier::Ptr name, Type::Ptr type) {
-    return new VarDecl(name, type);
-  }
+  static Ptr VarDeclNew(Identifier::Ptr name, Simone::Ptr<Type> type);
 
-  VarDecl(Identifier::Ptr name, Type::Ptr type);
+  VarDecl(Identifier::Ptr name, Simone::Ptr<Type> type);
 
-  Type::Ptr type() const { return type_; }
+  Simone::Ptr<Type> type() const;
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) { (*_functor)(this); }
+  void apply(Functor::Ptr _functor) const { (*_functor)(this); }
 
 private:
   /* data members */
-  Type::Ptr type_;
+  Simone::Ptr<Type> type_;
 };
 
 #endif

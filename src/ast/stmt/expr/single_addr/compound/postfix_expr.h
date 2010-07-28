@@ -28,7 +28,7 @@ public:
               Simone::Ptr<Operator> op) : CompoundExpr(lhs, op) {}
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) { (*_functor)(this); }
+  void apply(Functor::Ptr _functor) const { (*_functor)(this); }
 };
 
 #endif

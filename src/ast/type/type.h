@@ -9,6 +9,9 @@
 #ifndef TYPE_H_Y3MLXI9M
 #define TYPE_H_Y3MLXI9M
 
+/* stl includes */
+#include <string>
+
 /* simone includes */
 #include <simone/ptr_interface.h>
 #include <simone/utility.h>
@@ -27,25 +30,24 @@ public:
   static Type::Ptr kInt, kDouble, kBool, kString,
                    kVoid, kNull, kError;
 
-  // TODO: change char * to string
-  static Ptr TypeNew(const char *str) {
+  static Ptr TypeNew(const string& str) {
     return new Type(str);
   }
 
-  const char *name() { return typeName; }
+  const string& name() { return type_name_; }
 
   friend ostream& operator<<(ostream& out, Type *t);
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) { (*_functor)(this); }
+  void apply(Functor::Ptr _functor) const { (*_functor)(this); }
 
 protected:
   Type(yyltype loc) : Node(loc) {}
-  Type(yyltype loc, const char *str);
-  Type(const char *str) : Node(), typeName(strdup(str)) { assert(typeName); }
+  Type(yyltype loc, const string& str) : Node(loc), type_name_(str) {}
+  Type(const string& str) : Node(), type_name_(str) {}
 
   /* data members */
-  char *typeName;
+  const string type_name_;
 };
 
 #endif

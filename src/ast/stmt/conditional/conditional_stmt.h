@@ -19,8 +19,8 @@ protected:
   ConditionalStmt(Simone::Ptr<Expr> test_expr, Stmt::Ptr body);
 
   /* data members */
-  Simone::Ptr<Expr> test;
-  Simone::Ptr<Stmt> body;
+  Simone::Ptr<Expr> test_;
+  Simone::Ptr<Stmt> body_;
 };
 
 #endif

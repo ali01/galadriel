@@ -1,0 +1,32 @@
+#ifndef SCOPE_MAP_H_MVTXPBM6
+#define SCOPE_MAP_H_MVTXPBM6
+
+/* simone includes */
+#include <simone/ptr_interface.h>
+#include <simone/deque.h>
+using Simone::Deque;
+
+/* project includes */
+#include "scope.h"
+
+class ScopeStack : public Simone::PtrInterface<ScopeStack> {
+public:
+  typedef Simone::Ptr<const ScopeStack> PtrConst;
+  typedef Simone::Ptr<ScopeStack> Ptr;
+
+  static Ptr ScopeStackNew() {
+    return new ScopeStack();
+  }
+
+  Scope::Ptr scope() const;
+  Scope::Ptr scopeNew();
+  void scopeDel();
+
+private:
+  ScopeStack() {}
+  
+  /* data members */
+  Deque<Scope::Ptr> scope_stack_;
+};
+
+#endif

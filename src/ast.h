@@ -9,8 +9,8 @@
 /* ast/decl includes */
 #include "ast/decl/fn_decl.h"
 #include "ast/decl/var_decl.h"
-#include "ast/decl/object/class_decl.h"
-#include "ast/decl/object/interface_decl.h"
+#include "ast/decl/class_decl.h"
+#include "ast/decl/interface_decl.h"
 
 /* ast/stmt includes */
 #include "ast/stmt/break_stmt.h"

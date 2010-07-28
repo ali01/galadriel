@@ -15,16 +15,12 @@ ast/stmt/expr/single_addr/l_value/field_access/field_access_expr.o:  \
   ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/../identifier.h \
   ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/decl.h \
   ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/../node.h \
-  ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/../type/type.h \
-  ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/../type/../node.h \
-  ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/object/class_decl.h \
-  ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/object/../../identifier.h \
-  ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/object/../../type/named_type.h \
-  ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/object/../../type/../identifier.h \
-  ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/object/../../type/../type/type.h \
-  ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/object/../decl.h \
-  ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/object/object_decl.h \
+  ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/class_decl.h \
   simone/deque.h simone/ptr_interface.h simone/utility.h \
+  ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/../type/named_type.h \
+  ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/../type/../identifier.h \
+  ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/../type/../type/type.h \
+  ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/../type/../type/../node.h \
   ast/stmt/expr/single_addr/l_value/field_access/../../../../../type/named_type.h \
   ast/stmt/expr/single_addr/l_value/field_access/../../../expr.h
 
@@ -64,29 +60,21 @@ ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/decl.h:
 
 ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/../node.h:
 
-ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/../type/type.h:
-
-ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/../type/../node.h:
-
-ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/object/class_decl.h:
-
-ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/object/../../identifier.h:
-
-ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/object/../../type/named_type.h:
-
-ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/object/../../type/../identifier.h:
-
-ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/object/../../type/../type/type.h:
-
-ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/object/../decl.h:
-
-ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/object/object_decl.h:
+ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/class_decl.h:
 
 simone/deque.h:
 
 simone/ptr_interface.h:
 
 simone/utility.h:
+
+ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/../type/named_type.h:
+
+ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/../type/../identifier.h:
+
+ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/../type/../type/type.h:
+
+ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/../type/../type/../node.h:
 
 ast/stmt/expr/single_addr/l_value/field_access/../../../../../type/named_type.h:
 

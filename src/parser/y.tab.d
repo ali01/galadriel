@@ -1,18 +1,16 @@
 parser/y.tab.o: parser/y.tab.c simone/ptr_interface.h simone/exception.h \
   simone/ptr.h simone/deque.h simone/ptr_interface.h simone/utility.h \
-  parser/parser.h parser/scanner.h ast.h ast/identifier.h lex_loc.h \
-  ast/node.h simone/utility.h ast/ast_fwd_declarations.h ast/operator.h \
-  ast/program.h ast/decl/decl.h ast/decl/../node.h ast/decl/fn_decl.h \
-  ast/decl/decl.h ast/decl/var_decl.h ast/decl/../identifier.h \
-  ast/decl/../type/type.h ast/decl/../type/../node.h ast/decl/var_decl.h \
-  ast/decl/object/class_decl.h ast/decl/object/../../identifier.h \
-  ast/decl/object/../../type/named_type.h \
-  ast/decl/object/../../type/../identifier.h \
-  ast/decl/object/../../type/../type/type.h ast/decl/object/../decl.h \
-  ast/decl/object/object_decl.h ast/decl/object/interface_decl.h \
-  ast/stmt/break_stmt.h ast/stmt/stmt.h ast/stmt/../node.h \
-  ast/stmt/print_stmt.h ast/stmt/expr/expr.h ast/stmt/expr/../stmt.h \
-  ast/stmt/return_stmt.h ast/stmt/stmt_block.h \
+  semantic_analyser/semantic_analyser.h parser/parser.h parser/scanner.h \
+  ast.h ast/identifier.h lex_loc.h ast/node.h simone/utility.h \
+  ast/ast_fwd_declarations.h ast/operator.h ast/program.h ast/decl/decl.h \
+  ast/decl/../node.h ast/decl/fn_decl.h ast/decl/decl.h \
+  ast/decl/var_decl.h ast/decl/../identifier.h ast/decl/var_decl.h \
+  ast/decl/class_decl.h ast/decl/../type/named_type.h \
+  ast/decl/../type/../identifier.h ast/decl/../type/../type/type.h \
+  ast/decl/../type/../type/../node.h ast/decl/interface_decl.h \
+  ast/decl/fn_decl.h ast/stmt/break_stmt.h ast/stmt/stmt.h \
+  ast/stmt/../node.h ast/stmt/print_stmt.h ast/stmt/expr/expr.h \
+  ast/stmt/expr/../stmt.h ast/stmt/return_stmt.h ast/stmt/stmt_block.h \
   ast/stmt/../decl/var_decl.h ast/stmt/conditional/conditional_stmt.h \
   ast/stmt/conditional/../stmt.h ast/stmt/conditional/if_stmt.h \
   ast/stmt/conditional/conditional_stmt.h \
@@ -52,8 +50,8 @@ parser/y.tab.o: parser/y.tab.c simone/ptr_interface.h simone/exception.h \
   ast/stmt/switch/switch_case_stmt.h \
   ast/stmt/switch/../expr/single_addr/int_const_expr.h \
   ast/stmt/switch/switch_case_stmt.h ast/type/type.h \
-  ast/type/array_type.h ast/type/type.h ast/type/named_type.h \
-  parser/parse_printer.h ast.h errors.h lex_loc.h parser/../utility.h
+  ast/type/array_type.h ast/type/type.h ast/type/named_type.h errors.h \
+  lex_loc.h parser/../utility.h
 
 simone/ptr_interface.h:
 
@@ -66,6 +64,8 @@ simone/deque.h:
 simone/ptr_interface.h:
 
 simone/utility.h:
+
+semantic_analyser/semantic_analyser.h:
 
 parser/parser.h:
 
@@ -99,27 +99,21 @@ ast/decl/var_decl.h:
 
 ast/decl/../identifier.h:
 
-ast/decl/../type/type.h:
-
-ast/decl/../type/../node.h:
-
 ast/decl/var_decl.h:
 
-ast/decl/object/class_decl.h:
+ast/decl/class_decl.h:
 
-ast/decl/object/../../identifier.h:
+ast/decl/../type/named_type.h:
 
-ast/decl/object/../../type/named_type.h:
+ast/decl/../type/../identifier.h:
 
-ast/decl/object/../../type/../identifier.h:
+ast/decl/../type/../type/type.h:
 
-ast/decl/object/../../type/../type/type.h:
+ast/decl/../type/../type/../node.h:
 
-ast/decl/object/../decl.h:
+ast/decl/interface_decl.h:
 
-ast/decl/object/object_decl.h:
-
-ast/decl/object/interface_decl.h:
+ast/decl/fn_decl.h:
 
 ast/stmt/break_stmt.h:
 
@@ -234,10 +228,6 @@ ast/type/array_type.h:
 ast/type/type.h:
 
 ast/type/named_type.h:
-
-parser/parse_printer.h:
-
-ast.h:
 
 errors.h:
 

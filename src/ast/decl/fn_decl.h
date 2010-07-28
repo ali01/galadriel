@@ -19,27 +19,37 @@ class FnDecl : public Decl {
 public:
   typedef Simone::Ptr<const FnDecl> PtrConst;
   typedef Simone::Ptr<FnDecl> Ptr;
+  
+  typedef Deque<VarDecl::Ptr>::const_iterator const_formal_iter;
+  typedef Deque<VarDecl::Ptr>::iterator formal_iter;
 
   static Ptr FnDeclNew(Identifier::Ptr name,
-                       Type::Ptr return_type,
-                       Deque<VarDecl::Ptr>::Ptr formals) {
-    return new FnDecl(name, return_type, formals);
-  }
+                       Simone::Ptr<Type> return_type,
+                       Deque<VarDecl::Ptr>::Ptr formals);
 
   FnDecl(Identifier::Ptr name,
-         Type::Ptr returnType,
+         Simone::Ptr<Type> returnType,
          Deque<VarDecl::Ptr>::Ptr formals);
 
-  void SetFunctionBody(Simone::Ptr<StmtBlock> b);
+  formal_iter formalsBegin() { return formals_->begin(); }
+  const_formal_iter formalsBegin() const { return formals_->begin(); }
+
+  formal_iter formalsEnd() { return formals_->end(); }
+  const_formal_iter formalsEnd() const { return formals_->end(); }
+
+  Simone::Ptr<Type> returnType() const;
+  Simone::Ptr<StmtBlock> body() const;
+
+  void bodyIs(Simone::Ptr<StmtBlock> b);
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) { (*_functor)(this); }
+  void apply(Functor::Ptr _functor) const { (*_functor)(this); }
 
 private:
   /* data members */
-  Deque<VarDecl::Ptr>::Ptr formals;
-  Type::Ptr _returnType;
-  Simone::Ptr<StmtBlock> body;
+  Deque<VarDecl::Ptr>::Ptr formals_;
+  Simone::Ptr<Type> return_type_;
+  Simone::Ptr<StmtBlock> body_;
 };
 
 #endif

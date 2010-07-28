@@ -1,5 +1,5 @@
 DIR_V5AHNSXU := ast/decl
-SUB_V5AHNSXU := object
+SUB_V5AHNSXU := 
 
 SRCS += $(wildcard $(DIR_V5AHNSXU)/*.$(EXT))
 

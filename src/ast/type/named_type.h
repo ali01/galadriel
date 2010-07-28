@@ -22,7 +22,7 @@ public:
   NamedType(Simone::Ptr<Identifier> i);
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) { (*_functor)(this); }
+  void apply(Functor::Ptr _functor) const { (*_functor)(this); }
 
 protected:
   /* data members */

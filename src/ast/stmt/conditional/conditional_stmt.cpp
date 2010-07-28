@@ -10,7 +10,7 @@
 #include "../stmt.h"
 
 ConditionalStmt::ConditionalStmt(Expr::Ptr t, Stmt::Ptr b) :
-  Stmt(), test(t), body(b)
+  Stmt(), test_(t), body_(b)
 {
-  assert(test != NULL && body != NULL);
+  assert(test_ != NULL && body_ != NULL);
 }

@@ -17,7 +17,7 @@ using Simone::Deque;
 
 StmtBlock::StmtBlock(Deque<VarDecl::Ptr>::Ptr var_decls,
                      Deque<Stmt::Ptr>::Ptr stmts) :
-  Stmt(), decls(var_decls), stmts(stmts)
+  Stmt(), decls_(var_decls), stmts_(stmts)
 {
   assert(var_decls != NULL && stmts != NULL);
 }

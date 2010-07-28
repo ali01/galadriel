@@ -4,16 +4,13 @@ main.o: main.cpp utility.h errors.h lex_loc.h parser/parser.h \
   ast/ast_fwd_declarations.h ast/operator.h ast/program.h simone/deque.h \
   simone/ptr_interface.h simone/utility.h ast/decl/decl.h \
   ast/decl/../node.h ast/decl/fn_decl.h ast/decl/decl.h \
-  ast/decl/var_decl.h ast/decl/../identifier.h ast/decl/../type/type.h \
-  ast/decl/../type/../node.h ast/decl/var_decl.h \
-  ast/decl/object/class_decl.h ast/decl/object/../../identifier.h \
-  ast/decl/object/../../type/named_type.h \
-  ast/decl/object/../../type/../identifier.h \
-  ast/decl/object/../../type/../type/type.h ast/decl/object/../decl.h \
-  ast/decl/object/object_decl.h ast/decl/object/interface_decl.h \
-  ast/stmt/break_stmt.h ast/stmt/stmt.h ast/stmt/../node.h \
-  ast/stmt/print_stmt.h ast/stmt/expr/expr.h ast/stmt/expr/../stmt.h \
-  ast/stmt/return_stmt.h ast/stmt/stmt_block.h \
+  ast/decl/var_decl.h ast/decl/../identifier.h ast/decl/var_decl.h \
+  ast/decl/class_decl.h ast/decl/../type/named_type.h \
+  ast/decl/../type/../identifier.h ast/decl/../type/../type/type.h \
+  ast/decl/../type/../type/../node.h ast/decl/interface_decl.h \
+  ast/decl/fn_decl.h ast/stmt/break_stmt.h ast/stmt/stmt.h \
+  ast/stmt/../node.h ast/stmt/print_stmt.h ast/stmt/expr/expr.h \
+  ast/stmt/expr/../stmt.h ast/stmt/return_stmt.h ast/stmt/stmt_block.h \
   ast/stmt/../decl/var_decl.h ast/stmt/conditional/conditional_stmt.h \
   ast/stmt/conditional/../stmt.h ast/stmt/conditional/if_stmt.h \
   ast/stmt/conditional/conditional_stmt.h \
@@ -106,27 +103,21 @@ ast/decl/var_decl.h:
 
 ast/decl/../identifier.h:
 
-ast/decl/../type/type.h:
-
-ast/decl/../type/../node.h:
-
 ast/decl/var_decl.h:
 
-ast/decl/object/class_decl.h:
+ast/decl/class_decl.h:
 
-ast/decl/object/../../identifier.h:
+ast/decl/../type/named_type.h:
 
-ast/decl/object/../../type/named_type.h:
+ast/decl/../type/../identifier.h:
 
-ast/decl/object/../../type/../identifier.h:
+ast/decl/../type/../type/type.h:
 
-ast/decl/object/../../type/../type/type.h:
+ast/decl/../type/../type/../node.h:
 
-ast/decl/object/../decl.h:
+ast/decl/interface_decl.h:
 
-ast/decl/object/object_decl.h:
-
-ast/decl/object/interface_decl.h:
+ast/decl/fn_decl.h:
 
 ast/stmt/break_stmt.h:
 

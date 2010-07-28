@@ -21,7 +21,3 @@ Type::Ptr Type::kString = Type::TypeNew("string");
 Type::Ptr Type::kVoid   = Type::TypeNew("void");
 Type::Ptr Type::kNull   = Type::TypeNew("null");
 Type::Ptr Type::kError  = Type::TypeNew("error");
-
-Type::Type(yyltype loc, const char *n) : Node(loc), typeName(strdup(n)) {
-  assert(typeName);
-}
