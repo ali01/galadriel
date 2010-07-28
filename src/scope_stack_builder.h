@@ -33,8 +33,6 @@ public:
       /* -- top level -- */
 
       void operator()(const Program *);
-      void operator()(const Identifier *);
-      void operator()(const Operator *);
 
 
       /* -- decl -- */
@@ -58,44 +56,10 @@ public:
       void operator()(const ForStmt *);
       void operator()(const WhileStmt *);
 
-      /* stmt/expr */
-      void operator()(const AssignExpr *);
-      void operator()(const CallExpr *);
-      void operator()(const EmptyExpr *);
-      void operator()(const NullExpr *);
-
-      /* stmt/expr/single_addr */
-      void operator()(const BoolConstExpr *);
-      void operator()(const IntConstExpr *);
-      void operator()(const DblConstExpr *);
-      void operator()(const StrConstExpr *);
-      void operator()(const NewExpr *);
-      void operator()(const NewArrayExpr *);
-      void operator()(const ReadLineExpr *);
-
-      /* stmt/expr/single_addr/compound */
-      void operator()(const ArithmeticExpr *);
-      void operator()(const EqualityExpr *);
-      void operator()(const LogicalExpr *);
-      void operator()(const RelationalExpr *);
-      void operator()(const PostfixExpr *);
-
-      /* stmt/expr/single_addr/l_value */
-      void operator()(const ArrayAccessExpr *);
-
-      /* stmt/expr/single_addr/l_value/field_access */
-      void operator()(const FieldAccessExpr *);
-      void operator()(const ThisExpr *);
-
       /* stmt/switch */
       void operator()(const SwitchStmt *);
       void operator()(const SwitchCaseStmt *);
 
-
-      /* -- type -- */
-
-      void operator()(const Type *);
-      void operator()(const NamedType *);
 
     private:
       NodeFunctor(ScopeStack::Ptr _s) : scope_stack_(_s) {}

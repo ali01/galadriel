@@ -18,16 +18,6 @@ ScopeStackBuilder::NodeFunctor::operator()(const Program *nd) {
   }
 }
 
-void
-ScopeStackBuilder::NodeFunctor::operator()(const Identifier *nd) {
-  
-}
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(const Operator *nd) {
-  
-}
-
 
 
 /* -- decl -- */
@@ -44,7 +34,10 @@ ScopeStackBuilder::NodeFunctor::operator()(const FnDecl *nd) {
   }
 
   StmtBlock::Ptr stmt_block = nd->body();
-  stmt_block->apply(this);
+  if (stmt_block != NULL) {
+    /* stmt_block could be NULL in the case of a function prototype */
+    stmt_block->apply(this);
+  }
 }
 
 void
@@ -89,7 +82,7 @@ ScopeStackBuilder::NodeFunctor::operator()(const StmtBlock *nd) {
 
   VarDecl::PtrConst var_decl;
   StmtBlock::const_decl_iter decl_it = nd->declsBegin();
-  for(; decl_it != nd->declsEnd(); ++decl_it) {
+  for (; decl_it != nd->declsEnd(); ++decl_it) {
     var_decl = *decl_it;
     var_decl->apply(this);
   }
@@ -106,148 +99,50 @@ ScopeStackBuilder::NodeFunctor::operator()(const StmtBlock *nd) {
 /* stmt/conditional */
 void
 ScopeStackBuilder::NodeFunctor::operator()(const IfStmt *nd) {
-  
+  Stmt::PtrConst body = nd->body();
+  body->apply(this);
+
+  Stmt::PtrConst else_body = nd->elseBody();
+  if (else_body != NULL)
+    else_body->apply(this);
 }
 
 
 /* stmt/conditional/loop */
 void
 ScopeStackBuilder::NodeFunctor::operator()(const ForStmt *nd) {
-  
+  Stmt::PtrConst body = nd->body();
+  body->apply(this);
 }
 
 void
 ScopeStackBuilder::NodeFunctor::operator()(const WhileStmt *nd) {
-  
-}
-
-
-/* stmt/expr */
-void
-ScopeStackBuilder::NodeFunctor::operator()(const AssignExpr *nd) {
-  
-}
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(const CallExpr *nd) {
-  
-}
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(const EmptyExpr *nd) {
-  
-}
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(const NullExpr *nd) {
-  
-}
-
-
-/* stmt/expr/single_addr */
-void
-ScopeStackBuilder::NodeFunctor::operator()(const BoolConstExpr *nd) {
-  
-}
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(const IntConstExpr *nd) {
-  
-}
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(const DblConstExpr *nd) {
-  
-}
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(const StrConstExpr *nd) {
-  
-}
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(const NewExpr *nd) {
-  
-}
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(const NewArrayExpr *nd) {
-  
-}
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(const ReadLineExpr *nd) {
-  
-}
-
-
-/* stmt/expr/single_addr/compound */
-void
-ScopeStackBuilder::NodeFunctor::operator()(const ArithmeticExpr *nd) {
-  
-}
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(const EqualityExpr *nd) {
-  
-}
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(const LogicalExpr *nd) {
-  
-}
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(const RelationalExpr *nd) {
-  
-}
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(const PostfixExpr *nd) {
-  
-}
-
-
-/* stmt/expr/single_addr/l_value */
-void
-ScopeStackBuilder::NodeFunctor::operator()(const ArrayAccessExpr *nd) {
-  
-}
-
-
-/* stmt/expr/single_addr/l_value/field_access */
-void
-ScopeStackBuilder::NodeFunctor::operator()(const FieldAccessExpr *nd) {
-  
-}
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(const ThisExpr *nd) {
-  
+  Stmt::PtrConst body = nd->body();
+  body->apply(this);
 }
 
 
 /* stmt/switch */
 void
 ScopeStackBuilder::NodeFunctor::operator()(const SwitchStmt *nd) {
-  
+  SwitchCaseStmt::PtrConst case_stmt;
+  SwitchStmt::const_case_iter it = nd->casesBegin();
+  for (; it != nd->casesEnd(); ++it) {
+    case_stmt = *it;
+    case_stmt->apply(this);
+  }
+
+  SwitchCaseStmt::Ptr default_case = nd->defaultCase();
+  if (default_case != NULL)
+    default_case->apply(this);
 }
 
 void
 ScopeStackBuilder::NodeFunctor::operator()(const SwitchCaseStmt *nd) {
-  
-}
-
-
-
-/* -- type -- */
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(const Type *nd) {
-  
-}
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(const NamedType *nd) {
-  
+  Stmt::PtrConst stmt;
+  SwitchCaseStmt::const_stmt_iter it = nd->stmtsBegin();
+  for (; it != nd->stmtsEnd(); ++it) {
+    stmt = *it;
+    stmt->apply(this);
+  }
 }

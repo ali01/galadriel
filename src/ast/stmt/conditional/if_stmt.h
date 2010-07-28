@@ -26,6 +26,8 @@ public:
          Simone::Ptr<Stmt> then_body,
          Simone::Ptr<Stmt> else_body);
 
+  Stmt::Ptr elseBody() const { return else_body_; }
+
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) const { (*_functor)(this); }
 

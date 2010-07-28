@@ -17,6 +17,9 @@ public:
   typedef Simone::Ptr<const SwitchCaseStmt> PtrConst;
   typedef Simone::Ptr<SwitchCaseStmt> Ptr;
 
+  typedef Deque<Stmt::Ptr>::const_iterator const_stmt_iter;
+  typedef Deque<Stmt::Ptr>::iterator stmt_iter;
+
   static Ptr SwitchCaseStmtNew(IntConstExpr::Ptr label,
                                Deque<Stmt::Ptr>::Ptr body,
                                bool _is_default=false) {
@@ -26,6 +29,12 @@ public:
   SwitchCaseStmt(IntConstExpr::Ptr label,
                  Deque<Stmt::Ptr>::Ptr body,
                  bool _is_default=false);
+
+  const_stmt_iter stmtsBegin() const { return body_->begin(); }
+  stmt_iter stmtsBegin() { return body_->begin(); }
+
+  const_stmt_iter stmtsEnd() const { return body_->end(); }
+  stmt_iter stmtsEnd() { return body_->end(); }
 
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) const { (*_functor)(this); }

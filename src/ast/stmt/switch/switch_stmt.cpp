@@ -11,5 +11,7 @@ SwitchStmt::SwitchStmt(Simone::Ptr<Expr> _test,
                        SwitchCaseStmt::Ptr _default_case) :
 test_(_test), cases_(_cases), default_case_(_default_case)
 {
-  // test_, cases_, and default_case_ can all be NULL
+  /* test_, cases_, and default_case_ can all be NULL */
+  if (cases_ == NULL)
+    cases_ = Deque<SwitchCaseStmt::Ptr>::DequeNew();
 }
