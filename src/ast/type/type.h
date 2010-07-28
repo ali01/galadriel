@@ -36,8 +36,6 @@ public:
 
   const string& name() { return type_name_; }
 
-  friend ostream& operator<<(ostream& out, Type *t);
-
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
@@ -49,5 +47,8 @@ protected:
   /* data members */
   const string type_name_;
 };
+
+/* forward declarations */
+ostream& operator<<(ostream& out, Type *t);
 
 #endif

@@ -21,3 +21,9 @@ Type::Ptr Type::kString = Type::TypeNew("string");
 Type::Ptr Type::kVoid   = Type::TypeNew("void");
 Type::Ptr Type::kNull   = Type::TypeNew("null");
 Type::Ptr Type::kError  = Type::TypeNew("error");
+
+ostream&
+operator<<(ostream& out, Type *t) {
+  out << t->name();
+  return out;
+}
