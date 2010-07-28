@@ -30,8 +30,11 @@ ScopeStackBuilder::NodeFunctor::operator()(Program *nd) {
 
 void
 ScopeStackBuilder::NodeFunctor::operator()(FnDecl *nd) {
-  /* initialize function parameter scope */
-  Scope::Ptr scope = scope_stack_->scopeNew();
+  Scope::Ptr scope = scope_stack_->scope();
+  scope->declIs(nd);
+
+  /* initialize function parameter scope (reuse scope ptr) */
+  scope = scope_stack_->scopeNew();
   nd->scopeIs(scope);
 
   VarDecl::Ptr decl;
@@ -61,8 +64,11 @@ ScopeStackBuilder::NodeFunctor::operator()(VarDecl *nd) {
 /* decl/object */
 void
 ScopeStackBuilder::NodeFunctor::operator()(ClassDecl *nd) {
-  /* initialize class scope */
-  Scope::Ptr scope = scope_stack_->scopeNew();
+  Scope::Ptr scope = scope_stack_->scope();
+  scope->declIs(nd);
+
+  /* initialize class scope (reuse scope ptr) */
+  scope = scope_stack_->scopeNew();
   nd->scopeIs(scope);
   
 
@@ -78,8 +84,11 @@ ScopeStackBuilder::NodeFunctor::operator()(ClassDecl *nd) {
 
 void
 ScopeStackBuilder::NodeFunctor::operator()(InterfaceDecl *nd) {
-  /* initialize interface scope */
-  Scope::Ptr scope = scope_stack_->scopeNew();
+  Scope::Ptr scope = scope_stack_->scope();
+  scope->declIs(nd);
+
+  /* initialize interface scope (reuse scope ptr) */
+  scope = scope_stack_->scopeNew();
   nd->scopeIs(scope);
 
   FnDecl::Ptr fn_decl;
