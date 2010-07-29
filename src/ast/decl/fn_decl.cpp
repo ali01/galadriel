@@ -14,15 +14,16 @@
 #include "../type/type.h"
 
 FnDecl::Ptr
-FnDecl::FnDeclNew(Identifier::Ptr name,
-                  Type::Ptr return_type,
+FnDecl::FnDeclNew(Identifier::Ptr name, Type::Ptr return_type,
                   Deque<VarDecl::Ptr>::Ptr formals) {
   return new FnDecl(name, return_type, formals);
 }
 
-FnDecl::FnDecl(Identifier::Ptr n, Type::Ptr r,
-               Deque<VarDecl::Ptr>::Ptr d) : Decl(n) {
-  assert(n != NULL && r!= NULL && d != NULL);
+FnDecl::FnDecl(Identifier::Ptr name, Type::Ptr return_type,
+               Deque<VarDecl::Ptr>::Ptr formals) :
+  Decl(name), formals_(formals), return_type_(return_type)
+{
+  assert(return_type != NULL && formals != NULL);
 }
 
 void

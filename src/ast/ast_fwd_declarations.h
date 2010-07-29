@@ -16,7 +16,6 @@ class FnDecl;
 class VarDecl;
 
 /* decl/object */
-class ObjectDecl;
 class ClassDecl;
 class InterfaceDecl;
 

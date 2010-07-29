@@ -1,11 +1,13 @@
 #include "scope.h"
 
 Scope::Scope(const Scope::Ptr& _scope) {
-  Decl::PtrConst decl;
-  Scope::const_decl_iter it = _scope->begin();
-  for (; it != _scope->end(); ++it) {
-    decl = it->second;
-    this->declIs(decl);
+  if (_scope != NULL) {
+    Decl::PtrConst decl;
+    Scope::const_decl_iter it = _scope->begin();
+    for (; it != _scope->end(); ++it) {
+      decl = it->second;
+      this->declIs(decl);
+    }
   }
 }
 

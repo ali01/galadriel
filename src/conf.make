@@ -12,7 +12,8 @@ YACC          := bison
 LEXFLAGS      := -d
 YACCFLAGS     := -dvty
 
-TRASH += parser/y.tab.h parser/y.tab.c parser/y.output parser/lex.yy.c 
+TRASH += parser/y.tab.h parser/y.tab.c parser/y.output parser/lex.yy.c log.diff
+TRASH += samples/*.test
 
 parser/lex.yy.c: parser/scanner.l parser/parser.y parser/y.tab.h
 	cd parser; $(LEX) $(LEXFLAGS) scanner.l

@@ -56,84 +56,83 @@ public:
     /* -- top level -- */
 
     virtual void operator()(Node *) { ABORT(); }
-    virtual void operator()(Program *) { ABORT(); }
-    virtual void operator()(Identifier *) { ABORT(); }
-    virtual void operator()(Operator *) { ABORT(); }
+    virtual void operator()(Program *) {}
+    virtual void operator()(Identifier *) {}
+    virtual void operator()(Operator *) {}
 
 
     /* -- decl -- */
 
     virtual void operator()(Decl *) { ABORT(); }
-    virtual void operator()(FnDecl *) { ABORT(); }
-    virtual void operator()(VarDecl *) { ABORT(); }
+    virtual void operator()(FnDecl *) {}
+    virtual void operator()(VarDecl *) {}
 
     /* decl/object */
-    virtual void operator()(ObjectDecl *) { ABORT(); }
-    virtual void operator()(ClassDecl *) { ABORT(); }
-    virtual void operator()(InterfaceDecl *) { ABORT(); }
+    virtual void operator()(ClassDecl *) {}
+    virtual void operator()(InterfaceDecl *) {}
 
 
     /* -- stmt -- */
 
     virtual void operator()(Stmt *) { ABORT(); }
-    virtual void operator()(BreakStmt *) { ABORT(); }
-    virtual void operator()(PrintStmt *) { ABORT(); }
-    virtual void operator()(ReturnStmt *) { ABORT(); }
-    virtual void operator()(StmtBlock *) { ABORT(); }
+    virtual void operator()(BreakStmt *) {}
+    virtual void operator()(PrintStmt *) {}
+    virtual void operator()(ReturnStmt *) {}
+    virtual void operator()(StmtBlock *) {}
 
     /* stmt/conditional */
     virtual void operator()(ConditionalStmt *) { ABORT(); }
-    virtual void operator()(IfStmt *) { ABORT(); }
+    virtual void operator()(IfStmt *) {}
 
     /* stmt/conditional/loop */
-    virtual void operator()(LoopStmt *) { ABORT(); }
-    virtual void operator()(ForStmt *) { ABORT(); }
-    virtual void operator()(WhileStmt *) { ABORT(); }
+    virtual void operator()(LoopStmt *) {}
+    virtual void operator()(ForStmt *) {}
+    virtual void operator()(WhileStmt *) {}
 
     /* stmt/expr */
     virtual void operator()(Expr *) { ABORT(); }
-    virtual void operator()(AssignExpr *) { ABORT(); }
-    virtual void operator()(CallExpr *) { ABORT(); }
-    virtual void operator()(EmptyExpr *) { ABORT(); }
-    virtual void operator()(NullExpr *) { ABORT(); }
+    virtual void operator()(AssignExpr *) {}
+    virtual void operator()(CallExpr *) {}
+    virtual void operator()(EmptyExpr *) {}
+    virtual void operator()(NullExpr *) {}
 
     /* stmt/expr/single_addr */
     virtual void operator()(SingleAddrExpr *) { ABORT(); }
-    virtual void operator()(BoolConstExpr *) { ABORT(); }
-    virtual void operator()(IntConstExpr *) { ABORT(); }
-    virtual void operator()(DblConstExpr *) { ABORT(); }
-    virtual void operator()(StrConstExpr *) { ABORT(); }
-    virtual void operator()(NewExpr *) { ABORT(); }
-    virtual void operator()(NewArrayExpr *) { ABORT(); }
-    virtual void operator()(ReadLineExpr *) { ABORT(); }
+    virtual void operator()(BoolConstExpr *) {}
+    virtual void operator()(IntConstExpr *) {}
+    virtual void operator()(DblConstExpr *) {}
+    virtual void operator()(StrConstExpr *) {}
+    virtual void operator()(NewExpr *) {}
+    virtual void operator()(NewArrayExpr *) {}
+    virtual void operator()(ReadLineExpr *) {}
 
     /* stmt/expr/single_addr/compound */
     virtual void operator()(CompoundExpr *) { ABORT(); }
-    virtual void operator()(ArithmeticExpr *) { ABORT(); }
-    virtual void operator()(EqualityExpr *) { ABORT(); }
-    virtual void operator()(LogicalExpr *) { ABORT(); }
-    virtual void operator()(RelationalExpr *) { ABORT(); }
-    virtual void operator()(PostfixExpr *) { ABORT(); }
+    virtual void operator()(ArithmeticExpr *) {}
+    virtual void operator()(EqualityExpr *) {}
+    virtual void operator()(LogicalExpr *) {}
+    virtual void operator()(RelationalExpr *) {}
+    virtual void operator()(PostfixExpr *) {}
 
     /* stmt/expr/single_addr/l_value */
     virtual void operator()(LValueExpr *) { ABORT(); }
-    virtual void operator()(ArrayAccessExpr *) { ABORT(); }
+    virtual void operator()(ArrayAccessExpr *) {}
 
     /* stmt/expr/single_addr/l_value/field_access */
-    virtual void operator()(FieldAccessExpr *) { ABORT(); }
-    virtual void operator()(ThisExpr *) { ABORT(); }
+    virtual void operator()(FieldAccessExpr *) {}
+    virtual void operator()(ThisExpr *) {}
 
     /* stmt/switch */
-    virtual void operator()(SwitchStmt *) { ABORT(); }
-    virtual void operator()(SwitchCaseStmt *) { ABORT(); }
+    virtual void operator()(SwitchStmt *) {}
+    virtual void operator()(SwitchCaseStmt *) {}
 
 
     /* -- type -- */
 
-    virtual void operator()(Type *) { ABORT(); }
+    virtual void operator()(Type *) {}
 
     /* type/named */
-    virtual void operator()(NamedType *) { ABORT(); }
+    virtual void operator()(NamedType *) {}
   };
 
 
