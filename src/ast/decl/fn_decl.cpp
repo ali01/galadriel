@@ -1,8 +1,5 @@
 #include "fn_decl.h"
 
-/* project includes */
-#include <local_scope.h>
-
 /* ast includes */
 #include "../identifier.h"
 
@@ -27,7 +24,6 @@ FnDecl::FnDecl(Identifier::Ptr name, Type::Ptr return_type,
   Decl(name), formals_(formals), return_type_(return_type)
 {
   assert(return_type != NULL && formals != NULL);
-  local_scope_ = LocalScope::LocalScopeNew();
 }
 
 void

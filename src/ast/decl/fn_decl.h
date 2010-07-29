@@ -12,7 +12,6 @@ using Simone::Deque;
 
 /* forward declarations */
 class Identifier;
-class LocalScope;
 class StmtBlock;
 class Type;
 
@@ -52,12 +51,13 @@ public:
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
-  bool localScopeIs(Simone::Ptr<LocalScope> _s) { return false; }
-
   /* data members */
   Deque<VarDecl::Ptr>::Ptr formals_;
   Simone::Ptr<Type> return_type_;
   Simone::Ptr<StmtBlock> body_;
+  
+  /* operations disallowed */
+  // TODO
 };
 
 #endif

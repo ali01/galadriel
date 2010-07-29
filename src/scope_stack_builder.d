@@ -51,7 +51,7 @@ scope_stack_builder.o: scope_stack_builder.cpp scope_stack_builder.h \
   ast/stmt/switch/../expr/single_addr/int_const_expr.h \
   ast/stmt/switch/switch_case_stmt.h ast/type/type.h \
   ast/type/array_type.h ast/type/type.h ast/type/named_type.h \
-  scope_stack.h scope.h simone/map.h ast/decl/decl.h local_scope.h
+  scope_stack.h scope.h simone/map.h ast/decl/decl.h
 
 scope_stack_builder.h:
 
@@ -232,5 +232,3 @@ scope.h:
 simone/map.h:
 
 ast/decl/decl.h:
-
-local_scope.h:

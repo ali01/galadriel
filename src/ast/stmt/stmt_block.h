@@ -12,9 +12,6 @@ using Simone::Deque;
 /* ast/decl includes */
 #include "../decl/var_decl.h"
 
-/* forward declarations */
-class LocalScope;
-
 class StmtBlock : public Stmt {
 public:
   typedef Simone::Ptr<const StmtBlock> PtrConst;
@@ -55,8 +52,6 @@ public:
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
-  bool localScopeIs(Simone::Ptr<LocalScope> _s) { return false; }
-
   /* data members */
   Deque<VarDecl::Ptr>::Ptr decls_;
   Deque<Stmt::Ptr>::Ptr stmts_;

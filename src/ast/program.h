@@ -12,9 +12,6 @@ using Simone::Deque;
 /* ast/decl includes */
 #include "decl/decl.h"
 
-/* forward declarations */
-class LocalScope;
-
 class Program : public Node {
 public:
   typedef Simone::Ptr<const Program> PtrConst;
@@ -43,8 +40,6 @@ protected:
   Program(Deque<Decl::Ptr>::Ptr _decl_list);
 
 private:
-  bool localScopeIs(Simone::Ptr<LocalScope> _s) { return false; }
-
   /* data members */
   Deque<Decl::Ptr>::Ptr decls_;
 

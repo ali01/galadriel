@@ -1,7 +1,6 @@
 #include "scope_stack_builder.h"
 
 #include "scope.h"
-#include "local_scope.h"
 
 ScopeStackBuilder::ScopeStackBuilder(Program::Ptr _program) {
   scope_stack_ = ScopeStack::ScopeStackNew();
@@ -16,16 +15,13 @@ ScopeStackBuilder::NodeFunctor::operator()(Program *nd) {
   Scope::Ptr scope = scope_stack_->scopeNew();
   nd->scopeIs(scope);
 
-  /* Program node owns its local scope (initialized in constructor) */
-  LocalScope::Ptr local_scope = nd->localScope();
-
   Decl::Ptr decl;
   Program::const_decl_iter it = nd->declsBegin();
   for (; it != nd->declsEnd(); ++it) {
     decl = *it;
 
-    /* propagate scope objects down the parse tree */
-    decl->scopesAre(scope, local_scope);
+    /* propagate scope object down the parse tree */
+    decl->scopeIs(scope);
 
     /* apply this functor to each program declaration */
     decl->apply(this);
@@ -48,14 +44,12 @@ ScopeStackBuilder::NodeFunctor::operator()(FnDecl *nd) {
 
   ScopeStackBuilder::transition_into_decl_block_scope(nd, parent_scope, scope);
 
-  /* FnDecl node owns its local scope (initialized in its constructor) */
-  LocalScope::Ptr local_scope = nd->localScope();
 
   VarDecl::Ptr decl;
   FnDecl::const_formal_iter it = nd->formalsBegin();
   for (; it != nd->formalsEnd(); ++it) {
     decl = *it;
-    decl->scopesAre(scope, local_scope);
+    decl->scopeIs(scope);
     decl->apply(this);
   }
 
@@ -63,7 +57,7 @@ ScopeStackBuilder::NodeFunctor::operator()(FnDecl *nd) {
 
   /* stmt_block could be NULL in the case of a function prototype */
   if (stmt_block != NULL) {
-    /* StmtBlock node owns it's scope objects; there's no need to propagate */
+    stmt_block->scopeIs(scope); /* unnecessary but here for consistency */
     stmt_block->apply(this);
   }
 
@@ -80,14 +74,11 @@ ScopeStackBuilder::NodeFunctor::operator()(ClassDecl *nd) {
 
   ScopeStackBuilder::transition_into_decl_block_scope(nd, parent_scope, scope);
 
-  /* ClassDecl owns its local scope (initialized in its constructor) */
-  LocalScope::Ptr local_scope = nd->localScope();
-
   Decl::Ptr decl;
   ClassDecl::const_member_iter it = nd->membersBegin();
   for (; it != nd->membersEnd(); ++it) {
     decl = *it;
-    decl->scopesAre(scope, local_scope);
+    decl->scopeIs(scope);
     decl->apply(this);
   }
 
@@ -104,15 +95,12 @@ ScopeStackBuilder::NodeFunctor::operator()(InterfaceDecl *nd) {
 
   ScopeStackBuilder::transition_into_decl_block_scope(nd, parent_scope, scope);
 
-  /* InterfaceDecl owns its local scope (initialized in its constructor) */
-  LocalScope::Ptr local_scope = nd->localScope();
-
   FnDecl::Ptr fn_decl;
   InterfaceDecl::const_member_iter it = nd->membersBegin();
   for (; it != nd->membersEnd(); ++it) {
     fn_decl = *it;
+    fn_decl->scopeIs(scope); /* unnecessary but here for consistency */
     fn_decl->apply(this);
-    /* FnDecl owns it's own scope objects; there's no need to propagate */
   }
 
   scope_stack_->scopePop();
@@ -121,10 +109,7 @@ ScopeStackBuilder::NodeFunctor::operator()(InterfaceDecl *nd) {
 void
 ScopeStackBuilder::NodeFunctor::operator()(VarDecl *nd) {
   Scope::Ptr scope = scope_stack_->scope();
-  LocalScope::Ptr local_scope = nd->localScope();
-
   scope->declIs(nd);
-  local_scope->declIs(nd);
 }
 
 
@@ -136,14 +121,11 @@ ScopeStackBuilder::NodeFunctor::operator()(StmtBlock *nd) {
   Scope::Ptr scope = scope_stack_->scopeNew();
   nd->scopeIs(scope);
 
-  /* StmtBlock owns its local scope (initialized in its constructor) */
-  LocalScope::Ptr local_scope = nd->localScope();
-
   VarDecl::Ptr var_decl;
   StmtBlock::const_decl_iter decl_it = nd->declsBegin();
   for (; decl_it != nd->declsEnd(); ++decl_it) {
     var_decl = *decl_it;
-    var_decl->scopesAre(scope, local_scope);
+    var_decl->scopeIs(scope);
     var_decl->apply(this);
   }
 
@@ -151,7 +133,7 @@ ScopeStackBuilder::NodeFunctor::operator()(StmtBlock *nd) {
   StmtBlock::const_stmt_iter stmt_it = nd->stmtsBegin();
   for (; stmt_it != nd->stmtsEnd(); ++stmt_it) {
     stmt = *stmt_it;
-    stmt->scopesAre(scope, local_scope);
+    stmt->scopeIs(scope);
     stmt->apply(this);
   }
 
@@ -164,10 +146,8 @@ ScopeStackBuilder::NodeFunctor::operator()(StmtBlock *nd) {
 void
 ScopeStackBuilder::NodeFunctor::operator()(ConditionalStmt *nd) {
   Scope::Ptr scope = nd->scope();
-  LocalScope::Ptr local_scope = nd->localScope();
-
   Stmt::Ptr body = nd->body();
-  body->scopesAre(scope, local_scope);
+  body->scopeIs(scope);
   body->apply(this);
 }
 
@@ -177,11 +157,9 @@ ScopeStackBuilder::NodeFunctor::operator()(IfStmt *nd) {
   (*this)(cond_stmt);
 
   Scope::Ptr scope = nd->scope();
-  LocalScope::Ptr local_scope = nd->localScope();
-
   Stmt::Ptr else_body = nd->elseBody();
   if (else_body != NULL) {
-    else_body->scopesAre(scope, local_scope);
+    else_body->scopeIs(scope);
     else_body->apply(this);
   }
 }

@@ -17,7 +17,6 @@ using Simone::Deque;
 
 /* forward declarations */
 class Identifier;
-class LocalScope;
 
 class ClassDecl : public Decl {
 public:
@@ -52,8 +51,6 @@ public:
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
-  bool localScopeIs(Simone::Ptr<LocalScope> _s) { return false; }
-
   /* data members */
   NamedType::Ptr extends;
   Deque<NamedType::Ptr>::Ptr implements;

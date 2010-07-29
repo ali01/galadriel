@@ -15,7 +15,7 @@ using Simone::Map;
 /* instances obtained via factory constructor in ScopeStack class */
 class Scope : public Simone::PtrInterface<Scope> {
 
-  /* decl_map_ comparison functor */
+  /* map comparison functor */
   struct IdentifierCompare {
     bool operator()(Identifier::PtrConst lhs, Identifier::PtrConst rhs) const {
       return lhs->name() < rhs->name();
@@ -38,20 +38,22 @@ public:
   }
 
   Decl::PtrConst decl(Identifier::PtrConst _id) const;
-  virtual void declIs(Decl::PtrConst _decl);
+  void declIs(Decl::PtrConst _decl);
 
-  const_decl_iter begin() const { return decl_map_.begin(); }
-  decl_iter begin() { return decl_map_.begin(); }
+  const_decl_iter declsBegin() const { return scope_.begin(); }
+  decl_iter declsBegin() { return scope_.begin(); }
 
-  const_decl_iter end() const { return decl_map_.end(); }
-  decl_iter end() { return decl_map_.end(); }
+  const_decl_iter declsEnd() const { return scope_.end(); }
+  decl_iter declsEnd() { return scope_.end(); }
 
 protected:
   Scope() {}
   ~Scope() {}
 
   /* data members */
-  Map<Identifier::PtrConst,Decl::PtrConst,IdentifierCompare> decl_map_;
+  Map<Identifier::PtrConst,Decl::PtrConst,IdentifierCompare> scope_;
+  Map<Identifier::PtrConst,Decl::PtrConst,IdentifierCompare> local_scope_;
+  
 
 private:
   /* private copy constructor called by factory constructor in ScopeStack */

@@ -5,7 +5,6 @@
 
 /* project includes */
 #include <scope.h>
-#include <local_scope.h>
 
 /* ast includes */
 #include "stmt/stmt.h"
@@ -31,21 +30,4 @@ Node::scope() const {
 void
 Node::scopeIs(Scope::Ptr _s) {
   scope_ = _s;
-}
-
-LocalScope::Ptr
-Node::localScope() const {
-  return local_scope_;
-}
-
-bool
-Node::localScopeIs(LocalScope::Ptr _s) {
-  local_scope_ = _s;
-  return true;
-}
-
-void
-Node::scopesAre(Scope::Ptr _scope, LocalScope::Ptr _local_scope) {
-  scopeIs(_scope);
-  localScopeIs(_local_scope);
 }

@@ -24,50 +24,11 @@ make: Nothing to be done for `all'.
 ##############################################################################
 Scanning: samples/t3.decaf
 Scanning: samples/badscope5.decaf
-##############################################################################
-##################    * Failed: samples/badscope5.decaf    ###################
-##############################################################################
---- samples/badscope5.test 
-+++ samples/badscope5.out 
-@@ -1,0 +1,6 @@
-+
-+*** Error line 4.
-+class Binky {
-+      ^^^^^
-+*** Declaration of 'Binky' here conflicts with declaration on line 1
-+
-####################    End of samples/badscope5.decaf    ####################
 Scanning: samples/t6.decaf
 Scanning: samples/override2.decaf
 Scanning: samples/badscope6.decaf
-##############################################################################
-##################    * Failed: samples/badscope6.decaf    ###################
-##############################################################################
---- samples/badscope6.test 
-+++ samples/badscope6.out 
-@@ -1,0 +1,6 @@
-+
-+*** Error line 2.
-+interface Winky {}
-+          ^^^^^
-+*** Declaration of 'Winky' here conflicts with declaration on line 1
-+
-####################    End of samples/badscope6.decaf    ####################
 Scanning: samples/bad5.decaf
 Scanning: samples/bad2.decaf
-##############################################################################
-#####################    * Failed: samples/bad2.decaf    #####################
-##############################################################################
---- samples/bad2.test 
-+++ samples/bad2.out 
-@@ -1,0 +1,6 @@
-+
-+*** Error line 5.
-+int Rutabaga(int a, double b, bool c) {
-+    ^^^^^^^^
-+*** Declaration of 'Rutabaga' here conflicts with declaration on line 1
-+
-######################    End of samples/bad2.decaf    #######################
 Scanning: samples/t8.decaf
 Scanning: samples/badoverride5.decaf
 ##############################################################################
@@ -162,18 +123,24 @@ Scanning: samples/context.decaf
 ##############################################################################
 --- samples/context.test 
 +++ samples/context.out 
-@@ -1,10 +1,4 @@
+@@ -1,16 +1,4 @@
 -
 -*** Error line 2.
 -double gVar;
 -       ^^^^
 -*** Declaration of 'gVar' here conflicts with declaration on line 1
 -
+-
+-*** Error line 12.
+-   Animal {}
+-   ^^^^^^
+-*** Declaration of 'Animal' here conflicts with declaration on line 5
+-
  
  *** Error line 19.
  int b
      ^
-@@ -21,4 +15,16 @@
+@@ -27,4 +15,16 @@
  	double c;
                 ^
  *** Declaration of 'c' here conflicts with declaration on line 30
@@ -216,74 +183,17 @@ Scanning: samples/t5.decaf
 Scanning: samples/decl4.decaf
 Scanning: samples/decl1.decaf
 Scanning: samples/badscope7.decaf
-##############################################################################
-##################    * Failed: samples/badscope7.decaf    ###################
-##############################################################################
---- samples/badscope7.test 
-+++ samples/badscope7.out 
-@@ -1,0 +1,48 @@
-+
-+*** Error line 2.
-+class Parsnip { }
-+      ^^^^^^^
-+*** Declaration of 'Parsnip' here conflicts with declaration on line 1
-+
-+
-+*** Error line 5.
-+bool Carrot;
-+     ^^^^^^
-+*** Declaration of 'Carrot' here conflicts with declaration on line 4
-+
-+
-+*** Error line 8.
-+int[] Zucchini;
-+      ^^^^^^^^
-+*** Declaration of 'Zucchini' here conflicts with declaration on line 7
-+
-+
-+*** Error line 11.
-+void Onion() {}
-+     ^^^^^
-+*** Declaration of 'Onion' here conflicts with declaration on line 10
-+
-+
-+*** Error line 14.
-+void Turnip() {}
-+     ^^^^^^
-+*** Declaration of 'Turnip' here conflicts with declaration on line 13
-+
-+
-+*** Error line 17.
-+class Potato {}
-+      ^^^^^^
-+*** Declaration of 'Potato' here conflicts with declaration on line 16
-+
-+
-+*** Error line 20.
-+class Rutabaga {}
-+      ^^^^^^^^
-+*** Declaration of 'Rutabaga' here conflicts with declaration on line 19
-+
-+
-+*** Error line 23.
-+interface Mushroom {}
-+          ^^^^^^^^
-+*** Declaration of 'Mushroom' here conflicts with declaration on line 22
-+
-####################    End of samples/badscope7.decaf    ####################
 Scanning: samples/bad9.decaf
 ##############################################################################
 #####################    * Failed: samples/bad9.decaf    #####################
 ##############################################################################
 --- samples/bad9.test 
 +++ samples/bad9.out 
-@@ -1,0 +1,12 @@
-+
-+*** Error line 12.
-+  void root() {
-+       ^^^^
-+*** Declaration of 'root' here conflicts with declaration on line 10
-+
+@@ -3,4 +3,10 @@
+   void root() {
+        ^^^^
+ *** Declaration of 'root' here conflicts with declaration on line 10
+ 
 +
 +*** Error line 15.
 +  bool IsRipe(int weight, double weather) {
@@ -331,29 +241,6 @@ Scanning: samples/decl3.decaf
 Scanning: samples/t10.decaf
 Scanning: samples/badscope4.decaf
 Scanning: samples/badscope3.decaf
-##############################################################################
-##################    * Failed: samples/badscope3.decaf    ###################
-##############################################################################
---- samples/badscope3.test 
-+++ samples/badscope3.out 
-@@ -1,4 +1,16 @@
-+
-+*** Error line 4.
-+    void Plant(int a, double b) {}
-+         ^^^^^
-+*** Declaration of 'Plant' here conflicts with declaration on line 3
-+
-+
-+*** Error line 6.
-+    void Grow(int b) {} // still error, even if same type signature
-+         ^^^^
-+*** Declaration of 'Grow' here conflicts with declaration on line 5
-+
- 
- *** Error line 8.
-     int num;
-         ^^^
-####################    End of samples/badscope3.decaf    ####################
 Scanning: samples/badoverride6.decaf
 ##############################################################################
 #################    * Failed: samples/badoverride6.decaf    #################
@@ -420,25 +307,6 @@ Scanning: samples/baddecl4.decaf
 Scanning: samples/decl2.decaf
 Scanning: samples/scope2.decaf
 Scanning: samples/badscope2.decaf
-##############################################################################
-##################    * Failed: samples/badscope2.decaf    ###################
-##############################################################################
---- samples/badscope2.test 
-+++ samples/badscope2.out 
-@@ -1,0 +1,12 @@
-+
-+*** Error line 4.
-+void Rutabaga(int a, double b, bool c) {
-+     ^^^^^^^^
-+*** Declaration of 'Rutabaga' here conflicts with declaration on line 1
-+
-+
-+*** Error line 8.
-+int Turnip(int a) {}
-+    ^^^^^^
-+*** Declaration of 'Turnip' here conflicts with declaration on line 7
-+
-####################    End of samples/badscope2.decaf    ####################
 Scanning: samples/baddecl2.decaf
 ##############################################################################
 ###################    * Failed: samples/baddecl2.decaf    ###################
@@ -590,19 +458,11 @@ Scanning: samples/bad4.decaf
 ##############################################################################
 --- samples/bad4.test 
 +++ samples/bad4.out 
-@@ -1,0 +1,18 @@
-+
-+*** Error line 9.
-+class Block {
-+      ^^^^^
-+*** Declaration of 'Block' here conflicts with declaration on line 5
-+
-+
-+*** Error line 17.
-+int Shape;
-+    ^^^^^
-+*** Declaration of 'Shape' here conflicts with declaration on line 1
-+
+@@ -9,4 +9,10 @@
+ int Shape;
+     ^^^^^
+ *** Declaration of 'Shape' here conflicts with declaration on line 1
+ 
 +
 +*** Error line 14.
 +  ABlock[] test;
@@ -643,13 +503,11 @@ Scanning: samples/bad8.decaf
 ##############################################################################
 --- samples/bad8.test 
 +++ samples/bad8.out 
-@@ -1,0 +1,12 @@
-+
-+*** Error line 4.
-+   bool f(int[] a) {}
-+        ^
-+*** Declaration of 'f' here conflicts with declaration on line 3
-+
+@@ -3,4 +3,10 @@
+    bool f(int[] a) {}
+         ^
+ *** Declaration of 'f' here conflicts with declaration on line 3
+ 
 +
 +*** Error line 9.
 +   int a;

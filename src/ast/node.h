@@ -39,7 +39,6 @@
 class Decl;
 class Stmt;
 class Scope;
-class LocalScope;
 struct yyltype;
 
 class Node : public Simone::PtrInterface<Node> {
@@ -50,18 +49,10 @@ public:
 
   yyltype *lexLoc() const { return location; }
 
-  /* attribute member functions */
+  /* -- attribute member functions -- */
+
   Simone::Ptr<Scope> scope() const;
   void scopeIs(Simone::Ptr<Scope> _s);
-
-  Simone::Ptr<LocalScope> localScope() const;
-  
-  /* certain node subclasses own their local scope (e.g. FnDecl, ClassDecl)
-     those classes override this member function to no-op and return false */
-  virtual bool localScopeIs(Simone::Ptr<LocalScope> _s);
-
-  void scopesAre(Simone::Ptr<Scope> _scope,
-                 Simone::Ptr<LocalScope> _local_scope);
 
   /* support for double dispatch */
   class Functor : public Simone::PtrInterface<Functor> {
@@ -162,7 +153,6 @@ protected:
   yyltype *location;
 
   Simone::Ptr<Scope> scope_;
-  Simone::Ptr<LocalScope> local_scope_;
 };
 
 #endif
