@@ -1,5 +1,8 @@
 #include "scope.h"
 
+/* project includes */
+#include "error.h"
+
 Scope::Scope(const Scope::Ptr& _scope) {
   if (_scope != NULL) {
     Decl::PtrConst decl;
@@ -25,5 +28,5 @@ Scope::decl(Identifier::PtrConst _id) const {
 void
 Scope::declIs(Decl::PtrConst _decl) {
   Identifier::PtrConst id = _decl->identifier();
-  decl_map_.elementIs(id, _decl);
+  decl_map_[id] = _decl;
 }

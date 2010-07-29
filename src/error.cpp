@@ -81,9 +81,9 @@ Error::UnrecogChar(yyltype *loc, char ch) {
 }
 
 void
-Error::DeclConflict(Decl *decl, Decl *prevDecl) {
+Error::DeclConflict(Decl::PtrConst decl, Decl::PtrConst prevDecl) {
   ostringstream s;
-  s << "Declaration of '" << decl;
+  s << "Declaration of '" << *decl;
   s << "' here conflicts with declaration on line ";
   s << prevDecl->lexLoc()->first_line;
   OutputError(decl->lexLoc(), s.str());

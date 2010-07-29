@@ -1,0 +1,663 @@
+
+*** Warning: Corresponding '.out' file for item 'samples/0-t9.decaf' does not exist in input directory 'samples'
+
+
+*** Warning: Corresponding '.out' file for item 'samples/declconflict.decaf' does not exist in input directory 'samples'
+
+
+*** Warning: Corresponding '.out' file for item 'samples/field-access.decaf' does not exist in input directory 'samples'
+
+##############################    Compiling     ##############################
+-- including extension makefiles: conf.make
+-- including subdirectory makefiles (dcc): ast/conf.submake parser/conf.submake semantic_analyser/conf.submake simone/conf.submake
+-- including subdirectory makefiles (ast): ast/decl/conf.submake ast/stmt/conf.submake ast/type/conf.submake
+-- including subdirectory makefiles (ast/stmt): ast/stmt/conditional/conf.submake ast/stmt/expr/conf.submake ast/stmt/switch/conf.submake
+-- including subdirectory makefiles (ast/stmt/conditional): ast/stmt/conditional/loop/conf.submake
+-- including subdirectory makefiles (ast/stmt/expr): ast/stmt/expr/single_addr/conf.submake
+-- including subdirectory makefiles (ast/stmt/expr/single_addr): ast/stmt/expr/single_addr/compound/conf.submake ast/stmt/expr/single_addr/l_value/conf.submake
+-- including subdirectory makefiles (ast/stmt/expr/single_addr/l_value): ast/stmt/expr/single_addr/l_value/field_access/conf.submake
+make: Nothing to be done for `all'.
+
+#########################    Compilation Complete    #########################
+##############################################################################
+###########################    Running 63 tests    ###########################
+##############################################################################
+Scanning: samples/t3.decaf
+Scanning: samples/badscope5.decaf
+##############################################################################
+##################    * Failed: samples/badscope5.decaf    ###################
+##############################################################################
+--- samples/badscope5.test 
++++ samples/badscope5.out 
+@@ -1,0 +1,6 @@
++
++*** Error line 4.
++class Binky {
++      ^^^^^
++*** Declaration of 'Binky' here conflicts with declaration on line 1
++
+####################    End of samples/badscope5.decaf    ####################
+Scanning: samples/t6.decaf
+Scanning: samples/override2.decaf
+Scanning: samples/badscope6.decaf
+##############################################################################
+##################    * Failed: samples/badscope6.decaf    ###################
+##############################################################################
+--- samples/badscope6.test 
++++ samples/badscope6.out 
+@@ -1,0 +1,6 @@
++
++*** Error line 2.
++interface Winky {}
++          ^^^^^
++*** Declaration of 'Winky' here conflicts with declaration on line 1
++
+####################    End of samples/badscope6.decaf    ####################
+Scanning: samples/bad5.decaf
+Scanning: samples/bad2.decaf
+##############################################################################
+#####################    * Failed: samples/bad2.decaf    #####################
+##############################################################################
+--- samples/bad2.test 
++++ samples/bad2.out 
+@@ -1,0 +1,6 @@
++
++*** Error line 5.
++int Rutabaga(int a, double b, bool c) {
++    ^^^^^^^^
++*** Declaration of 'Rutabaga' here conflicts with declaration on line 1
++
+######################    End of samples/bad2.decaf    #######################
+Scanning: samples/t8.decaf
+Scanning: samples/badoverride5.decaf
+##############################################################################
+#################    * Failed: samples/badoverride5.decaf    #################
+##############################################################################
+--- samples/badoverride5.test 
++++ samples/badoverride5.out 
+@@ -1,0 +1,6 @@
++
++*** Error line 5.
++	double TapDance(int a, double b) {}
++               ^^^^^^^^
++*** Method 'TapDance' must match inherited type signature
++
+##################    End of samples/badoverride5.decaf    ###################
+Scanning: samples/0-t9.decaf
+Scanning: samples/t9.decaf
+Scanning: samples/badoverride1.decaf
+##############################################################################
+#################    * Failed: samples/badoverride1.decaf    #################
+##############################################################################
+--- samples/badoverride1.test 
++++ samples/badoverride1.out 
+@@ -1,0 +1,6 @@
++
++*** Error line 10.
++   int SUID;
++       ^^^^
++*** Declaration of 'SUID' here conflicts with declaration on line 4
++
+##################    End of samples/badoverride1.decaf    ###################
+Scanning: samples/declconflict.decaf
+Scanning: samples/baddecl5.decaf
+##############################################################################
+###################    * Failed: samples/baddecl5.decaf    ###################
+##############################################################################
+--- samples/baddecl5.test 
++++ samples/baddecl5.out 
+@@ -1,0 +1,6 @@
++
++*** Error line 3.
++	Unknown[] arr;
++        ^^^^^^^
++*** No declaration found for type 'Unknown'
++
+####################    End of samples/baddecl5.decaf    #####################
+Scanning: samples/bad6.decaf
+##############################################################################
+#####################    * Failed: samples/bad6.decaf    #####################
+##############################################################################
+--- samples/bad6.test 
++++ samples/bad6.out 
+@@ -1,0 +1,12 @@
++
++*** Error line 4.
++    int Method2(int[] a, Base c, double d) {}
++        ^^^^^^^
++*** Method 'Method2' must match inherited type signature
++
++
++*** Error line 11.
++    void Method3(bool a) {}
++         ^^^^^^^
++*** Method 'Method3' must match inherited type signature
++
+######################    End of samples/bad6.decaf    #######################
+Scanning: samples/bad1.decaf
+Scanning: samples/badoverride7.decaf
+##############################################################################
+#################    * Failed: samples/badoverride7.decaf    #################
+##############################################################################
+--- samples/badoverride7.test 
++++ samples/badoverride7.out 
+@@ -1,0 +1,12 @@
++
++*** Error line 7.
++	void method1(int a) {}
++             ^^^^^^^
++*** Method 'method1' must match inherited type signature
++
++
++*** Error line 8.
++	void method2(string a, int b) {}
++             ^^^^^^^
++*** Method 'method2' must match inherited type signature
++
+##################    End of samples/badoverride7.decaf    ###################
+Scanning: samples/override5.decaf
+Scanning: samples/context.decaf
+##############################################################################
+###################    * Failed: samples/context.decaf    ####################
+##############################################################################
+--- samples/context.test 
++++ samples/context.out 
+@@ -1,10 +1,4 @@
+-
+-*** Error line 2.
+-double gVar;
+-       ^^^^
+-*** Declaration of 'gVar' here conflicts with declaration on line 1
+-
+ 
+ *** Error line 19.
+ int b
+     ^
+@@ -21,4 +15,16 @@
+ 	double c;
+                ^
+ *** Declaration of 'c' here conflicts with declaration on line 30
+ 
++
++*** Error line 2.
++double gVar;
++       ^^^^
++*** Declaration of 'gVar' here conflicts with declaration on line 1
++
++
++*** Error line 12.
++   Animal {}
++   ^^^^^^
++*** Declaration of 'Animal' here conflicts with declaration on line 5
++
+#####################    End of samples/context.decaf    #####################
+Scanning: samples/0-t8.decaf
+Scanning: samples/bad7.decaf
+##############################################################################
+#####################    * Failed: samples/bad7.decaf    #####################
+##############################################################################
+--- samples/bad7.test 
++++ samples/bad7.out 
+@@ -3,4 +3,10 @@
+         int b;
+             ^
+ *** Declaration of 'b' here conflicts with declaration on line 6
+ 
++
++*** Error line 13.
++           Unknown b;
++           ^^^^^^^
++*** No declaration found for type 'Unknown'
++
+######################    End of samples/bad7.decaf    #######################
+Scanning: samples/override4.decaf
+Scanning: samples/field-access.decaf
+Scanning: samples/t5.decaf
+Scanning: samples/decl4.decaf
+Scanning: samples/decl1.decaf
+Scanning: samples/badscope7.decaf
+##############################################################################
+##################    * Failed: samples/badscope7.decaf    ###################
+##############################################################################
+--- samples/badscope7.test 
++++ samples/badscope7.out 
+@@ -1,0 +1,48 @@
++
++*** Error line 2.
++class Parsnip { }
++      ^^^^^^^
++*** Declaration of 'Parsnip' here conflicts with declaration on line 1
++
++
++*** Error line 5.
++bool Carrot;
++     ^^^^^^
++*** Declaration of 'Carrot' here conflicts with declaration on line 4
++
++
++*** Error line 8.
++int[] Zucchini;
++      ^^^^^^^^
++*** Declaration of 'Zucchini' here conflicts with declaration on line 7
++
++
++*** Error line 11.
++void Onion() {}
++     ^^^^^
++*** Declaration of 'Onion' here conflicts with declaration on line 10
++
++
++*** Error line 14.
++void Turnip() {}
++     ^^^^^^
++*** Declaration of 'Turnip' here conflicts with declaration on line 13
++
++
++*** Error line 17.
++class Potato {}
++      ^^^^^^
++*** Declaration of 'Potato' here conflicts with declaration on line 16
++
++
++*** Error line 20.
++class Rutabaga {}
++      ^^^^^^^^
++*** Declaration of 'Rutabaga' here conflicts with declaration on line 19
++
++
++*** Error line 23.
++interface Mushroom {}
++          ^^^^^^^^
++*** Declaration of 'Mushroom' here conflicts with declaration on line 22
++
+####################    End of samples/badscope7.decaf    ####################
+Scanning: samples/bad9.decaf
+##############################################################################
+#####################    * Failed: samples/bad9.decaf    #####################
+##############################################################################
+--- samples/bad9.test 
++++ samples/bad9.out 
+@@ -1,0 +1,12 @@
++
++*** Error line 12.
++  void root() {
++       ^^^^
++*** Declaration of 'root' here conflicts with declaration on line 10
++
++
++*** Error line 15.
++  bool IsRipe(int weight, double weather) {
++       ^^^^^^
++*** Method 'IsRipe' must match inherited type signature
++
+######################    End of samples/bad9.decaf    #######################
+Scanning: samples/badoverride2.decaf
+##############################################################################
+#################    * Failed: samples/badoverride2.decaf    #################
+##############################################################################
+--- samples/badoverride2.test 
++++ samples/badoverride2.out 
+@@ -1,0 +1,12 @@
++
++*** Error line 7.
++  bool root;
++       ^^^^
++*** Declaration of 'root' here conflicts with declaration on line 3
++
++
++*** Error line 8.
++  void stalk() {}
++       ^^^^^
++*** Declaration of 'stalk' here conflicts with declaration on line 2
++
+##################    End of samples/badoverride2.decaf    ###################
+Scanning: samples/t2.decaf
+Scanning: samples/baddecl3.decaf
+##############################################################################
+###################    * Failed: samples/baddecl3.decaf    ###################
+##############################################################################
+--- samples/baddecl3.test 
++++ samples/baddecl3.out 
+@@ -1,0 +1,6 @@
++
++*** Error line 1.
++class Binky extends Missing {}
++                    ^^^^^^^
++*** No declaration found for class 'Missing'
++
+####################    End of samples/baddecl3.decaf    #####################
+Scanning: samples/t1.decaf
+Scanning: samples/decl3.decaf
+Scanning: samples/t10.decaf
+Scanning: samples/badscope4.decaf
+Scanning: samples/badscope3.decaf
+##############################################################################
+##################    * Failed: samples/badscope3.decaf    ###################
+##############################################################################
+--- samples/badscope3.test 
++++ samples/badscope3.out 
+@@ -1,4 +1,16 @@
++
++*** Error line 4.
++    void Plant(int a, double b) {}
++         ^^^^^
++*** Declaration of 'Plant' here conflicts with declaration on line 3
++
++
++*** Error line 6.
++    void Grow(int b) {} // still error, even if same type signature
++         ^^^^
++*** Declaration of 'Grow' here conflicts with declaration on line 5
++
+ 
+ *** Error line 8.
+     int num;
+         ^^^
+####################    End of samples/badscope3.decaf    ####################
+Scanning: samples/badoverride6.decaf
+##############################################################################
+#################    * Failed: samples/badoverride6.decaf    #################
+##############################################################################
+--- samples/badoverride6.test 
++++ samples/badoverride6.out 
+@@ -1,0 +1,18 @@
++
++*** Error line 8.
++	double[] Binky() {}
++                 ^^^^^
++*** Method 'Binky' must match inherited type signature
++
++
++*** Error line 9.
++	void Dinky(double[][] a) {}
++             ^^^^^
++*** Method 'Dinky' must match inherited type signature
++
++
++*** Error line 7.
++	void Winky(int[] a) {}
++             ^^^^^
++*** Method 'Winky' must match inherited type signature
++
+##################    End of samples/badoverride6.decaf    ###################
+Scanning: samples/1-t8.decaf
+Scanning: samples/decl5.decaf
+Scanning: samples/baddecl8.decaf
+##############################################################################
+###################    * Failed: samples/baddecl8.decaf    ###################
+##############################################################################
+--- samples/baddecl8.test 
++++ samples/baddecl8.out 
+@@ -1,0 +1,12 @@
++
++*** Error line 4.
++class A extends function implements gVar {
++                ^^^^^^^^
++*** No declaration found for class 'function'
++
++
++*** Error line 4.
++class A extends function implements gVar {
++                                    ^^^^
++*** No declaration found for interface 'gVar'
++
+####################    End of samples/baddecl8.decaf    #####################
+Scanning: samples/matrix.decaf
+Scanning: samples/baddecl4.decaf
+##############################################################################
+###################    * Failed: samples/baddecl4.decaf    ###################
+##############################################################################
+--- samples/baddecl4.test 
++++ samples/baddecl4.out 
+@@ -1,0 +1,6 @@
++
++*** Error line 1.
++class Binky implements Missing {}
++                       ^^^^^^^
++*** No declaration found for interface 'Missing'
++
+####################    End of samples/baddecl4.decaf    #####################
+Scanning: samples/decl2.decaf
+Scanning: samples/scope2.decaf
+Scanning: samples/badscope2.decaf
+##############################################################################
+##################    * Failed: samples/badscope2.decaf    ###################
+##############################################################################
+--- samples/badscope2.test 
++++ samples/badscope2.out 
+@@ -1,0 +1,12 @@
++
++*** Error line 4.
++void Rutabaga(int a, double b, bool c) {
++     ^^^^^^^^
++*** Declaration of 'Rutabaga' here conflicts with declaration on line 1
++
++
++*** Error line 8.
++int Turnip(int a) {}
++    ^^^^^^
++*** Declaration of 'Turnip' here conflicts with declaration on line 7
++
+####################    End of samples/badscope2.decaf    ####################
+Scanning: samples/baddecl2.decaf
+##############################################################################
+###################    * Failed: samples/baddecl2.decaf    ###################
+##############################################################################
+--- samples/baddecl2.test 
++++ samples/baddecl2.out 
+@@ -1,0 +1,12 @@
++
++*** Error line 1.
++Unknown function1() {}
++^^^^^^^
++*** No declaration found for type 'Unknown'
++
++
++*** Error line 3.
++void function2(int a, Missing b) {}
++                      ^^^^^^^
++*** No declaration found for type 'Missing'
++
+####################    End of samples/baddecl2.decaf    #####################
+Scanning: samples/baddecl7.decaf
+##############################################################################
+###################    * Failed: samples/baddecl7.decaf    ###################
+##############################################################################
+--- samples/baddecl7.test 
++++ samples/baddecl7.out 
+@@ -1,0 +1,6 @@
++
++*** Error line 2.
++class Winky implements Binky {}
++                       ^^^^^
++*** No declaration found for interface 'Binky'
++
+####################    End of samples/baddecl7.decaf    #####################
+Scanning: samples/bad3.decaf
+##############################################################################
+#####################    * Failed: samples/bad3.decaf    #####################
+##############################################################################
+--- samples/bad3.test 
++++ samples/bad3.out 
+@@ -1,0 +1,18 @@
++
++*** Error line 1.
++void Mystery(Unknown a) {}
++             ^^^^^^^
++*** No declaration found for type 'Unknown'
++
++
++*** Error line 3.
++class Trouble extends Missing implements Gone
++                      ^^^^^^^
++*** No declaration found for class 'Missing'
++
++
++*** Error line 3.
++class Trouble extends Missing implements Gone
++                                         ^^^^
++*** No declaration found for interface 'Gone'
++
+######################    End of samples/bad3.decaf    #######################
+Scanning: samples/scope3.decaf
+Scanning: samples/badoverride4.decaf
+##############################################################################
+#################    * Failed: samples/badoverride4.decaf    #################
+##############################################################################
+--- samples/badoverride4.test 
++++ samples/badoverride4.out 
+@@ -1,0 +1,6 @@
++
++*** Error line 5.
++	void TapDance(string a, int b) {}
++             ^^^^^^^^
++*** Method 'TapDance' must match inherited type signature
++
+##################    End of samples/badoverride4.decaf    ###################
+Scanning: samples/t4.decaf
+Scanning: samples/badscope1.decaf
+##############################################################################
+##################    * Failed: samples/badscope1.decaf    ###################
+##############################################################################
+--- samples/badscope1.test 
++++ samples/badscope1.out 
+@@ -1,18 +1,18 @@
+ 
+-*** Error line 2.
+-int gVar;
+-    ^^^^
+-*** Declaration of 'gVar' here conflicts with declaration on line 1
++*** Error line 9.
++    bool lVar2;
++         ^^^^^
++*** Declaration of 'lVar2' here conflicts with declaration on line 8
+ 
+ 
+ *** Error line 6.
+   int lVar;
+       ^^^^
+ *** Declaration of 'lVar' here conflicts with declaration on line 5
+ 
+ 
+-*** Error line 9.
+-    bool lVar2;
+-         ^^^^^
+-*** Declaration of 'lVar2' here conflicts with declaration on line 8
++*** Error line 2.
++int gVar;
++    ^^^^
++*** Declaration of 'gVar' here conflicts with declaration on line 1
+ 
+####################    End of samples/badscope1.decaf    ####################
+Scanning: samples/scope1.decaf
+Scanning: samples/baddecl6.decaf
+##############################################################################
+###################    * Failed: samples/baddecl6.decaf    ###################
+##############################################################################
+--- samples/baddecl6.test 
++++ samples/baddecl6.out 
+@@ -1,0 +1,6 @@
++
++*** Error line 2.
++class Binky extends Winky {}
++                    ^^^^^
++*** No declaration found for class 'Winky'
++
+####################    End of samples/baddecl6.decaf    #####################
+Scanning: samples/badoverride3.decaf
+##############################################################################
+#################    * Failed: samples/badoverride3.decaf    #################
+##############################################################################
+--- samples/badoverride3.test 
++++ samples/badoverride3.out 
+@@ -1,0 +1,12 @@
++
++*** Error line 8.
++	void IsNot() {}
++             ^^^^^
++*** Method 'IsNot' must match inherited type signature
++
++
++*** Error line 7.
++	bool IsRipe(int weight, double weather) {}
++             ^^^^^^
++*** Method 'IsRipe' must match inherited type signature
++
+##################    End of samples/badoverride3.decaf    ###################
+Scanning: samples/bad4.decaf
+##############################################################################
+#####################    * Failed: samples/bad4.decaf    #####################
+##############################################################################
+--- samples/bad4.test 
++++ samples/bad4.out 
+@@ -1,0 +1,18 @@
++
++*** Error line 9.
++class Block {
++      ^^^^^
++*** Declaration of 'Block' here conflicts with declaration on line 5
++
++
++*** Error line 17.
++int Shape;
++    ^^^^^
++*** Declaration of 'Shape' here conflicts with declaration on line 1
++
++
++*** Error line 14.
++  ABlock[] test;
++  ^^^^^^
++*** No declaration found for type 'ABlock'
++
+######################    End of samples/bad4.decaf    #######################
+Scanning: samples/override1.decaf
+Scanning: samples/baddecl1.decaf
+##############################################################################
+###################    * Failed: samples/baddecl1.decaf    ###################
+##############################################################################
+--- samples/baddecl1.test 
++++ samples/baddecl1.out 
+@@ -1,0 +1,18 @@
++
++*** Error line 1.
++Unknown gVar;
++^^^^^^^
++*** No declaration found for type 'Unknown'
++
++
++*** Error line 5.
++	Missing local;
++        ^^^^^^^
++*** No declaration found for type 'Missing'
++
++
++*** Error line 9.
++   Gone g;
++   ^^^^
++*** No declaration found for type 'Gone'
++
+####################    End of samples/baddecl1.decaf    #####################
+Scanning: samples/bad8.decaf
+##############################################################################
+#####################    * Failed: samples/bad8.decaf    #####################
+##############################################################################
+--- samples/bad8.test 
++++ samples/bad8.out 
+@@ -1,0 +1,12 @@
++
++*** Error line 4.
++   bool f(int[] a) {}
++        ^
++*** Declaration of 'f' here conflicts with declaration on line 3
++
++
++*** Error line 9.
++   int a;
++       ^
++*** Declaration of 'a' here conflicts with declaration on line 2
++
+######################    End of samples/bad8.decaf    #######################
+Scanning: samples/blackjack.decaf
+Scanning: samples/t7.decaf
+Scanning: samples/override3.decaf
+Scanning: samples/scope4.decaf

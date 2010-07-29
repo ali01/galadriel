@@ -1,19 +1,19 @@
-main.o: main.cpp utility.h error.h lex_loc.h parser/parser.h \
-  parser/scanner.h ast.h ast/identifier.h simone/ptr_interface.h \
-  simone/exception.h simone/ptr.h lex_loc.h ast/node.h simone/utility.h \
-  ast/ast_fwd_declarations.h ast/operator.h ast/program.h simone/deque.h \
-  simone/ptr_interface.h simone/utility.h ast/decl/decl.h \
-  ast/decl/../node.h scope.h simone/map.h ast/decl/decl.h \
-  ast/decl/fn_decl.h ast/decl/decl.h ast/decl/var_decl.h \
-  ast/decl/../identifier.h ast/decl/var_decl.h ast/decl/class_decl.h \
-  ast/decl/../type/named_type.h ast/decl/../type/../identifier.h \
-  ast/decl/../type/../type/type.h ast/decl/../type/../type/../node.h \
-  ast/decl/interface_decl.h ast/decl/fn_decl.h ast/stmt/break_stmt.h \
-  ast/stmt/stmt.h ast/stmt/../node.h ast/stmt/print_stmt.h \
-  ast/stmt/expr/expr.h ast/stmt/expr/../stmt.h ast/stmt/return_stmt.h \
-  ast/stmt/stmt_block.h ast/stmt/../decl/var_decl.h \
-  ast/stmt/conditional/conditional_stmt.h ast/stmt/conditional/../stmt.h \
-  ast/stmt/conditional/if_stmt.h ast/stmt/conditional/conditional_stmt.h \
+main.o: main.cpp utility.h error.h simone/ptr_interface.h \
+  simone/exception.h simone/ptr.h lex_loc.h parser/parser.h \
+  parser/scanner.h ast.h ast/identifier.h lex_loc.h ast/node.h \
+  simone/utility.h ast/ast_fwd_declarations.h ast/operator.h \
+  ast/program.h simone/deque.h simone/ptr_interface.h simone/utility.h \
+  ast/decl/decl.h ast/decl/../node.h ast/decl/fn_decl.h ast/decl/decl.h \
+  ast/decl/var_decl.h ast/decl/../identifier.h ast/decl/var_decl.h \
+  ast/decl/class_decl.h ast/decl/../type/named_type.h \
+  ast/decl/../type/../identifier.h ast/decl/../type/../type/type.h \
+  ast/decl/../type/../type/../node.h ast/decl/interface_decl.h \
+  ast/decl/fn_decl.h ast/stmt/break_stmt.h ast/stmt/stmt.h \
+  ast/stmt/../node.h ast/stmt/print_stmt.h ast/stmt/expr/expr.h \
+  ast/stmt/expr/../stmt.h ast/stmt/return_stmt.h ast/stmt/stmt_block.h \
+  ast/stmt/../decl/var_decl.h ast/stmt/conditional/conditional_stmt.h \
+  ast/stmt/conditional/../stmt.h ast/stmt/conditional/if_stmt.h \
+  ast/stmt/conditional/conditional_stmt.h \
   ast/stmt/conditional/loop/for_stmt.h \
   ast/stmt/conditional/loop/loop_stmt.h \
   ast/stmt/conditional/loop/../conditional_stmt.h \
@@ -57,6 +57,12 @@ utility.h:
 
 error.h:
 
+simone/ptr_interface.h:
+
+simone/exception.h:
+
+simone/ptr.h:
+
 lex_loc.h:
 
 parser/parser.h:
@@ -66,12 +72,6 @@ parser/scanner.h:
 ast.h:
 
 ast/identifier.h:
-
-simone/ptr_interface.h:
-
-simone/exception.h:
-
-simone/ptr.h:
 
 lex_loc.h:
 
@@ -94,12 +94,6 @@ simone/utility.h:
 ast/decl/decl.h:
 
 ast/decl/../node.h:
-
-scope.h:
-
-simone/map.h:
-
-ast/decl/decl.h:
 
 ast/decl/fn_decl.h:
 

@@ -16,6 +16,9 @@
 #include <string>
 using std::string;
 
+/* simone includes */
+#include <simone/ptr_interface.h>
+
 /* project includes */
 #include "lex_loc.h"
 
@@ -66,7 +69,9 @@ public:
 
 
   /* errors used by semantic analyzer for declarations */
-  static void DeclConflict(Decl *newDecl, Decl *prevDecl);
+  static void DeclConflict(Simone::Ptr<const Decl> newDecl,
+                           Simone::Ptr<const Decl> prevDecl);
+
   static void OverrideMismatch(Decl *fnDecl);
   static void InterfaceNotImplemented(Decl *classDecl, Type *intfType);
 

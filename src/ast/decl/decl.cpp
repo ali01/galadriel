@@ -14,3 +14,7 @@ Simone::Ptr<Identifier>
 Decl::identifier() const {
   return id_;
 }
+
+ostream& operator<<(ostream& out, const Decl& d) {
+  return out << *d.identifier();
+}

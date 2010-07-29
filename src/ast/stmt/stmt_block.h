@@ -12,8 +12,8 @@ using Simone::Deque;
 /* ast/decl includes */
 #include "../decl/var_decl.h"
 
-/* project includes */
-#include <scope.h>
+/* forward declarations */
+class LocalScope;
 
 class StmtBlock : public Stmt {
 public:
@@ -51,18 +51,18 @@ public:
 
   /* attribute member functions */
 
-  Scope::Ptr scope() const { return scope_; }
-  void scopeIs(Scope::Ptr _s) { scope_ = _s; }
-
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
+  bool localScopeIs(Simone::Ptr<LocalScope> _s) { return false; }
+
   /* data members */
   Deque<VarDecl::Ptr>::Ptr decls_;
   Deque<Stmt::Ptr>::Ptr stmts_;
-
-  Scope::Ptr scope_;
+  
+  /* operations disallowed */
+  // TODO
 };
 
 #endif

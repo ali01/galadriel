@@ -21,7 +21,6 @@ ast/stmt/expr/single_addr/l_value/field_access/field_access_expr.o:  \
   ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/../type/../identifier.h \
   ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/../type/../type/type.h \
   ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/../type/../type/../node.h \
-  scope.h simone/map.h ast/identifier.h ast/decl/decl.h \
   ast/stmt/expr/single_addr/l_value/field_access/../../../../../type/named_type.h \
   ast/stmt/expr/single_addr/l_value/field_access/../../../expr.h
 
@@ -76,14 +75,6 @@ ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/../type/../id
 ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/../type/../type/type.h:
 
 ast/stmt/expr/single_addr/l_value/field_access/../../../../../decl/../type/../type/../node.h:
-
-scope.h:
-
-simone/map.h:
-
-ast/identifier.h:
-
-ast/decl/decl.h:
 
 ast/stmt/expr/single_addr/l_value/field_access/../../../../../type/named_type.h:
 

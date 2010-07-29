@@ -40,11 +40,9 @@ protected:
 private:
   /* data members */
   Simone::Ptr<Identifier> id_;
-  
-  /* friends */
-  friend ostream& operator<<(ostream& out, const Decl& d) {
-    return out << d.id_;
-  }
 };
+
+/* forward declarations */
+ostream& operator<<(ostream& out, const Decl& d);
 
 #endif

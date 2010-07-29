@@ -16,8 +16,7 @@ ast/stmt/expr/single_addr/new_expr.o:  \
   ast/stmt/expr/single_addr/../../../decl/../type/../type/type.h \
   ast/stmt/expr/single_addr/../../../decl/../type/../type/../node.h \
   ast/stmt/expr/single_addr/../../../decl/decl.h \
-  ast/stmt/expr/single_addr/../../../decl/../node.h scope.h simone/map.h \
-  ast/identifier.h ast/decl/decl.h \
+  ast/stmt/expr/single_addr/../../../decl/../node.h \
   ast/stmt/expr/single_addr/../../../type/named_type.h
 
 ast/stmt/expr/single_addr/new_expr.h:
@@ -65,13 +64,5 @@ ast/stmt/expr/single_addr/../../../decl/../type/../type/../node.h:
 ast/stmt/expr/single_addr/../../../decl/decl.h:
 
 ast/stmt/expr/single_addr/../../../decl/../node.h:
-
-scope.h:
-
-simone/map.h:
-
-ast/identifier.h:
-
-ast/decl/decl.h:
 
 ast/stmt/expr/single_addr/../../../type/named_type.h:

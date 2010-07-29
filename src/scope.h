@@ -33,8 +33,12 @@ public:
   typedef Map<Identifier::PtrConst,Decl::PtrConst,IdentifierCompare>::iterator 
           decl_iter;
 
+  static Ptr ScopeNew() {
+    return new Scope();
+  }
+
   Decl::PtrConst decl(Identifier::PtrConst _id) const;
-  void declIs(Decl::PtrConst _decl);
+  virtual void declIs(Decl::PtrConst _decl);
 
   const_decl_iter begin() const { return decl_map_.begin(); }
   decl_iter begin() { return decl_map_.begin(); }
@@ -42,19 +46,23 @@ public:
   const_decl_iter end() const { return decl_map_.end(); }
   decl_iter end() { return decl_map_.end(); }
 
-private:
-  /* private copy constructor called by factory constructor in ScopeStack */
-  Scope(const Scope::Ptr& _scope);
+protected:
+  Scope() {}
+  ~Scope() {}
 
   /* data members */
   Map<Identifier::PtrConst,Decl::PtrConst,IdentifierCompare> decl_map_;
 
-  /* friends */
-  friend class ScopeStack;
+private:
+  /* private copy constructor called by factory constructor in ScopeStack */
+  Scope(const Scope::Ptr& _scope);
 
   /* operations disallowed */
   Scope(const Scope&);
   void operator=(const Scope&);
+
+  /* friends */
+  friend class ScopeStack;
 };
 
 #endif

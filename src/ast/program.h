@@ -12,8 +12,8 @@ using Simone::Deque;
 /* ast/decl includes */
 #include "decl/decl.h"
 
-/* project includes */
-#include <scope.h>
+/* forward declarations */
+class LocalScope;
 
 class Program : public Node {
 public:
@@ -36,11 +36,6 @@ public:
   const_decl_iter declsEnd() const { return decls_->end(); }
 
 
-  /* attribute member functions */
-
-  Scope::Ptr scope() const { return scope_; }
-  void scopeIs(Scope::Ptr _s) { scope_ = _s; }
-
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
@@ -48,10 +43,10 @@ protected:
   Program(Deque<Decl::Ptr>::Ptr _decl_list);
 
 private:
+  bool localScopeIs(Simone::Ptr<LocalScope> _s) { return false; }
+
   /* data members */
   Deque<Decl::Ptr>::Ptr decls_;
-
-  Scope::Ptr scope_;
 
   /* operations disallowed */
   Program(const Program&);

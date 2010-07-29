@@ -10,11 +10,9 @@ using Simone::Deque;
 #include "decl.h"
 #include "fn_decl.h"
 
-/* project includes */
-#include <scope.h>
-
 /* forward declarations */
 class Identifier;
+class LocalScope;
 
 class InterfaceDecl : public Decl {
 public:
@@ -43,18 +41,14 @@ public:
 
   /* attribute member functions */
 
-  Scope::Ptr scope() const { return scope_; }
-  void scopeIs(Scope::Ptr _s) { scope_ = _s; }
-
-
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
+  bool localScopeIs(Simone::Ptr<LocalScope> _s) { return false; }
+
   /* data members */
   Deque<FnDecl::Ptr>::Ptr members_;
-
-  Scope::Ptr scope_;
   
   /* operations disallowed */
   InterfaceDecl(const InterfaceDecl&);

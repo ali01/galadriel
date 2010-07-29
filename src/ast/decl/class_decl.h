@@ -15,11 +15,9 @@ using Simone::Deque;
 /* ast/decl includes */
 #include "decl.h"
 
-/* project includes */
-#include <scope.h>
-
 /* forward declarations */
 class Identifier;
+class LocalScope;
 
 class ClassDecl : public Decl {
 public:
@@ -50,19 +48,16 @@ public:
 
   /* attribute member functions */
 
-  Scope::Ptr scope() const { return scope_; }
-  void scopeIs(Scope::Ptr _s) { scope_ = _s; }
-
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
+  bool localScopeIs(Simone::Ptr<LocalScope> _s) { return false; }
+
   /* data members */
   NamedType::Ptr extends;
   Deque<NamedType::Ptr>::Ptr implements;
   Deque<Decl::Ptr>::Ptr members_;
-
-  Scope::Ptr scope_;
 
   /* operations disallowed */
   ClassDecl(const ClassDecl&);

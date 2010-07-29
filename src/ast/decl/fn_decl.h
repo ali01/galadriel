@@ -10,11 +10,9 @@ using Simone::Deque;
 #include "decl.h"
 #include "var_decl.h"
 
-/* project includes */
-#include <scope.h>
-
 /* forward declarations */
 class Identifier;
+class LocalScope;
 class StmtBlock;
 class Type;
 
@@ -22,7 +20,7 @@ class FnDecl : public Decl {
 public:
   typedef Simone::Ptr<const FnDecl> PtrConst;
   typedef Simone::Ptr<FnDecl> Ptr;
-  
+
   typedef Deque<VarDecl::Ptr>::const_iterator const_formal_iter;
   typedef Deque<VarDecl::Ptr>::iterator formal_iter;
 
@@ -50,19 +48,16 @@ public:
 
   void bodyIs(Simone::Ptr<StmtBlock> b);
 
-  Scope::Ptr scope() const { return scope_; }
-  void scopeIs(Scope::Ptr _s) { scope_ = _s; }
-
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
+  bool localScopeIs(Simone::Ptr<LocalScope> _s) { return false; }
+
   /* data members */
   Deque<VarDecl::Ptr>::Ptr formals_;
   Simone::Ptr<Type> return_type_;
   Simone::Ptr<StmtBlock> body_;
-
-  Scope::Ptr scope_;
 };
 
 #endif

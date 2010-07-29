@@ -4,17 +4,17 @@ semantic_analyser/semantic_analyser.o:  \
   simone/exception.h simone/ptr.h ast.h ast/identifier.h lex_loc.h \
   ast/node.h simone/utility.h ast/ast_fwd_declarations.h ast/operator.h \
   ast/program.h simone/deque.h simone/ptr_interface.h simone/utility.h \
-  ast/decl/decl.h ast/decl/../node.h scope.h simone/map.h ast/decl/decl.h \
-  ast/decl/fn_decl.h ast/decl/decl.h ast/decl/var_decl.h \
-  ast/decl/../identifier.h ast/decl/var_decl.h ast/decl/class_decl.h \
-  ast/decl/../type/named_type.h ast/decl/../type/../identifier.h \
-  ast/decl/../type/../type/type.h ast/decl/../type/../type/../node.h \
-  ast/decl/interface_decl.h ast/decl/fn_decl.h ast/stmt/break_stmt.h \
-  ast/stmt/stmt.h ast/stmt/../node.h ast/stmt/print_stmt.h \
-  ast/stmt/expr/expr.h ast/stmt/expr/../stmt.h ast/stmt/return_stmt.h \
-  ast/stmt/stmt_block.h ast/stmt/../decl/var_decl.h \
-  ast/stmt/conditional/conditional_stmt.h ast/stmt/conditional/../stmt.h \
-  ast/stmt/conditional/if_stmt.h ast/stmt/conditional/conditional_stmt.h \
+  ast/decl/decl.h ast/decl/../node.h ast/decl/fn_decl.h ast/decl/decl.h \
+  ast/decl/var_decl.h ast/decl/../identifier.h ast/decl/var_decl.h \
+  ast/decl/class_decl.h ast/decl/../type/named_type.h \
+  ast/decl/../type/../identifier.h ast/decl/../type/../type/type.h \
+  ast/decl/../type/../type/../node.h ast/decl/interface_decl.h \
+  ast/decl/fn_decl.h ast/stmt/break_stmt.h ast/stmt/stmt.h \
+  ast/stmt/../node.h ast/stmt/print_stmt.h ast/stmt/expr/expr.h \
+  ast/stmt/expr/../stmt.h ast/stmt/return_stmt.h ast/stmt/stmt_block.h \
+  ast/stmt/../decl/var_decl.h ast/stmt/conditional/conditional_stmt.h \
+  ast/stmt/conditional/../stmt.h ast/stmt/conditional/if_stmt.h \
+  ast/stmt/conditional/conditional_stmt.h \
   ast/stmt/conditional/loop/for_stmt.h \
   ast/stmt/conditional/loop/loop_stmt.h \
   ast/stmt/conditional/loop/../conditional_stmt.h \
@@ -52,7 +52,8 @@ semantic_analyser/semantic_analyser.o:  \
   ast/stmt/switch/../expr/single_addr/int_const_expr.h \
   ast/stmt/switch/switch_case_stmt.h ast/type/type.h \
   ast/type/array_type.h ast/type/type.h ast/type/named_type.h \
-  scope_stack_builder.h ast.h scope_stack.h scope.h
+  scope_stack_builder.h ast.h scope_stack.h scope.h simone/map.h \
+  ast/decl/decl.h
 
 semantic_analyser/semantic_analyser.h:
 
@@ -87,12 +88,6 @@ simone/utility.h:
 ast/decl/decl.h:
 
 ast/decl/../node.h:
-
-scope.h:
-
-simone/map.h:
-
-ast/decl/decl.h:
 
 ast/decl/fn_decl.h:
 
@@ -239,3 +234,7 @@ ast.h:
 scope_stack.h:
 
 scope.h:
+
+simone/map.h:
+
+ast/decl/decl.h:

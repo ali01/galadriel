@@ -5,6 +5,9 @@
 #include <simone/deque.h>
 using Simone::Deque;
 
+/* project includes */
+#include <local_scope.h>
+
 /* ast/type includes */
 #include "../type/named_type.h"
 
@@ -15,4 +18,5 @@ ClassDecl::ClassDecl(Identifier::Ptr name, NamedType::Ptr extends,
 {
   /* extends can be NULL, impl & mem may be empty lists but cannot be NULL */
   assert(implements);
+  local_scope_ = LocalScope::LocalScopeNew();
 }

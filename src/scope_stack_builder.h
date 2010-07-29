@@ -50,6 +50,7 @@ public:
       void operator()(StmtBlock *);
 
       /* stmt/conditional */
+      void operator()(ConditionalStmt *);
       void operator()(IfStmt *);
 
       /* stmt/conditional/loop */
@@ -70,7 +71,15 @@ public:
 
 private:
   ScopeStackBuilder(Program::Ptr _program);
-  
+
+  /* -- private functions -- */
+
+  /* should only be called on Decl nodes that own their own scope;
+     (e.g. ClassDecl, FnDecl, but not VarDecl) */
+  static void transition_into_decl_block_scope(Decl *decl,
+                                               Scope::Ptr parent_scope,
+                                               Scope::Ptr scope);
+
   /* data members */
   ScopeStack::Ptr scope_stack_;
   NodeFunctor::Ptr node_functor_;
