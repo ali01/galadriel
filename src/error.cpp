@@ -3,7 +3,7 @@
  * Implementation for error-reporting class.
  */
 
-#include "errors.h"
+#include "error.h"
 #include <iostream>
 #include <sstream>
 #include <stdarg.h>
@@ -14,10 +14,10 @@
 /* ast includes */
 #include "ast.h"
 
-int ReportError::numErrors = 0;
+int Error::numErrors = 0;
 
 void
-ReportError::UnderlineErrorInLine(const char *line, yyltype *pos) {
+Error::UnderlineErrorInLine(const char *line, yyltype *pos) {
   if (!line)
     return;
 
@@ -28,7 +28,7 @@ ReportError::UnderlineErrorInLine(const char *line, yyltype *pos) {
 }
 
 void
-ReportError::OutputError(yyltype *loc, string msg) {
+Error::OutputError(yyltype *loc, string msg) {
   numErrors++;
 
   /* make sure any buffered text has been output */
@@ -43,7 +43,7 @@ ReportError::OutputError(yyltype *loc, string msg) {
 }
 
 void
-ReportError::Formatted(yyltype *loc, const char *format, ...) {
+Error::Formatted(yyltype *loc, const char *format, ...) {
   va_list args;
   char errbuf[2048];
 
@@ -54,34 +54,34 @@ ReportError::Formatted(yyltype *loc, const char *format, ...) {
 }
 
 void
-ReportError::UntermComment() {
+Error::UntermComment() {
   OutputError(NULL, "Input ends with unterminated comment");
 }
 
 
 void
-ReportError::LongIdentifier(yyltype *loc, const char *ident) {
+Error::LongIdentifier(yyltype *loc, const char *ident) {
   ostringstream s;
   s << "Identifier too long: \"" << ident << "\"";
   OutputError(loc, s.str());
 }
 
 void
-ReportError::UntermString(yyltype *loc, const char *str) {
+Error::UntermString(yyltype *loc, const char *str) {
   ostringstream s;
   s << "Unterminated string constant: " << str;
   OutputError(loc, s.str());
 }
 
 void
-ReportError::UnrecogChar(yyltype *loc, char ch) {
+Error::UnrecogChar(yyltype *loc, char ch) {
   ostringstream s;
   s << "Unrecognized char: '" << ch << "'";
   OutputError(loc, s.str());
 }
 
 void
-ReportError::DeclConflict(Decl *decl, Decl *prevDecl) {
+Error::DeclConflict(Decl *decl, Decl *prevDecl) {
   ostringstream s;
   s << "Declaration of '" << decl;
   s << "' here conflicts with declaration on line ";
@@ -90,14 +90,14 @@ ReportError::DeclConflict(Decl *decl, Decl *prevDecl) {
 }
 
 void
-ReportError::OverrideMismatch(Decl *fnDecl) {
+Error::OverrideMismatch(Decl *fnDecl) {
   ostringstream s;
   s << "Method '" << fnDecl << "' must match inherited type signature";
   OutputError(fnDecl->lexLoc(), s.str());
 }
 
 void
-ReportError::InterfaceNotImplemented(Decl *cd, Type *interfaceType) {
+Error::InterfaceNotImplemented(Decl *cd, Type *interfaceType) {
   ostringstream s;
   s << "Class '" << cd;
   s << "' does not implement entire interface '" << interfaceType << "'";
@@ -105,7 +105,7 @@ ReportError::InterfaceNotImplemented(Decl *cd, Type *interfaceType) {
 }
 
 void
-ReportError::IdentifierNotDeclared(Identifier *ident, reasonT whyNeeded) {
+Error::IdentifierNotDeclared(Identifier *ident, reasonT whyNeeded) {
   ostringstream s;
   static const char *names[] = {
     "type", "class", "interface", "variable", "function"
@@ -117,41 +117,41 @@ ReportError::IdentifierNotDeclared(Identifier *ident, reasonT whyNeeded) {
 }
 
 void
-ReportError::IncompatibleOperands(Operator *op, Type *lhs, Type *rhs) {
+Error::IncompatibleOperands(Operator *op, Type *lhs, Type *rhs) {
   ostringstream s;
   s << "Incompatible operands: " << lhs << " " << op << " " << rhs;
   OutputError(op->lexLoc(), s.str());
 }
 
 void
-ReportError::IncompatibleOperand(Operator *op, Type *rhs) {
+Error::IncompatibleOperand(Operator *op, Type *rhs) {
   ostringstream s;
   s << "Incompatible operand: " << op << " " << rhs;
   OutputError(op->lexLoc(), s.str());
 }
 
 void
-ReportError::ThisOutsideClassScope(ThisExpr *th) {
+Error::ThisOutsideClassScope(ThisExpr *th) {
   OutputError(th->lexLoc(), "'this' is only valid within class scope");
 }
 
 void
-ReportError::BracketsOnNonArray(Expr *baseExpr) {
+Error::BracketsOnNonArray(Expr *baseExpr) {
   OutputError(baseExpr->lexLoc(), "[] can only be applied to arrays");
 }
 
 void
-ReportError::SubscriptNotInteger(Expr *subscriptExpr) {
+Error::SubscriptNotInteger(Expr *subscriptExpr) {
   OutputError(subscriptExpr->lexLoc(), "Array subscript must be an integer");
 }
 
 void
-ReportError::NewArraySizeNotInteger(Expr *sizeExpr) {
+Error::NewArraySizeNotInteger(Expr *sizeExpr) {
   OutputError(sizeExpr->lexLoc(), "Size for NewArray must be an integer");
 }
 
 void
-ReportError::NumArgsMismatch(Identifier *fnIdent,
+Error::NumArgsMismatch(Identifier *fnIdent,
                              int numExpected, int numGiven) {
   ostringstream s;
   s << "Function '"<< fnIdent << "' expects ";
@@ -161,7 +161,7 @@ ReportError::NumArgsMismatch(Identifier *fnIdent,
 }
 
 void
-ReportError::ArgMismatch(Expr *arg, int argIndex, Type *given, Type *expected) {
+Error::ArgMismatch(Expr *arg, int argIndex, Type *given, Type *expected) {
   ostringstream s;
   s << "Incompatible argument " << argIndex << ": ";
   s << given << " given, " << expected << " expected";
@@ -169,7 +169,7 @@ ReportError::ArgMismatch(Expr *arg, int argIndex, Type *given, Type *expected) {
 }
 
 void
-ReportError::ReturnMismatch(ReturnStmt *rStmt, Type *given, Type *expected) {
+Error::ReturnMismatch(ReturnStmt *rStmt, Type *given, Type *expected) {
   ostringstream s;
   s << "Incompatible return: " << given << " given, ";
   s << expected << " expected";
@@ -177,21 +177,21 @@ ReportError::ReturnMismatch(ReturnStmt *rStmt, Type *given, Type *expected) {
 }
 
 void
-ReportError::FieldNotFoundInBase(Identifier *field, Type *base) {
+Error::FieldNotFoundInBase(Identifier *field, Type *base) {
   ostringstream s;
   s << base << " has no such field '" << field <<"'";
   OutputError(field->lexLoc(), s.str());
 }
 
 void
-ReportError::InaccessibleField(Identifier *field, Type *base) {
+Error::InaccessibleField(Identifier *field, Type *base) {
   ostringstream s;
   s  << base << " field '" << field << "' only accessible within class scope";
   OutputError(field->lexLoc(), s.str());
 }
 
 void
-ReportError::PrintArgMismatch(Expr *arg, int argIndex, Type *given) {
+Error::PrintArgMismatch(Expr *arg, int argIndex, Type *given) {
   ostringstream s;
   s << "Incompatible argument " << argIndex << ": " << given;
   s << " given, int/bool/string expected";
@@ -199,17 +199,17 @@ ReportError::PrintArgMismatch(Expr *arg, int argIndex, Type *given) {
 }
 
 void
-ReportError::TestNotBoolean(Expr *expr) {
+Error::TestNotBoolean(Expr *expr) {
   OutputError(expr->lexLoc(), "Test expression must have boolean type");
 }
 
 void
-ReportError::BreakOutsideLoop(BreakStmt *bStmt) {
+Error::BreakOutsideLoop(BreakStmt *bStmt) {
   OutputError(bStmt->lexLoc(), "break is only allowed inside a loop");
 }
 
 void
-ReportError::NoMainFound() {
+Error::NoMainFound() {
   OutputError(NULL, "Linker: function 'main' not defined");
 }
 
@@ -219,11 +219,11 @@ ReportError::NoMainFound() {
  * just calls into the error reporter above, passing the location of
  * the last token read. If you want to suppress the ordinary "parse error"
  * message from yacc, you can implement yyerror to do nothing and
- * then call ReportError::Formatted yourself with a more descriptive
+ * then call Error::Formatted yourself with a more descriptive
  * message.
  */
 
 void yyerror(const char *msg, yyltype *loc) {
     yyltype *location = (loc) ? loc : &yylloc;
-    ReportError::Formatted(location, "%s", msg);
+    Error::Formatted(location, "%s", msg);
 }

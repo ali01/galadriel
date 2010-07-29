@@ -1,4 +1,4 @@
-/* File: errors.h
+/* File: error.h
  * --------------
  * This file defines an error-reporting class with a set of already
  * implemented static methods for reporting the standard Decaf errors.
@@ -37,7 +37,7 @@ class Operator;
  * on this class are static, thus you can invoke methods directly via
  * the class name, e.g.
  *
- *    if (missingEnd) ReportError::UntermString(&yylloc, str);
+ *    if (missingEnd) Error::UntermString(&yylloc, str);
  *
  * For some methods, the first argument is the pointer to the location
  * structure that identifies where the problem is (usually this is the
@@ -55,7 +55,7 @@ typedef enum {
 	LookingForFunction
 } reasonT;
 
-class ReportError {
+class Error {
 public:
 
   /* errors used by scanner */

@@ -7,7 +7,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "utility.h"
-#include "errors.h"
+#include "error.h"
 #include "parser/parser.h"
 
 
@@ -25,6 +25,6 @@ int main(int argc, char *argv[])
     InitScanner();
     InitParser();
     yyparse();
-    return (ReportError::NumErrors() == 0 ? 0 : -1);
+    return (Error::NumErrors() == 0 ? 0 : -1);
 }
 

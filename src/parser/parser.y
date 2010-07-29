@@ -24,7 +24,7 @@ using Simone::Deque;
 #include "parser.h"
 #include "scanner.h" /* for yylex */
 
-#include "errors.h"
+#include "error.h"
 #include "../utility.h"
 
 /* standard error-handling routine */

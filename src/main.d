@@ -1,4 +1,4 @@
-main.o: main.cpp utility.h errors.h lex_loc.h parser/parser.h \
+main.o: main.cpp utility.h error.h lex_loc.h parser/parser.h \
   parser/scanner.h ast.h ast/identifier.h simone/ptr_interface.h \
   simone/exception.h simone/ptr.h lex_loc.h ast/node.h simone/utility.h \
   ast/ast_fwd_declarations.h ast/operator.h ast/program.h simone/deque.h \
@@ -55,7 +55,7 @@ main.o: main.cpp utility.h errors.h lex_loc.h parser/parser.h \
 
 utility.h:
 
-errors.h:
+error.h:
 
 lex_loc.h:
 

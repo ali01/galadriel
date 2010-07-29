@@ -1,4 +1,4 @@
-parser/lex.yy.o: parser/lex.yy.c parser/scanner.h utility.h errors.h \
+parser/lex.yy.o: parser/lex.yy.c parser/scanner.h utility.h error.h \
   lex_loc.h parser/parser.h ast.h ast/identifier.h simone/ptr_interface.h \
   simone/exception.h simone/ptr.h lex_loc.h ast/node.h simone/utility.h \
   ast/ast_fwd_declarations.h ast/operator.h ast/program.h simone/deque.h \
@@ -57,7 +57,7 @@ parser/scanner.h:
 
 utility.h:
 
-errors.h:
+error.h:
 
 lex_loc.h:
 

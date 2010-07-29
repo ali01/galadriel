@@ -8,7 +8,7 @@
 #include <string.h>
 #include "scanner.h"
 #include "utility.h" // for PrintDebug()
-#include "errors.h"
+#include "error.h"
 #include "parser.h" // for token codes, yylval
 #include <vector>
 using namespace std;
@@ -74,7 +74,7 @@ SINGLE_COMMENT    ("//"[^\n]*)
  /* -------------------- Comments ----------------------------- */
 {BEG_COMMENT}          { BEGIN(COMM); }
 <COMM>{END_COMMENT}    { BEGIN(N); }
-<COMM><<EOF>>          { ReportError::UntermComment();
+<COMM><<EOF>>          { Error::UntermComment();
                          return 0; }
 <COMM>.                { /* ignore everything else that doesn't match */ }
 {SINGLE_COMMENT}       { /* skip to end of line for // comment */ }
@@ -127,19 +127,19 @@ SINGLE_COMMENT    ("//"[^\n]*)
                          return T_DoubleConstant; }
 {STRING}            { yylval.str_const = strdup(yytext); 
                          return T_StringConstant; }
-{BEG_STRING}        { ReportError::UntermString(&yylloc, yytext); }
+{BEG_STRING}        { Error::UntermString(&yylloc, yytext); }
 
 
  /* -------------------- Identifiers --------------------------- */
 {IDENTIFIER}        { if (strlen(yytext) > kMaxIdentifierLength)
-                         ReportError::LongIdentifier(&yylloc, yytext);
+                         Error::LongIdentifier(&yylloc, yytext);
                        strncpy(yylval.ident, yytext, kMaxIdentifierLength);
                        yylval.ident[kMaxIdentifierLength] = '\0';
                        return T_Identifier; }
 
 
  /* -------------------- Default rule (error) -------------------- */
-.                   { ReportError::UnrecogChar(&yylloc, yytext[0]); }
+.                   { Error::UnrecogChar(&yylloc, yytext[0]); }
 
 %%
 
