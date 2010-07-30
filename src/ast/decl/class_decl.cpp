@@ -14,5 +14,5 @@ ClassDecl::ClassDecl(Identifier::Ptr name, NamedType::Ptr extends,
   Decl(name), base_class_(extends), interfaces_(implements), members_(members)
 {
   /* extends can be NULL, impl & mem may be empty lists but cannot be NULL */
-  assert(interfaces_);
+  assert(interfaces_ != NULL);
 }

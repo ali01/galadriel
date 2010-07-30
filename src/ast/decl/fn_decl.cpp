@@ -43,7 +43,16 @@ FnDecl::body() const {
 }
 
 bool
-FnDecl::operator==(const FnDecl&) const {
-  // TODO
+FnDecl::operator==(const FnDecl& _o) const {
+  if (*return_type_ != *_o.return_type_)
+    return false;
+
+  if (formals_->size() != _o.formals_->size())
+    return false;
+
+  // for (int i = 0; i < formals_->size(); ++i) {
+  //   
+  // }
+
   return true;
 }

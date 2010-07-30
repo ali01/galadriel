@@ -22,6 +22,33 @@ Type::Ptr Type::kVoid   = Type::TypeNew("void");
 Type::Ptr Type::kNull   = Type::TypeNew("null");
 Type::Ptr Type::kError  = Type::TypeNew("error");
 
+/* protected constructors */
+Type::Type(yyltype loc, const string& str) : 
+  Node(loc), type_name_(str)
+{
+  eq_functor_ = TypeEqualityFunctor::TypeEqualityFunctorNew(this);
+}
+
+Type::Type(yyltype loc) : Node(loc) {
+  eq_functor_ = TypeEqualityFunctor::TypeEqualityFunctorNew(this);
+}
+
+/* private constructor */
+Type::Type(const string& str) : Node(), type_name_(str) {
+  eq_functor_ = TypeEqualityFunctor::TypeEqualityFunctorNew(this);
+}
+
+bool
+Type::operator==(const Type& _o) const {
+  /* operator== is logically const;
+     eq_functor_ implemented in type.h doesn't modify the object */
+  Type &o_mutable = const_cast<Type&>(_o);
+
+  o_mutable.apply(eq_functor_);
+  return eq_functor_->equal();
+}
+
+
 ostream&
 operator<<(ostream& out, Type *t) {
   out << t->name();

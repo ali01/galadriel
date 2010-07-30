@@ -27,9 +27,9 @@ FieldAccessExpr::FieldAccessExpr(yyltype loc) :
 
 
 FieldAccessExpr::FieldAccessExpr(Expr::Ptr b, Identifier::Ptr f) :
-  LValueExpr(b ?  Join(b->lexLoc(), f->lexLoc()) : *f->lexLoc()),
+  LValueExpr(b != NULL ?  Join(b->lexLoc(), f->lexLoc()) : *f->lexLoc()),
   base_(b), field_(f), field_type_(NULL)
 {
   /* b can be null (just means no explicit base) */
-  assert(field_);
+  assert(field_ != NULL);
 }

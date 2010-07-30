@@ -92,7 +92,7 @@ Error::DeclConflict(Decl::PtrConst decl, Decl::PtrConst prevDecl) {
 void
 Error::OverrideMismatch(FnDecl::PtrConst fnDecl) {
   ostringstream s;
-  s << "Method '" << fnDecl << "' must match inherited type signature";
+  s << "Method '" << *fnDecl << "' must match inherited type signature";
   OutputError(fnDecl->lexLoc(), s.str());
 }
 

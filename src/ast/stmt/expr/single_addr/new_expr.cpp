@@ -19,5 +19,5 @@
 NewExpr::NewExpr(yyltype loc, NamedType::Ptr class_type) :
   SingleAddrExpr(loc), type_(class_type)
 {
-  assert(type_);
+  assert(type_ != NULL);
 }

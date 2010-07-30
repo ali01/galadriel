@@ -31,19 +31,6 @@ Scanning: samples/bad5.decaf
 Scanning: samples/bad2.decaf
 Scanning: samples/t8.decaf
 Scanning: samples/badoverride5.decaf
-##############################################################################
-#################    * Failed: samples/badoverride5.decaf    #################
-##############################################################################
---- samples/badoverride5.test 
-+++ samples/badoverride5.out 
-@@ -1,0 +1,6 @@
-+
-+*** Error line 5.
-+	double TapDance(int a, double b) {}
-+               ^^^^^^^^
-+*** Method 'TapDance' must match inherited type signature
-+
-##################    End of samples/badoverride5.decaf    ###################
 Scanning: samples/0-t9.decaf
 Scanning: samples/t9.decaf
 Scanning: samples/badoverride1.decaf
@@ -68,13 +55,11 @@ Scanning: samples/bad6.decaf
 ##############################################################################
 --- samples/bad6.test 
 +++ samples/bad6.out 
-@@ -1,0 +1,12 @@
-+
-+*** Error line 4.
-+    int Method2(int[] a, Base c, double d) {}
-+        ^^^^^^^
-+*** Method 'Method2' must match inherited type signature
-+
+@@ -3,4 +3,10 @@
+     int Method2(int[] a, Base c, double d) {}
+         ^^^^^^^
+ *** Method 'Method2' must match inherited type signature
+ 
 +
 +*** Error line 11.
 +    void Method3(bool a) {}
@@ -89,13 +74,11 @@ Scanning: samples/badoverride7.decaf
 ##############################################################################
 --- samples/badoverride7.test 
 +++ samples/badoverride7.out 
-@@ -1,0 +1,12 @@
-+
-+*** Error line 7.
-+	void method1(int a) {}
-+             ^^^^^^^
-+*** Method 'method1' must match inherited type signature
-+
+@@ -3,4 +3,10 @@
+ 	void method1(int a) {}
+              ^^^^^^^
+ *** Method 'method1' must match inherited type signature
+ 
 +
 +*** Error line 8.
 +	void method2(string a, int b) {}
@@ -125,29 +108,25 @@ Scanning: samples/bad7.decaf
 +
 ######################    End of samples/bad7.decaf    #######################
 Scanning: samples/override4.decaf
+##############################################################################
+##################    * Failed: samples/override4.decaf    ###################
+##############################################################################
+--- samples/override4.test 
++++ samples/override4.out 
+@@ -1,6 +1,0 @@
+-
+-*** Error line 7.
+-  int[][] binky(double[] m, string s) {}
+-          ^^^^^
+-*** Method 'binky' must match inherited type signature
+-
+####################    End of samples/override4.decaf    ####################
 Scanning: samples/field-access.decaf
 Scanning: samples/t5.decaf
 Scanning: samples/decl4.decaf
 Scanning: samples/decl1.decaf
 Scanning: samples/badscope7.decaf
 Scanning: samples/bad9.decaf
-##############################################################################
-#####################    * Failed: samples/bad9.decaf    #####################
-##############################################################################
---- samples/bad9.test 
-+++ samples/bad9.out 
-@@ -3,4 +3,10 @@
-   void root() {
-        ^^^^
- *** Declaration of 'root' here conflicts with declaration on line 10
- 
-+
-+*** Error line 15.
-+  bool IsRipe(int weight, double weather) {
-+       ^^^^^^
-+*** Method 'IsRipe' must match inherited type signature
-+
-######################    End of samples/bad9.decaf    #######################
 Scanning: samples/badoverride2.decaf
 Scanning: samples/t2.decaf
 Scanning: samples/baddecl3.decaf
@@ -162,13 +141,11 @@ Scanning: samples/badoverride6.decaf
 ##############################################################################
 --- samples/badoverride6.test 
 +++ samples/badoverride6.out 
-@@ -1,0 +1,18 @@
-+
-+*** Error line 8.
-+	double[] Binky() {}
-+                 ^^^^^
-+*** Method 'Binky' must match inherited type signature
-+
+@@ -3,4 +3,16 @@
+ 	double[] Binky() {}
+                  ^^^^^
+ *** Method 'Binky' must match inherited type signature
+ 
 +
 +*** Error line 9.
 +	void Dinky(double[][] a) {}
@@ -249,25 +226,6 @@ Scanning: samples/badscope1.decaf
 Scanning: samples/scope1.decaf
 Scanning: samples/baddecl6.decaf
 Scanning: samples/badoverride3.decaf
-##############################################################################
-#################    * Failed: samples/badoverride3.decaf    #################
-##############################################################################
---- samples/badoverride3.test 
-+++ samples/badoverride3.out 
-@@ -1,0 +1,12 @@
-+
-+*** Error line 8.
-+	void IsNot() {}
-+             ^^^^^
-+*** Method 'IsNot' must match inherited type signature
-+
-+
-+*** Error line 7.
-+	bool IsRipe(int weight, double weather) {}
-+             ^^^^^^
-+*** Method 'IsRipe' must match inherited type signature
-+
-##################    End of samples/badoverride3.decaf    ###################
 Scanning: samples/bad4.decaf
 ##############################################################################
 #####################    * Failed: samples/bad4.decaf    #####################

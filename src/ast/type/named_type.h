@@ -27,6 +27,22 @@ public:
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 protected:
+  class NamedTypeEqualityFunctor : public Type::TypeEqualityFunctor {
+    public:
+      typedef Simone::Ptr<const NamedTypeEqualityFunctor> PtrConst;
+      typedef Simone::Ptr<NamedTypeEqualityFunctor> Ptr;
+
+      static Ptr NamedTypeEqualityFunctorNew(NamedType::Ptr _type) {
+        return new NamedTypeEqualityFunctor(_type);
+      }
+
+      void operator()(Type *_o) { equal_ = false; }
+      void operator()(NamedType *_o);
+    
+    private:
+      NamedTypeEqualityFunctor(NamedType::Ptr _type);
+  };
+  
   /* data members */
   Simone::Ptr<Identifier> id_;
 };

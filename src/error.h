@@ -126,7 +126,6 @@ private:
   static void UnderlineErrorInLine(const char *line, yyltype *pos);
   static void OutputError(yyltype *loc, string msg);
 
-  // TODO: differentiate between syntax and semantic errors
   static int numErrors;
 };
 
