@@ -46,22 +46,45 @@ SemanticAnalyser::NodeFunctor::operator()(FnDecl *nd) {
 
 void
 SemanticAnalyser::NodeFunctor::operator()(ClassDecl *nd) {
-  NamedType::Ptr base_class_type = nd->baseClass();
-  if (base_class_type != NULL) {
-    /* obtain class's parent-scope (i.e. the global scope) */
-    Scope::Ptr scope = nd->scope();
-    Scope::PtrConst parent_scope = scope->parentScope();
+  assert(nd != NULL);
 
-    /* search for base class identifier in parent scope */
-    Identifier::Ptr base_id = base_class_type->identifier();
-    ClassDecl::PtrConst base_decl = parent_scope->classDecl(base_id);
+  Identifier::Ptr base_id;
 
-    if (base_decl != NULL) {
-      /* inherit from base scope */
-      Scope::PtrConst base_scope = base_decl->scope();
-      scope->baseScopeIs(base_scope);
-    } else {
-      Error::IdentifierNotDeclared(base_id, kLookingForClass);
+  /* obtain class's parent-scope (i.e. the global scope) */
+  Scope::Ptr scope = nd->scope();
+  Scope::PtrConst parent_scope = scope->parentScope();
+
+  {
+    NamedType::Ptr base_class_type = nd->baseClass();
+    if (base_class_type != NULL) {
+      /* search for base class identifier in parent scope */
+      base_id = base_class_type->identifier();
+      ClassDecl::PtrConst base_decl = parent_scope->classDecl(base_id);
+
+      if (base_decl != NULL) {
+        /* inherit from base scope */
+        Scope::PtrConst base_scope = base_decl->scope();
+        scope->baseScopeIs(base_scope);
+      } else {
+        Error::IdentifierNotDeclared(base_id, kLookingForClass);
+      }
+    }
+  }
+
+  {
+    ClassDecl::const_intf_iter it = nd->interfacesBegin();
+    NamedType::Ptr intf_type;
+    for (; it != nd->interfacesEnd(); ++it) {
+      intf_type = *it;
+      base_id = intf_type->identifier();
+      InterfaceDecl::PtrConst intf_decl = parent_scope->interfaceDecl(base_id);
+      
+      if (intf_decl != NULL) {
+        Scope::PtrConst intf_scope = intf_decl->scope();
+        scope->baseScopeIs(intf_scope);
+      } else {
+        Error::IdentifierNotDeclared(base_id, kLookingForInterface);
+      }
     }
   }
 

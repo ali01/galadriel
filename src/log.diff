@@ -185,38 +185,8 @@ Scanning: samples/badoverride6.decaf
 Scanning: samples/1-t8.decaf
 Scanning: samples/decl5.decaf
 Scanning: samples/baddecl8.decaf
-##############################################################################
-###################    * Failed: samples/baddecl8.decaf    ###################
-##############################################################################
---- samples/baddecl8.test 
-+++ samples/baddecl8.out 
-@@ -3,4 +3,10 @@
- class A extends function implements gVar {
-                 ^^^^^^^^
- *** No declaration found for class 'function'
- 
-+
-+*** Error line 4.
-+class A extends function implements gVar {
-+                                    ^^^^
-+*** No declaration found for interface 'gVar'
-+
-####################    End of samples/baddecl8.decaf    #####################
 Scanning: samples/matrix.decaf
 Scanning: samples/baddecl4.decaf
-##############################################################################
-###################    * Failed: samples/baddecl4.decaf    ###################
-##############################################################################
---- samples/baddecl4.test 
-+++ samples/baddecl4.out 
-@@ -1,0 +1,6 @@
-+
-+*** Error line 1.
-+class Binky implements Missing {}
-+                       ^^^^^^^
-+*** No declaration found for interface 'Missing'
-+
-####################    End of samples/baddecl4.decaf    #####################
 Scanning: samples/decl2.decaf
 Scanning: samples/scope2.decaf
 Scanning: samples/badscope2.decaf
@@ -241,26 +211,13 @@ Scanning: samples/baddecl2.decaf
 +
 ####################    End of samples/baddecl2.decaf    #####################
 Scanning: samples/baddecl7.decaf
-##############################################################################
-###################    * Failed: samples/baddecl7.decaf    ###################
-##############################################################################
---- samples/baddecl7.test 
-+++ samples/baddecl7.out 
-@@ -1,0 +1,6 @@
-+
-+*** Error line 2.
-+class Winky implements Binky {}
-+                       ^^^^^
-+*** No declaration found for interface 'Binky'
-+
-####################    End of samples/baddecl7.decaf    #####################
 Scanning: samples/bad3.decaf
 ##############################################################################
 #####################    * Failed: samples/bad3.decaf    #####################
 ##############################################################################
 --- samples/bad3.test 
 +++ samples/bad3.out 
-@@ -1,6 +1,18 @@
+@@ -1,4 +1,10 @@
 +
 +*** Error line 1.
 +void Mystery(Unknown a) {}
@@ -271,14 +228,6 @@ Scanning: samples/bad3.decaf
  *** Error line 3.
  class Trouble extends Missing implements Gone
                        ^^^^^^^
- *** No declaration found for class 'Missing'
- 
-+
-+*** Error line 3.
-+class Trouble extends Missing implements Gone
-+                                         ^^^^
-+*** No declaration found for interface 'Gone'
-+
 ######################    End of samples/bad3.decaf    #######################
 Scanning: samples/scope3.decaf
 Scanning: samples/badoverride4.decaf

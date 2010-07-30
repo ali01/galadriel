@@ -26,6 +26,9 @@ public:
   typedef Deque<Decl::Ptr>::const_iterator const_member_iter;
   typedef Deque<Decl::Ptr>::iterator member_iter;
 
+  typedef Deque<NamedType::Ptr>::const_iterator const_intf_iter;
+  typedef Deque<NamedType::Ptr>::iterator intf_iter;
+
   static Ptr ClassDeclNew(Identifier::Ptr name, NamedType::Ptr extends,
                           Deque<NamedType::Ptr>::Ptr implements,
                           Deque<Decl::Ptr>::Ptr members) {
@@ -45,6 +48,13 @@ public:
   member_iter membersEnd() { return members_->end(); }
 
 
+  const_intf_iter interfacesBegin() const { return interfaces_->begin(); }
+  intf_iter interfacesBegin() { return interfaces_->begin(); }
+
+  const_intf_iter interfacesEnd() const { return interfaces_->end(); }
+  intf_iter interfacesEnd() { return interfaces_->end(); }
+
+
   /* attribute member functions */
   NamedType::Ptr baseClass() const { return base_class_; }
 
@@ -54,7 +64,7 @@ public:
 private:
   /* data members */
   NamedType::Ptr base_class_;
-  Deque<NamedType::Ptr>::Ptr implements;
+  Deque<NamedType::Ptr>::Ptr interfaces_;
   Deque<Decl::Ptr>::Ptr members_;
 
   /* operations disallowed */
