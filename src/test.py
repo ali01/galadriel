@@ -66,7 +66,7 @@ class Apter:
         failed = 0
 
         for src_filename in self.__file_comparison_dict:
-            self.log("Scanning: " + src_filename, stdout=True)
+            self.log("scanning: " + src_filename, stdout=True)
             test_filename = self.run(src_filename)
             out_filename = self.__file_comparison_dict[src_filename]
 
@@ -78,15 +78,14 @@ class Apter:
             failed += 1
 
             df = diff(test_filename, out_filename)
-            self.log("* Failed: " + src_filename, emphasis=2, stdout=True)
+            self.log("* failed: " + src_filename, emphasis=2, stdout=True)
             self.__logfile.writelines(df)
             self.log("End of " + src_filename, emphasis=1, divider=False)
 
         if (failed == 0):
             self.log("\nAll tests were succesful", emphasis=2, stdout=True)
         else:
-            print("\nTesting complete")
-            print(  "Failed tests:", failed)
+            print(  "\nFailed:", failed)
             print(  "See", self.__logfile.name)
 
 
