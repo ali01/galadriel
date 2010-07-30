@@ -48,14 +48,20 @@ void
 SemanticAnalyser::NodeFunctor::operator()(ClassDecl *nd) {
   NamedType::Ptr base_class_type = nd->baseClass();
   if (base_class_type != NULL) {
+    /* obtain class's parent-scope (i.e. the global scope) */
     Scope::Ptr scope = nd->scope();
-    Identifier::Ptr id = base_class_type->identifier();
-    Decl::PtrConst class_decl = scope->decl(id);
-    
-    if (class_decl != NULL) {
-      
+    Scope::PtrConst parent_scope = scope->parentScope();
+
+    /* search for base class identifier in parent scope */
+    Identifier::Ptr base_id = base_class_type->identifier();
+    ClassDecl::PtrConst base_decl = parent_scope->classDecl(base_id);
+
+    if (base_decl != NULL) {
+      /* inherit from base scope */
+      Scope::PtrConst base_scope = base_decl->scope();
+      scope->baseScopeIs(base_scope);
     } else {
-      Error::IdentifierNotDeclared(id, kLookingForClass);
+      Error::IdentifierNotDeclared(base_id, kLookingForClass);
     }
   }
 

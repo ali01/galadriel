@@ -1,7 +1,4 @@
 
-*** Warning: Corresponding '.out' file for item 'samples/0-override.decaf' does not exist in input directory 'samples'
-
-
 *** Warning: Corresponding '.out' file for item 'samples/0-t9.decaf' does not exist in input directory 'samples'
 
 
@@ -50,19 +47,6 @@ Scanning: samples/badoverride5.decaf
 Scanning: samples/0-t9.decaf
 Scanning: samples/t9.decaf
 Scanning: samples/badoverride1.decaf
-##############################################################################
-#################    * Failed: samples/badoverride1.decaf    #################
-##############################################################################
---- samples/badoverride1.test 
-+++ samples/badoverride1.out 
-@@ -1,0 +1,6 @@
-+
-+*** Error line 10.
-+   int SUID;
-+       ^^^^
-+*** Declaration of 'SUID' here conflicts with declaration on line 4
-+
-##################    End of samples/badoverride1.decaf    ###################
 Scanning: samples/declconflict.decaf
 Scanning: samples/baddecl5.decaf
 ##############################################################################
@@ -121,46 +105,6 @@ Scanning: samples/badoverride7.decaf
 ##################    End of samples/badoverride7.decaf    ###################
 Scanning: samples/override5.decaf
 Scanning: samples/context.decaf
-##############################################################################
-###################    * Failed: samples/context.decaf    ####################
-##############################################################################
---- samples/context.test 
-+++ samples/context.out 
-@@ -1,16 +1,4 @@
--
--*** Error line 2.
--double gVar;
--       ^^^^
--*** Declaration of 'gVar' here conflicts with declaration on line 1
--
--
--*** Error line 12.
--   Animal {}
--   ^^^^^^
--*** Declaration of 'Animal' here conflicts with declaration on line 5
--
- 
- *** Error line 19.
- int b
-     ^
-@@ -27,4 +15,16 @@
- 	double c;
-                ^
- *** Declaration of 'c' here conflicts with declaration on line 30
- 
-+
-+*** Error line 2.
-+double gVar;
-+       ^^^^
-+*** Declaration of 'gVar' here conflicts with declaration on line 1
-+
-+
-+*** Error line 12.
-+   Animal {}
-+   ^^^^^^
-+*** Declaration of 'Animal' here conflicts with declaration on line 5
-+
-#####################    End of samples/context.decaf    #####################
 Scanning: samples/0-t8.decaf
 Scanning: samples/bad7.decaf
 ##############################################################################
@@ -205,25 +149,6 @@ Scanning: samples/bad9.decaf
 +
 ######################    End of samples/bad9.decaf    #######################
 Scanning: samples/badoverride2.decaf
-##############################################################################
-#################    * Failed: samples/badoverride2.decaf    #################
-##############################################################################
---- samples/badoverride2.test 
-+++ samples/badoverride2.out 
-@@ -1,0 +1,12 @@
-+
-+*** Error line 7.
-+  bool root;
-+       ^^^^
-+*** Declaration of 'root' here conflicts with declaration on line 3
-+
-+
-+*** Error line 8.
-+  void stalk() {}
-+       ^^^^^
-+*** Declaration of 'stalk' here conflicts with declaration on line 2
-+
-##################    End of samples/badoverride2.decaf    ###################
 Scanning: samples/t2.decaf
 Scanning: samples/baddecl3.decaf
 Scanning: samples/t1.decaf
@@ -265,13 +190,11 @@ Scanning: samples/baddecl8.decaf
 ##############################################################################
 --- samples/baddecl8.test 
 +++ samples/baddecl8.out 
-@@ -1,0 +1,12 @@
-+
-+*** Error line 4.
-+class A extends function implements gVar {
-+                ^^^^^^^^
-+*** No declaration found for class 'function'
-+
+@@ -3,4 +3,10 @@
+ class A extends function implements gVar {
+                 ^^^^^^^^
+ *** No declaration found for class 'function'
+ 
 +
 +*** Error line 4.
 +class A extends function implements gVar {
@@ -376,19 +299,6 @@ Scanning: samples/t4.decaf
 Scanning: samples/badscope1.decaf
 Scanning: samples/scope1.decaf
 Scanning: samples/baddecl6.decaf
-##############################################################################
-###################    * Failed: samples/baddecl6.decaf    ###################
-##############################################################################
---- samples/baddecl6.test 
-+++ samples/baddecl6.out 
-@@ -1,0 +1,6 @@
-+
-+*** Error line 2.
-+class Binky extends Winky {}
-+                    ^^^^^
-+*** No declaration found for class 'Winky'
-+
-####################    End of samples/baddecl6.decaf    #####################
 Scanning: samples/badoverride3.decaf
 ##############################################################################
 #################    * Failed: samples/badoverride3.decaf    #################
@@ -455,23 +365,6 @@ Scanning: samples/baddecl1.decaf
 +
 ####################    End of samples/baddecl1.decaf    #####################
 Scanning: samples/bad8.decaf
-##############################################################################
-#####################    * Failed: samples/bad8.decaf    #####################
-##############################################################################
---- samples/bad8.test 
-+++ samples/bad8.out 
-@@ -3,4 +3,10 @@
-    bool f(int[] a) {}
-         ^
- *** Declaration of 'f' here conflicts with declaration on line 3
- 
-+
-+*** Error line 9.
-+   int a;
-+       ^
-+*** Declaration of 'a' here conflicts with declaration on line 2
-+
-######################    End of samples/bad8.decaf    #######################
 Scanning: samples/blackjack.decaf
 Scanning: samples/t7.decaf
 Scanning: samples/0-override.decaf

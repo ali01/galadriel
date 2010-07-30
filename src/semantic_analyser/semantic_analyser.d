@@ -52,7 +52,7 @@ semantic_analyser/semantic_analyser.o:  \
   ast/stmt/switch/switch_case_stmt.h ast/type/type.h \
   ast/type/array_type.h ast/type/type.h ast/type/named_type.h error.h \
   lex_loc.h scope_stack_builder.h ast.h scope_stack.h scope.h \
-  simone/map.h ast/decl/decl.h
+  simone/map.h ast/node.h ast/decl/decl.h
 
 semantic_analyser/semantic_analyser.h:
 
@@ -239,5 +239,7 @@ scope_stack.h:
 scope.h:
 
 simone/map.h:
+
+ast/node.h:
 
 ast/decl/decl.h:

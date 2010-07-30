@@ -47,6 +47,11 @@ public:
 
   void bodyIs(Simone::Ptr<StmtBlock> b);
 
+
+  /* overloaded operators */
+  bool operator==(const FnDecl& _o) const;
+  bool operator!=(const FnDecl& _o) const { return !(*this == _o); }
+
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 

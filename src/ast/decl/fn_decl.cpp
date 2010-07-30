@@ -41,3 +41,9 @@ StmtBlock::Ptr
 FnDecl::body() const {
   return body_;
 }
+
+bool
+FnDecl::operator==(const FnDecl&) const {
+  // TODO
+  return true;
+}

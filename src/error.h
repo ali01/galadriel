@@ -29,6 +29,7 @@ class BreakStmt;
 class ReturnStmt;
 class ThisExpr;
 class Decl;
+class FnDecl;
 class Operator;
 
 /* General notes on using this class
@@ -72,7 +73,7 @@ public:
   static void DeclConflict(Simone::Ptr<const Decl> newDecl,
                            Simone::Ptr<const Decl> prevDecl);
 
-  static void OverrideMismatch(Decl *fnDecl);
+  static void OverrideMismatch(Simone::Ptr<const FnDecl> fnDecl);
   static void InterfaceNotImplemented(Decl *classDecl, Type *intfType);
 
 
