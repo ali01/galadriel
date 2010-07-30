@@ -79,5 +79,6 @@ class SwitchCaseStmt;
 
 class Type;
 class NamedType;
+class ArrayType;
 
 #endif

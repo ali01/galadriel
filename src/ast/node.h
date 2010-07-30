@@ -36,8 +36,6 @@
 #include "ast_fwd_declarations.h"
 
 /* forward declarations */
-class Decl;
-class Stmt;
 class Scope;
 struct yyltype;
 
@@ -135,11 +133,9 @@ public:
     /* -- type -- */
 
     virtual void operator()(Type *) {}
-
-    /* type/named */
     virtual void operator()(NamedType *) {}
+    virtual void operator()(ArrayType *) {}
   };
-
 
   /* -- pure virtual interface -- */
 

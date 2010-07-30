@@ -62,7 +62,8 @@ private:
   Simone::Ptr<StmtBlock> body_;
   
   /* operations disallowed */
-  // TODO
+  FnDecl(const FnDecl&);
+  void operator=(const FnDecl&);
 };
 
 #endif

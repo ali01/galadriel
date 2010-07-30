@@ -50,9 +50,13 @@ FnDecl::operator==(const FnDecl& _o) const {
   if (formals_->size() != _o.formals_->size())
     return false;
 
-  // for (int i = 0; i < formals_->size(); ++i) {
-  //   
-  // }
+  Type::PtrConst lhs_type, rhs_type;
+  for (int i = 0; i < formals_->size(); ++i) {
+    lhs_type = (*formals_)[i]->type();
+    rhs_type = (*_o.formals_)[i]->type();
+    if (*lhs_type != *rhs_type)
+      return false;
+  }
 
   return true;
 }

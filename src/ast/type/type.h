@@ -58,6 +58,7 @@ protected:
 
       void operator()(Type *_o) { equal_ = type_.ptr() == _o; }
       void operator()(NamedType *_o) { equal_ = false; }
+      void operator()(ArrayType *_o) { equal_ = false; }
 
       bool equal() const { return equal_; }
 

@@ -46,7 +46,7 @@
 
 /* ast/type includes */
 #include "ast/type/type.h"
-#include "ast/type/array_type.h"
 #include "ast/type/named_type.h"
+#include "ast/type/array_type.h"
 
 #endif
