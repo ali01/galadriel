@@ -46,13 +46,14 @@ public:
 
 
   /* attribute member functions */
+  NamedType::Ptr baseClass() const { return base_class_; }
 
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
   /* data members */
-  NamedType::Ptr extends;
+  NamedType::Ptr base_class_;
   Deque<NamedType::Ptr>::Ptr implements;
   Deque<Decl::Ptr>::Ptr members_;
 

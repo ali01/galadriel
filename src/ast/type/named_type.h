@@ -4,11 +4,10 @@
 /* simone includes */
 #include <simone/ptr_interface.h>
 
-/* ast includes */
-#include "../identifier.h"
-
 /* ast/type includes */
 #include "../type/type.h"
+
+class Identifier;
 
 class NamedType : public Type  {
 public:
@@ -21,12 +20,15 @@ public:
 
   NamedType(Simone::Ptr<Identifier> i);
 
+  /* attribute member functions */
+  Simone::Ptr<Identifier> identifier() const;
+
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 protected:
   /* data members */
-  Simone::Ptr<Identifier> id;
+  Simone::Ptr<Identifier> id_;
 };
 
 #endif

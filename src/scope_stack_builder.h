@@ -39,8 +39,6 @@ public:
 
       void operator()(FnDecl *);
       void operator()(VarDecl *);
-
-      /* decl/object */
       void operator()(ClassDecl *);
       void operator()(InterfaceDecl *);
 
@@ -71,14 +69,6 @@ public:
 
 private:
   ScopeStackBuilder(Program::Ptr _program);
-
-  /* -- private functions -- */
-
-  /* should only be called on Decl nodes that own their own scope;
-     (e.g. ClassDecl, FnDecl, but not VarDecl) */
-  static void transition_into_decl_block_scope(Decl *decl,
-                                               Scope::Ptr parent_scope,
-                                               Scope::Ptr scope);
 
   /* data members */
   ScopeStack::Ptr scope_stack_;

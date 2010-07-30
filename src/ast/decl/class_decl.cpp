@@ -11,7 +11,7 @@ using Simone::Deque;
 ClassDecl::ClassDecl(Identifier::Ptr name, NamedType::Ptr extends,
                      Deque<NamedType::Ptr>::Ptr implements,
                      Deque<Decl::Ptr>::Ptr members) :
-  Decl(name), extends(extends), implements(implements), members_(members)
+  Decl(name), base_class_(extends), implements(implements), members_(members)
 {
   /* extends can be NULL, impl & mem may be empty lists but cannot be NULL */
   assert(implements);

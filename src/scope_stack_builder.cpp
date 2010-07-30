@@ -38,12 +38,11 @@ void
 ScopeStackBuilder::NodeFunctor::operator()(FnDecl *nd) {
   /* FnDecl's context scope (i.e. class, interface or global scope) */
   Scope::Ptr parent_scope = scope_stack_->scope();
+  parent_scope->declIs(nd);
 
   /* FnDecl's parameter level scope (independent copy) */
   Scope::Ptr scope = scope_stack_->scopeNew();
-
-  ScopeStackBuilder::transition_into_decl_block_scope(nd, parent_scope, scope);
-
+  nd->scopeIs(scope);
 
   VarDecl::Ptr decl;
   FnDecl::const_formal_iter it = nd->formalsBegin();
@@ -68,11 +67,11 @@ void
 ScopeStackBuilder::NodeFunctor::operator()(ClassDecl *nd) {
   /* Class's context scope (i.e. global scope) */
   Scope::Ptr parent_scope = scope_stack_->scope();
+  parent_scope->declIs(nd);
 
   /* Class's own scope (independent copy) */
   Scope::Ptr scope = scope_stack_->scopeNew();
-
-  ScopeStackBuilder::transition_into_decl_block_scope(nd, parent_scope, scope);
+  nd->scopeIs(scope);
 
   Decl::Ptr decl;
   ClassDecl::const_member_iter it = nd->membersBegin();
@@ -89,11 +88,11 @@ void
 ScopeStackBuilder::NodeFunctor::operator()(InterfaceDecl *nd) {
   /* Interface's context scope (i.e. global scope) */
   Scope::Ptr parent_scope = scope_stack_->scope();
+  parent_scope->declIs(nd);
 
   /* Interface's own scope (independent copy) */
   Scope::Ptr scope = scope_stack_->scopeNew();
-
-  ScopeStackBuilder::transition_into_decl_block_scope(nd, parent_scope, scope);
+  nd->scopeIs(scope);
 
   FnDecl::Ptr fn_decl;
   InterfaceDecl::const_member_iter it = nd->membersBegin();
@@ -202,19 +201,4 @@ ScopeStackBuilder::NodeFunctor::operator()(SwitchCaseStmt *nd) {
     stmt = *it;
     stmt->apply(this);
   }
-}
-
-
-/* -- private functions -- */
-
-void
-ScopeStackBuilder::transition_into_decl_block_scope(Decl *decl,
-                                                    Scope::Ptr parent_scope,
-                                                    Scope::Ptr scope) {
-  /* add declaration's identifier to parent scope */
-  parent_scope->declIs(decl);
-
-  /* Decl owns its scope;
-     replace scope object with independent copy */
-  decl->scopeIs(scope);
 }

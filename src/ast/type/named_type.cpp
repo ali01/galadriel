@@ -7,7 +7,12 @@
 #include "../identifier.h"
 
 NamedType::NamedType(Identifier::Ptr i) :
-  Type(*i->lexLoc(), i->name()), id(i)
+  Type(*i->lexLoc(), i->name()), id_(i)
 {
-  assert(id);
+  assert(id_);
+}
+
+Simone::Ptr<Identifier>
+NamedType::identifier() const {
+  return id_;
 }

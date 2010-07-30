@@ -105,14 +105,14 @@ Error::InterfaceNotImplemented(Decl *cd, Type *interfaceType) {
 }
 
 void
-Error::IdentifierNotDeclared(Identifier *ident, reasonT whyNeeded) {
+Error::IdentifierNotDeclared(Identifier::PtrConst ident, reasonT whyNeeded) {
   ostringstream s;
   static const char *names[] = {
     "type", "class", "interface", "variable", "function"
   };
 
   assert(whyNeeded >= 0 && whyNeeded <= sizeof(names)/sizeof(names[0]));
-  s << "No declaration found for "<< names[whyNeeded] << " '" << ident << "'";
+  s << "No declaration found for "<< names[whyNeeded] << " '" << *ident << "'";
   OutputError(ident->lexLoc(), s.str());
 }
 

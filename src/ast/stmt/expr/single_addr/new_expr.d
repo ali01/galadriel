@@ -12,7 +12,6 @@ ast/stmt/expr/single_addr/new_expr.o:  \
   ast/stmt/expr/single_addr/../../../decl/../identifier.h \
   ast/stmt/expr/single_addr/../../../decl/../node.h \
   ast/stmt/expr/single_addr/../../../decl/../type/named_type.h \
-  ast/stmt/expr/single_addr/../../../decl/../type/../identifier.h \
   ast/stmt/expr/single_addr/../../../decl/../type/../type/type.h \
   ast/stmt/expr/single_addr/../../../decl/../type/../type/../node.h \
   ast/stmt/expr/single_addr/../../../decl/decl.h \
@@ -54,8 +53,6 @@ ast/stmt/expr/single_addr/../../../decl/../identifier.h:
 ast/stmt/expr/single_addr/../../../decl/../node.h:
 
 ast/stmt/expr/single_addr/../../../decl/../type/named_type.h:
-
-ast/stmt/expr/single_addr/../../../decl/../type/../identifier.h:
 
 ast/stmt/expr/single_addr/../../../decl/../type/../type/type.h:
 

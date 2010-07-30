@@ -51,11 +51,11 @@ class Operator;
  */
 
 typedef enum {
-	LookingForType,
-	LookingForClass,
-	LookingForInterface,
-	LookingForVariable,
-	LookingForFunction
+	kLookingForType,
+	kLookingForClass,
+	kLookingForInterface,
+	kLookingForVariable,
+	kLookingForFunction
 } reasonT;
 
 class Error {
@@ -77,7 +77,8 @@ public:
 
 
   /* Errors used by semantic analyzer for identifiers */
-  static void IdentifierNotDeclared(Identifier *ident, reasonT whyNeeded);
+  static void IdentifierNotDeclared(Simone::Ptr<const Identifier> ident,
+                                    reasonT whyNeeded);
 
 
   /* Errors used by semantic analyzer for expressions */

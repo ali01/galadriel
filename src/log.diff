@@ -1,4 +1,7 @@
 
+*** Warning: Corresponding '.out' file for item 'samples/0-override.decaf' does not exist in input directory 'samples'
+
+
 *** Warning: Corresponding '.out' file for item 'samples/0-t9.decaf' does not exist in input directory 'samples'
 
 
@@ -20,7 +23,7 @@ make: Nothing to be done for `all'.
 
 #########################    Compilation Complete    #########################
 ##############################################################################
-###########################    Running 63 tests    ###########################
+###########################    Running 64 tests    ###########################
 ##############################################################################
 Scanning: samples/t3.decaf
 Scanning: samples/badscope5.decaf
@@ -223,19 +226,6 @@ Scanning: samples/badoverride2.decaf
 ##################    End of samples/badoverride2.decaf    ###################
 Scanning: samples/t2.decaf
 Scanning: samples/baddecl3.decaf
-##############################################################################
-###################    * Failed: samples/baddecl3.decaf    ###################
-##############################################################################
---- samples/baddecl3.test 
-+++ samples/baddecl3.out 
-@@ -1,0 +1,6 @@
-+
-+*** Error line 1.
-+class Binky extends Missing {}
-+                    ^^^^^^^
-+*** No declaration found for class 'Missing'
-+
-####################    End of samples/baddecl3.decaf    #####################
 Scanning: samples/t1.decaf
 Scanning: samples/decl3.decaf
 Scanning: samples/t10.decaf
@@ -347,19 +337,19 @@ Scanning: samples/bad3.decaf
 ##############################################################################
 --- samples/bad3.test 
 +++ samples/bad3.out 
-@@ -1,0 +1,18 @@
+@@ -1,6 +1,18 @@
 +
 +*** Error line 1.
 +void Mystery(Unknown a) {}
 +             ^^^^^^^
 +*** No declaration found for type 'Unknown'
 +
-+
-+*** Error line 3.
-+class Trouble extends Missing implements Gone
-+                      ^^^^^^^
-+*** No declaration found for class 'Missing'
-+
+ 
+ *** Error line 3.
+ class Trouble extends Missing implements Gone
+                       ^^^^^^^
+ *** No declaration found for class 'Missing'
+ 
 +
 +*** Error line 3.
 +class Trouble extends Missing implements Gone
@@ -384,39 +374,6 @@ Scanning: samples/badoverride4.decaf
 ##################    End of samples/badoverride4.decaf    ###################
 Scanning: samples/t4.decaf
 Scanning: samples/badscope1.decaf
-##############################################################################
-##################    * Failed: samples/badscope1.decaf    ###################
-##############################################################################
---- samples/badscope1.test 
-+++ samples/badscope1.out 
-@@ -1,18 +1,18 @@
- 
--*** Error line 2.
--int gVar;
--    ^^^^
--*** Declaration of 'gVar' here conflicts with declaration on line 1
-+*** Error line 9.
-+    bool lVar2;
-+         ^^^^^
-+*** Declaration of 'lVar2' here conflicts with declaration on line 8
- 
- 
- *** Error line 6.
-   int lVar;
-       ^^^^
- *** Declaration of 'lVar' here conflicts with declaration on line 5
- 
- 
--*** Error line 9.
--    bool lVar2;
--         ^^^^^
--*** Declaration of 'lVar2' here conflicts with declaration on line 8
-+*** Error line 2.
-+int gVar;
-+    ^^^^
-+*** Declaration of 'gVar' here conflicts with declaration on line 1
- 
-####################    End of samples/badscope1.decaf    ####################
 Scanning: samples/scope1.decaf
 Scanning: samples/baddecl6.decaf
 ##############################################################################
@@ -517,5 +474,6 @@ Scanning: samples/bad8.decaf
 ######################    End of samples/bad8.decaf    #######################
 Scanning: samples/blackjack.decaf
 Scanning: samples/t7.decaf
+Scanning: samples/0-override.decaf
 Scanning: samples/override3.decaf
 Scanning: samples/scope4.decaf

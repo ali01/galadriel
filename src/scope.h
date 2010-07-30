@@ -22,42 +22,32 @@ class Scope : public Simone::PtrInterface<Scope> {
     }
   };
 
+  /* private iterator typedefs */
+  typedef
+    Map<Identifier::PtrConst,Decl::PtrConst,IdentifierCompare>::const_iterator
+    const_decl_iter;
+
+  typedef
+    Map<Identifier::PtrConst,Decl::PtrConst,IdentifierCompare>::iterator
+    decl_iter;
+
 public:
   typedef Simone::Ptr<const Scope> PtrConst;
   typedef Simone::Ptr<Scope> Ptr;
 
-  typedef   
-      Map<Identifier::PtrConst,Decl::PtrConst,IdentifierCompare>::const_iterator 
-      const_decl_iter;
-
-  typedef Map<Identifier::PtrConst,Decl::PtrConst,IdentifierCompare>::iterator 
-          decl_iter;
-
-  static Ptr ScopeNew() {
-    return new Scope();
-  }
-
   Decl::PtrConst decl(Identifier::PtrConst _id) const;
   void declIs(Decl::PtrConst _decl);
 
-  const_decl_iter declsBegin() const { return scope_.begin(); }
-  decl_iter declsBegin() { return scope_.begin(); }
-
-  const_decl_iter declsEnd() const { return scope_.end(); }
-  decl_iter declsEnd() { return scope_.end(); }
-
 protected:
-  Scope() {}
   ~Scope() {}
 
   /* data members */
   Map<Identifier::PtrConst,Decl::PtrConst,IdentifierCompare> scope_;
-  Map<Identifier::PtrConst,Decl::PtrConst,IdentifierCompare> local_scope_;
-  
+  Scope::PtrConst parent_scope_;
 
 private:
-  /* private copy constructor called by factory constructor in ScopeStack */
-  Scope(const Scope::Ptr& _scope);
+  /* private constructor called by factory constructor in ScopeStack */
+  explicit Scope(Scope::PtrConst _parent_scope);
 
   /* operations disallowed */
   Scope(const Scope&);
