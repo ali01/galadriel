@@ -42,12 +42,14 @@ SemanticAnalyser::NodeFunctor::operator()(FnDecl *nd) {
     decl->apply(this);
   }
 
-  StmtBlock::Ptr stmt_block = nd->body();
-
   /* stmt_block could be NULL in the case of a function prototype */
+  StmtBlock::Ptr stmt_block = nd->body();
   if (stmt_block != NULL) {
     stmt_block->apply(this);
   }
+
+  Type::Ptr return_type = nd->returnType();
+  return_type->apply(this);
 }
 
 void
