@@ -133,7 +133,6 @@ SemanticAnalyser::NodeFunctor::operator()(NamedType *nd) {
   /* named type identifier */
   Identifier::Ptr type_id = nd->identifier();
 
-  /* class declaration for named type */
   Scope::Ptr scope = nd->scope();
   ClassDecl::Ptr class_decl = scope->classDecl(type_id);
   if (class_decl == NULL) {
@@ -146,7 +145,8 @@ SemanticAnalyser::NodeFunctor::operator()(NamedType *nd) {
 
 void
 SemanticAnalyser::NodeFunctor::operator()(ArrayType *nd) {
-  
+  Type::Ptr type = nd->elemType();
+  type->apply(this);
 }
 
 

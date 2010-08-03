@@ -62,6 +62,7 @@ ScopeStackBuilder::NodeFunctor::operator()(FnDecl *nd) {
 
   Type::Ptr return_type = nd->returnType();
   return_type->scopeIs(scope);
+  return_type->apply(this);
 
   scope_stack_->scopePop();
 }
@@ -86,14 +87,17 @@ ScopeStackBuilder::NodeFunctor::operator()(ClassDecl *nd) {
 
   /* initializing scope in base class Type object */
   NamedType::Ptr base = nd->baseClass();
-  if (base != NULL)
+  if (base != NULL) {
     base->scopeIs(scope);
+    base->apply(this);
+  }
 
   /* initializing scope in interface Type objects */
   ClassDecl::const_intf_iter intf_it = nd->interfacesBegin();
   for (; intf_it != nd->interfacesEnd(); ++intf_it) {
     base = *intf_it;
     base->scopeIs(scope);
+    base->apply(this);
   }
 
   scope_stack_->scopePop();
@@ -128,6 +132,7 @@ ScopeStackBuilder::NodeFunctor::operator()(VarDecl *nd) {
   /* initializing scope in type object */
   Type::Ptr type = nd->type();
   type->scopeIs(scope);
+  type->apply(this);
 }
 
 
@@ -171,6 +176,7 @@ ScopeStackBuilder::NodeFunctor::operator()(ConditionalStmt *nd) {
 
   Expr::Ptr test = nd->test();
   test->scopeIs(scope);
+  test->apply(this);
 }
 
 void
@@ -200,6 +206,15 @@ ScopeStackBuilder::NodeFunctor::operator()(WhileStmt *nd) {
   (*this)(cond_stmt);
 }
 
+
+/* type */
+void
+ScopeStackBuilder::NodeFunctor::operator()(ArrayType *nd) {
+  Scope::Ptr scope = nd->scope();
+  Type::Ptr elem_type = nd->elemType();
+  elem_type->scopeIs(scope);
+  elem_type->apply(this);
+}
 
 /* stmt/switch */
 void

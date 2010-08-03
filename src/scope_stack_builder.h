@@ -59,6 +59,8 @@ public:
       void operator()(SwitchStmt *);
       void operator()(SwitchCaseStmt *);
 
+      /* type */
+      void operator()(ArrayType *);
 
     private:
       NodeFunctor(ScopeStack::Ptr _s) : scope_stack_(_s) {}
