@@ -29,7 +29,8 @@ SemanticAnalyser::NodeFunctor::operator()(Program *nd) {
 
 void
 SemanticAnalyser::NodeFunctor::operator()(VarDecl *nd) {
-
+  Type::Ptr type = nd->type();
+  type->apply(this);
 }
 
 void
@@ -126,6 +127,29 @@ SemanticAnalyser::NodeFunctor::operator()(WhileStmt *nd) {
 }
 
 
+/* type */
+void
+SemanticAnalyser::NodeFunctor::operator()(NamedType *nd) {
+  /* named type identifier */
+  Identifier::Ptr type_id = nd->identifier();
+
+  /* class declaration for named type */
+  Scope::Ptr scope = nd->scope();
+  ClassDecl::Ptr class_decl = scope->classDecl(type_id);
+  if (class_decl == NULL) {
+    InterfaceDecl::Ptr intf_decl = scope->interfaceDecl(type_id);
+    if (intf_decl == NULL) {
+      Error::IdentifierNotDeclared(type_id, kLookingForType);
+    }
+  }
+}
+
+void
+SemanticAnalyser::NodeFunctor::operator()(ArrayType *nd) {
+  
+}
+
+
 /* SemanticAnalyser private member functions */
 
 void
@@ -136,13 +160,12 @@ inherit_base_class_scopes(ClassDecl::Ptr nd, IdentifierSet::Ptr _seen) {
 
   NamedType::Ptr base_class_type = nd->baseClass();
   if (base_class_type != NULL) {
-    /* obtain class's parent-scope (i.e. the global scope) */
-    Scope::Ptr scope = nd->scope();
-    Scope::Ptr parent_scope = scope->parentScope();
-
-    /* search for base class decl in parent scope */
+    /* obtain base class identifier */
     Identifier::Ptr base_id = base_class_type->identifier();
-    ClassDecl::Ptr base_decl = parent_scope->classDecl(base_id);
+    
+    /* search for base class decl in scope */
+    Scope::Ptr scope = nd->scope();
+    ClassDecl::Ptr base_decl = scope->classDecl(base_id);
 
     if (base_decl != NULL) {
       /* ensure that there is no cycle in the inheritance hierarchy */

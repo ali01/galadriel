@@ -19,9 +19,10 @@ Scope::declIs(Decl::Ptr _decl) {
   }
 }
 
+// TODO: comment
 void
 Scope::baseScopeIs(Scope::PtrConst _base_scope) {
-  { 
+  {
     Identifier::PtrConst id;
     FnDecl::PtrConst local_fn_decl;
     VarDecl::Ptr var_decl, local_var_decl;

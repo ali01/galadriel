@@ -63,6 +63,10 @@ private:
       void operator()(ForStmt *);
       void operator()(WhileStmt *);
 
+      /* type */
+      void operator()(NamedType *);
+      void operator()(ArrayType *);
+
     private:
       NodeFunctor() {}
       
