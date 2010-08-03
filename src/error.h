@@ -30,6 +30,7 @@ class ReturnStmt;
 class ThisExpr;
 class Decl;
 class FnDecl;
+class ClassDecl;
 class Operator;
 
 /* General notes on using this class
@@ -75,6 +76,8 @@ public:
 
   static void OverrideMismatch(Simone::Ptr<const FnDecl> fnDecl);
   static void InterfaceNotImplemented(Decl *classDecl, Type *intfType);
+
+  static void InheritanceCycle(Simone::Ptr<const ClassDecl> class_decl);
 
 
   /* Errors used by semantic analyzer for identifiers */

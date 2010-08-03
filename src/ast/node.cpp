@@ -23,6 +23,11 @@ Node::Node() {
 Node::~Node() {}
 
 Scope::Ptr
+Node::scope() {
+  return scope_;
+}
+
+Scope::PtrConst
 Node::scope() const {
   return scope_;
 }

@@ -20,61 +20,54 @@ using Simone::Map;
 /* instances obtained via factory constructor in ScopeStack class */
 class Scope : public Simone::PtrInterface<Scope> {
 
-  /* map comparison functor */
-  struct IdentifierCmp {
-    bool operator()(Identifier::PtrConst lhs, Identifier::PtrConst rhs) const {
-      return lhs->name() < rhs->name();
-    }
-  };
-
   /* private iterator typedefs */
 
   typedef Map<Identifier::PtrConst,
-              VarDecl::PtrConst,
-              IdentifierCmp>::const_iterator const_var_decl_iter;
+              VarDecl::Ptr,
+              Identifier::less>::const_iterator const_var_decl_iter;
 
   typedef Map<Identifier::PtrConst,
-              VarDecl::PtrConst,
-              IdentifierCmp>::iterator var_decl_iter;
-
-
-  typedef Map<Identifier::PtrConst,
-              FnDecl::PtrConst,
-              IdentifierCmp>::const_iterator const_fn_decl_iter;
-
-  typedef Map<Identifier::PtrConst,
-              FnDecl::PtrConst,
-              IdentifierCmp>::iterator fn_decl_iter;
+              VarDecl::Ptr,
+              Identifier::less>::iterator var_decl_iter;
 
 
   typedef Map<Identifier::PtrConst,
-              ClassDecl::PtrConst,
-              IdentifierCmp>::const_iterator const_class_decl_iter;
+              FnDecl::Ptr,
+              Identifier::less>::const_iterator const_fn_decl_iter;
 
   typedef Map<Identifier::PtrConst,
-              ClassDecl::PtrConst,
-              IdentifierCmp>::iterator class_decl_iter;
+              FnDecl::Ptr,
+              Identifier::less>::iterator fn_decl_iter;
 
 
   typedef Map<Identifier::PtrConst,
-              InterfaceDecl::PtrConst,
-              IdentifierCmp>::const_iterator const_intf_decl_iter;
+              ClassDecl::Ptr,
+              Identifier::less>::const_iterator const_class_decl_iter;
 
   typedef Map<Identifier::PtrConst,
-              InterfaceDecl::PtrConst,
-              IdentifierCmp>::iterator intf_decl_iter;
+              ClassDecl::Ptr,
+              Identifier::less>::iterator class_decl_iter;
+
+
+  typedef Map<Identifier::PtrConst,
+              InterfaceDecl::Ptr,
+              Identifier::less>::const_iterator const_intf_decl_iter;
+
+  typedef Map<Identifier::PtrConst,
+              InterfaceDecl::Ptr,
+              Identifier::less>::iterator intf_decl_iter;
 
 public:
   typedef Simone::Ptr<const Scope> PtrConst;
   typedef Simone::Ptr<Scope> Ptr;
 
   typedef Map<Identifier::PtrConst,
-              Decl::PtrConst,
-              IdentifierCmp>::const_iterator const_decl_iter;
+              Decl::Ptr,
+              Identifier::less>::const_iterator const_decl_iter;
 
   typedef Map<Identifier::PtrConst,
-              Decl::PtrConst,
-              IdentifierCmp>::iterator decl_iter;
+              Decl::Ptr,
+              Identifier::less>::iterator decl_iter;
 
   /* iterator support */
 
@@ -85,10 +78,13 @@ public:
   decl_iter declsEnd() { return decls_.end(); }
 
 
-  /* attribute member functions */
+  /* -- attribute member functions -- */
 
   void declIs(Decl::Ptr _decl);
   void baseScopeIs(Scope::PtrConst _scope);
+
+
+  /* const interface */
 
   Decl::PtrConst decl(Identifier::PtrConst _id, bool recursive=true) const;
 
@@ -106,9 +102,24 @@ public:
   Scope::PtrConst parentScope() const { return parent_scope_; }
 
 
+  /* non-const interface */
+
+  Decl::Ptr decl(Identifier::PtrConst _id, bool recursive=true);
+
+  VarDecl::Ptr varDecl(Identifier::PtrConst _id, bool recursive=true);
+
+  FnDecl::Ptr fnDecl(Identifier::PtrConst _id, bool recursive=true);
+
+  ClassDecl::Ptr classDecl(Identifier::PtrConst _id, bool recursive=true);
+
+  InterfaceDecl::Ptr interfaceDecl(Identifier::PtrConst _id,
+                                   bool recursive=true);
+
+  Scope::Ptr parentScope() { return parent_scope_; }
+
 private:
   /* private constructor called by factory constructor in ScopeStack */
-  explicit Scope(Scope::PtrConst _parent_scope);
+  explicit Scope(Scope::Ptr _parent_scope);
 
   ~Scope() {}
 
@@ -135,19 +146,20 @@ private:
   };
 
   /* private member functions */
-  void varDeclIs(VarDecl::PtrConst _decl);
-  void fnDeclIs(FnDecl::PtrConst _decl);
-  void classDeclIs(ClassDecl::PtrConst _decl);
-  void interfaceDeclIs(InterfaceDecl::PtrConst _decl);
+  void varDeclIs(VarDecl::Ptr _decl);
+  void fnDeclIs(FnDecl::Ptr _decl);
+  void classDeclIs(ClassDecl::Ptr _decl);
+  void interfaceDeclIs(InterfaceDecl::Ptr _decl);
 
   /* data members */
-  Map<Identifier::PtrConst,Decl::PtrConst,IdentifierCmp> decls_;
-  Map<Identifier::PtrConst,VarDecl::PtrConst,IdentifierCmp> var_decls_;
-  Map<Identifier::PtrConst,FnDecl::PtrConst,IdentifierCmp> fn_decls_;
-  Map<Identifier::PtrConst,ClassDecl::PtrConst,IdentifierCmp> class_decls_;
-  Map<Identifier::PtrConst,InterfaceDecl::PtrConst,IdentifierCmp> intf_decls_;
+  Map<Identifier::PtrConst,Decl::Ptr,Identifier::less> decls_;
+  Map<Identifier::PtrConst,VarDecl::Ptr,Identifier::less> var_decls_;
+  Map<Identifier::PtrConst,FnDecl::Ptr,Identifier::less> fn_decls_;
+  Map<Identifier::PtrConst,ClassDecl::Ptr,Identifier::less> class_decls_;
+  Map<Identifier::PtrConst,InterfaceDecl::Ptr,Identifier::less>
+    intf_decls_;
 
-  Scope::PtrConst parent_scope_;
+  Scope::Ptr parent_scope_;
 
   NodeFunctor::Ptr node_functor_;
 

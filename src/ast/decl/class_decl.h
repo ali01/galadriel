@@ -58,6 +58,9 @@ public:
   /* attribute member functions */
   NamedType::Ptr baseClass() const { return base_class_; }
 
+  bool scopeIndexed() const { return scope_indexed_; }
+  void scopeIndexedIs(bool _s) { scope_indexed_ = _s; }
+
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
@@ -66,6 +69,7 @@ private:
   NamedType::Ptr base_class_;
   Deque<NamedType::Ptr>::Ptr interfaces_;
   Deque<Decl::Ptr>::Ptr members_;
+  bool scope_indexed_;
 
   /* operations disallowed */
   ClassDecl(const ClassDecl&);

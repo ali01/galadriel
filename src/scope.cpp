@@ -3,7 +3,7 @@
 /* project includes */
 #include "error.h"
 
-Scope::Scope(Scope::PtrConst _parent_scope) : parent_scope_(_parent_scope) {
+Scope::Scope(Scope::Ptr _parent_scope) : parent_scope_(_parent_scope) {
   node_functor_ = NodeFunctor::NodeFunctorNew(this);
 }
 
@@ -24,7 +24,7 @@ Scope::baseScopeIs(Scope::PtrConst _base_scope) {
   { 
     Identifier::PtrConst id;
     FnDecl::PtrConst local_fn_decl;
-    VarDecl::PtrConst var_decl, local_var_decl;
+    VarDecl::Ptr var_decl, local_var_decl;
 
     const_var_decl_iter vd_it = _base_scope->var_decls_.begin();
     for (; vd_it != _base_scope->var_decls_.end(); ++vd_it) {
@@ -48,7 +48,7 @@ Scope::baseScopeIs(Scope::PtrConst _base_scope) {
 
   {
     Identifier::PtrConst id;
-    FnDecl::PtrConst fn_decl, local_fn_decl;
+    FnDecl::Ptr fn_decl, local_fn_decl;
     VarDecl::PtrConst local_var_decl;
     const_fn_decl_iter fn_it = _base_scope->fn_decls_.begin();
     for (; fn_it != _base_scope->fn_decls_.end(); ++fn_it) {
@@ -75,9 +75,9 @@ Scope::baseScopeIs(Scope::PtrConst _base_scope) {
   }
 }
 
-Decl::PtrConst
-Scope::decl(Identifier::PtrConst _id, bool recursive) const {
-  Decl::PtrConst decl = NULL;
+Decl::Ptr
+Scope::decl(Identifier::PtrConst _id, bool recursive) {
+  Decl::Ptr decl = NULL;
 
   const_decl_iter it = decls_.element(_id);
   if (it != decls_.end())
@@ -89,9 +89,9 @@ Scope::decl(Identifier::PtrConst _id, bool recursive) const {
   return decl;
 }
 
-VarDecl::PtrConst
-Scope::varDecl(Identifier::PtrConst _id, bool recursive) const {
-  VarDecl::PtrConst decl = NULL;
+VarDecl::Ptr
+Scope::varDecl(Identifier::PtrConst _id, bool recursive) {
+  VarDecl::Ptr decl = NULL;
 
   const_var_decl_iter it = var_decls_.element(_id);
   if (it != var_decls_.end())
@@ -103,9 +103,9 @@ Scope::varDecl(Identifier::PtrConst _id, bool recursive) const {
   return decl;
 }
 
-FnDecl::PtrConst
-Scope::fnDecl(Identifier::PtrConst _id, bool recursive) const {
-  FnDecl::PtrConst decl = NULL;
+FnDecl::Ptr
+Scope::fnDecl(Identifier::PtrConst _id, bool recursive) {
+  FnDecl::Ptr decl = NULL;
 
   const_fn_decl_iter it = fn_decls_.element(_id);
   if (it != fn_decls_.end())
@@ -117,9 +117,9 @@ Scope::fnDecl(Identifier::PtrConst _id, bool recursive) const {
   return decl;
 }
 
-ClassDecl::PtrConst
-Scope::classDecl(Identifier::PtrConst _id, bool recursive) const {
-  ClassDecl::PtrConst decl = NULL;
+ClassDecl::Ptr
+Scope::classDecl(Identifier::PtrConst _id, bool recursive) {
+  ClassDecl::Ptr decl = NULL;
 
   const_class_decl_iter it = class_decls_.element(_id);
   if (it != class_decls_.end())
@@ -131,9 +131,9 @@ Scope::classDecl(Identifier::PtrConst _id, bool recursive) const {
   return decl;
 }
 
-InterfaceDecl::PtrConst
-Scope::interfaceDecl(Identifier::PtrConst _id, bool recursive) const {
-  InterfaceDecl::PtrConst decl = NULL;
+InterfaceDecl::Ptr
+Scope::interfaceDecl(Identifier::PtrConst _id, bool recursive) {
+  InterfaceDecl::Ptr decl = NULL;
 
   const_intf_decl_iter it = intf_decls_.element(_id);
   if (it != intf_decls_.end())
@@ -145,26 +145,56 @@ Scope::interfaceDecl(Identifier::PtrConst _id, bool recursive) const {
   return decl;
 }
 
+Decl::PtrConst
+Scope::decl(Identifier::PtrConst _id, bool recursive) const {
+  Scope::Ptr me = const_cast<Scope*>(this);
+  return me->decl(_id, recursive);
+}
+
+VarDecl::PtrConst
+Scope::varDecl(Identifier::PtrConst _id, bool recursive) const {
+  Scope::Ptr me = const_cast<Scope*>(this);
+  return me->varDecl(_id, recursive);
+}
+
+FnDecl::PtrConst
+Scope::fnDecl(Identifier::PtrConst _id, bool recursive) const {
+  Scope::Ptr me = const_cast<Scope*>(this);
+  return me->fnDecl(_id, recursive);
+}
+
+ClassDecl::PtrConst
+Scope::classDecl(Identifier::PtrConst _id, bool recursive) const {
+  Scope::Ptr me = const_cast<Scope*>(this);
+  return me->classDecl(_id, recursive);
+}
+
+InterfaceDecl::PtrConst
+Scope::interfaceDecl(Identifier::PtrConst _id, bool recursive) const {
+  Scope::Ptr me = const_cast<Scope*>(this);
+  return me->interfaceDecl(_id, recursive);
+}
+
 void
-Scope::varDeclIs(VarDecl::PtrConst _decl) {
+Scope::varDeclIs(VarDecl::Ptr _decl) {
   Identifier::PtrConst id = _decl->identifier();
   var_decls_[id] = _decl;
 }
 
 void
-Scope::fnDeclIs(FnDecl::PtrConst _decl) {
+Scope::fnDeclIs(FnDecl::Ptr _decl) {
   Identifier::PtrConst id = _decl->identifier();
   fn_decls_[id] = _decl;
 }
 
 void
-Scope::classDeclIs(ClassDecl::PtrConst _decl) {
+Scope::classDeclIs(ClassDecl::Ptr _decl) {
   Identifier::PtrConst id = _decl->identifier();
   class_decls_[id] = _decl;
 }
 
 void
-Scope::interfaceDeclIs(InterfaceDecl::PtrConst _decl) {
+Scope::interfaceDeclIs(InterfaceDecl::Ptr _decl) {
   Identifier::PtrConst id = _decl->identifier();
   intf_decls_[id] = _decl;
 }

@@ -18,6 +18,13 @@ public:
   typedef Simone::Ptr<const Identifier> PtrConst;
   typedef Simone::Ptr<Identifier> Ptr;
 
+  /* map/set comparison functor */
+  struct less {
+    bool operator()(PtrConst lhs, PtrConst rhs) const {
+      return lhs->name() < rhs->name();
+    }
+  };
+
   static Ptr IdentifierNew(yyltype loc, const string& name) {
     return new Identifier(loc, name);
   }

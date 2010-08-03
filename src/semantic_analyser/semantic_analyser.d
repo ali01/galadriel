@@ -1,12 +1,13 @@
 semantic_analyser/semantic_analyser.o:  \
  semantic_analyser/semantic_analyser.cpp \
   semantic_analyser/semantic_analyser.h simone/ptr_interface.h \
-  simone/exception.h simone/ptr.h ast/node.h simone/utility.h lex_loc.h \
-  ast/ast_fwd_declarations.h ast.h ast/identifier.h ast/node.h \
-  ast/operator.h ast/program.h simone/deque.h simone/ptr_interface.h \
-  simone/utility.h ast/decl/decl.h ast/decl/../node.h ast/decl/fn_decl.h \
-  ast/decl/decl.h ast/decl/var_decl.h ast/decl/../identifier.h \
-  ast/decl/var_decl.h ast/decl/class_decl.h ast/decl/../type/named_type.h \
+  simone/exception.h simone/ptr.h simone/set.h simone/utility.h \
+  simone/ptr_interface.h ast/node.h simone/utility.h lex_loc.h \
+  ast/ast_fwd_declarations.h ast/identifier.h ast/node.h ast.h \
+  ast/identifier.h ast/operator.h ast/program.h simone/deque.h \
+  ast/decl/decl.h ast/decl/../node.h ast/decl/fn_decl.h ast/decl/decl.h \
+  ast/decl/var_decl.h ast/decl/../identifier.h ast/decl/var_decl.h \
+  ast/decl/class_decl.h ast/decl/../type/named_type.h \
   ast/decl/../type/../type/type.h ast/decl/../type/../type/../node.h \
   ast/decl/interface_decl.h ast/decl/fn_decl.h ast/stmt/break_stmt.h \
   ast/stmt/stmt.h ast/stmt/../node.h ast/stmt/print_stmt.h \
@@ -62,6 +63,12 @@ simone/exception.h:
 
 simone/ptr.h:
 
+simone/set.h:
+
+simone/utility.h:
+
+simone/ptr_interface.h:
+
 ast/node.h:
 
 simone/utility.h:
@@ -70,21 +77,19 @@ lex_loc.h:
 
 ast/ast_fwd_declarations.h:
 
-ast.h:
-
 ast/identifier.h:
 
 ast/node.h:
+
+ast.h:
+
+ast/identifier.h:
 
 ast/operator.h:
 
 ast/program.h:
 
 simone/deque.h:
-
-simone/ptr_interface.h:
-
-simone/utility.h:
 
 ast/decl/decl.h:
 

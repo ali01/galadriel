@@ -49,7 +49,8 @@ public:
 
   /* -- attribute member functions -- */
 
-  Simone::Ptr<Scope> scope() const;
+  Simone::Ptr<Scope> scope();
+  Simone::Ptr<const Scope> scope() const;
   void scopeIs(Simone::Ptr<Scope> _s);
 
   /* support for double dispatch */

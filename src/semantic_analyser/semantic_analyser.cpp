@@ -28,6 +28,11 @@ SemanticAnalyser::NodeFunctor::operator()(Program *nd) {
 /* -- decl -- */
 
 void
+SemanticAnalyser::NodeFunctor::operator()(VarDecl *nd) {
+
+}
+
+void
 SemanticAnalyser::NodeFunctor::operator()(FnDecl *nd) {
   VarDecl::Ptr decl;
   FnDecl::const_formal_iter it = nd->formalsBegin();
@@ -46,47 +51,8 @@ SemanticAnalyser::NodeFunctor::operator()(FnDecl *nd) {
 
 void
 SemanticAnalyser::NodeFunctor::operator()(ClassDecl *nd) {
-  assert(nd != NULL);
-
-  Identifier::Ptr base_id;
-
-  /* obtain class's parent-scope (i.e. the global scope) */
-  Scope::Ptr scope = nd->scope();
-  Scope::PtrConst parent_scope = scope->parentScope();
-
-  {
-    NamedType::Ptr base_class_type = nd->baseClass();
-    if (base_class_type != NULL) {
-      /* search for base class identifier in parent scope */
-      base_id = base_class_type->identifier();
-      ClassDecl::PtrConst base_decl = parent_scope->classDecl(base_id);
-
-      if (base_decl != NULL) {
-        /* inherit from base scope */
-        Scope::PtrConst base_scope = base_decl->scope();
-        scope->baseScopeIs(base_scope);
-      } else {
-        Error::IdentifierNotDeclared(base_id, kLookingForClass);
-      }
-    }
-  }
-
-  {
-    ClassDecl::const_intf_iter it = nd->interfacesBegin();
-    NamedType::Ptr intf_type;
-    for (; it != nd->interfacesEnd(); ++it) {
-      intf_type = *it;
-      base_id = intf_type->identifier();
-      InterfaceDecl::PtrConst intf_decl = parent_scope->interfaceDecl(base_id);
-      
-      if (intf_decl != NULL) {
-        Scope::PtrConst intf_scope = intf_decl->scope();
-        scope->baseScopeIs(intf_scope);
-      } else {
-        Error::IdentifierNotDeclared(base_id, kLookingForInterface);
-      }
-    }
-  }
+  inherit_base_class_scope(nd);
+  inherit_interface_scopes(nd);
 
   Decl::Ptr decl;
   ClassDecl::const_member_iter it = nd->membersBegin();
@@ -157,4 +123,75 @@ void
 SemanticAnalyser::NodeFunctor::operator()(WhileStmt *nd) {
   ConditionalStmt *cond_stmt = nd;
   (*this)(cond_stmt);
+}
+
+
+/* SemanticAnalyser private member functions */
+
+void
+SemanticAnalyser::NodeFunctor::
+inherit_base_class_scope(ClassDecl::Ptr nd, IdentifierSet::Ptr _seen) {
+  NamedType::Ptr base_class_type = nd->baseClass();
+  if (base_class_type != NULL) {
+    /* obtain class's parent-scope (i.e. the global scope) */
+    Scope::Ptr scope = nd->scope();
+    Scope::Ptr parent_scope = scope->parentScope();
+
+    /* search for base class decl in parent scope */
+    Identifier::Ptr base_id = base_class_type->identifier();
+    ClassDecl::Ptr base_decl = parent_scope->classDecl(base_id);
+
+    if (base_decl != NULL) {
+      /* ensure that there is no cycle in the inheritance hierarchy */
+      if (_seen == NULL) {
+        _seen = IdentifierSet::SetNew();
+      } else {
+        IdentifierSet::const_iterator it = _seen->element(base_id);
+        if (it != _seen->end()) {
+          Error::InheritanceCycle(base_decl);
+          return;
+        }
+      }
+
+      if (base_decl->scopeIndexed())
+        return;
+      
+      _seen->elementIs(base_id);
+
+      /* recursively process base_decl in order to inherit all ancestors */
+      inherit_base_class_scope(base_decl, _seen);
+
+      /* inherit from base scope */
+      Scope::PtrConst base_scope = base_decl->scope();
+      scope->baseScopeIs(base_scope);
+      base_decl->scopeIndexedIs(true);
+    } else {
+      Error::IdentifierNotDeclared(base_id, kLookingForClass);
+    }
+  }
+}
+
+void
+SemanticAnalyser::NodeFunctor::
+inherit_interface_scopes(ClassDecl::Ptr nd) {
+  NamedType::Ptr intf_type;
+  Identifier::Ptr base_id;
+  InterfaceDecl::PtrConst intf_decl;
+
+  Scope::Ptr scope = nd->scope();
+  Scope::PtrConst intf_scope, parent_scope = scope->parentScope();
+
+  ClassDecl::const_intf_iter it = nd->interfacesBegin();
+  for (; it != nd->interfacesEnd(); ++it) {
+    intf_type = *it;
+    base_id = intf_type->identifier();
+    intf_decl = parent_scope->interfaceDecl(base_id);
+
+    if (intf_decl != NULL) {
+      intf_scope = intf_decl->scope();
+      scope->baseScopeIs(intf_scope);
+    } else {
+      Error::IdentifierNotDeclared(base_id, kLookingForInterface);
+    }
+  }
 }

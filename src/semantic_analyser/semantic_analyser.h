@@ -3,15 +3,20 @@
 
 /* simone includes */
 #include <simone/ptr_interface.h>
+#include <simone/set.h>
+using Simone::Set;
 
 /* ast includes */
 #include <ast/node.h>
+#include <ast/identifier.h>
 
 /* forward declarations */
 class Program;
 class ScopeStackBuilder;
 
 class SemanticAnalyser : public Simone::PtrInterface<SemanticAnalyser> {
+  /* private typedefs */
+  typedef Set<Identifier::PtrConst,Identifier::less> IdentifierSet;
 public:
   typedef Simone::Ptr<const SemanticAnalyser> PtrConst;
   typedef Simone::Ptr<SemanticAnalyser> Ptr;
@@ -40,6 +45,7 @@ private:
 
       /* -- decl -- */
 
+      void operator()(VarDecl *);
       void operator()(FnDecl *);
       void operator()(ClassDecl *);
       void operator()(InterfaceDecl *);
@@ -59,6 +65,12 @@ private:
 
     private:
       NodeFunctor() {}
+      
+      /* member functions */
+      void inherit_base_class_scope(Simone::Ptr<ClassDecl> nd,
+                                    IdentifierSet::Ptr _seen=NULL);
+
+      void inherit_interface_scopes(Simone::Ptr<ClassDecl> nd);
   };
 
   /* data members */

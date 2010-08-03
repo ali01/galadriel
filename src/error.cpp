@@ -105,6 +105,13 @@ Error::InterfaceNotImplemented(Decl *cd, Type *interfaceType) {
 }
 
 void
+Error::InheritanceCycle(ClassDecl::PtrConst class_decl) {
+  ostringstream s;
+  s << "Inheritance cycle involving class '" << *class_decl << "'";
+  OutputError(class_decl->lexLoc(), s.str());
+}
+
+void
 Error::IdentifierNotDeclared(Identifier::PtrConst ident, reasonT whyNeeded) {
   ostringstream s;
   static const char *names[] = {
