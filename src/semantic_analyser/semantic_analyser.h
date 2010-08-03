@@ -67,7 +67,7 @@ private:
       NodeFunctor() {}
       
       /* member functions */
-      void inherit_base_class_scope(Simone::Ptr<ClassDecl> nd,
+      void inherit_base_class_scopes(Simone::Ptr<ClassDecl> nd,
                                     IdentifierSet::Ptr _seen=NULL);
 
       void inherit_interface_scopes(Simone::Ptr<ClassDecl> nd);

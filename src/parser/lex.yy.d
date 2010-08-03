@@ -49,7 +49,7 @@ parser/lex.yy.o: parser/lex.yy.c parser/scanner.h utility.h error.h \
   ast/stmt/switch/switch_case_stmt.h \
   ast/stmt/switch/../expr/single_addr/int_const_expr.h \
   ast/stmt/switch/switch_case_stmt.h ast/type/type.h \
-  ast/type/array_type.h ast/type/type.h ast/type/named_type.h \
+  ast/type/named_type.h ast/type/array_type.h ast/type/type.h \
   parser/y.tab.h
 
 parser/scanner.h:
@@ -224,10 +224,10 @@ ast/stmt/switch/switch_case_stmt.h:
 
 ast/type/type.h:
 
+ast/type/named_type.h:
+
 ast/type/array_type.h:
 
 ast/type/type.h:
-
-ast/type/named_type.h:
 
 parser/y.tab.h:

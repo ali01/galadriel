@@ -51,7 +51,7 @@ SemanticAnalyser::NodeFunctor::operator()(FnDecl *nd) {
 
 void
 SemanticAnalyser::NodeFunctor::operator()(ClassDecl *nd) {
-  inherit_base_class_scope(nd);
+  inherit_base_class_scopes(nd);
   inherit_interface_scopes(nd);
 
   Decl::Ptr decl;
@@ -130,7 +130,10 @@ SemanticAnalyser::NodeFunctor::operator()(WhileStmt *nd) {
 
 void
 SemanticAnalyser::NodeFunctor::
-inherit_base_class_scope(ClassDecl::Ptr nd, IdentifierSet::Ptr _seen) {
+inherit_base_class_scopes(ClassDecl::Ptr nd, IdentifierSet::Ptr _seen) {
+  if (nd->scopeIndexed())
+    return;
+
   NamedType::Ptr base_class_type = nd->baseClass();
   if (base_class_type != NULL) {
     /* obtain class's parent-scope (i.e. the global scope) */
@@ -153,22 +156,20 @@ inherit_base_class_scope(ClassDecl::Ptr nd, IdentifierSet::Ptr _seen) {
         }
       }
 
-      if (base_decl->scopeIndexed())
-        return;
-      
       _seen->elementIs(base_id);
 
       /* recursively process base_decl in order to inherit all ancestors */
-      inherit_base_class_scope(base_decl, _seen);
+      inherit_base_class_scopes(base_decl, _seen);
 
       /* inherit from base scope */
       Scope::PtrConst base_scope = base_decl->scope();
       scope->baseScopeIs(base_scope);
-      base_decl->scopeIndexedIs(true);
     } else {
       Error::IdentifierNotDeclared(base_id, kLookingForClass);
     }
   }
+
+  nd->scopeIndexedIs(true);
 }
 
 void
