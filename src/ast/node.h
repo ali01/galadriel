@@ -70,8 +70,8 @@ public:
     /* -- decl -- */
 
     virtual void operator()(Decl *) { ABORT(); }
-    virtual void operator()(FnDecl *) {}
     virtual void operator()(VarDecl *) {}
+    virtual void operator()(FnDecl *) {}
     virtual void operator()(ClassDecl *) {}
     virtual void operator()(InterfaceDecl *) {}
 
