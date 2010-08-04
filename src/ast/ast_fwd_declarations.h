@@ -53,6 +53,7 @@ class StrConstExpr;
 class NewExpr;
 class NewArrayExpr;
 class ReadLineExpr;
+class ReadIntegerExpr;
 
 /* stmt/expr/single_addr/compound */
 class CompoundExpr;

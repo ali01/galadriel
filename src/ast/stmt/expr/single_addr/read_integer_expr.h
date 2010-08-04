@@ -25,5 +25,4 @@ public:
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 };
 
-
 #endif

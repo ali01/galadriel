@@ -132,13 +132,33 @@ SemanticAnalyser::NodeFunctor::operator()(WhileStmt *nd) {
 }
 
 
+/* stmt/expr/single_addr */
+void
+SemanticAnalyser::NodeFunctor::operator()(NewExpr *nd) {
+  Scope::Ptr scope = nd->scope();
+  NamedType::Ptr type = nd->type();
+  Identifier::Ptr type_id = type->identifier();
+  ClassDecl::Ptr class_decl = scope->classDecl(type_id);
+  if (class_decl == NULL) {
+    Error::IdentifierNotDeclared(type_id, kLookingForClass);
+  }
+}
+
+void
+SemanticAnalyser::NodeFunctor::operator()(NewArrayExpr *nd) {
+  Expr::Ptr size = nd->size();
+  size->apply(this);
+
+  Type::Ptr type = nd->elemType();
+  type->apply(this);
+}
+
+
 /* type */
 void
 SemanticAnalyser::NodeFunctor::operator()(NamedType *nd) {
-  /* named type identifier */
-  Identifier::Ptr type_id = nd->identifier();
-
   Scope::Ptr scope = nd->scope();
+  Identifier::Ptr type_id = nd->identifier();
   ClassDecl::Ptr class_decl = scope->classDecl(type_id);
   if (class_decl == NULL) {
     InterfaceDecl::Ptr intf_decl = scope->interfaceDecl(type_id);

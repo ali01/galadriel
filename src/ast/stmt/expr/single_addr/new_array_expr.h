@@ -30,6 +30,10 @@ public:
                Expr::Ptr size_expr,
                Simone::Ptr<Type> sive_expr);
 
+  /* attribute member functions */
+  Expr::Ptr size() const { return size_; }
+  Simone::Ptr<Type> elemType() const;
+
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 

@@ -15,3 +15,9 @@ NewArrayExpr::NewArrayExpr(yyltype loc, Expr::Ptr sz, Type::Ptr et) :
 {
   assert(sz != NULL && et != NULL);
 }
+
+
+Type::Ptr
+NewArrayExpr::elemType() const {
+  return elem_type_;
+}

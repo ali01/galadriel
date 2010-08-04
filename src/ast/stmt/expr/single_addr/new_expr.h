@@ -21,9 +21,11 @@ public:
   static Ptr NewExprNew(yyltype loc, Simone::Ptr<NamedType> class_type) {
     return new NewExpr(loc, class_type);
   }
-  
 
   NewExpr(yyltype loc, Simone::Ptr<NamedType> class_type);
+
+  /* attribute member functions */
+  Simone::Ptr<NamedType> type() const;
 
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }

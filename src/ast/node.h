@@ -109,6 +109,7 @@ public:
     virtual void operator()(NewExpr *) {}
     virtual void operator()(NewArrayExpr *) {}
     virtual void operator()(ReadLineExpr *) {}
+    virtual void operator()(ReadIntegerExpr *) {}
 
     /* stmt/expr/single_addr/compound */
     virtual void operator()(CompoundExpr *) { ABORT(); }

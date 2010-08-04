@@ -50,10 +50,12 @@ public:
       /* stmt/conditional */
       void operator()(ConditionalStmt *);
       void operator()(IfStmt *);
-
-      /* stmt/conditional/loop */
       void operator()(ForStmt *);
       void operator()(WhileStmt *);
+
+      /* stmt/expr/single_addr */
+      void operator()(NewExpr *);
+      void operator()(NewArrayExpr *);
 
       /* type */
       void operator()(ArrayType *);

@@ -207,6 +207,30 @@ ScopeStackBuilder::NodeFunctor::operator()(WhileStmt *nd) {
 }
 
 
+/* stmt/expr/single_addr */
+void
+ScopeStackBuilder::NodeFunctor::operator()(NewExpr *nd) {
+  Scope::Ptr scope = nd->scope();
+
+  NamedType::Ptr type = nd->type();
+  type->scopeIs(scope);
+  type->apply(this);
+}
+
+void
+ScopeStackBuilder::NodeFunctor::operator()(NewArrayExpr *nd) {
+  Scope::Ptr scope = nd->scope();
+  
+  Expr::Ptr size = nd->size();
+  size->scopeIs(scope);
+  size->apply(this);
+
+  Type::Ptr type = nd->elemType();
+  type->scopeIs(scope);
+  type->apply(this);
+}
+
+
 /* type */
 void
 ScopeStackBuilder::NodeFunctor::operator()(ArrayType *nd) {
