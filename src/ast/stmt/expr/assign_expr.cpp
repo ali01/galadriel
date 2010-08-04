@@ -14,7 +14,7 @@
 #include "single_addr/l_value/l_value_expr.h"
 
 AssignExpr::AssignExpr(Expr::Ptr lhs, Expr::Ptr rhs) :
-  Expr(Join(lhs->lexLoc(), rhs->lexLoc())), left(lhs), right(rhs)
+  Expr(Join(lhs->lexLoc(), rhs->lexLoc())), left_(lhs), right_(rhs)
 {
   assert(lhs != NULL && rhs != NULL);
 }

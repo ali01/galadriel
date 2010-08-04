@@ -21,12 +21,22 @@ public:
 
   AssignExpr(Expr::Ptr lhs, Expr::Ptr rhs);
 
+  /* -- attribute member functions -- */
+
+  /* const interface */
+  Expr::PtrConst left() const { return left_; }
+  Expr::PtrConst right() const { return right_; }
+
+  /* non-const interface */
+  Expr::Ptr left() { return left_; }
+  Expr::Ptr right() { return right_; }
+
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
   /* data members */
-  Expr::Ptr left, right;
+  Expr::Ptr left_, right_;
 };
 
 #endif

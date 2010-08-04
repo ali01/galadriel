@@ -207,6 +207,21 @@ ScopeStackBuilder::NodeFunctor::operator()(WhileStmt *nd) {
 }
 
 
+/* stmt/expr */
+void
+ScopeStackBuilder::NodeFunctor::operator()(AssignExpr *nd) {
+  Scope::Ptr scope = nd->scope();
+
+  Expr::Ptr left = nd->left();
+  left->scopeIs(scope);
+  left->apply(this);
+
+  Expr::Ptr right = nd->right();
+  right->scopeIs(scope);
+  right->apply(this);
+}
+
+
 /* stmt/expr/single_addr */
 void
 ScopeStackBuilder::NodeFunctor::operator()(NewExpr *nd) {

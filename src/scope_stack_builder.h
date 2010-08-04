@@ -53,6 +53,9 @@ public:
       void operator()(ForStmt *);
       void operator()(WhileStmt *);
 
+      /* stmt/expr */
+      void operator()(AssignExpr *);
+
       /* stmt/expr/single_addr */
       void operator()(NewExpr *);
       void operator()(NewArrayExpr *);
