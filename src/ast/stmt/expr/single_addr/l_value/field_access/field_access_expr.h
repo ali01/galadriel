@@ -29,6 +29,10 @@ public:
     return new FieldAccessExpr(loc);
   }
 
+  static Ptr FieldAccessExprNew(Expr::Ptr base, Simone::Ptr<Identifier> field) {
+    return new FieldAccessExpr(base, field);
+  }
+
   FieldAccessExpr(yyltype loc);
 
   /* ok to pass in NULL base */

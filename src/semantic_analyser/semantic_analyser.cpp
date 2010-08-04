@@ -132,6 +132,13 @@ SemanticAnalyser::NodeFunctor::operator()(WhileStmt *nd) {
 }
 
 
+/* stmt/expr */
+void
+SemanticAnalyser::NodeFunctor::operator()(AssignExpr *nd) {
+  
+}
+
+
 /* stmt/expr/single_addr */
 void
 SemanticAnalyser::NodeFunctor::operator()(NewExpr *nd) {
