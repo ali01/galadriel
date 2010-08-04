@@ -21,11 +21,8 @@ protected:
   /* binary compound expression */
   CompoundExpr(Expr::Ptr lhs, Operator::Ptr op, Expr::Ptr rhs);
 
-  /* postfix unary compound expression */
+  /* unary compound expression */
   CompoundExpr(Operator::Ptr op, Expr::Ptr rhs);
-
-  /* prefix unary compound expression */
-  CompoundExpr(Expr::Ptr lhs, Operator::Ptr op);
 
   /* data members */
   Operator::Ptr op;

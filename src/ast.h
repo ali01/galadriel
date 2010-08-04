@@ -36,13 +36,10 @@
 #include "ast/stmt/expr/single_addr/compound/arithmetic_expr.h"
 #include "ast/stmt/expr/single_addr/compound/equality_expr.h"
 #include "ast/stmt/expr/single_addr/compound/logical_expr.h"
-#include "ast/stmt/expr/single_addr/compound/postfix_expr.h"
 #include "ast/stmt/expr/single_addr/compound/relational_expr.h"
 #include "ast/stmt/expr/single_addr/l_value/array_access_expr.h"
 #include "ast/stmt/expr/single_addr/l_value/field_access/field_access_expr.h"
 #include "ast/stmt/expr/single_addr/l_value/field_access/this_expr.h"
-#include "ast/stmt/switch/switch_stmt.h"
-#include "ast/stmt/switch/switch_case_stmt.h"
 
 /* ast/type includes */
 #include "ast/type/type.h"

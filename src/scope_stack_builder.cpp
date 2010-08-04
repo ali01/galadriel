@@ -215,28 +215,3 @@ ScopeStackBuilder::NodeFunctor::operator()(ArrayType *nd) {
   elem_type->scopeIs(scope);
   elem_type->apply(this);
 }
-
-/* stmt/switch */
-void
-ScopeStackBuilder::NodeFunctor::operator()(SwitchStmt *nd) {
-  SwitchCaseStmt::Ptr case_stmt;
-  SwitchStmt::const_case_iter it = nd->casesBegin();
-  for (; it != nd->casesEnd(); ++it) {
-    case_stmt = *it;
-    case_stmt->apply(this);
-  }
-
-  SwitchCaseStmt::Ptr default_case = nd->defaultCase();
-  if (default_case != NULL)
-    default_case->apply(this);
-}
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(SwitchCaseStmt *nd) {
-  Stmt::Ptr stmt;
-  SwitchCaseStmt::const_stmt_iter it = nd->stmtsBegin();
-  for (; it != nd->stmtsEnd(); ++it) {
-    stmt = *it;
-    stmt->apply(this);
-  }
-}

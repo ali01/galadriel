@@ -55,10 +55,6 @@ public:
       void operator()(ForStmt *);
       void operator()(WhileStmt *);
 
-      /* stmt/switch */
-      void operator()(SwitchStmt *);
-      void operator()(SwitchCaseStmt *);
-
       /* type */
       void operator()(ArrayType *);
 

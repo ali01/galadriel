@@ -66,9 +66,6 @@ void yyerror(const char *msg, yyltype *loc = NULL);
   
   /* type singletons */
   NamedType *named_type;
-
-  /* stmt singletons */
-  SwitchCaseStmt *switch_case_stmt;
   
   /* stmt/expr singletons */
   LValueExpr *l_value_expr;
@@ -82,7 +79,6 @@ void yyerror(const char *msg, yyltype *loc = NULL);
   Deque<VarDecl::Ptr> *var_decl_list;
   Deque<FnDecl::Ptr> *fn_decl_list;
   Deque<NamedType::Ptr> *named_type_list;
-  Deque<SwitchCaseStmt::Ptr> *switch_case_list;
 }
 
 
@@ -98,8 +94,6 @@ void yyerror(const char *msg, yyltype *loc = NULL);
 %token   T_While T_For T_If T_Else T_Return T_Break
 %token   T_New T_NewArray T_Print T_ReadInteger T_ReadLine
 %token   T_UnaryMinus
-%token   T_PostIncrement T_PostDecrement
-%token   T_Switch T_SwitchCase T_SwitchDefaultCase
 
 %token   <ident> T_Identifier
 %token   <str_const> T_StringConstant
@@ -121,8 +115,6 @@ void yyerror(const char *msg, yyltype *loc = NULL);
 /* stmt */
 %type <stmt> Stmt ReturnStmt BreakStmt PrintStmt
 %type <stmt> IfStmt WhileStmt ForStmt
-%type <stmt> SwitchStmt
-%type <switch_case_stmt> SwitchCase DefaultSwitchCase
 %type <stmt_block> StmtBlock
 
 /* decl */
@@ -149,7 +141,6 @@ void yyerror(const char *msg, yyltype *loc = NULL);
 %type <var_decl_list> VariableList VariableDeclList Formals
 %type <fn_decl_list> PrototypeList
 %type <named_type_list> Implements Protocol
-%type <switch_case_list> SwitchCaseList
 
 
 
@@ -168,7 +159,6 @@ void yyerror(const char *msg, yyltype *loc = NULL);
 %nonassoc '<' T_LessEqual '>' T_GreaterEqual
 %left '+' '-'
 %left '*' '/' '%'
-%left T_PostIncrement T_PostDecrement
 %right T_UnaryMinus '!'
 %left '[' '.'
 
@@ -380,7 +370,6 @@ Stmt              : ExprOrEmpty ';' { $$ = $1; }
                   | IfStmt          { $$ = $1; }
                   | WhileStmt       { $$ = $1; }
                   | ForStmt         { $$ = $1; }
-                  | SwitchStmt      { $$ = $1; }
                   | BreakStmt       { $$ = $1; }
                   | ReturnStmt      { $$ = $1; }
                   | PrintStmt       { $$ = $1; }
@@ -410,57 +399,6 @@ WhileStmt         : T_While '(' Expr ')' Stmt { $$ = new WhileStmt($3, $5); }
 
 ForStmt           : T_For '(' ExprOrEmpty ';' Expr';' ExprOrEmpty ')' Stmt {
                       $$ = new ForStmt($3, $5, $7, $9);
-                    }
-                  ;
-
-SwitchStmt        : T_Switch '(' Expr ')' '{' SwitchCaseList '}' {
-                      $$ = new SwitchStmt($3, $6, NULL);
-                    }
-                  | T_Switch '(' Expr ')'
-                    '{' SwitchCaseList DefaultSwitchCase '}'
-                    {
-                      $$ = new SwitchStmt($3, $6, $7);
-                    }
-                  | T_Switch '(' error ')' '{' SwitchCaseList '}' {
-                      $$ = new SwitchStmt(NULL, NULL, NULL);
-                      yyerror("Syntax error in switch statement's "
-                              "test expression.", &(@1));
-                    }
-                  | T_Switch '(' error ')' '{'
-                    SwitchCaseList DefaultSwitchCase '}'{
-                      $$ = new SwitchStmt(NULL, NULL, NULL);
-                      yyerror("Syntax error in switch statement's "
-                              "test expression.", &(@1));
-                    }
-                  ;
-
-SwitchCaseList    : SwitchCaseList SwitchCase {
-                      $$ = $1;
-                      $$->pushBack($2);
-                    }
-                  | SwitchCase {
-                      $$ = new Deque<SwitchCaseStmt::Ptr>();
-                      $$->pushBack($1);
-                    }
-                  ;
-
-SwitchCase        : T_SwitchCase T_IntConstant ':' StmtList {
-                      IntConstExpr::Ptr label;
-                      label = IntConstExpr::IntConstExprNew(@2, $2);
-                      $$ = new SwitchCaseStmt(label, $4, false);
-                    }
-                  | T_SwitchCase T_IntConstant ':' {
-                      IntConstExpr::Ptr label;
-                      label = IntConstExpr::IntConstExprNew(@2, $2);
-                      $$ = new SwitchCaseStmt(label, NULL, false);
-                    }
-                  ;
-
-DefaultSwitchCase : T_SwitchDefaultCase ':' StmtList {
-                      $$ = new SwitchCaseStmt(NULL, $3, true);
-                    }
-                  | T_SwitchDefaultCase ':' {
-                      $$ = new SwitchCaseStmt(NULL, NULL, true);
                     }
                   ;
 
@@ -520,20 +458,6 @@ Expr              : LValue '=' Expr  { $$ = new AssignExpr($1, $3); }
                   | '-' Expr  %prec T_UnaryMinus {
                       Operator::Ptr op = Operator::OperatorNew(@1, "-");
                       $$ = new ArithmeticExpr(op, $2);
-                    }
-                  | LValue T_PostIncrement {
-                      Operator::Ptr op = Operator::OperatorNew(@2, "++");
-                      $$ = new PostfixExpr($1, op);
-                    }
-                  | Constant T_PostIncrement {
-                      yyerror("Constant value cannot be incremented.");
-                    }
-                  | LValue T_PostDecrement {
-                      Operator::Ptr op = Operator::OperatorNew(@2, "--");
-                      $$ = new PostfixExpr($1, op);
-                    }
-                  | Constant T_PostDecrement {
-                      yyerror("Constant value cannot be decremented.");
                     }
                   | Expr '<' Expr {
                       Operator::Ptr op = Operator::OperatorNew(@2, "<");

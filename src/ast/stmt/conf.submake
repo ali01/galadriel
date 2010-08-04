@@ -1,5 +1,5 @@
 DIR_7ISS27HH := ast/stmt
-SUB_7ISS27HH := conditional expr switch
+SUB_7ISS27HH := conditional expr
 
 SRCS += $(wildcard $(DIR_7ISS27HH)/*.$(EXT))
 

@@ -36,22 +36,16 @@ parser/y.tab.o: parser/y.tab.c simone/ptr_interface.h simone/exception.h \
   ast/stmt/expr/single_addr/compound/../single_addr_expr.h \
   ast/stmt/expr/single_addr/compound/equality_expr.h \
   ast/stmt/expr/single_addr/compound/logical_expr.h \
-  ast/stmt/expr/single_addr/compound/postfix_expr.h \
-  ast/stmt/expr/single_addr/compound/../l_value/l_value_expr.h \
-  ast/stmt/expr/single_addr/compound/../l_value/../single_addr_expr.h \
   ast/stmt/expr/single_addr/compound/relational_expr.h \
   ast/stmt/expr/single_addr/l_value/array_access_expr.h \
   ast/stmt/expr/single_addr/l_value/l_value_expr.h \
+  ast/stmt/expr/single_addr/l_value/../single_addr_expr.h \
   ast/stmt/expr/single_addr/l_value/field_access/field_access_expr.h \
   ast/stmt/expr/single_addr/l_value/field_access/../l_value_expr.h \
   ast/stmt/expr/single_addr/l_value/field_access/this_expr.h \
   ast/stmt/expr/single_addr/l_value/field_access/field_access_expr.h \
-  ast/stmt/switch/switch_stmt.h ast/stmt/switch/../stmt.h \
-  ast/stmt/switch/switch_case_stmt.h \
-  ast/stmt/switch/../expr/single_addr/int_const_expr.h \
-  ast/stmt/switch/switch_case_stmt.h ast/type/type.h \
-  ast/type/named_type.h ast/type/array_type.h ast/type/type.h error.h \
-  lex_loc.h parser/../utility.h
+  ast/type/type.h ast/type/named_type.h ast/type/array_type.h \
+  ast/type/type.h error.h lex_loc.h parser/../utility.h
 
 simone/ptr_interface.h:
 
@@ -195,17 +189,13 @@ ast/stmt/expr/single_addr/compound/equality_expr.h:
 
 ast/stmt/expr/single_addr/compound/logical_expr.h:
 
-ast/stmt/expr/single_addr/compound/postfix_expr.h:
-
-ast/stmt/expr/single_addr/compound/../l_value/l_value_expr.h:
-
-ast/stmt/expr/single_addr/compound/../l_value/../single_addr_expr.h:
-
 ast/stmt/expr/single_addr/compound/relational_expr.h:
 
 ast/stmt/expr/single_addr/l_value/array_access_expr.h:
 
 ast/stmt/expr/single_addr/l_value/l_value_expr.h:
+
+ast/stmt/expr/single_addr/l_value/../single_addr_expr.h:
 
 ast/stmt/expr/single_addr/l_value/field_access/field_access_expr.h:
 
@@ -214,16 +204,6 @@ ast/stmt/expr/single_addr/l_value/field_access/../l_value_expr.h:
 ast/stmt/expr/single_addr/l_value/field_access/this_expr.h:
 
 ast/stmt/expr/single_addr/l_value/field_access/field_access_expr.h:
-
-ast/stmt/switch/switch_stmt.h:
-
-ast/stmt/switch/../stmt.h:
-
-ast/stmt/switch/switch_case_stmt.h:
-
-ast/stmt/switch/../expr/single_addr/int_const_expr.h:
-
-ast/stmt/switch/switch_case_stmt.h:
 
 ast/type/type.h:
 

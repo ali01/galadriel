@@ -23,10 +23,3 @@ CompoundExpr::CompoundExpr(Operator::Ptr o, Expr::Ptr r) :
 {
   assert(o != NULL && r != NULL);
 }
-
-CompoundExpr::CompoundExpr(Expr::Ptr lhs, Operator::Ptr o) :
-  SingleAddrExpr(Join(o->lexLoc(), lhs->lexLoc())),
-  op(o), left(lhs), right(NULL)
-{
-  assert(o != NULL && lhs != NULL);
-}

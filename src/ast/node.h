@@ -116,7 +116,6 @@ public:
     virtual void operator()(EqualityExpr *) {}
     virtual void operator()(LogicalExpr *) {}
     virtual void operator()(RelationalExpr *) {}
-    virtual void operator()(PostfixExpr *) {}
 
     /* stmt/expr/single_addr/l_value */
     virtual void operator()(LValueExpr *) { ABORT(); }
@@ -126,9 +125,6 @@ public:
     virtual void operator()(FieldAccessExpr *) {}
     virtual void operator()(ThisExpr *) {}
 
-    /* stmt/switch */
-    virtual void operator()(SwitchStmt *) {}
-    virtual void operator()(SwitchCaseStmt *) {}
 
 
     /* -- type -- */

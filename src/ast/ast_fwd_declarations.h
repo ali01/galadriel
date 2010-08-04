@@ -60,7 +60,6 @@ class ArithmeticExpr;
 class EqualityExpr;
 class LogicalExpr;
 class RelationalExpr;
-class PostfixExpr;
 
 /* stmt/expr/single_addr/l_value */
 class LValueExpr;
@@ -69,10 +68,6 @@ class ArrayAccessExpr;
 /* stmt/expr/single_addr/l_value/field_access */
 class FieldAccessExpr;
 class ThisExpr;
-
-/* stmt/switch */
-class SwitchStmt;
-class SwitchCaseStmt;
 
 
 /* -- type -- */
