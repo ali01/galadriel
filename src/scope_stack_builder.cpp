@@ -245,32 +245,6 @@ ScopeStackBuilder::NodeFunctor::operator()(NewArrayExpr *nd) {
   type->apply(this);
 }
 
-/* stmt/expr/single_addr/l_value */
-void
-ScopeStackBuilder::NodeFunctor::operator()(LValueExpr *nd) {
-  
-}
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(VarAccessExpr *nd) {
-  
-}
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(ArrayAccessExpr *nd) {
-  
-}
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(FieldAccessExpr *nd) {
-  
-}
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(ThisExpr *nd) {
-  
-}
-
 
 /* type */
 void

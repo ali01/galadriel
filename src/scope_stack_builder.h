@@ -60,13 +60,6 @@ public:
       void operator()(NewExpr *);
       void operator()(NewArrayExpr *);
 
-      /* stmt/expr/single_addr/l_value */
-      void operator()(LValueExpr *);
-      void operator()(VarAccessExpr *);
-      void operator()(ArrayAccessExpr *);
-      void operator()(FieldAccessExpr *);
-      void operator()(ThisExpr *);
-
       /* type */
       void operator()(ArrayType *);
 
