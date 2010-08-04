@@ -99,6 +99,9 @@ SemanticAnalyser::NodeFunctor::operator()(StmtBlock *nd) {
 
 void
 SemanticAnalyser::NodeFunctor::operator()(ConditionalStmt *nd) {
+  Expr::Ptr test = nd->test();
+  test->apply(this);
+
   Stmt::Ptr body = nd->body();
   body->apply(this);
 }
@@ -164,7 +167,7 @@ inherit_base_class_scopes(ClassDecl::Ptr nd, IdentifierSet::Ptr _seen) {
   if (base_class_type != NULL) {
     /* obtain base class identifier */
     Identifier::Ptr base_id = base_class_type->identifier();
-    
+
     /* search for base class decl in scope */
     Scope::Ptr scope = nd->scope();
     ClassDecl::Ptr base_decl = scope->classDecl(base_id);
