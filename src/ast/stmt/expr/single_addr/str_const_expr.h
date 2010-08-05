@@ -10,6 +10,9 @@
 /* ast/stmt/expr/single_addr includes */
 #include "single_addr_expr.h"
 
+/* forward declarations */
+class Type;
+
 class StrConstExpr : public SingleAddrExpr {
 public:
   typedef Simone::Ptr<const StrConstExpr> PtrConst;
@@ -20,6 +23,8 @@ public:
   }
 
   StrConstExpr(yyltype loc, const char *v);
+
+  Simone::Ptr<const Type> type() const;
 
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }

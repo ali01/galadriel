@@ -14,6 +14,7 @@ using Simone::Deque;
 
 /* forward declarations */
 class Identifier;
+class Type;
 
 /* Like field access, call is used both for qualified base.field()
  * and unqualified field().    We won't figure out until later
@@ -37,6 +38,8 @@ public:
            Expr::Ptr base,
            Simone::Ptr<Identifier> field,
            Deque<Expr::Ptr>::Ptr args);
+
+  Simone::Ptr<const Type> type() const;
 
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }

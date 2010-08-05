@@ -33,3 +33,10 @@ FieldAccessExpr::FieldAccessExpr(Expr::Ptr b, Identifier::Ptr f) :
   /* b can be null (just means no explicit base) */
   assert(field_ != NULL);
 }
+
+Type::PtrConst
+FieldAccessExpr::type() const {
+  // TODO:
+  assert(false);
+  return NULL;
+}

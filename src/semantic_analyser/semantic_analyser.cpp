@@ -135,7 +135,11 @@ SemanticAnalyser::NodeFunctor::operator()(WhileStmt *nd) {
 /* stmt/expr */
 void
 SemanticAnalyser::NodeFunctor::operator()(AssignExpr *nd) {
-  
+  LValueExpr::Ptr l_val = nd->left();
+  l_val->apply(this);
+
+  Expr::Ptr rhs = nd->right();
+  rhs->apply(this);
 }
 
 
@@ -143,7 +147,7 @@ SemanticAnalyser::NodeFunctor::operator()(AssignExpr *nd) {
 void
 SemanticAnalyser::NodeFunctor::operator()(NewExpr *nd) {
   Scope::Ptr scope = nd->scope();
-  NamedType::Ptr type = nd->type();
+  NamedType::PtrConst type = nd->objectType();
   Identifier::Ptr type_id = type->identifier();
   ClassDecl::Ptr class_decl = scope->classDecl(type_id);
   if (class_decl == NULL) {
@@ -159,6 +163,29 @@ SemanticAnalyser::NodeFunctor::operator()(NewArrayExpr *nd) {
   Type::Ptr type = nd->elemType();
   type->apply(this);
 }
+
+
+/* stmt/expr/single_addr/l_value */
+void
+SemanticAnalyser::NodeFunctor::operator()(VarAccessExpr *nd) {
+  
+}
+
+void
+SemanticAnalyser::NodeFunctor::operator()(ArrayAccessExpr *nd) {
+  
+}
+
+void
+SemanticAnalyser::NodeFunctor::operator()(FieldAccessExpr *nd) {
+  
+}
+
+void
+SemanticAnalyser::NodeFunctor::operator()(ThisExpr *nd) {
+  
+}
+
 
 
 /* type */

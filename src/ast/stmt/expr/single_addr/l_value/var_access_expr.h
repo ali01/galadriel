@@ -9,6 +9,7 @@
 
 /* forward declarations */
 class Identifier;
+class Type;
 
 class VarAccessExpr : public LValueExpr {
 public:
@@ -24,6 +25,7 @@ public:
   /* attribute member functions */
   Simone::Ptr<const Identifier> identifier() const;
   Simone::Ptr<Identifier> identifier();
+  Simone::Ptr<const Type> type() const;
 
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }

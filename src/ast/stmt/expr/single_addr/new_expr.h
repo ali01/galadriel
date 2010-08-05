@@ -12,6 +12,7 @@
 
 /* forward declarations */
 class NamedType;
+class Type;
 
 class NewExpr : public SingleAddrExpr {
 public:
@@ -25,12 +26,15 @@ public:
   NewExpr(yyltype loc, Simone::Ptr<NamedType> class_type);
 
   /* attribute member functions */
-  Simone::Ptr<NamedType> type() const;
+  Simone::Ptr<const NamedType> objectType() const;
+  Simone::Ptr<NamedType> objectType();
 
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
+  Simone::Ptr<const Type> type() const;
+
   /* data members */
   Simone::Ptr<NamedType> type_;
 };

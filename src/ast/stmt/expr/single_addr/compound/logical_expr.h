@@ -10,6 +10,7 @@
 /* forward declarations */
 class Expr;
 class Operator;
+class Type;
 
 class LogicalExpr : public CompoundExpr {
 public:
@@ -24,6 +25,8 @@ public:
     CompoundExpr(lhs,op,rhs) {}
 
   LogicalExpr(Operator::Ptr op, Expr::Ptr rhs) : CompoundExpr(op,rhs) {}
+
+  Simone::Ptr<const Type> type() const;
 
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }

@@ -3,9 +3,17 @@
 /* simone includes */
 #include <simone/utility.h>
 
+/* ast/type includes */
+#include "../../../type/type.h"
+
 StrConstExpr::StrConstExpr(yyltype loc, const char *val) :
   SingleAddrExpr(loc)
 {
   assert(val != NULL);
   value = strdup(val);
+}
+
+Type::PtrConst
+StrConstExpr::type() const {
+  return Type::kString;
 }

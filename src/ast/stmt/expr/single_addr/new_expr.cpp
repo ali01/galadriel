@@ -22,7 +22,17 @@ NewExpr::NewExpr(yyltype loc, NamedType::Ptr class_type) :
   assert(type_ != NULL);
 }
 
-NamedType::Ptr
-NewExpr::type() const {
+NamedType::PtrConst
+NewExpr::objectType() const {
   return type_;
+}
+
+NamedType::Ptr
+NewExpr::objectType() {
+  return type_;
+}
+
+Type::PtrConst
+NewExpr::type() const {
+  return objectType();
 }

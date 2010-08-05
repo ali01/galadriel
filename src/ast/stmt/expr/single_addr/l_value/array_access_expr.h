@@ -12,6 +12,7 @@
 
 /* forward declarations */
 class Expr;
+class Type;
 
 class ArrayAccessExpr : public LValueExpr {
 public:
@@ -23,15 +24,16 @@ public:
                                 Expr::Ptr subscript) {
     return new ArrayAccessExpr(loc, base, subscript);
   }
-  
 
   ArrayAccessExpr(yyltype loc, Expr::Ptr base, Expr::Ptr subscript);
+
+  Simone::Ptr<const Type> type() const;
 
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 protected:
-  Expr::Ptr base, subscript;
+  Expr::Ptr base_, subscript_;
 };
 
 #endif

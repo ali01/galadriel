@@ -7,6 +7,9 @@
 /* ast/stmt/expr includes */
 #include "expr.h"
 
+/* forward declarations */
+class Type;
+
 class NullConstExpr: public Expr {
 public:
   typedef Simone::Ptr<const NullConstExpr> PtrConst;
@@ -17,6 +20,8 @@ public:
   }
 
   NullConstExpr(yyltype loc) : Expr(loc) {}
+
+  Simone::Ptr<const Type> type() const;
 
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }

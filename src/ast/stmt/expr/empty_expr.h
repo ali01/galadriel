@@ -7,6 +7,9 @@
 /* ast/stmt/expr includes */
 #include "expr.h"
 
+/* forward declarations */
+class Type;
+
 /* This node type is used for those places where an expression is optional.
  * We could use a NULL pointer, but then it adds a lot of checking for
  * NULL. By using a valid, but no-op, node, we save that trouble */
@@ -21,9 +24,10 @@ public:
 
   EmptyExpr() : Expr() {}
 
+  Simone::Ptr<const Type> type() const;
+
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 };
-
 
 #endif

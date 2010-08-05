@@ -28,18 +28,24 @@ public:
 
   NewArrayExpr(yyltype loc,
                Expr::Ptr size_expr,
-               Simone::Ptr<Type> sive_expr);
+               Simone::Ptr<Type> size_expr);
 
   /* attribute member functions */
-  Expr::Ptr size() const { return size_; }
-  Simone::Ptr<Type> elemType() const;
+  Expr::PtrConst size() const { return size_; }
+  Expr::Ptr size() { return size_; }
+
+  Simone::Ptr<const Type> elemType() const;
+  Simone::Ptr<Type> elemType();
 
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
+  Simone::Ptr<const Type> type() const;
+
   /* data members */
   Expr::Ptr size_;
+  Simone::Ptr<Type> type_;
   Simone::Ptr<Type> elem_type_;
 };
 

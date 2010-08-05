@@ -227,7 +227,7 @@ void
 ScopeStackBuilder::NodeFunctor::operator()(NewExpr *nd) {
   Scope::Ptr scope = nd->scope();
 
-  NamedType::Ptr type = nd->type();
+  NamedType::Ptr type = nd->objectType();
   type->scopeIs(scope);
   type->apply(this);
 }

@@ -11,6 +11,9 @@ using Simone::Deque;
 /* ast includes */
 #include "../../identifier.h"
 
+/* ast/type includes */
+#include "../../type/type.h"
+
 /* ast/stmt/expr includes */
 #include "expr.h"
 
@@ -23,3 +26,11 @@ CallExpr::CallExpr(yyltype loc,
   /* b can be null (just means no explicit base) */
   assert(field != NULL && args != NULL);
 }
+
+
+Type::PtrConst
+CallExpr::type() const {
+  assert(false); // TODO: implement
+  return NULL;
+}
+
