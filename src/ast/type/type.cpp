@@ -14,13 +14,13 @@
  * creates lots of copies.
  */
 
-Type::PtrConst Type::kInt    = Type::TypeNew("int");
-Type::PtrConst Type::kDouble = Type::TypeNew("double");
-Type::PtrConst Type::kBool   = Type::TypeNew("bool");
-Type::PtrConst Type::kString = Type::TypeNew("string");
-Type::PtrConst Type::kVoid   = Type::TypeNew("void");
-Type::PtrConst Type::kNull   = Type::TypeNew("null");
-Type::PtrConst Type::kError  = Type::TypeNew("error");
+Type::Ptr Type::kInt    = Type::TypeNew("int");
+Type::Ptr Type::kDouble = Type::TypeNew("double");
+Type::Ptr Type::kBool   = Type::TypeNew("bool");
+Type::Ptr Type::kString = Type::TypeNew("string");
+Type::Ptr Type::kVoid   = Type::TypeNew("void");
+Type::Ptr Type::kNull   = Type::TypeNew("null");
+Type::Ptr Type::kError  = Type::TypeNew("error");
 
 /* protected constructors */
 Type::Type(yyltype loc, const string& str) : 
