@@ -32,10 +32,12 @@ public:
 
   /* const interface */
   Simone::Ptr<const LValueExpr> left() const { return l_value_; }
+  Simone::Ptr<const Operator> op() const { return op_; }
   Expr::PtrConst right() const { return right_; }
 
   /* non-const interface */
   Simone::Ptr<LValueExpr> left() { return l_value_; }
+  Simone::Ptr<Operator> op() { return op_; }
   Expr::Ptr right() { return right_; }
 
   Simone::Ptr<const Type> type() const;
