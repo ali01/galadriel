@@ -44,6 +44,22 @@ protected:
       ArrayTypeEqualityFunctor(ArrayType::Ptr _array_type);
   };
 
+  class ArrayTypeSubsumeFunctor : public Type::TypeSubsumeFunctor {
+    public:
+      typedef Simone::Ptr<const ArrayTypeSubsumeFunctor> PtrConst;
+      typedef Simone::Ptr<ArrayTypeSubsumeFunctor> Ptr;
+
+      static Ptr ArrayTypeSubsumeFunctorNew(ArrayType::Ptr _this_type) {
+        return new ArrayTypeSubsumeFunctor(_this_type);
+      }
+
+      void operator()(Type *_o) { subsumes_other_ = false; }
+      void operator()(ArrayType *_o);
+
+    private:
+      ArrayTypeSubsumeFunctor(ArrayType::Ptr _this_type);
+  };
+
   /* data members */
   Type::Ptr elem_type_;
 };

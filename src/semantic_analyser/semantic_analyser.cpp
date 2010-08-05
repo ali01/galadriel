@@ -253,6 +253,14 @@ inherit_base_class_scopes(ClassDecl::Ptr nd, IdentifierSet::Ptr _seen) {
       /* inherit from base scope */
       Scope::PtrConst base_scope = base_decl->scope();
       scope->baseScopeIs(base_scope);
+
+      /* add base scope as a subsumer */
+      nd->subsumersInsert(base_class_type);
+
+      /* inherit base scope's subsumers */
+      nd->subsumersInsert(base_decl->subsumersBegin(), 
+                          base_decl->subsumersEnd());
+
     } else {
       Error::IdentifierNotDeclared(base_id, kLookingForClass);
     }
@@ -278,8 +286,13 @@ inherit_interface_scopes(ClassDecl::Ptr nd) {
     intf_decl = parent_scope->interfaceDecl(base_id);
 
     if (intf_decl != NULL) {
+      /* inherit interface scope */
       intf_scope = intf_decl->scope();
       scope->baseScopeIs(intf_scope);
+
+      /* add interface type as a subsumer */
+      nd->subsumersInsert(intf_type);
+
     } else {
       Error::IdentifierNotDeclared(base_id, kLookingForInterface);
     }

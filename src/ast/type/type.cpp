@@ -27,21 +27,34 @@ Type::Type(yyltype loc, const string& str) :
   Node(loc), type_name_(str)
 {
   eq_functor_ = TypeEqualityFunctor::TypeEqualityFunctorNew(this);
+  subsume_functor_ = TypeSubsumeFunctor::TypeSubsumeFunctorNew(this);
 }
 
 Type::Type(yyltype loc) : Node(loc) {
   eq_functor_ = TypeEqualityFunctor::TypeEqualityFunctorNew(this);
+  subsume_functor_ = TypeSubsumeFunctor::TypeSubsumeFunctorNew(this);
 }
 
 /* private constructor */
 Type::Type(const string& str) : Node(), type_name_(str) {
   eq_functor_ = TypeEqualityFunctor::TypeEqualityFunctorNew(this);
+  subsume_functor_ = TypeSubsumeFunctor::TypeSubsumeFunctorNew(this);
+}
+
+bool
+Type::subsumes(const Type::PtrConst& _o) const {
+  /* subsumes function is logically const;
+     subsume_functor_, implemented in type.h, doesn't modify the object */
+  Type::Ptr o_mutable = const_cast<Type*>(_o.ptr());
+
+  o_mutable->apply(subsume_functor_);
+  return subsume_functor_->subsumesOther();
 }
 
 bool
 Type::operator==(const Type& _o) const {
   /* operator== is logically const;
-     eq_functor_ implemented in type.h doesn't modify the object */
+     eq_functor_, implemented in type.h, doesn't modify the object */
   Type &o_mutable = const_cast<Type&>(_o);
 
   o_mutable.apply(eq_functor_);

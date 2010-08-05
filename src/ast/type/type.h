@@ -39,7 +39,7 @@ public:
 
   const string& name() const { return type_name_; }
 
-  bool subsumes(const Type::PtrConst& _other) const { return true; } // TODO
+  bool subsumes(const Type::PtrConst& _other) const;
 
   /* overloaded operators */
   bool operator==(const Type& _o) const;
@@ -72,6 +72,30 @@ protected:
       bool equal_;
   };
 
+  class TypeSubsumeFunctor : public Node::Functor {
+    public:
+      typedef Simone::Ptr<const TypeSubsumeFunctor> PtrConst;
+      typedef Simone::Ptr<TypeSubsumeFunctor> Ptr;
+
+      static Ptr TypeSubsumeFunctorNew(Type::Ptr _this_type) {
+        return new TypeSubsumeFunctor(_this_type);
+      }
+
+      void operator()(Type *_o) { subsumes_other_ = *this_type_ == *_o; }
+      void operator()(NamedType *) { subsumes_other_ = false; }
+      void operator()(ArrayType *) { subsumes_other_ = false; }
+
+      bool subsumesOther() const { return subsumes_other_; }
+
+    protected:
+      TypeSubsumeFunctor(Type::Ptr _this_type) :
+        this_type_(_this_type), subsumes_other_(false) {}
+      
+      /* data members */
+      Type::Ptr this_type_;
+      bool subsumes_other_;
+  };
+
   /* constructor to be used by derived classes */
   Type(yyltype loc, const string& str);
   Type(yyltype loc);
@@ -79,6 +103,7 @@ protected:
   /* data members */
   const string type_name_;
   TypeEqualityFunctor::Ptr eq_functor_;
+  TypeSubsumeFunctor::Ptr subsume_functor_;
 
 private:
   Type(const string& str);

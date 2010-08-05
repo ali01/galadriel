@@ -4,7 +4,9 @@
 /* simone includes */
 #include <simone/deque.h>
 #include <simone/ptr_interface.h>
+#include <simone/set.h>
 using Simone::Deque;
+using Simone::Set;
 
 /* ast includes */
 #include "../identifier.h"
@@ -28,6 +30,11 @@ public:
 
   typedef Deque<NamedType::Ptr>::const_iterator const_intf_iter;
   typedef Deque<NamedType::Ptr>::iterator intf_iter;
+
+  typedef Set<NamedType::PtrConst,NamedType::less>::const_iterator 
+          const_subsumer_iter;
+  typedef Set<NamedType::PtrConst,NamedType::less>::iterator
+          subsumer_iter;
 
   static Ptr ClassDeclNew(Identifier::Ptr name, NamedType::Ptr extends,
                           Deque<NamedType::Ptr>::Ptr implements,
@@ -55,7 +62,21 @@ public:
   intf_iter interfacesEnd() { return interfaces_->end(); }
 
 
+  const_subsumer_iter subsumersBegin() const { return subsumers_.begin(); }
+  subsumer_iter subsumersBegin() { return subsumers_.begin(); }
+
+  const_subsumer_iter subsumersEnd() const { return subsumers_.end(); }
+  subsumer_iter subsumersEnd() { return subsumers_.end(); }
+
+
+  /* member functions */
+
+  bool subsumersContain(NamedType::PtrConst _type) const;
+  void subsumersInsert(NamedType::PtrConst _type);
+  void subsumersInsert(const_subsumer_iter first, const_subsumer_iter last);
+
   /* attribute member functions */
+
   NamedType::Ptr baseClass() const { return base_class_; }
 
   bool scopeIndexed() const { return scope_indexed_; }
@@ -69,6 +90,9 @@ private:
   NamedType::Ptr base_class_;
   Deque<NamedType::Ptr>::Ptr interfaces_;
   Deque<Decl::Ptr>::Ptr members_;
+
+  Set<NamedType::PtrConst,NamedType::less> subsumers_;
+  NamedType::PtrConst this_type_;
   bool scope_indexed_;
 
   /* operations disallowed */

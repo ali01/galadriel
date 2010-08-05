@@ -4,24 +4,34 @@
 /* simone includes */
 #include <simone/ptr_interface.h>
 
-/* ast/type includes */
-#include "../type/type.h"
+/* ast includes */
+#include "../identifier.h"
 
-class Identifier;
+/* ast/type includes */
+#include "type.h"
+
 
 class NamedType : public Type  {
 public:
   typedef Simone::Ptr<const NamedType> PtrConst;
   typedef Simone::Ptr<NamedType> Ptr;
 
-  static Ptr NamedTypeNew(Simone::Ptr<Identifier> i) {
+  /* comparison functor */
+  struct less {
+    bool operator()(PtrConst lhs, PtrConst rhs) const {
+      Identifier::less id_cmp;
+      return id_cmp(lhs->identifier(), rhs->identifier());
+    }
+  };
+
+  static Ptr NamedTypeNew(Identifier::Ptr i) {
     return new NamedType(i);
   }
 
-  NamedType(Simone::Ptr<Identifier> i);
+  NamedType(Identifier::Ptr i);
 
   /* attribute member functions */
-  Simone::Ptr<Identifier> identifier() const;
+  Identifier::Ptr identifier() const;
 
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
@@ -42,9 +52,25 @@ protected:
     private:
       NamedTypeEqualityFunctor(NamedType::Ptr _type);
   };
-  
+
+  class NamedTypeSubsumeFunctor : public Type::TypeSubsumeFunctor {
+    public:
+      typedef Simone::Ptr<const NamedTypeSubsumeFunctor> PtrConst;
+      typedef Simone::Ptr<NamedTypeSubsumeFunctor> Ptr;
+
+      static Ptr NamedTypeSubsumeFunctorNew(NamedType::Ptr _this_type) {
+        return new NamedTypeSubsumeFunctor(_this_type);
+      }
+
+      void operator()(Type *_o) { subsumes_other_ = false; }
+      void operator()(NamedType *_o);
+
+    private:
+      NamedTypeSubsumeFunctor(NamedType::Ptr _this_type);
+  };
+
   /* data members */
-  Simone::Ptr<Identifier> id_;
+  Identifier::Ptr id_;
 };
 
 #endif
