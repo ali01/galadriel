@@ -3,7 +3,9 @@
 
 /* stl includes */
 #include <ostream>
+#include <string>
 using std::ostream;
+using std::string;
 
 /* simone includes */
 #include <simone/ptr_interface.h>
@@ -19,21 +21,25 @@ public:
   typedef Simone::Ptr<const Operator> PtrConst;
   typedef Simone::Ptr<Operator> Ptr;
 
-  static Ptr OperatorNew(yyltype loc, const char *tok) {
-    return new Operator(loc, tok);
+  enum op_type {
+    kAdd, kSubtract, kMultiply, kDivide, kModulo, kEqual, kNotEqual,
+    kLess, kLessEqual, kGreater, kGreaterEqual,
+    kAnd, kOr, kNot
+  };
+
+  static Ptr OperatorNew(yyltype loc, op_type _op_type) {
+    return new Operator(loc, _op_type);
   }
 
-  Operator(yyltype loc, const char *tok);
+  Operator(yyltype loc, op_type _op_type);
 
-  friend ostream& operator<<(ostream& out, Operator *o) {
-    return out << o->_tokenString;
-  }
+  op_type operatorType() const { return op_type_; }
 
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 protected:
-  char _tokenString[4];
+  const op_type op_type_;
 };
 
 #endif

@@ -9,7 +9,4 @@
 /* ast includes */
 #include "node.h"
 
-Operator::Operator(yyltype loc, const char *tok) : Node(loc) {
-  assert(tok);
-  strncpy(_tokenString, tok, sizeof(_tokenString));
-}
+Operator::Operator(yyltype loc, op_type _op) : Node(loc), op_type_(_op) {}

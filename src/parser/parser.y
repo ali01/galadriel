@@ -436,63 +436,78 @@ Expr              : LValue '=' Expr  { $$ = new AssignExpr($1, $3); }
                   | Call             { $$ = $1; }
                   | '(' Expr ')'     { $$ = $2; }
                   | Expr '+' Expr {
-                      Operator::Ptr op = Operator::OperatorNew(@2, "+");
+                      Operator::Ptr op;
+                      op = Operator::OperatorNew(@2, Operator::kAdd);
                       $$ = new ArithmeticExpr($1, op, $3);
                     }
                   | Expr '-' Expr {
-                      Operator::Ptr op = Operator::OperatorNew(@2, "-");
+                      Operator::Ptr op;
+                      op = Operator::OperatorNew(@2, Operator::kSubtract);
                       $$ = new ArithmeticExpr($1, op, $3);
                     }
                   | Expr '*' Expr {
-                      Operator::Ptr op = Operator::OperatorNew(@2, "*");
+                      Operator::Ptr op;
+                      op = Operator::OperatorNew(@2, Operator::kMultiply);
                       $$ = new ArithmeticExpr($1, op, $3);
                     }
                   | Expr '/' Expr {
-                      Operator::Ptr op = Operator::OperatorNew(@2, "/");
+                      Operator::Ptr op;
+                      op = Operator::OperatorNew(@2, Operator::kDivide);
                       $$ = new ArithmeticExpr($1, op, $3);
                     }
                   | Expr '%' Expr {
-                      Operator::Ptr op = Operator::OperatorNew(@2, "%");
+                      Operator::Ptr op;
+                      op = Operator::OperatorNew(@2, Operator::kModulo);
                       $$ = new ArithmeticExpr($1, op, $3);
                     }
                   | '-' Expr  %prec T_UnaryMinus {
-                      Operator::Ptr op = Operator::OperatorNew(@1, "-");
+                      Operator::Ptr op;
+                      op = Operator::OperatorNew(@1, Operator::kSubtract);
                       $$ = new ArithmeticExpr(op, $2);
                     }
                   | Expr '<' Expr {
-                      Operator::Ptr op = Operator::OperatorNew(@2, "<");
+                      Operator::Ptr op;
+                      op = Operator::OperatorNew(@2, Operator::kLess);
                       $$ = new RelationalExpr($1, op, $3);
                     }
                   | Expr T_LessEqual Expr {
-                      Operator::Ptr op = Operator::OperatorNew(@2, "<=");
+                      Operator::Ptr op;
+                      op = Operator::OperatorNew(@2, Operator::kLessEqual);
                       $$ = new RelationalExpr($1, op, $3);
                     }
                   | Expr '>' Expr {
-                      Operator::Ptr op = Operator::OperatorNew(@2, ">");
+                      Operator::Ptr op;
+                      op = Operator::OperatorNew(@2, Operator::kGreater);
                       $$ = new RelationalExpr($1, op, $3);
                     }
                   | Expr T_GreaterEqual Expr {
-                      Operator::Ptr op = Operator::OperatorNew(@2, ">=");
+                      Operator::Ptr op;
+                      op = Operator::OperatorNew(@2, Operator::kGreaterEqual);
                       $$ = new RelationalExpr($1, op, $3);
                     }
                   | Expr T_Equal Expr {
-                      Operator::Ptr op = Operator::OperatorNew(@2, "==");
+                      Operator::Ptr op;
+                      op = Operator::OperatorNew(@2, Operator::kEqual);
                       $$ = new RelationalExpr($1, op, $3);
                     }
                   | Expr T_NotEqual Expr {
-                      Operator::Ptr op = Operator::OperatorNew(@2, "!=");
+                      Operator::Ptr op;
+                      op = Operator::OperatorNew(@2, Operator::kNotEqual);
                       $$ = new RelationalExpr($1, op, $3);
                     }
                   | Expr T_And Expr {
-                      Operator::Ptr op = Operator::OperatorNew(@2, "&&");
+                      Operator::Ptr op;
+                      op = Operator::OperatorNew(@2, Operator::kAnd);
                       $$ = new LogicalExpr($1, op, $3);
                     }
                   | Expr T_Or Expr {
-                      Operator::Ptr op = Operator::OperatorNew(@2, "||");
+                      Operator::Ptr op;
+                      op = Operator::OperatorNew(@2, Operator::kOr);
                       $$ = new LogicalExpr($1, op, $3);
                     }
                   | '!' Expr {
-                        Operator::Ptr op = Operator::OperatorNew(@1, "!");
+                        Operator::Ptr op;
+                      op = Operator::OperatorNew(@1, Operator::kNot);
                         $$ = new LogicalExpr(op, $2);
                     }
                   | T_New '(' T_Identifier ')' {
