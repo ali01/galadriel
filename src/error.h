@@ -27,6 +27,7 @@ class Identifier;
 class Expr;
 class BreakStmt;
 class ReturnStmt;
+class Operator;
 class ThisExpr;
 class Decl;
 class FnDecl;
@@ -90,7 +91,9 @@ public:
   static void IncompatibleOperand(Operator *op, Type *rhs);
 
   /* binary */
-  static void IncompatibleOperands(Operator *op, Type *lhs, Type *rhs);
+  static void IncompatibleOperands(Simone::Ptr<const Operator> op,
+                                   Simone::Ptr<const Type> lhs,
+                                   Simone::Ptr<const Type> rhs);
   static void ThisOutsideClassScope(ThisExpr *th);
 
 

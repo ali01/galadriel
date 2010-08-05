@@ -124,9 +124,11 @@ Error::IdentifierNotDeclared(Identifier::PtrConst ident, reasonT whyNeeded) {
 }
 
 void
-Error::IncompatibleOperands(Operator *op, Type *lhs, Type *rhs) {
+Error::IncompatibleOperands(Simone::Ptr<const Operator> op,
+                            Simone::Ptr<const Type> lhs,
+                            Simone::Ptr<const Type> rhs) {
   ostringstream s;
-  s << "Incompatible operands: " << lhs << " " << op << " " << rhs;
+  s << "Incompatible operands: " << *lhs << " " << *op << " " << *rhs;
   OutputError(op->lexLoc(), s.str());
 }
 
