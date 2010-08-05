@@ -50,7 +50,7 @@ Type::operator==(const Type& _o) const {
 
 
 ostream&
-operator<<(ostream& out, Type *t) {
-  out << t->name();
+operator<<(ostream& out, const Type& t) {
+  out << t.name();
   return out;
 }

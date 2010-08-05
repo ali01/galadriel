@@ -37,7 +37,9 @@ public:
     return new Type(str);
   }
 
-  const string& name() { return type_name_; }
+  const string& name() const { return type_name_; }
+
+  bool subsumes(const Type::PtrConst& _other) const { return true; } // TODO
 
   /* overloaded operators */
   bool operator==(const Type& _o) const;
@@ -83,6 +85,6 @@ private:
 };
 
 /* forward declarations */
-ostream& operator<<(ostream& out, Type *t);
+ostream& operator<<(ostream& out, const Type& t);
 
 #endif
