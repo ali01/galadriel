@@ -120,6 +120,7 @@ public:
 
     /* stmt/expr/single_addr/l_value */
     virtual void operator()(LValueExpr *) { ABORT(); }
+    virtual void operator()(VarAccessExpr *) {}
     virtual void operator()(ArrayAccessExpr *) {}
 
     /* stmt/expr/single_addr/l_value/field_access */

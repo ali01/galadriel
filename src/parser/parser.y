@@ -477,11 +477,11 @@ Expr              : LValue '=' Expr  { $$ = new AssignExpr($1, $3); }
                     }
                   | Expr T_Equal Expr {
                       Operator::Ptr op = Operator::OperatorNew(@2, "==");
-                      $$ = new EqualityExpr($1, op, $3);
+                      $$ = new RelationalExpr($1, op, $3);
                     }
                   | Expr T_NotEqual Expr {
                       Operator::Ptr op = Operator::OperatorNew(@2, "!=");
-                      $$ = new EqualityExpr($1, op, $3);
+                      $$ = new RelationalExpr($1, op, $3);
                     }
                   | Expr T_And Expr {
                       Operator::Ptr op = Operator::OperatorNew(@2, "&&");
@@ -509,8 +509,8 @@ Expr              : LValue '=' Expr  { $$ = new AssignExpr($1, $3); }
                   ;
 
 LValue            : T_Identifier {
-                      Identifier::Ptr field = Identifier::IdentifierNew(@1, $1);
-                      $$ = new FieldAccessExpr(NULL, field);
+                      Identifier::Ptr id = Identifier::IdentifierNew(@1, $1);
+                      $$ = new VarAccessExpr(id);
                     }
                   | Expr '.' T_Identifier {
                       Identifier::Ptr field = Identifier::IdentifierNew(@3, $3);

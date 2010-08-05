@@ -64,6 +64,7 @@ class RelationalExpr;
 
 /* stmt/expr/single_addr/l_value */
 class LValueExpr;
+class VarAccessExpr;
 class ArrayAccessExpr;
 
 /* stmt/expr/single_addr/l_value/field_access */
