@@ -38,8 +38,8 @@
 #include "ast/stmt/expr/single_addr/compound/relational_expr.h"
 #include "ast/stmt/expr/single_addr/l_value/var_access_expr.h"
 #include "ast/stmt/expr/single_addr/l_value/array_access_expr.h"
-#include "ast/stmt/expr/single_addr/l_value/field_access/field_access_expr.h"
-#include "ast/stmt/expr/single_addr/l_value/field_access/this_expr.h"
+#include "ast/stmt/expr/single_addr/l_value/field_access_expr.h"
+#include "ast/stmt/expr/single_addr/l_value/this_expr.h"
 
 /* ast/type includes */
 #include "ast/type/type.h"

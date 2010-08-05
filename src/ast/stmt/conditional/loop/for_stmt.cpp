@@ -6,9 +6,30 @@
 /* ast/stmt/expr includes */
 #include "../../expr/expr.h"
 
-ForStmt::ForStmt(Simone::Ptr<Expr> init, Simone::Ptr<Expr> test,
-                 Simone::Ptr<Expr> step, Stmt::Ptr body) :
-  LoopStmt(test, body), init(init), step(step)
+ForStmt::ForStmt(Expr::Ptr init, Expr::Ptr test,
+                 Expr::Ptr step, Stmt::Ptr body) :
+  LoopStmt(test, body), init_(init), step_(step)
 {
-  assert(init != NULL && test != NULL && step != NULL && body != NULL);
+  assert(init_ != NULL && test != NULL && step_ != NULL && body != NULL);
+}
+
+Expr::Ptr
+ForStmt::init() {
+  return init_;
+}
+
+Expr::PtrConst
+ForStmt::init() const {
+  return init_;
+}
+
+
+Expr::Ptr
+ForStmt::step() {
+  return step_;
+}
+
+Expr::PtrConst
+ForStmt::step() const {
+  return step_;
 }

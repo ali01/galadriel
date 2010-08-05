@@ -167,8 +167,9 @@ SemanticAnalyser::NodeFunctor::operator()(NewArrayExpr *nd) {
   Expr::Ptr size = nd->size();
   size->apply(this);
 
-  Type::Ptr type = nd->elemType();
-  type->apply(this);
+  // TODO
+  // Type::Ptr type = nd->elemType();
+  //   type->apply(this);
 }
 
 

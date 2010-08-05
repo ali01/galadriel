@@ -18,18 +18,22 @@ public:
   typedef Simone::Ptr<const ReturnStmt> PtrConst;
   typedef Simone::Ptr<ReturnStmt> Ptr;
 
-  static Ptr ReturnStmtNew(yyltype loc, Simone::Ptr<Expr> expr) {
-    return new ReturnStmt(loc, expr);
+  static Ptr ReturnStmtNew(yyltype _loc, Simone::Ptr<Expr> _expr) {
+    return new ReturnStmt(_loc, _expr);
   }
 
-  ReturnStmt(yyltype loc, Simone::Ptr<Expr> expr);
+  ReturnStmt(yyltype _loc, Simone::Ptr<Expr> _expr);
+
+  /* attribute member functions */
+  Simone::Ptr<Expr> expr();
+  Simone::Ptr<const Expr> expr() const;
 
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
   /* data members */
-  Simone::Ptr<Expr> expr;
+  Simone::Ptr<Expr> expr_;
 };
 
 #endif

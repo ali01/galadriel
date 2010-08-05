@@ -10,16 +10,16 @@
 #include "compound_expr.h"
 
 ArithmeticExpr::ArithmeticExpr(Expr::Ptr lhs, Operator::Ptr op, Expr::Ptr rhs) :
-  CompoundExpr(lhs,op,rhs) {}
+  CompoundExpr(lhs, op, rhs) {}
 
 Type::PtrConst
 ArithmeticExpr::type() const {
-  Type::PtrConst type = left->type();
+  Type::PtrConst type = left_->type();
 
-  if (left->type() != right->type())
+  if (left_->type() != right_->type())
     type = Type::kError;
 
-  if (left->type() != Type::kInt && left->type() != Type::kDouble)
+  if (left_->type() != Type::kInt && left_->type() != Type::kDouble)
     type = Type::kError;
 
   return type;

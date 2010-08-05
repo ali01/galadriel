@@ -8,7 +8,7 @@
 #include <lex_loc.h>
 
 /* ast/stmt/expr/single_addr/l_value includes */
-#include "../l_value_expr.h"
+#include "l_value_expr.h"
 
 /* forward declarations */
 class Expr;
@@ -25,18 +25,20 @@ public:
   typedef Simone::Ptr<const FieldAccessExpr> PtrConst;
   typedef Simone::Ptr<FieldAccessExpr> Ptr;
 
-  static Ptr FieldAccessExprNew(yyltype loc) {
-    return new FieldAccessExpr(loc);
-  }
-
   static Ptr FieldAccessExprNew(Expr::Ptr base, Simone::Ptr<Identifier> field) {
     return new FieldAccessExpr(base, field);
   }
 
-  FieldAccessExpr(yyltype loc);
-
   /* ok to pass in NULL base */
   FieldAccessExpr(Expr::Ptr base, Simone::Ptr<Identifier> field);
+
+  /* attribute member functions */
+  Expr::Ptr base() { return base_; }
+  Expr::PtrConst base() const { return base_; }
+
+  Simone::Ptr<Identifier> field();
+  Simone::Ptr<const Identifier> field() const;
+  
 
   Simone::Ptr<const Type> type() const;
 
@@ -46,7 +48,6 @@ public:
 protected:
   Expr::Ptr base_; /* will be NULL if no explicit base */
   Simone::Ptr<Identifier> field_;
-  Simone::Ptr<Type> field_type_;
 };
 
 #endif

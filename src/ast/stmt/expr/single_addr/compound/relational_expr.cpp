@@ -1,10 +1,13 @@
 #include "relational_expr.h"
 
+/* ast includes */
+#include "../../../../operator.h"
+
 /* ast/type includes */
 #include "../../../../type/type.h"
 
 RelationalExpr::RelationalExpr(Expr::Ptr lhs,
-                               Simone::Ptr<Operator> op,
+                               Operator::Ptr op,
                                Expr::Ptr rhs) :
   CompoundExpr(lhs,op,rhs) {}
 

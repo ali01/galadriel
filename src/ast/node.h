@@ -41,9 +41,8 @@ struct yyltype;
 
 class Node : public Simone::PtrInterface<Node> {
 public:
-  Node(yyltype loc);
-  Node();
-  virtual ~Node();
+  typedef Simone::Ptr<const Node> PtrConst;
+  typedef Simone::Ptr<Node> Ptr;
 
   yyltype *lexLoc() const { return location; }
 
@@ -53,36 +52,35 @@ public:
   Simone::Ptr<const Scope> scope() const;
   void scopeIs(Simone::Ptr<Scope> _s);
 
+  Node::Ptr parent() { return parent_; }
+  Node::PtrConst parent() const { return parent_; }
+  void parentIs(Node::Ptr _parent) { parent_ = _parent; }
+
   /* support for double dispatch */
   class Functor : public Simone::PtrInterface<Functor> {
   public:
     typedef Simone::Ptr<Functor> Ptr;
     typedef Simone::Ptr<const Functor> PtrConst;
 
-    /* -- top level -- */
-
+    /* top level */
     virtual void operator()(Node *) { ABORT(); }
     virtual void operator()(Program *) {}
     virtual void operator()(Identifier *) {}
     virtual void operator()(Operator *) {}
 
-
-    /* -- decl -- */
-
+    /* decl */
     virtual void operator()(Decl *) { ABORT(); }
     virtual void operator()(VarDecl *) {}
     virtual void operator()(FnDecl *) {}
     virtual void operator()(ClassDecl *) {}
     virtual void operator()(InterfaceDecl *) {}
 
-
-    /* -- stmt -- */
-
+    /* stmt */
     virtual void operator()(Stmt *) { ABORT(); }
-    virtual void operator()(BreakStmt *) {}
+    virtual void operator()(StmtBlock *) {}
     virtual void operator()(PrintStmt *) {}
     virtual void operator()(ReturnStmt *) {}
-    virtual void operator()(StmtBlock *) {}
+    virtual void operator()(BreakStmt *) {}
 
     /* stmt/conditional */
     virtual void operator()(ConditionalStmt *) { ABORT(); }
@@ -97,8 +95,8 @@ public:
     virtual void operator()(Expr *) { ABORT(); }
     virtual void operator()(AssignExpr *) {}
     virtual void operator()(CallExpr *) {}
-    virtual void operator()(EmptyExpr *) {}
     virtual void operator()(NullExpr *) {}
+    virtual void operator()(EmptyExpr *) {}
 
     /* stmt/expr/single_addr */
     virtual void operator()(SingleAddrExpr *) { ABORT(); }
@@ -106,15 +104,14 @@ public:
     virtual void operator()(IntConstExpr *) {}
     virtual void operator()(DblConstExpr *) {}
     virtual void operator()(StrConstExpr *) {}
-    virtual void operator()(NewExpr *) {}
-    virtual void operator()(NewArrayExpr *) {}
     virtual void operator()(ReadLineExpr *) {}
     virtual void operator()(ReadIntegerExpr *) {}
+    virtual void operator()(NewExpr *) {}
+    virtual void operator()(NewArrayExpr *) {}
 
     /* stmt/expr/single_addr/compound */
     virtual void operator()(CompoundExpr *) { ABORT(); }
     virtual void operator()(ArithmeticExpr *) {}
-    virtual void operator()(EqualityExpr *) {}
     virtual void operator()(LogicalExpr *) {}
     virtual void operator()(RelationalExpr *) {}
 
@@ -122,15 +119,10 @@ public:
     virtual void operator()(LValueExpr *) { ABORT(); }
     virtual void operator()(VarAccessExpr *) {}
     virtual void operator()(ArrayAccessExpr *) {}
-
-    /* stmt/expr/single_addr/l_value/field_access */
     virtual void operator()(FieldAccessExpr *) {}
     virtual void operator()(ThisExpr *) {}
 
-
-
-    /* -- type -- */
-
+    /* type */
     virtual void operator()(Type *) {}
     virtual void operator()(NamedType *) {}
     virtual void operator()(ArrayType *) {}
@@ -142,9 +134,14 @@ public:
   virtual void apply(Functor::Ptr _functor) = 0;
 
 protected:
+  Node(yyltype loc);
+  Node();
+  virtual ~Node();
+
   /* data members */
   yyltype *location;
 
+  Node::Ptr parent_;
   Simone::Ptr<Scope> scope_;
 };
 

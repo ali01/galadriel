@@ -22,7 +22,8 @@ public:
   ArrayType(yyltype loc, Type::Ptr elem_type);
 
   /* attribute member functions */
-  Type::Ptr elemType() const { return elem_type_; }
+  Type::Ptr elemType() { return elem_type_; }
+  Type::PtrConst elemType() const { return elem_type_; }
 
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }

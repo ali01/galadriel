@@ -13,13 +13,23 @@
 #include "../single_addr_expr.h"
 
 CompoundExpr::CompoundExpr(Expr::Ptr l, Operator::Ptr o, Expr::Ptr r) :
-  SingleAddrExpr(Join(l->lexLoc(), r->lexLoc())), op(o), left(l), right(r)
+  SingleAddrExpr(Join(l->lexLoc(), r->lexLoc())), op_(o), left_(l), right_(r)
 {
   assert(l != NULL && o != NULL && r != NULL);
 }
 
 CompoundExpr::CompoundExpr(Operator::Ptr o, Expr::Ptr r) :
-  SingleAddrExpr(Join(o->lexLoc(), r->lexLoc())), op(o), left(NULL), right(r)
+  SingleAddrExpr(Join(o->lexLoc(), r->lexLoc())), op_(o), left_(NULL), right_(r)
 {
   assert(o != NULL && r != NULL);
+}
+
+Operator::Ptr
+CompoundExpr::op() {
+  return op_;
+}
+
+Operator::PtrConst
+CompoundExpr::op() const {
+  return op_;
 }

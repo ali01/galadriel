@@ -7,11 +7,10 @@
 /* project includes */
 #include <lex_loc.h>
 
-/* ast/stmt/expr/single_addr/l_value/field_access includes */
-#include "field_access_expr.h"
+/* ast/stmt/expr/single_addr/l_value includes */
+#include "l_value_expr.h"
 
-// TODO: consider if should inherit from FieldAccessExpr or not
-class ThisExpr : public FieldAccessExpr {
+class ThisExpr : public LValueExpr {
 public:
   typedef Simone::Ptr<const ThisExpr> PtrConst;
   typedef Simone::Ptr<ThisExpr> Ptr;
@@ -20,7 +19,9 @@ public:
     return new ThisExpr(loc);
   }
 
-  ThisExpr(yyltype loc) : FieldAccessExpr(loc) {}
+  ThisExpr(yyltype loc) : LValueExpr(loc) {}
+
+  Simone::Ptr<const Type> type() const;
 
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }

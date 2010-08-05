@@ -11,22 +11,21 @@
 #include "../../../type/array_type.h"
 
 // TODO: consider value of type_ ~ new ArrayType(loc, et);
-NewArrayExpr::NewArrayExpr(yyltype loc, Expr::Ptr sz, Type::Ptr et) :
-  SingleAddrExpr(loc), size_(sz), elem_type_(et)
+NewArrayExpr::NewArrayExpr(yyltype loc, Expr::Ptr sz, Type::Ptr _elem_type) :
+  SingleAddrExpr(loc), size_(sz)
 {
-  assert(sz != NULL && et != NULL);
-  type_ = ArrayType::ArrayTypeNew(loc, elem_type_);
+  assert(sz != NULL && _elem_type != NULL);
+  type_ = ArrayType::ArrayTypeNew(loc, _elem_type);
 }
 
-
-Type::PtrConst
-NewArrayExpr::elemType() const {
-  return elem_type_;
+ArrayType::PtrConst
+NewArrayExpr::arrayType() const {
+  return type_;
 }
 
-Type::Ptr
-NewArrayExpr::elemType() {
-  return elem_type_;
+ArrayType::Ptr
+NewArrayExpr::arrayType() {
+  return type_;
 }
 
 Type::PtrConst

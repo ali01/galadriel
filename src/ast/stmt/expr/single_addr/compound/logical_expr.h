@@ -17,14 +17,15 @@ public:
   typedef Simone::Ptr<const LogicalExpr> PtrConst;
   typedef Simone::Ptr<LogicalExpr> Ptr;
 
-  static Ptr LogicalExprNew(Expr::Ptr lhs, Operator::Ptr op, Expr::Ptr rhs) {
+  static Ptr LogicalExprNew(Expr::Ptr lhs,
+                            Simone::Ptr<Operator> op,
+                            Expr::Ptr rhs) {
     return new LogicalExpr(lhs, op, rhs);
   }
 
-  LogicalExpr(Expr::Ptr lhs, Operator::Ptr op, Expr::Ptr rhs) : 
-    CompoundExpr(lhs,op,rhs) {}
+  LogicalExpr(Expr::Ptr lhs, Simone::Ptr<Operator> op, Expr::Ptr rhs);
 
-  LogicalExpr(Operator::Ptr op, Expr::Ptr rhs) : CompoundExpr(op,rhs) {}
+  LogicalExpr(Simone::Ptr<Operator> op, Expr::Ptr rhs) : CompoundExpr(op,rhs) {}
 
   Simone::Ptr<const Type> type() const;
 

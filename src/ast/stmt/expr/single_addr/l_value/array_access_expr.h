@@ -27,6 +27,13 @@ public:
 
   ArrayAccessExpr(yyltype loc, Expr::Ptr base, Expr::Ptr subscript);
 
+  /* attribute member functions */
+  Expr::Ptr base() { return base_; }
+  Expr::PtrConst base() const { return base_; }
+
+  Expr::Ptr subscript() { return subscript_; }
+  Expr::PtrConst subscript() const { return subscript_; }
+
   Simone::Ptr<const Type> type() const;
 
   /* support for double dispatch */

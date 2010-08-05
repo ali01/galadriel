@@ -7,6 +7,7 @@ using Simone::Deque;
 
 /* project includes */
 #include <lex_loc.h>
+#include <scope.h>
 
 /* ast includes */
 #include "../../identifier.h"
@@ -17,19 +18,45 @@ using Simone::Deque;
 /* ast/stmt/expr includes */
 #include "expr.h"
 
-CallExpr::CallExpr(yyltype loc,
-                   Expr::Ptr base,
-                   Identifier::Ptr field,
-                   Deque<Expr::Ptr>::Ptr args) :
-  Expr(loc), base(base), field(field), actuals(args)
+CallExpr::CallExpr(yyltype _loc,
+                   Expr::Ptr _base,
+                   Identifier::Ptr _function,
+                   Deque<Expr::Ptr>::Ptr _args) :
+  Expr(_loc), base_(_base), function_(_function), actuals_(_args)
 {
-  /* b can be null (just means no explicit base) */
-  assert(field != NULL && args != NULL);
+  /* base can be null if implicit */
+  assert(function_ != NULL && actuals_ != NULL);
 }
 
 
+Identifier::Ptr
+CallExpr::function() {
+  return function_;
+}
+
+Identifier::PtrConst
+CallExpr::function() const {
+  return function_;
+}
+
 Type::PtrConst
 CallExpr::type() const {
-  assert(false); // TODO: implement
-  return NULL;
+  Type::PtrConst type;
+  FnDecl::PtrConst fn_decl;
+  Scope::PtrConst scope = this->scope();
+  // TODO: finish
+  if (base_) {
+    // NamedType::PtrConst base_type = base_->type();
+    // ClassDecl::PtrConst class_decl = 
+  } else {
+    fn_decl = scope->fnDecl(function_);
+  }
+
+  if (fn_decl) {
+    type = fn_decl->returnType();
+  } else {
+    type = Type::kError;
+  }
+
+  return type;
 }

@@ -14,14 +14,31 @@ using Simone::Deque;
 
 class PrintStmt : public Stmt {
 public:
-  PrintStmt(Deque<Expr::Ptr>::Ptr arguments);
+  typedef Simone::Ptr<const PrintStmt> PtrConst;
+  typedef Simone::Ptr<PrintStmt> Ptr;
+
+  typedef Deque<Expr::Ptr>::const_iterator const_arg_iterator;
+  typedef Deque<Expr::Ptr>::iterator arg_iterator;
+
+  static Ptr PrintStmtNew(Deque<Expr::Ptr>::Ptr _args) {
+    return new PrintStmt(_args);
+  }
+
+  PrintStmt(Deque<Expr::Ptr>::Ptr _args);
+
+  /* iterator support */
+  const_arg_iterator argsBegin() const { return args_->begin(); }
+  arg_iterator argsBegin() { return args_->begin(); }
+
+  const_arg_iterator argsEnd() const { return args_->end(); }
+  arg_iterator argsEnd() { return args_->end(); }
 
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
   /* data members */
-  Deque<Expr::Ptr>::Ptr args;
+  Deque<Expr::Ptr>::Ptr args_;
 };
 
 #endif

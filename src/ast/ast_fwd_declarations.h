@@ -1,32 +1,26 @@
 #ifndef AST_FWD_DECLARATIONS_H_6NJ8MN3J
 #define AST_FWD_DECLARATIONS_H_6NJ8MN3J
 
-/* -- top level -- */
-
+/* top level */
 class Node;
 class Program;
 class Identifier;
 class Operator;
 
 
-/* -- decl -- */
-
+/* decl */
 class Decl;
-class FnDecl;
 class VarDecl;
-
-/* decl/object */
+class FnDecl;
 class ClassDecl;
 class InterfaceDecl;
 
-
-/* -- stmt -- */
-
+/* stmt */
 class Stmt;
-class BreakStmt;
+class StmtBlock;
 class PrintStmt;
 class ReturnStmt;
-class StmtBlock;
+class BreakStmt;
 
 /* stmt/conditional */
 class ConditionalStmt;
@@ -41,8 +35,8 @@ class WhileStmt;
 class Expr;
 class AssignExpr;
 class CallExpr;
-class EmptyExpr;
 class NullExpr;
+class EmptyExpr;
 
 /* stmt/expr/single_addr */
 class SingleAddrExpr;
@@ -50,15 +44,14 @@ class BoolConstExpr;
 class IntConstExpr;
 class DblConstExpr;
 class StrConstExpr;
-class NewExpr;
-class NewArrayExpr;
 class ReadLineExpr;
 class ReadIntegerExpr;
+class NewExpr;
+class NewArrayExpr;
 
 /* stmt/expr/single_addr/compound */
 class CompoundExpr;
 class ArithmeticExpr;
-class EqualityExpr;
 class LogicalExpr;
 class RelationalExpr;
 
@@ -66,14 +59,10 @@ class RelationalExpr;
 class LValueExpr;
 class VarAccessExpr;
 class ArrayAccessExpr;
-
-/* stmt/expr/single_addr/l_value/field_access */
 class FieldAccessExpr;
 class ThisExpr;
 
-
-/* -- type -- */
-
+/* type */
 class Type;
 class NamedType;
 class ArrayType;

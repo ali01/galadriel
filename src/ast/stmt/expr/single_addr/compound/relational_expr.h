@@ -15,11 +15,15 @@ public:
   typedef Simone::Ptr<const RelationalExpr> PtrConst;
   typedef Simone::Ptr<RelationalExpr> Ptr;
 
-  static Ptr RelationalExprNew(Expr::Ptr lhs, Operator::Ptr op, Expr::Ptr rhs) {
+  static Ptr RelationalExprNew(Expr::Ptr lhs,
+                               Simone::Ptr<Operator> op,
+                               Expr::Ptr rhs) {
     return new RelationalExpr(lhs, op, rhs);
   }
 
-  RelationalExpr(Expr::Ptr lhs, Operator::Ptr op, Expr::Ptr rhs);
+  RelationalExpr(Expr::Ptr lhs,
+                 Simone::Ptr<Operator> op,
+                 Expr::Ptr rhs);
 
   Simone::Ptr<const Type> type() const;
 

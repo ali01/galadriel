@@ -4,34 +4,40 @@
 #include <simone/utility.h>
 
 /* ast includes */
-#include "../../../../../identifier.h"
+#include "../../../../identifier.h"
 
 /* ast/decl includes */
-#include "../../../../../decl/var_decl.h"
+#include "../../../../decl/var_decl.h"
 
 /* ast/decl/object includes */
-#include "../../../../../decl/class_decl.h"
+#include "../../../../decl/class_decl.h"
 
 /* ast/type/named includes */
-#include "../../../../../type/named_type.h"
+#include "../../../../type/named_type.h"
 
 /* ast/stmt/expr includes */
-#include "../../../expr.h"
+#include "../../expr.h"
 
 /* ast/stmt/expr/single_addr/l_value includes */
-#include "../l_value_expr.h"
-
-
-FieldAccessExpr::FieldAccessExpr(yyltype loc) :
-  LValueExpr(loc), base_(NULL), field_(NULL), field_type_(NULL) {}
+#include "l_value_expr.h"
 
 
 FieldAccessExpr::FieldAccessExpr(Expr::Ptr b, Identifier::Ptr f) :
   LValueExpr(b != NULL ?  Join(b->lexLoc(), f->lexLoc()) : *f->lexLoc()),
-  base_(b), field_(f), field_type_(NULL)
+  base_(b), field_(f)
 {
   /* b can be null (just means no explicit base) */
   assert(field_ != NULL);
+}
+
+Identifier::Ptr
+FieldAccessExpr::field() {
+  return field_;
+}
+
+Identifier::PtrConst
+FieldAccessExpr::field() const {
+  return field_;
 }
 
 Type::PtrConst

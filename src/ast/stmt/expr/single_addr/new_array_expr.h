@@ -13,6 +13,7 @@
 /* forward declarations */
 class Expr;
 class NamedType;
+class ArrayType;
 class Type;
 
 class NewArrayExpr : public SingleAddrExpr {
@@ -34,8 +35,8 @@ public:
   Expr::PtrConst size() const { return size_; }
   Expr::Ptr size() { return size_; }
 
-  Simone::Ptr<const Type> elemType() const;
-  Simone::Ptr<Type> elemType();
+  Simone::Ptr<const ArrayType> arrayType() const;
+  Simone::Ptr<ArrayType> arrayType();
 
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
@@ -45,8 +46,7 @@ private:
 
   /* data members */
   Expr::Ptr size_;
-  Simone::Ptr<Type> type_;
-  Simone::Ptr<Type> elem_type_;
+  Simone::Ptr<ArrayType> type_;
 };
 
 #endif
