@@ -50,4 +50,7 @@ protected:
   const op_type op_type_;
 };
 
+/* forward declarations */
+ostream& operator<<(ostream& out, const Operator& _op);
+
 #endif
