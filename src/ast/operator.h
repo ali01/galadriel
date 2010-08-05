@@ -22,9 +22,17 @@ public:
   typedef Simone::Ptr<Operator> Ptr;
 
   enum op_type {
-    kAdd, kSubtract, kMultiply, kDivide, kModulo, kEqual, kNotEqual,
-    kLess, kLessEqual, kGreater, kGreaterEqual,
-    kAnd, kOr, kNot
+    /* arithmetic */
+    kAdd, kSubtract, kMultiply, kDivide, kModulo,
+
+    /* relational */
+    kEqual, kNotEqual, kLess, kLessEqual, kGreater, kGreaterEqual,
+
+    /* logical */
+    kAnd, kOr, kNot,
+
+    /* assignment */
+    kAssign
   };
 
   static Ptr OperatorNew(yyltype loc, op_type _op_type) {

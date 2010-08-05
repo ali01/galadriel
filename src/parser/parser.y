@@ -430,7 +430,11 @@ ExprList          : ExprList ',' Expr {
                     }
                   ;
 
-Expr              : LValue '=' Expr  { $$ = new AssignExpr($1, $3); }
+Expr              : LValue '=' Expr  {
+                      Operator::Ptr op;
+                      op = Operator::OperatorNew(@2, Operator::kAssign);
+                      $$ = new AssignExpr($1, op, $3);
+                    }
                   | Constant         { $$ = $1; }
                   | LValue           { $$ = $1; }
                   | Call             { $$ = $1; }

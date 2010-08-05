@@ -10,6 +10,7 @@
 /* forward declarations */
 class Expr;
 class LValueExpr;
+class Operator;
 class Type;
 
 class AssignExpr : public Expr {
@@ -17,11 +18,15 @@ public:
   typedef Simone::Ptr<const AssignExpr> PtrConst;
   typedef Simone::Ptr<AssignExpr> Ptr;
 
-  static Ptr AssignExprNew(Simone::Ptr<LValueExpr> l_val, Expr::Ptr rhs) {
-    return new AssignExpr(l_val, rhs);
+  static Ptr AssignExprNew(Simone::Ptr<LValueExpr> _l_val,
+                           Simone::Ptr<Operator> _op,
+                           Expr::Ptr _rhs) {
+    return new AssignExpr(_l_val, _op, _rhs);
   }
 
-  AssignExpr(Simone::Ptr<LValueExpr> l_val, Expr::Ptr rhs);
+  AssignExpr(Simone::Ptr<LValueExpr> _l_val,
+             Simone::Ptr<Operator> _op,
+             Expr::Ptr _rhs);
 
   /* -- attribute member functions -- */
 
@@ -41,6 +46,7 @@ public:
 private:
   /* data members */
   Simone::Ptr<LValueExpr> l_value_;
+  Simone::Ptr<Operator> op_;
   Expr::Ptr right_;
 };
 

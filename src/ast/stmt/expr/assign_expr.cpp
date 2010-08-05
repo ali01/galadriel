@@ -6,6 +6,9 @@
 /* project includes */
 #include <lex_loc.h>
 
+/* ast includes */
+#include "../../operator.h"
+
 /* ast/type includes */
 #include "../../type/type.h"
 
@@ -16,10 +19,13 @@
 #include "single_addr/single_addr_expr.h"
 #include "single_addr/l_value/l_value_expr.h"
 
-AssignExpr::AssignExpr(LValueExpr::Ptr lhs, Expr::Ptr rhs) :
-  Expr(Join(lhs->lexLoc(), rhs->lexLoc())), l_value_(lhs), right_(rhs)
+AssignExpr::AssignExpr(Simone::Ptr<LValueExpr> _l_val,
+                       Simone::Ptr<Operator> _op,
+                       Expr::Ptr _rhs) :
+  Expr(Join(_l_val->lexLoc(), _rhs->lexLoc())),
+  l_value_(_l_val), op_(_op), right_(_rhs)
 {
-  assert(lhs != NULL && rhs != NULL);
+  assert(l_value_ != NULL && op_ != NULL && right_ != NULL);
 }
 
 Type::PtrConst
