@@ -140,6 +140,13 @@ SemanticAnalyser::NodeFunctor::operator()(AssignExpr *nd) {
 
   Expr::Ptr rhs = nd->right();
   rhs->apply(this);
+
+  Type::PtrConst l_val_type = l_val->type();
+  Type::PtrConst rhs_type = rhs->type();
+
+  if (not l_val_type->subsumes(rhs_type)) {
+    Error::IncompatibleOperands(nd->op(), l_val_type, rhs_type);
+  }
 }
 
 
