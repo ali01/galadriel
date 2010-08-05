@@ -545,9 +545,9 @@ Call              : T_Identifier '(' Actuals ')' {
                       $$ = new CallExpr(Join(@1, @4), NULL, field, $3);
                     }
                   | Expr '.' T_Identifier '(' Actuals ')' {
-                        Identifier::Ptr field;
-                        field = Identifier::IdentifierNew(@3, $3);
-                        $$ = new CallExpr(Join(@1, @6), $1, field, $5);
+                      Identifier::Ptr field;
+                      field = Identifier::IdentifierNew(@3, $3);
+                      $$ = new CallExpr(Join(@1, @6), $1, field, $5);
                     }
                   ;
 

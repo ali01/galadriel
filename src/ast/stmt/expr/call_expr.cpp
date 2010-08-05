@@ -33,4 +33,3 @@ CallExpr::type() const {
   assert(false); // TODO: implement
   return NULL;
 }
-
