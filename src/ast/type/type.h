@@ -30,7 +30,7 @@ public:
   typedef Simone::Ptr<const Type> PtrConst;
   typedef Simone::Ptr<Type> Ptr;
 
-  static Type::Ptr kInt, kDouble, kBool, kString,
+  static Type::PtrConst kInt, kDouble, kBool, kString,
                    kVoid, kNull, kError;
 
   static Ptr TypeNew(const string& str) {
