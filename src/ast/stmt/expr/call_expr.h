@@ -15,6 +15,7 @@ using Simone::Deque;
 /* forward declarations */
 class Identifier;
 class Type;
+class FnDecl;
 
 /* Like field access, call is used both for qualified base.field()
  * and unqualified field().    We won't figure out until later
@@ -54,6 +55,8 @@ public:
 
   const_actuals_iter actualsEnd() const { return actuals_->end(); }
   actuals_iter actualsEnd() { return actuals_->end(); }
+
+  Simone::Ptr<const FnDecl> fnDecl() const;
 
   Simone::Ptr<const Type> type() const;
 
