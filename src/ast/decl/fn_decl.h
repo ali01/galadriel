@@ -54,12 +54,13 @@ public:
   bool operator==(const FnDecl& _o) const;
   bool operator!=(const FnDecl& _o) const { return !(*this == _o); }
 
-  FnDecl::PtrConst nearestFunction() const { return this; }
-
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
+  /* override */
+  FnDecl::PtrConst nearestFunction() const { return this; }
+  
   /* data members */
   Deque<VarDecl::Ptr>::Ptr formals_;
   Simone::Ptr<Type> return_type_;

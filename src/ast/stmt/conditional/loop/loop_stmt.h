@@ -16,10 +16,11 @@ public:
   typedef Simone::Ptr<const LoopStmt> PtrConst;
   typedef Simone::Ptr<LoopStmt> Ptr;
 
-  LoopStmt::PtrConst nearestLoop() const { return this; }
-
 protected:
   LoopStmt(Simone::Ptr<Expr> _test_expr, Stmt::Ptr _body);
+
+  /* override */
+  LoopStmt::PtrConst nearestLoop() const { return this; }
 };
 
 #endif
