@@ -12,6 +12,9 @@ class Operator;
 class Decl;
 class VarDecl;
 class FnDecl;
+
+/* decl/object */
+class ObjectDecl;
 class ClassDecl;
 class InterfaceDecl;
 

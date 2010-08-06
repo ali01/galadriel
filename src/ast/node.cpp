@@ -42,7 +42,7 @@ Node::scopeIs(Scope::Ptr _s) {
 }
 
 ClassDecl::PtrConst
-Node::enclosingClass() const {
+Node::enclosingClass() const { // TODO
   ClassDecl::PtrConst class_decl = NULL;
   if (parent_)
     class_decl = parent_->enclosingClass();

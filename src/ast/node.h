@@ -76,6 +76,9 @@ public:
     virtual void operator()(Decl *) { ABORT(); }
     virtual void operator()(VarDecl *) {}
     virtual void operator()(FnDecl *) {}
+
+    /* decl/object */
+    virtual void operator()(ObjectDecl *) { ABORT(); }
     virtual void operator()(ClassDecl *) {}
     virtual void operator()(InterfaceDecl *) {}
 

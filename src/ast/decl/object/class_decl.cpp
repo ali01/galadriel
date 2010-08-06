@@ -14,19 +14,15 @@ using Simone::Deque;
 /* ast/type includes */
 #include "../../type/named_type.h"
 
-ClassDecl::ClassDecl(Identifier::Ptr name, NamedType::Ptr extends,
-                     Deque<NamedType::Ptr>::Ptr implements,
-                     Deque<Decl::Ptr>::Ptr members) :
-  Decl(name),
-  base_class_(extends),
-  interfaces_(implements),
-  members_(members),
-  this_type_(NamedType::NamedTypeNew(name))
+ClassDecl::ClassDecl(Identifier::Ptr _name, NamedType::Ptr _extends,
+                     Deque<NamedType::Ptr>::Ptr _implements,
+                     Deque<Decl::Ptr>::Ptr _members) :
+  ObjectDecl(_name, _members),
+  base_class_(_extends),
+  interfaces_(_implements)
 {
   /* extends can be NULL, impl & mem may be empty lists but cannot be NULL */
   assert(interfaces_ != NULL);
-  this_type_->parentIs(this);
-  this_type_->scopeIs(this->scope());
 }
 
 bool
@@ -54,7 +50,7 @@ bool
 ClassDecl::implementsInterface(InterfaceDecl::PtrConst _interface) const {
   bool ret = true;
 
-  FnDecl::PtrConst intf_member, this_member;
+  Decl::PtrConst intf_member, this_member;
   Scope::PtrConst scope = this->scope();
   InterfaceDecl::const_member_iter it = _interface->membersBegin();
   for (; it != _interface->membersEnd(); ++it) {
@@ -67,10 +63,4 @@ ClassDecl::implementsInterface(InterfaceDecl::PtrConst _interface) const {
   }
 
   return ret;
-}
-
-void
-ClassDecl::scopeIs(Scope::Ptr _s) {
-  Node::scopeIs(_s);
-  this_type_->scopeIs(_s);
 }

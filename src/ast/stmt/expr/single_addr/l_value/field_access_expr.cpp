@@ -58,7 +58,7 @@ FieldAccessExpr::type() const {
     }
 
   } else {
-    base_decl = enclosingClass();
+    base_decl = enclosingClass(); // TODO: what about interfaces?
   }
 
   if (base_decl) {

@@ -41,6 +41,9 @@ public:
       void operator()(Decl *);
       void operator()(VarDecl *);
       void operator()(FnDecl *);
+
+      /* decl/object */
+      void operator()(ObjectDecl *);
       void operator()(ClassDecl *);
       void operator()(InterfaceDecl *);
 

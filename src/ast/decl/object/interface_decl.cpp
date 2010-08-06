@@ -8,5 +8,5 @@ using Simone::Deque;
 #include "../../identifier.h"
 
 InterfaceDecl::InterfaceDecl(Identifier::Ptr _name,
-                             Deque<FnDecl::Ptr>::Ptr _members) :
-  Decl(_name), members_(_members) {}
+                             Deque<Decl::Ptr>::Ptr _members) :
+  ObjectDecl(_name, _members) {}

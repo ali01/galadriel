@@ -77,7 +77,6 @@ void yyerror(const char *msg, yyltype *loc = NULL);
 
   /* other lists */
   Deque<VarDecl::Ptr> *var_decl_list;
-  Deque<FnDecl::Ptr> *fn_decl_list;
   Deque<NamedType::Ptr> *named_type_list;
 }
 
@@ -135,11 +134,10 @@ void yyerror(const char *msg, yyltype *loc = NULL);
 /* top level lists */
 %type <stmt_list> StmtList
 %type <expr_list> Actuals ExprList
-%type <decl_list> DeclList FieldList
+%type <decl_list> DeclList FieldList PrototypeList
 
 /* other lists */
 %type <var_decl_list> VariableList VariableDeclList Formals
-%type <fn_decl_list> PrototypeList
 %type <named_type_list> Implements Protocol
 
 
@@ -316,8 +314,8 @@ InterfaceDecl     : T_Interface T_Identifier '{' PrototypeList '}' {
                     }
                   | T_Interface T_Identifier '{' '}' {
                       Identifier::Ptr name = Identifier::IdentifierNew(@2, $2);
-                      Deque<FnDecl::Ptr>::Ptr decl_list;
-                      decl_list = new Deque<FnDecl::Ptr>();
+                      Deque<Decl::Ptr>::Ptr decl_list;
+                      decl_list = new Deque<Decl::Ptr>();
                       $$ = new InterfaceDecl(name, decl_list);
                     }
                   ;
@@ -327,7 +325,7 @@ PrototypeList     : PrototypeList Prototype {
                       $$->pushBack($2);
                     }
                   | Prototype {
-                      $$ = new Deque<FnDecl::Ptr>();
+                      $$ = new Deque<Decl::Ptr>();
                       $$->pushBack($1);
                     }
                   ;

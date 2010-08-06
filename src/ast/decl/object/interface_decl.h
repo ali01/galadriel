@@ -6,46 +6,33 @@
 #include <simone/ptr_interface.h>
 using Simone::Deque;
 
-/* ast includes */
+/* ast/decl includes */
 #include "../decl.h"
-#include "../fn_decl.h"
+
+/* ast/decl/object includes */
+#include "object_decl.h"
 
 /* forward declarations */
 class Identifier;
 
-class InterfaceDecl : public Decl {
+class InterfaceDecl : public ObjectDecl {
 public:
   typedef Simone::Ptr<const InterfaceDecl> PtrConst;
   typedef Simone::Ptr<InterfaceDecl> Ptr;
 
-  typedef Deque<FnDecl::Ptr>::const_iterator const_member_iter;
-  typedef Deque<FnDecl::Ptr>::iterator member_iter;
   
   static Ptr InterfaceDeclNew(Simone::Ptr<Identifier> name, 
-                              Deque<FnDecl::Ptr>::Ptr members) {
+                              Deque<Decl::Ptr>::Ptr members) {
     return new InterfaceDecl(name, members);
   }
 
-  InterfaceDecl(Simone::Ptr<Identifier> name, Deque<FnDecl::Ptr>::Ptr members);
+  InterfaceDecl(Simone::Ptr<Identifier> name, Deque<Decl::Ptr>::Ptr members);
 
-
-  /* iterator support */
-
-  const_member_iter membersBegin() const { return members_->begin(); }
-  member_iter membersBegin() { return members_->begin(); }
-
-  const_member_iter membersEnd() const { return members_->end(); }
-  member_iter membersEnd() { return members_->end(); }
-
-
-  /* attribute member functions */
 
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
-  /* data members */
-  Deque<FnDecl::Ptr>::Ptr members_;
   
   /* operations disallowed */
   InterfaceDecl(const InterfaceDecl&);

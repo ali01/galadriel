@@ -91,17 +91,16 @@ ScopeStackBuilder::NodeFunctor::operator()(FnDecl *nd) {
 }
 
 
-// TODO: ordering
 void
-ScopeStackBuilder::NodeFunctor::operator()(ClassDecl *nd) {
+ScopeStackBuilder::NodeFunctor::operator()(ObjectDecl *nd) {
   /* apply this functor to upcasted nd */
   (*this)(static_cast<Decl*>(nd));
 
-  /* Class's context scope (i.e. global scope) */
+  /* Object's context scope (i.e. global scope) */
   Scope::Ptr parent_scope = scope_stack_->scope();
   parent_scope->declIs(nd);
 
-  /* Class's own scope (independent copy) */
+  /* Object's own scope (independent copy) */
   Scope::Ptr scope = scope_stack_->scopeNew();
   nd->scopeIs(scope);
 
@@ -111,6 +110,17 @@ ScopeStackBuilder::NodeFunctor::operator()(ClassDecl *nd) {
     decl = *member_it;
     init_node_scope(decl, nd, scope);
   }
+
+  scope_stack_->scopePop();
+}
+
+// TODO: ordering
+void
+ScopeStackBuilder::NodeFunctor::operator()(ClassDecl *nd) {
+  /* apply this functor to upcasted nd */
+  (*this)(static_cast<ObjectDecl*>(nd));
+
+  Scope::Ptr scope = nd->scope();
 
   /* initializing scope in base class Type object */
   NamedType::Ptr base = nd->baseClass();
@@ -122,31 +132,12 @@ ScopeStackBuilder::NodeFunctor::operator()(ClassDecl *nd) {
     base = *intf_it;
     init_node_scope(base, nd, scope);
   }
-
-  scope_stack_->scopePop();
 }
 
 void
 ScopeStackBuilder::NodeFunctor::operator()(InterfaceDecl *nd) {
   /* apply this functor to upcasted nd */
-  (*this)(static_cast<Decl*>(nd));
-
-  /* Interface's context scope (i.e. global scope) */
-  Scope::Ptr parent_scope = scope_stack_->scope();
-  parent_scope->declIs(nd);
-
-  /* Interface's own scope (independent copy) */
-  Scope::Ptr scope = scope_stack_->scopeNew();
-  nd->scopeIs(scope);
-
-  FnDecl::Ptr fn_decl;
-  InterfaceDecl::const_member_iter it = nd->membersBegin();
-  for (; it != nd->membersEnd(); ++it) {
-    fn_decl = *it;
-    init_node_scope(fn_decl, nd, scope);
-  }
-
-  scope_stack_->scopePop();
+  (*this)(static_cast<ObjectDecl*>(nd));
 }
 
 

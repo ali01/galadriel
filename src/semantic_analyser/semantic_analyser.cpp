@@ -59,7 +59,7 @@ SemanticAnalyser::NodeFunctor::operator()(FnDecl *nd) {
 }
 
 void
-SemanticAnalyser::NodeFunctor::operator()(ClassDecl *nd) {
+SemanticAnalyser::NodeFunctor::operator()(ObjectDecl *nd) {
   if (nd->indexed())
     return;
 
@@ -67,9 +67,6 @@ SemanticAnalyser::NodeFunctor::operator()(ClassDecl *nd) {
 
   /* apply this functor to upcasted nd */
   (*this)(static_cast<Decl*>(nd));
-
-  inherit_base_class_scopes(nd);
-  inherit_interface_scopes(nd);
 
   Decl::Ptr decl;
   ClassDecl::const_member_iter it = nd->membersBegin();
@@ -80,13 +77,28 @@ SemanticAnalyser::NodeFunctor::operator()(ClassDecl *nd) {
 }
 
 void
+SemanticAnalyser::NodeFunctor::operator()(ClassDecl *nd) {
+  if (nd->indexed())
+    return;
+
+  nd->indexedIs(true);
+
+  inherit_base_class_scopes(nd);
+  inherit_interface_scopes(nd);
+
+  /* apply this functor to upcasted nd */
+  (*this)(static_cast<ObjectDecl*>(nd));
+}
+
+void
 SemanticAnalyser::NodeFunctor::operator()(InterfaceDecl *nd) {
-  FnDecl::Ptr fn_decl;
-  InterfaceDecl::const_member_iter it = nd->membersBegin();
-  for (; it != nd->membersEnd(); ++it) {
-    fn_decl = *it;
-    process_node(fn_decl);
-  }
+  if (nd->indexed())
+    return;
+
+  nd->indexedIs(true);
+
+  /* apply this functor to upcasted nd */
+  (*this)(static_cast<ObjectDecl*>(nd));
 }
 
 /* stmt */
