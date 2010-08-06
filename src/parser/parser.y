@@ -263,7 +263,6 @@ ClassDecl         : T_Class T_Identifier Extends Implements '{' FieldList '}' {
                   | T_Class T_Identifier Extends Implements '{' '}' {
                       Identifier::Ptr name = Identifier::IdentifierNew(@2, $2);
                       Deque<Decl::Ptr> *decl_list = new Deque<Decl::Ptr>();
-                      // TODO: consider if decl_list should be NULL
                       $$ = new ClassDecl(name, $3, $4, decl_list);
                     }
                   ;

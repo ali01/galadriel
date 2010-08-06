@@ -10,7 +10,6 @@
 #include "../../../type/type.h"
 #include "../../../type/array_type.h"
 
-// TODO: consider value of type_ ~ new ArrayType(loc, et);
 NewArrayExpr::NewArrayExpr(yyltype loc, Expr::Ptr sz, Type::Ptr _elem_type) :
   SingleAddrExpr(loc), size_(sz)
 {

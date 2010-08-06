@@ -114,7 +114,6 @@ ScopeStackBuilder::NodeFunctor::operator()(ObjectDecl *nd) {
   scope_stack_->scopePop();
 }
 
-// TODO: ordering
 void
 ScopeStackBuilder::NodeFunctor::operator()(ClassDecl *nd) {
   /* apply this functor to upcasted nd */

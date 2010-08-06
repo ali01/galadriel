@@ -29,7 +29,6 @@
 #include <simone/utility.h>
 
 /* project includes */
-// TODO think about include
 #include <lex_loc.h>
 
 /* local includes */

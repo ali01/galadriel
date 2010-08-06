@@ -1,13 +1,3 @@
-/* File: decl.h
- * ----------------
- * In our parse tree, Decl nodes are used to represent and
- * manage declarations. There are 4 subclasses of the base class,
- * specialized for declarations of variables, functions, classes,
- * and interfaces.
- *
- * TODO: update comment
- */
-
 #ifndef DECL_H_VE0HILRI
 #define DECL_H_VE0HILRI
 

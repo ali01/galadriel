@@ -42,7 +42,7 @@ Node::scopeIs(Scope::Ptr _s) {
 }
 
 ClassDecl::PtrConst
-Node::nearestClass() const { // TODO
+Node::nearestClass() const {
   ClassDecl::PtrConst class_decl = NULL;
   if (parent_)
     class_decl = parent_->nearestClass();

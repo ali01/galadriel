@@ -19,10 +19,9 @@ Scope::declIs(Decl::Ptr _decl) {
   }
 }
 
-// TODO: comment
 void
 Scope::baseScopeIs(Scope::PtrConst _base_scope) {
-  {
+  { /* inherit variable declarations */
     Identifier::PtrConst id;
     FnDecl::PtrConst local_fn_decl;
     VarDecl::Ptr var_decl, local_var_decl;
@@ -38,16 +37,18 @@ Scope::baseScopeIs(Scope::PtrConst _base_scope) {
       if (local_var_decl == NULL) {
         varDeclIs(var_decl);
       } else {
+        /* conflict between var_decls */
         Error::DeclConflict(local_var_decl, var_decl);
       }
 
       if (local_fn_decl != NULL) {
+        /* conflict between var_decl and fn_decl */
         Error::DeclConflict(local_fn_decl, var_decl);
       }
     }
   }
 
-  {
+  { /* inherit function declarations */
     Identifier::PtrConst id;
     FnDecl::Ptr fn_decl, local_fn_decl;
     VarDecl::PtrConst local_var_decl;
@@ -63,6 +64,7 @@ Scope::baseScopeIs(Scope::PtrConst _base_scope) {
         if (local_var_decl == NULL) {
           fnDeclIs(fn_decl);
         } else {
+          /* conflict between fn_decl and local var_decl */
           Error::DeclConflict(local_var_decl, fn_decl);
         }
       } else {
