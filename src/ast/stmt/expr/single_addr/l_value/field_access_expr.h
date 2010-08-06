@@ -38,7 +38,6 @@ public:
 
   Simone::Ptr<Identifier> field();
   Simone::Ptr<const Identifier> field() const;
-  
 
   Simone::Ptr<const Type> type() const;
 

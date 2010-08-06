@@ -45,3 +45,10 @@ ClassDecl::subsumersInsert(const_subsumer_iter first,
                            const_subsumer_iter last) {
   subsumers_.insert(first, last);
 }
+
+
+void
+ClassDecl::scopeIs(Scope::Ptr _s) {
+  Node::scopeIs(_s);
+  this_type_->scopeIs(_s);
+}

@@ -24,7 +24,7 @@
 #include "ast/stmt/expr/assign_expr.h"
 #include "ast/stmt/expr/call_expr.h"
 #include "ast/stmt/expr/empty_expr.h"
-#include "ast/stmt/expr/null_const_expr.h"
+#include "ast/stmt/expr/null_expr.h"
 #include "ast/stmt/expr/single_addr/bool_const_expr.h"
 #include "ast/stmt/expr/single_addr/dbl_const_expr.h"
 #include "ast/stmt/expr/single_addr/int_const_expr.h"

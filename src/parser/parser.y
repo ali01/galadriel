@@ -559,7 +559,7 @@ Constant          : T_IntConstant { $$ = new IntConstExpr(@1, $1); }
                   | T_DoubleConstant { $$ = new DblConstExpr(@1, $1); }
                   | T_BoolConstant { $$ = new BoolConstExpr(@1, $1);   }
                   | T_StringConstant { $$ = new StrConstExpr(@1, $1); }
-                  | T_Null { $$ = new NullConstExpr(@1); }
+                  | T_Null { $$ = new NullExpr(@1); }
                   ;
 
 %%

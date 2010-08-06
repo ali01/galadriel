@@ -50,11 +50,13 @@ public:
 
   Simone::Ptr<Scope> scope();
   Simone::Ptr<const Scope> scope() const;
-  void scopeIs(Simone::Ptr<Scope> _s);
+  virtual void scopeIs(Simone::Ptr<Scope> _s);
 
   Node::Ptr parent() { return parent_; }
   Node::PtrConst parent() const { return parent_; }
   void parentIs(Node::Ptr _parent) { parent_ = _parent; }
+
+  virtual Simone::Ptr<const ClassDecl> enclosingClass() const;
 
   /* support for double dispatch */
   class Functor : public Simone::PtrInterface<Functor> {
@@ -127,8 +129,6 @@ public:
     virtual void operator()(NamedType *) {}
     virtual void operator()(ArrayType *) {}
   };
-
-  virtual Simone::Ptr<const ClassDecl> enclosingClass() const;
 
   /* support for double dispatch */
   virtual void apply(Functor::Ptr _functor) = 0;

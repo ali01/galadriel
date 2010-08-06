@@ -156,9 +156,8 @@ SemanticAnalyser::NodeFunctor::operator()(NewExpr *nd) {
   Scope::Ptr scope = nd->scope();
   NamedType::PtrConst type = nd->objectType();
   ClassDecl::PtrConst class_decl = type->classDecl();
-  if (class_decl == NULL) {
+  if (class_decl == NULL)
     Error::IdentifierNotDeclared(type->identifier(), kLookingForClass);
-  }
 }
 
 void
