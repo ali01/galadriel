@@ -18,6 +18,8 @@ using Simone::Deque;
 
 /* ast/type includes */
 #include "../../type/type.h"
+#include "../../type/named_type.h"
+#include "../../type/array_type.h"
 
 /* ast/stmt/expr includes */
 #include "expr.h"
@@ -30,6 +32,7 @@ CallExpr::CallExpr(yyltype _loc,
 {
   /* base can be null if implicit */
   assert(function_ != NULL && actuals_ != NULL);
+  base_decl_functor_ = BaseDeclFunctor::BaseDeclFunctorNew(this);
 }
 
 
@@ -48,10 +51,10 @@ CallExpr::baseDecl() const {
   ClassDecl::PtrConst base_decl = NULL;
 
   if (base_) {
-    NamedType::PtrConst base_type;
-    base_type = dynamic_cast<const NamedType*>(base_->type().ptr());
-    if (base_type)
-      base_decl = base_type->classDecl();
+    Type::PtrConst base_type_const = base_->type();
+    Type::Ptr base_type = const_cast<Type*>(base_type_const.ptr());
+    base_type->apply(base_decl_functor_);
+    base_decl = base_decl_functor_->baseDecl();
 
   } else {
     base_decl = enclosingClass();
@@ -87,4 +90,20 @@ CallExpr::type() const {
     type = fn_decl->returnType();
 
   return type;
+}
+
+ClassDecl::Ptr
+CallExpr::BaseDeclFunctor::baseDecl() const {
+  return base_decl_;
+}
+
+
+void
+CallExpr::BaseDeclFunctor::operator()(NamedType *_type) {
+  base_decl_ = _type->classDecl();
+}
+
+void
+CallExpr::BaseDeclFunctor::operator()(ArrayType *_type) {
+  base_decl_ = _type->builtinClassDecl();
 }

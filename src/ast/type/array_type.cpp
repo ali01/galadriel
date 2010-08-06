@@ -3,6 +3,22 @@
 /* simone includes */
 #include <simone/utility.h>
 
+/* project includes */
+#include <scope.h>
+
+#include "../identifier.h"
+#include "../decl/class_decl.h"
+#include "../decl/fn_decl.h"
+#include "../type/type.h"
+
+Identifier::Ptr
+ArrayType::kArrayClassIdentifier = Identifier::IdentifierNew("_Array");
+
+Identifier::Ptr
+ArrayType::kLengthFnIdentifier = Identifier::IdentifierNew("length");
+
+
+
 ArrayType::ArrayType(yyltype loc, Type::Ptr et) :
   Type(loc, et->name() + "[]"), elem_type_(et)
 {
@@ -11,6 +27,17 @@ ArrayType::ArrayType(yyltype loc, Type::Ptr et) :
   subsume_functor_ = ArrayTypeSubsumeFunctor::ArrayTypeSubsumeFunctorNew(this);
 }
 
+ClassDecl::PtrConst
+ArrayType::builtinClassDecl() const {
+  ArrayType::Ptr me = const_cast<ArrayType*>(this);
+  return me->builtinClassDecl();
+}
+
+ClassDecl::Ptr
+ArrayType::builtinClassDecl() {
+  Scope::Ptr scope = this->scope();
+  return scope->classDecl(kArrayClassIdentifier);
+}
 
 
 ArrayType::ArrayTypeEqualityFunctor::ArrayTypeEqualityFunctor(ArrayType::Ptr t):

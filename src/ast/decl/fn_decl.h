@@ -25,7 +25,7 @@ public:
 
   static Ptr FnDeclNew(Identifier::Ptr name,
                        Simone::Ptr<Type> return_type,
-                       Deque<VarDecl::Ptr>::Ptr formals);
+                       Deque<VarDecl::Ptr>::Ptr formals=NULL);
 
   FnDecl(Identifier::Ptr name,
          Simone::Ptr<Type> returnType,

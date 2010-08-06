@@ -16,6 +16,9 @@
 FnDecl::Ptr
 FnDecl::FnDeclNew(Identifier::Ptr name, Type::Ptr return_type,
                   Deque<VarDecl::Ptr>::Ptr formals) {
+  if (formals == NULL)
+    formals = Deque<VarDecl::Ptr>::DequeNew();
+
   return new FnDecl(name, return_type, formals);
 }
 
@@ -23,7 +26,8 @@ FnDecl::FnDecl(Identifier::Ptr name, Type::Ptr return_type,
                Deque<VarDecl::Ptr>::Ptr formals) :
   Decl(name), formals_(formals), return_type_(return_type)
 {
-  assert(return_type != NULL && formals != NULL);
+  assert(return_type != NULL);
+  assert(formals != NULL);
 }
 
 void

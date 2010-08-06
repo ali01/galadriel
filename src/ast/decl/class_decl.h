@@ -44,6 +44,12 @@ public:
     return new ClassDecl(name, extends, implements, members);
   }
 
+  static Ptr ClassDeclNew(Identifier::Ptr name) {
+    Deque<NamedType::Ptr>::Ptr intf = Deque<NamedType::Ptr>::DequeNew();
+    Deque<Decl::Ptr>::Ptr members = Deque<Decl::Ptr>::DequeNew();
+    return new ClassDecl(name, NULL, intf, members);
+  }
+
   ClassDecl(Identifier::Ptr name, NamedType::Ptr extends,
             Deque<NamedType::Ptr>::Ptr implements,
             Deque<Decl::Ptr>::Ptr members);
@@ -72,6 +78,8 @@ public:
 
 
   /* member functions */
+
+  void memberInsert(Decl::Ptr _member) { members_->pushBack(_member); }
 
   bool subsumersContain(NamedType::PtrConst _type) const;
   void subsumersInsert(NamedType::PtrConst _type);

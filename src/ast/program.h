@@ -32,6 +32,7 @@ public:
   decl_iter declsEnd() { return decls_->end(); }
   const_decl_iter declsEnd() const { return decls_->end(); }
 
+  void declInsert(Decl::Ptr _decl) { decls_->pushBack(_decl); }
 
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }

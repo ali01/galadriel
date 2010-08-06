@@ -2,6 +2,8 @@
 
 #include "scope.h"
 
+
+
 ScopeStackBuilder::ScopeStackBuilder(Program::Ptr _program) {
   scope_stack_ = ScopeStack::ScopeStackNew();
 
@@ -14,6 +16,16 @@ ScopeStackBuilder::NodeFunctor::operator()(Program *nd) {
   /* initialize global scope */
   Scope::Ptr scope = scope_stack_->scopeNew();
   nd->scopeIs(scope);
+
+  /* inserting library built-ins */
+  ClassDecl::Ptr array_class;
+  array_class = ClassDecl::ClassDeclNew(ArrayType::kArrayClassIdentifier);
+  
+  FnDecl::Ptr length_fn;
+  length_fn = FnDecl::FnDeclNew(ArrayType::kLengthFnIdentifier, Type::kInt);
+  array_class->memberInsert(length_fn);
+
+  nd->declInsert(array_class);
 
   Decl::Ptr decl;
   Program::const_decl_iter it = nd->declsBegin();

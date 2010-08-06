@@ -29,6 +29,12 @@ public:
     return new Identifier(loc, name);
   }
 
+  static Ptr IdentifierNew(const string& name) {
+    struct yyltype loc;
+    memset(&loc, 0x0, sizeof loc);
+    return new Identifier(loc, name);
+  }
+
   const string& name() const { return name_; }
   bool operator==(const Identifier&) const;
 

@@ -25,8 +25,17 @@ public:
   Type::Ptr elemType() { return elem_type_; }
   Type::PtrConst elemType() const { return elem_type_; }
 
+  Simone::Ptr<const ClassDecl> builtinClassDecl() const;
+  Simone::Ptr<ClassDecl> builtinClassDecl();
+
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
+
+  /* built-in array class identifier */
+  static Simone::Ptr<Identifier> kArrayClassIdentifier;
+
+  /* built-in array member functions */
+  static Simone::Ptr<Identifier> kLengthFnIdentifier;
 
 protected:
   class ArrayTypeEqualityFunctor : public Type::TypeEqualityFunctor {

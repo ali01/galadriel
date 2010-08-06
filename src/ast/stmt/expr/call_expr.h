@@ -68,11 +68,35 @@ public:
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 protected:
-  /* base will be null if no explicit base */
-  Expr::Ptr base_;
+
+  class BaseDeclFunctor : public Node::Functor {
+    public:
+      typedef Simone::Ptr<const BaseDeclFunctor> PtrConst;
+      typedef Simone::Ptr<BaseDeclFunctor> Ptr;
+
+      static Ptr BaseDeclFunctorNew(CallExpr::Ptr _call_expr) {
+        return new BaseDeclFunctor(_call_expr);
+      }
+
+      Simone::Ptr<ClassDecl> baseDecl() const;
+
+      void operator()(NamedType *);
+      void operator()(ArrayType *);
+
+    private:
+      BaseDeclFunctor(CallExpr::Ptr _call_expr) : call_expr_(_call_expr) {}
+
+      /* data members */
+      Simone::Ptr<ClassDecl> base_decl_;
+      CallExpr::Ptr call_expr_;
+  };
+
+  /* data members */
+  Expr::Ptr base_; /* base will be null if no explicit base */
   Simone::Ptr<Identifier> function_;
   Deque<Expr::Ptr>::Ptr actuals_;
-  /* data type compatible with return type of field */
+
+  BaseDeclFunctor::Ptr base_decl_functor_;
 };
 
 #endif
