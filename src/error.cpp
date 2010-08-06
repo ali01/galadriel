@@ -124,18 +124,18 @@ Error::IdentifierNotDeclared(Identifier::PtrConst ident, reasonT whyNeeded) {
 }
 
 void
-Error::IncompatibleOperands(Simone::Ptr<const Operator> op,
-                            Simone::Ptr<const Type> lhs,
-                            Simone::Ptr<const Type> rhs) {
+Error::IncompatibleOperands(Operator::PtrConst op,
+                            Type::PtrConst lhs,
+                            Type::PtrConst rhs) {
   ostringstream s;
   s << "Incompatible operands: " << *lhs << " " << *op << " " << *rhs;
   OutputError(op->lexLoc(), s.str());
 }
 
 void
-Error::IncompatibleOperand(Operator *op, Type *rhs) {
+Error::IncompatibleOperand(Operator::PtrConst op, Type::PtrConst rhs) {
   ostringstream s;
-  s << "Incompatible operand: " << op << " " << rhs;
+  s << "Incompatible operand: " << *op << " " << *rhs;
   OutputError(op->lexLoc(), s.str());
 }
 

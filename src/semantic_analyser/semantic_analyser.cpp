@@ -249,16 +249,30 @@ SemanticAnalyser::NodeFunctor::operator()(CompoundExpr *nd) {
   Expr::Ptr right = nd->right();
   process_node(right);
 
+  /* right must be non-null */
+  Type::PtrConst right_type = right->type();
+
   if (left) {
-    /* right must be non-null */
     Type::PtrConst left_type = left->type();
-    Type::PtrConst right_type = right->type();
 
     if (*left_type != *right_type)
       Error::IncompatibleOperands(op, left_type, right_type);
 
   } else {
-    
+    bool error = false;
+
+    if (op->operatorType() == Operator::kSubtract) {
+      if (right_type != Type::kInt && right_type != Type::kDouble){
+        error = true;
+      }
+    } else if (op->operatorType() == Operator::kNot) {
+      if (right_type != Type::kBool) {
+        error = true;
+      }
+    }
+
+    if (error)
+      Error::IncompatibleOperand(op, right_type);
   }
 }
 

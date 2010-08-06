@@ -88,7 +88,8 @@ public:
 
   /* Errors used by semantic analyzer for expressions */
   /* unary */
-  static void IncompatibleOperand(Operator *op, Type *rhs);
+  static void IncompatibleOperand(Simone::Ptr<const Operator> op,
+                                  Simone::Ptr<const Type> rhs);
 
   /* binary */
   static void IncompatibleOperands(Simone::Ptr<const Operator> op,
