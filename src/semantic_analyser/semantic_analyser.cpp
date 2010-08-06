@@ -17,9 +17,7 @@ SemanticAnalyser::NodeFunctor::operator()(Program *nd) {
   Program::const_decl_iter it = nd->declsBegin();
   for (; it != nd->declsEnd(); ++it) {
     decl = *it;
-
-    /* apply this functor to each program declaration */
-    decl->apply(this);
+    process_node(decl);
   }
 }
 
@@ -28,28 +26,38 @@ SemanticAnalyser::NodeFunctor::operator()(Program *nd) {
 /* -- decl -- */
 
 void
+SemanticAnalyser::NodeFunctor::operator()(Decl *nd) {
+  Identifier::Ptr id = nd->identifier();
+  process_node(id);
+}
+
+void
 SemanticAnalyser::NodeFunctor::operator()(VarDecl *nd) {
+  /* apply this functor to upcasted nd */
+  (*this)(static_cast<Decl*>(nd));
+
   Type::Ptr type = nd->type();
-  type->apply(this);
+  process_node(type);
 }
 
 void
 SemanticAnalyser::NodeFunctor::operator()(FnDecl *nd) {
+  /* apply this functor to upcasted nd */
+  (*this)(static_cast<Decl*>(nd));
+
+  Type::Ptr return_type = nd->returnType();
+  process_node(return_type);
+
   VarDecl::Ptr decl;
   FnDecl::const_formal_iter it = nd->formalsBegin();
   for (; it != nd->formalsEnd(); ++it) {
     decl = *it;
-    decl->apply(this);
+    process_node(decl);
   }
 
   /* stmt_block could be NULL in the case of a function prototype */
   StmtBlock::Ptr stmt_block = nd->body();
-  if (stmt_block != NULL) {
-    stmt_block->apply(this);
-  }
-
-  Type::Ptr return_type = nd->returnType();
-  return_type->apply(this);
+  process_node(stmt_block);
 }
 
 void
@@ -59,6 +67,9 @@ SemanticAnalyser::NodeFunctor::operator()(ClassDecl *nd) {
 
   nd->indexedIs(true);
 
+  /* apply this functor to upcasted nd */
+  (*this)(static_cast<Decl*>(nd));
+
   inherit_base_class_scopes(nd);
   inherit_interface_scopes(nd);
 
@@ -66,7 +77,7 @@ SemanticAnalyser::NodeFunctor::operator()(ClassDecl *nd) {
   ClassDecl::const_member_iter it = nd->membersBegin();
   for (; it != nd->membersEnd(); ++it) {
     decl = *it;
-    decl->apply(this);
+    process_node(decl);
   }
 }
 
@@ -76,7 +87,7 @@ SemanticAnalyser::NodeFunctor::operator()(InterfaceDecl *nd) {
   InterfaceDecl::const_member_iter it = nd->membersBegin();
   for (; it != nd->membersEnd(); ++it) {
     fn_decl = *it;
-    fn_decl->apply(this);
+    process_node(fn_decl);
   }
 }
 
@@ -88,52 +99,72 @@ SemanticAnalyser::NodeFunctor::operator()(StmtBlock *nd) {
   StmtBlock::const_decl_iter decl_it = nd->declsBegin();
   for (; decl_it != nd->declsEnd(); ++decl_it) {
     var_decl = *decl_it;
-    var_decl->apply(this);
+    process_node(var_decl);
   }
 
   Stmt::Ptr stmt;
   StmtBlock::const_stmt_iter stmt_it = nd->stmtsBegin();
   for (; stmt_it != nd->stmtsEnd(); ++stmt_it) {
     stmt = *stmt_it;
-    stmt->apply(this);
+    process_node(stmt);
   }
 }
 
+
+void
+SemanticAnalyser::NodeFunctor::operator()(PrintStmt *nd) {
+  Expr::Ptr arg;
+  PrintStmt::const_arg_iterator it = nd->argsBegin();
+  for (; it != nd->argsEnd(); ++it) {
+    arg = *it;
+    process_node(arg);
+  }
+}
+
+void
+SemanticAnalyser::NodeFunctor::operator()(ReturnStmt *nd) {
+  Expr::Ptr expr = nd->expr();
+  process_node(expr);
+}
 
 /* stmt/conditional */
 
 void
 SemanticAnalyser::NodeFunctor::operator()(ConditionalStmt *nd) {
   Expr::Ptr test = nd->test();
-  test->apply(this);
+  process_node(test);
 
   Stmt::Ptr body = nd->body();
-  body->apply(this);
+  process_node(body);
 }
 
 void
 SemanticAnalyser::NodeFunctor::operator()(IfStmt *nd) {
-  ConditionalStmt *cond_stmt = nd;
-  (*this)(cond_stmt);
+  /* applying this functor on upcasted nd */
+  (*this)(static_cast<ConditionalStmt*>(nd));
 
   Stmt::Ptr else_body = nd->elseBody();
-  if (else_body != NULL) {
-    else_body->apply(this);
-  }
+  process_node(else_body);
 }
 
 
 /* stmt/conditional/loop */
 void
 SemanticAnalyser::NodeFunctor::operator()(ForStmt *nd) {
-  ConditionalStmt *cond_stmt = nd;
-  (*this)(cond_stmt);
+  Expr::Ptr init = nd->init();
+  process_node(init);
+
+  /* applying this functor on upcasted nd */
+  (*this)(static_cast<ConditionalStmt*>(nd));
+
+  Expr::Ptr step = nd->step();
+  process_node(step);
 }
 
 void
 SemanticAnalyser::NodeFunctor::operator()(WhileStmt *nd) {
-  ConditionalStmt *cond_stmt = nd;
-  (*this)(cond_stmt);
+  /* applying this functor on upcasted nd */
+  (*this)(static_cast<ConditionalStmt*>(nd));
 }
 
 
@@ -141,10 +172,13 @@ SemanticAnalyser::NodeFunctor::operator()(WhileStmt *nd) {
 void
 SemanticAnalyser::NodeFunctor::operator()(AssignExpr *nd) {
   LValueExpr::Ptr l_val = nd->left();
-  l_val->apply(this);
+  process_node(l_val);
+
+  Operator::Ptr op = nd->op();
+  process_node(op);
 
   Expr::Ptr rhs = nd->right();
-  rhs->apply(this);
+  process_node(rhs);
 
   Type::PtrConst l_val_type = l_val->type();
   Type::PtrConst rhs_type = rhs->type();
@@ -154,15 +188,32 @@ SemanticAnalyser::NodeFunctor::operator()(AssignExpr *nd) {
   }
 }
 
+void
+SemanticAnalyser::NodeFunctor::operator()(CallExpr *nd) {
+  Expr::Ptr base = nd->base();
+  process_node(base);
+
+  Identifier::Ptr function = nd->function();
+  process_node(function);
+
+  Expr::Ptr actual;
+  CallExpr::const_actuals_iter it = nd->actualsBegin();
+  for(; it != nd->actualsEnd(); ++it) {
+    actual = *it;
+    process_node(actual);
+  }
+}
+
 
 /* stmt/expr/single_addr */
 void
 SemanticAnalyser::NodeFunctor::operator()(NewExpr *nd) {
-  Scope::Ptr scope = nd->scope();
   NamedType::Ptr type = nd->objectType();
+  process_node(type);
+
   ClassDecl::Ptr class_decl = type->classDecl();
   if (class_decl) {
-    class_decl->apply(this);
+    process_node(class_decl);
   } else {
     Error::IdentifierNotDeclared(type->identifier(), kLookingForClass);
   }
@@ -171,33 +222,69 @@ SemanticAnalyser::NodeFunctor::operator()(NewExpr *nd) {
 void
 SemanticAnalyser::NodeFunctor::operator()(NewArrayExpr *nd) {
   Expr::Ptr size = nd->size();
-  size->apply(this);
+  process_node(size);
+
+  ArrayType::Ptr type = nd->arrayType();
+  process_node(type);
 
   // TODO
   // Type::Ptr type = nd->elemType();
-  //   type->apply(this);
+  //   process_node(type);
+}
+
+
+/* stmt/expr/single_addr/compound */
+void
+SemanticAnalyser::NodeFunctor::operator()(CompoundExpr *nd) {
+  Expr::Ptr left = nd->left();
+  process_node(left);
+
+  Operator::Ptr op = nd->op();
+  process_node(op);
+
+  Expr::Ptr right = nd->right();
+  process_node(right);
+}
+
+void
+SemanticAnalyser::NodeFunctor::operator()(ArithmeticExpr *nd) {
+  (*this)(static_cast<CompoundExpr*>(nd));
+}
+
+void
+SemanticAnalyser::NodeFunctor::operator()(LogicalExpr *nd) {
+  (*this)(static_cast<CompoundExpr*>(nd));
+}
+
+void
+SemanticAnalyser::NodeFunctor::operator()(RelationalExpr *nd) {
+  (*this)(static_cast<CompoundExpr*>(nd));
 }
 
 
 /* stmt/expr/single_addr/l_value */
 void
 SemanticAnalyser::NodeFunctor::operator()(VarAccessExpr *nd) {
-  
+  Identifier::Ptr id = nd->identifier();
+  process_node(id);
 }
 
 void
 SemanticAnalyser::NodeFunctor::operator()(ArrayAccessExpr *nd) {
-  
+  Expr::Ptr base = nd->base();
+  process_node(base);
+
+  Expr::Ptr subscript = nd->subscript();
+  process_node(subscript);
 }
 
 void
 SemanticAnalyser::NodeFunctor::operator()(FieldAccessExpr *nd) {
-  
-}
+  Expr::Ptr base = nd->base();
+  process_node(base);
 
-void
-SemanticAnalyser::NodeFunctor::operator()(ThisExpr *nd) {
-  
+  Identifier::Ptr id = nd->field();
+  process_node(id);
 }
 
 
@@ -207,6 +294,8 @@ void
 SemanticAnalyser::NodeFunctor::operator()(NamedType *nd) {
   Scope::Ptr scope = nd->scope();
   Identifier::Ptr type_id = nd->identifier();
+  process_node(type_id);
+
   ClassDecl::PtrConst class_decl = nd->classDecl();
   if (class_decl == NULL) {
     InterfaceDecl::Ptr intf_decl = scope->interfaceDecl(type_id);
@@ -219,12 +308,19 @@ SemanticAnalyser::NodeFunctor::operator()(NamedType *nd) {
 void
 SemanticAnalyser::NodeFunctor::operator()(ArrayType *nd) {
   Type::Ptr type = nd->elemType();
-  type->apply(this);
+  process_node(type);
 }
 
 
 /* SemanticAnalyser private member functions */
 
+void
+SemanticAnalyser::NodeFunctor::process_node(Node::Ptr _node) {
+  if (_node)
+    _node->apply(this);
+}
+
+// TODO: implement in terms of NamedType function
 void
 SemanticAnalyser::NodeFunctor::
 inherit_base_class_scopes(ClassDecl::Ptr nd, IdentifierSet::Ptr _seen) {
@@ -262,7 +358,7 @@ inherit_base_class_scopes(ClassDecl::Ptr nd, IdentifierSet::Ptr _seen) {
       nd->subsumersInsert(base_class_type);
 
       /* inherit base scope's subsumers */
-      nd->subsumersInsert(base_decl->subsumersBegin(), 
+      nd->subsumersInsert(base_decl->subsumersBegin(),
                           base_decl->subsumersEnd());
 
     } else {

@@ -57,7 +57,8 @@ private:
   Deque<Stmt::Ptr>::Ptr stmts_;
   
   /* operations disallowed */
-  // TODO
+  StmtBlock(const StmtBlock&);
+  void operator=(const StmtBlock&);
 };
 
 #endif
