@@ -171,10 +171,12 @@ void yyerror(const char *msg, yyltype *loc = NULL);
  
 Program           : DeclList {
                       Program::Ptr program = Program::ProgramNew($1);
-                      // TODO: if(parse errors)
-                      SemanticAnalyser::Ptr semantic_analyser =
-                        SemanticAnalyser::SemanticAnalyserNew(program);
+                      if (Error::NumErrors() == 0) {
+                        SemanticAnalyser::Ptr semantic_analyser =
+                          SemanticAnalyser::SemanticAnalyserNew(program);
+                      }
                     }
+                  | /* empty */ {}
                   ;
 
 DeclList          : DeclList Decl {
