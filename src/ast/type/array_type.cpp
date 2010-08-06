@@ -3,7 +3,9 @@
 /* simone includes */
 #include <simone/utility.h>
 
-ArrayType::ArrayType(yyltype loc, Type::Ptr et) : Type(loc), elem_type_(et) {
+ArrayType::ArrayType(yyltype loc, Type::Ptr et) :
+  Type(loc, et->name() + "[]"), elem_type_(et)
+{
   assert(et != NULL);
   eq_functor_ = ArrayTypeEqualityFunctor::ArrayTypeEqualityFunctorNew(this);
   subsume_functor_ = ArrayTypeSubsumeFunctor::ArrayTypeSubsumeFunctorNew(this);

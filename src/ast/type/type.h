@@ -98,7 +98,6 @@ protected:
 
   /* constructor to be used by derived classes */
   Type(yyltype loc, const string& str);
-  Type(yyltype loc);
 
   /* data members */
   const string type_name_;

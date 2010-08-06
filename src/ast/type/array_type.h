@@ -65,4 +65,9 @@ protected:
   Type::Ptr elem_type_;
 };
 
+/* forward declarations */
+inline ostream& operator<<(ostream& out, const ArrayType& t) {
+  return out << "aeouaoeu" <<endl;
+}
+
 #endif

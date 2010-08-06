@@ -30,11 +30,6 @@ Type::Type(yyltype loc, const string& str) :
   subsume_functor_ = TypeSubsumeFunctor::TypeSubsumeFunctorNew(this);
 }
 
-Type::Type(yyltype loc) : Node(loc) {
-  eq_functor_ = TypeEqualityFunctor::TypeEqualityFunctorNew(this);
-  subsume_functor_ = TypeSubsumeFunctor::TypeSubsumeFunctorNew(this);
-}
-
 /* private constructor */
 Type::Type(const string& str) : Node(), type_name_(str) {
   eq_functor_ = TypeEqualityFunctor::TypeEqualityFunctorNew(this);

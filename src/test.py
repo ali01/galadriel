@@ -9,9 +9,12 @@ kInputDir = "samples"
 kSuffixList = ["decaf", "frag"]
 
 def main():
-    tester = Apter(input_dir=kInputDir, suffix_list=kSuffixList)
-    tester.compile()
-    tester.run_tests()
+    try:
+        tester = Apter(input_dir=kInputDir, suffix_list=kSuffixList)
+        tester.compile()
+        tester.run_tests()
+    except:
+        print("\n")
 
 
 kDefaultOutSuffix = "out"
