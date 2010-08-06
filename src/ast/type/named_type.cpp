@@ -27,6 +27,19 @@ NamedType::identifier() {
   return id_;
 }
 
+ObjectDecl::Ptr
+NamedType::objectDecl() {
+  Scope::Ptr scope = this->scope();
+  Identifier::PtrConst id = this->identifier();
+  return scope->objectDecl(id);
+}
+
+ObjectDecl::PtrConst
+NamedType::objectDecl() const {
+  NamedType::Ptr me = const_cast<NamedType*>(this);
+  return me->objectDecl();
+}
+
 
 ClassDecl::Ptr
 NamedType::classDecl() {

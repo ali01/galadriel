@@ -14,6 +14,7 @@ using Simone::Map;
 #include "ast/decl/decl.h"
 #include "ast/decl/var_decl.h"
 #include "ast/decl/fn_decl.h"
+#include "ast/decl/object/object_decl.h"
 #include "ast/decl/object/class_decl.h"
 #include "ast/decl/object/interface_decl.h"
 
@@ -93,6 +94,9 @@ public:
 
   FnDecl::PtrConst fnDecl(Identifier::PtrConst _id, bool recursive=true) const;
 
+  ObjectDecl::PtrConst objectDecl(Identifier::PtrConst _id,
+                                  bool recursive=true) const;
+
   ClassDecl::PtrConst classDecl(Identifier::PtrConst _id,
                                 bool recursive=true) const;
 
@@ -109,6 +113,8 @@ public:
   VarDecl::Ptr varDecl(Identifier::PtrConst _id, bool recursive=true);
 
   FnDecl::Ptr fnDecl(Identifier::PtrConst _id, bool recursive=true);
+
+  ObjectDecl::Ptr objectDecl(Identifier::PtrConst _id, bool recursive=true);
 
   ClassDecl::Ptr classDecl(Identifier::PtrConst _id, bool recursive=true);
 

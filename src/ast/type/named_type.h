@@ -13,6 +13,7 @@
 
 /* forward declarations */
 class ClassDecl;
+class ObjectDecl;
 
 class NamedType : public Type  {
 public:
@@ -36,6 +37,9 @@ public:
   /* attribute member functions */
   Identifier::Ptr identifier();
   Identifier::PtrConst identifier() const;
+
+  Simone::Ptr<ObjectDecl> objectDecl();
+  Simone::Ptr<const ObjectDecl> objectDecl() const;
 
   Simone::Ptr<ClassDecl> classDecl();
   Simone::Ptr<const ClassDecl> classDecl() const;

@@ -14,7 +14,7 @@ using Simone::Deque;
 
 /* ast/decl includes */
 #include "../../decl/fn_decl.h"
-#include "../../decl/object/class_decl.h"
+#include "../../decl/object/object_decl.h"
 
 /* ast/type includes */
 #include "../../type/type.h"
@@ -46,9 +46,9 @@ CallExpr::function() const {
   return function_;
 }
 
-ClassDecl::PtrConst
+ObjectDecl::PtrConst
 CallExpr::baseDecl() const {
-  ClassDecl::PtrConst base_decl = NULL;
+  ObjectDecl::PtrConst base_decl = NULL;
 
   if (base_) {
     Type::PtrConst base_type_const = base_->type();
@@ -68,7 +68,7 @@ CallExpr::fnDecl() const {
   FnDecl::PtrConst fn_decl = NULL;
 
   Scope::PtrConst scope;
-  ClassDecl::PtrConst base_decl = this->baseDecl();
+  ObjectDecl::PtrConst base_decl = this->baseDecl();
 
   if (base_decl) {
     scope = base_decl->scope();
@@ -92,7 +92,7 @@ CallExpr::type() const {
   return type;
 }
 
-ClassDecl::Ptr
+ObjectDecl::Ptr
 CallExpr::BaseDeclFunctor::baseDecl() const {
   return base_decl_;
 }
@@ -100,7 +100,7 @@ CallExpr::BaseDeclFunctor::baseDecl() const {
 
 void
 CallExpr::BaseDeclFunctor::operator()(NamedType *_type) {
-  base_decl_ = _type->classDecl();
+  base_decl_ = _type->objectDecl();
 }
 
 void

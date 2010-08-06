@@ -15,7 +15,7 @@ using Simone::Deque;
 /* forward declarations */
 class Identifier;
 class Type;
-class ClassDecl;
+class ObjectDecl;
 class FnDecl;
 
 /* Like field access, call is used both for qualified base.field()
@@ -59,7 +59,7 @@ public:
 
   size_t actualsCount() const { return actuals_->size(); }
 
-  Simone::Ptr<const ClassDecl> baseDecl() const;
+  Simone::Ptr<const ObjectDecl> baseDecl() const;
   Simone::Ptr<const FnDecl> fnDecl() const;
 
   Simone::Ptr<const Type> type() const;
@@ -78,7 +78,7 @@ protected:
         return new BaseDeclFunctor(_call_expr);
       }
 
-      Simone::Ptr<ClassDecl> baseDecl() const;
+      Simone::Ptr<ObjectDecl> baseDecl() const;
 
       void operator()(NamedType *);
       void operator()(ArrayType *);
@@ -87,7 +87,7 @@ protected:
       BaseDeclFunctor(CallExpr::Ptr _call_expr) : call_expr_(_call_expr) {}
 
       /* data members */
-      Simone::Ptr<ClassDecl> base_decl_;
+      Simone::Ptr<ObjectDecl> base_decl_;
       CallExpr::Ptr call_expr_;
   };
 

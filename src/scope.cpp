@@ -118,6 +118,15 @@ Scope::fnDecl(Identifier::PtrConst _id, bool recursive) {
   return decl;
 }
 
+ObjectDecl::Ptr
+Scope::objectDecl(Identifier::PtrConst _id, bool recursive) {
+  ObjectDecl::Ptr decl = classDecl(_id, recursive);
+  if (decl == NULL)
+    decl = interfaceDecl(_id, recursive);
+
+  return decl;
+}
+
 ClassDecl::Ptr
 Scope::classDecl(Identifier::PtrConst _id, bool recursive) {
   ClassDecl::Ptr decl = NULL;
@@ -162,6 +171,12 @@ FnDecl::PtrConst
 Scope::fnDecl(Identifier::PtrConst _id, bool recursive) const {
   Scope::Ptr me = const_cast<Scope*>(this);
   return me->fnDecl(_id, recursive);
+}
+
+ObjectDecl::PtrConst
+Scope::objectDecl(Identifier::PtrConst _id, bool recursive) const {
+  Scope::Ptr me = const_cast<Scope*>(this);
+  return me->objectDecl(_id, recursive);
 }
 
 ClassDecl::PtrConst
