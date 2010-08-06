@@ -184,7 +184,7 @@ SemanticAnalyser::NodeFunctor::operator()(AssignExpr *nd) {
   Type::PtrConst rhs_type = rhs->type();
 
   if (not l_val_type->subsumes(rhs_type)) {
-    Error::IncompatibleOperands(nd->op(), l_val_type, rhs_type);
+    Error::IncompatibleOperands(op, l_val_type, rhs_type);
   }
 }
 
@@ -209,8 +209,6 @@ SemanticAnalyser::NodeFunctor::operator()(CallExpr *nd) {
 void
 SemanticAnalyser::NodeFunctor::operator()(NewExpr *nd) {
   NamedType::Ptr type = nd->objectType();
-  process_node(type);
-
   ClassDecl::Ptr class_decl = type->classDecl();
   if (class_decl) {
     process_node(class_decl);
@@ -244,6 +242,13 @@ SemanticAnalyser::NodeFunctor::operator()(CompoundExpr *nd) {
 
   Expr::Ptr right = nd->right();
   process_node(right);
+
+  Type::PtrConst left_type = left->type();
+  Type::PtrConst right_type = right->type();
+
+  if (*left_type != *right_type) {
+    Error::IncompatibleOperands(op, left_type, right_type);
+  }
 }
 
 void
