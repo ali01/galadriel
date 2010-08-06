@@ -1,0 +1,10 @@
+DIR_2HJSILRS := ast/decl/object
+SUB_2HJSILRS := 
+
+SRCS += $(wildcard $(DIR_2HJSILRS)/*.$(EXT))
+
+MK_2HJSILRS := $(foreach sdir,$(SUB_2HJSILRS),$(wildcard $(DIR_2HJSILRS)/$(sdir)/*.$(SUBDIR_EXT)))
+ifneq ($(MK_2HJSILRS),)
+$(info -- including subdirectory makefiles ($(DIR_2HJSILRS)): $(MK_2HJSILRS)) 
+include $(MK_2HJSILRS)
+endif

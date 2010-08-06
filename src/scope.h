@@ -14,8 +14,8 @@ using Simone::Map;
 #include "ast/decl/decl.h"
 #include "ast/decl/var_decl.h"
 #include "ast/decl/fn_decl.h"
-#include "ast/decl/class_decl.h"
-#include "ast/decl/interface_decl.h"
+#include "ast/decl/object/class_decl.h"
+#include "ast/decl/object/interface_decl.h"
 
 /* instances obtained via factory constructor in ScopeStack class */
 class Scope : public Simone::PtrInterface<Scope> {

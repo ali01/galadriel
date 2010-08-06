@@ -14,7 +14,7 @@
 
 /* ast/decl includes */
 #include "decl/decl.h"
-#include "decl/class_decl.h"
+#include "decl/object/class_decl.h"
 
 Node::Node(yyltype loc) {
   location  = new yyltype(loc);

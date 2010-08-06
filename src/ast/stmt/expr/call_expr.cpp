@@ -14,7 +14,7 @@ using Simone::Deque;
 
 /* ast/decl includes */
 #include "../../decl/fn_decl.h"
-#include "../../decl/class_decl.h"
+#include "../../decl/object/class_decl.h"
 
 /* ast/type includes */
 #include "../../type/type.h"

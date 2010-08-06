@@ -7,7 +7,7 @@
 #include <scope.h>
 
 /* ast/decl includes */
-#include "../decl/class_decl.h"
+#include "../decl/object/class_decl.h"
 
 NamedType::NamedType(Identifier::Ptr _id) :
   Type(*_id->lexLoc(), _id->name()), id_(_id)

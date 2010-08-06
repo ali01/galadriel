@@ -7,7 +7,7 @@
 #include <scope.h>
 
 #include "../identifier.h"
-#include "../decl/class_decl.h"
+#include "../decl/object/class_decl.h"
 #include "../decl/fn_decl.h"
 #include "../type/type.h"
 

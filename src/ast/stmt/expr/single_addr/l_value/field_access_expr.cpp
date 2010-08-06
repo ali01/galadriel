@@ -13,7 +13,7 @@
 #include "../../../../decl/var_decl.h"
 
 /* ast/decl/object includes */
-#include "../../../../decl/class_decl.h"
+#include "../../../../decl/object/class_decl.h"
 
 /* ast/type/named includes */
 #include "../../../../type/named_type.h"
