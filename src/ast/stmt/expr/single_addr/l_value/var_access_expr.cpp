@@ -22,12 +22,17 @@ VarAccessExpr::identifier() {
   return identifier_;
 }
 
+VarDecl::PtrConst
+VarAccessExpr::varDecl() const {
+  Scope::PtrConst scope = this->scope();
+  return scope->varDecl(identifier_);
+}
+
 Type::PtrConst
 VarAccessExpr::type() const {
   Type::PtrConst type = Type::kError;
-  Scope::PtrConst scope = this->scope();
 
-  VarDecl::PtrConst var_decl = scope->varDecl(identifier_);
+  VarDecl::PtrConst var_decl = this->varDecl();
   if (var_decl != NULL) {
     type = var_decl->type();
   }

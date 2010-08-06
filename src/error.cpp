@@ -97,7 +97,7 @@ Error::OverrideMismatch(FnDecl::PtrConst fnDecl) {
 }
 
 void
-Error::InterfaceNotImplemented(Decl *cd, Type *interfaceType) {
+Error::InterfaceNotImplemented(Decl *cd, Type::PtrConst interfaceType) {
   ostringstream s;
   s << "Class '" << cd;
   s << "' does not implement entire interface '" << interfaceType << "'";
@@ -140,67 +140,71 @@ Error::IncompatibleOperand(Operator::PtrConst op, Type::PtrConst rhs) {
 }
 
 void
-Error::ThisOutsideClassScope(ThisExpr *th) {
+Error::ThisOutsideClassScope(ThisExpr::PtrConst th) {
   OutputError(th->lexLoc(), "'this' is only valid within class scope");
 }
 
 void
-Error::BracketsOnNonArray(Expr *baseExpr) {
+Error::BracketsOnNonArray(Expr::PtrConst baseExpr) {
   OutputError(baseExpr->lexLoc(), "[] can only be applied to arrays");
 }
 
 void
-Error::SubscriptNotInteger(Expr *subscriptExpr) {
+Error::SubscriptNotInteger(Expr::PtrConst subscriptExpr) {
   OutputError(subscriptExpr->lexLoc(), "Array subscript must be an integer");
 }
 
 void
-Error::NewArraySizeNotInteger(Expr *sizeExpr) {
+Error::NewArraySizeNotInteger(Expr::PtrConst sizeExpr) {
   OutputError(sizeExpr->lexLoc(), "Size for NewArray must be an integer");
 }
 
 void
-Error::NumArgsMismatch(Identifier *fnIdent,
-                             int numExpected, int numGiven) {
+Error::NumArgsMismatch(Identifier::PtrConst fnIdent,
+                       int numExpected, int numGiven) {
   ostringstream s;
-  s << "Function '"<< fnIdent << "' expects ";
+  s << "Function '"<< *fnIdent << "' expects ";
   s << numExpected << " argument" << (numExpected == 1 ? "" : "s");
   s << " but " << numGiven << " given";
   OutputError(fnIdent->lexLoc(), s.str());
 }
 
 void
-Error::ArgMismatch(Expr *arg, int argIndex, Type *given, Type *expected) {
+Error::ArgMismatch(Expr::PtrConst arg, int argIndex,
+                   Type::PtrConst given,
+                   Type::PtrConst expected) {
   ostringstream s;
   s << "Incompatible argument " << argIndex << ": ";
-  s << given << " given, " << expected << " expected";
+  s << *given << " given, " << *expected << " expected";
   OutputError(arg->lexLoc(), s.str());
 }
 
 void
-Error::ReturnMismatch(ReturnStmt *rStmt, Type *given, Type *expected) {
+Error::ReturnMismatch(ReturnStmt::PtrConst rStmt,
+                      Type::PtrConst given,
+                      Type::PtrConst expected) {
   ostringstream s;
-  s << "Incompatible return: " << given << " given, ";
-  s << expected << " expected";
+  s << "Incompatible return: " << *given << " given, ";
+  s << *expected << " expected";
   OutputError(rStmt->lexLoc(), s.str());
 }
 
 void
-Error::FieldNotFoundInBase(Identifier *field, Type *base) {
+Error::FieldNotFoundInBase(Identifier::PtrConst field, Type::PtrConst base) {
   ostringstream s;
-  s << base << " has no such field '" << field <<"'";
+  s << *base << " has no such field '" << *field <<"'";
   OutputError(field->lexLoc(), s.str());
 }
 
 void
-Error::InaccessibleField(Identifier *field, Type *base) {
+Error::InaccessibleField(Identifier *field, Type::PtrConst base) {
   ostringstream s;
   s  << base << " field '" << field << "' only accessible within class scope";
   OutputError(field->lexLoc(), s.str());
 }
 
 void
-Error::PrintArgMismatch(Expr *arg, int argIndex, Type *given) {
+Error::PrintArgMismatch(Expr::PtrConst arg, int argIndex, Type::PtrConst given) {
   ostringstream s;
   s << "Incompatible argument " << argIndex << ": " << given;
   s << " given, int/bool/string expected";
@@ -208,12 +212,12 @@ Error::PrintArgMismatch(Expr *arg, int argIndex, Type *given) {
 }
 
 void
-Error::TestNotBoolean(Expr *expr) {
+Error::TestNotBoolean(Expr::PtrConst expr) {
   OutputError(expr->lexLoc(), "Test expression must have boolean type");
 }
 
 void
-Error::BreakOutsideLoop(BreakStmt *bStmt) {
+Error::BreakOutsideLoop(BreakStmt::PtrConst bStmt) {
   OutputError(bStmt->lexLoc(), "break is only allowed inside a loop");
 }
 

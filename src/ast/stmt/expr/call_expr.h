@@ -15,6 +15,7 @@ using Simone::Deque;
 /* forward declarations */
 class Identifier;
 class Type;
+class ClassDecl;
 class FnDecl;
 
 /* Like field access, call is used both for qualified base.field()
@@ -36,7 +37,7 @@ public:
                          Deque<Expr::Ptr>::Ptr _args) {
     return new CallExpr(_loc, _base, _function, _args);
   }
-  
+
 
   CallExpr(yyltype _loc,
            Expr::Ptr _base,
@@ -56,6 +57,9 @@ public:
   const_actuals_iter actualsEnd() const { return actuals_->end(); }
   actuals_iter actualsEnd() { return actuals_->end(); }
 
+  size_t actualsCount() const { return actuals_->size(); }
+
+  Simone::Ptr<const ClassDecl> baseDecl() const;
   Simone::Ptr<const FnDecl> fnDecl() const;
 
   Simone::Ptr<const Type> type() const;

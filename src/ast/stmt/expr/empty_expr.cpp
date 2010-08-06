@@ -4,6 +4,5 @@
 
 Type::PtrConst
 EmptyExpr::type() const {
-  assert(false); // TODO
-  return NULL;
+  return Type::kVoid;
 }

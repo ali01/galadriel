@@ -76,7 +76,8 @@ public:
                            Simone::Ptr<const Decl> prevDecl);
 
   static void OverrideMismatch(Simone::Ptr<const FnDecl> fnDecl);
-  static void InterfaceNotImplemented(Decl *classDecl, Type *intfType);
+  static void InterfaceNotImplemented(Decl *classDecl,
+                                      Simone::Ptr<const Type> intfType);
 
   static void InheritanceCycle(Simone::Ptr<const ClassDecl> class_decl);
 
@@ -95,30 +96,37 @@ public:
   static void IncompatibleOperands(Simone::Ptr<const Operator> op,
                                    Simone::Ptr<const Type> lhs,
                                    Simone::Ptr<const Type> rhs);
-  static void ThisOutsideClassScope(ThisExpr *th);
+  static void ThisOutsideClassScope(Simone::Ptr<const ThisExpr> th);
 
 
   /* errors used by semantic analyzer for array acesss & NewArray */
-  static void BracketsOnNonArray(Expr *baseExpr);
-  static void SubscriptNotInteger(Expr *subscriptExpr);
-  static void NewArraySizeNotInteger(Expr *sizeExpr);
+  static void BracketsOnNonArray(Simone::Ptr<const Expr> baseExpr);
+  static void SubscriptNotInteger(Simone::Ptr<const Expr> subscriptExpr);
+  static void NewArraySizeNotInteger(Simone::Ptr<const Expr> sizeExpr);
 
   /* errors used by semantic analyzer for function/method calls */
-  static void NumArgsMismatch(Identifier *fnIdentifier,
+  static void NumArgsMismatch(Simone::Ptr<const Identifier> fnIdentifier,
                               int numExpected, int numGiven);
-  static void ArgMismatch(Expr *arg, int argIndex, Type *given, Type *expected);
-  static void PrintArgMismatch(Expr *arg, int argIndex, Type *given);
+  static void ArgMismatch(Simone::Ptr<const Expr> arg, int argIndex,
+                          Simone::Ptr<const Type> given,
+                          Simone::Ptr<const Type> expected);
+  static void PrintArgMismatch(Simone::Ptr<const Expr> arg, int argIndex,
+                               Simone::Ptr<const Type> given);
 
 
   /* errors used by semantic analyzer for field access */
-  static void FieldNotFoundInBase(Identifier *field, Type *base);
-  static void InaccessibleField(Identifier *field, Type *base);
+  static void FieldNotFoundInBase(Simone::Ptr<const Identifier> field,
+                                  Simone::Ptr<const Type> base);
+  static void InaccessibleField(Identifier *field,
+                                Simone::Ptr<const Type> base);
 
 
   /* errors used by semantic analyzer for control structures */
-  static void TestNotBoolean(Expr *testExpr);
-  static void ReturnMismatch(ReturnStmt *rStmt, Type *given, Type *expected);
-  static void BreakOutsideLoop(BreakStmt *bStmt);
+  static void TestNotBoolean(Simone::Ptr<const Expr> testExpr);
+  static void ReturnMismatch(Simone::Ptr<const ReturnStmt> rStmt,
+                             Simone::Ptr<const Type> given,
+                             Simone::Ptr<const Type> expected);
+  static void BreakOutsideLoop(Simone::Ptr<const BreakStmt> bStmt);
 
   static void NoMainFound();
 

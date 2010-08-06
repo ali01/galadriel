@@ -11,6 +11,7 @@ SemanticAnalyser::SemanticAnalyser(Program::Ptr _prog) {
   _prog->apply(node_functor_);
 }
 
+/* top level */
 void
 SemanticAnalyser::NodeFunctor::operator()(Program *nd) {
   Decl::Ptr decl;
@@ -21,10 +22,7 @@ SemanticAnalyser::NodeFunctor::operator()(Program *nd) {
   }
 }
 
-
-
-/* -- decl -- */
-
+/* decl */
 void
 SemanticAnalyser::NodeFunctor::operator()(Decl *nd) {
   Identifier::Ptr id = nd->identifier();
@@ -91,8 +89,7 @@ SemanticAnalyser::NodeFunctor::operator()(InterfaceDecl *nd) {
   }
 }
 
-/* -- stmt -- */
-
+/* stmt */
 void
 SemanticAnalyser::NodeFunctor::operator()(StmtBlock *nd) {
   VarDecl::Ptr var_decl;
@@ -110,7 +107,6 @@ SemanticAnalyser::NodeFunctor::operator()(StmtBlock *nd) {
   }
 }
 
-
 void
 SemanticAnalyser::NodeFunctor::operator()(PrintStmt *nd) {
   Expr::Ptr arg;
@@ -125,14 +121,31 @@ void
 SemanticAnalyser::NodeFunctor::operator()(ReturnStmt *nd) {
   Expr::Ptr expr = nd->expr();
   process_node(expr);
+
+  FnDecl::PtrConst fn_decl = nd->enclosingFunction();
+
+  Type::PtrConst type_given = expr->type();
+  Type::PtrConst type_expected = fn_decl->returnType();
+
+  if (not type_expected->subsumes(type_given))
+    Error::ReturnMismatch(nd, type_given, type_expected);
+}
+
+void
+SemanticAnalyser::NodeFunctor::operator()(BreakStmt *nd) {
+  if (nd->enclosingLoop() == NULL)
+    Error::BreakOutsideLoop(nd);
 }
 
 /* stmt/conditional */
-
 void
 SemanticAnalyser::NodeFunctor::operator()(ConditionalStmt *nd) {
   Expr::Ptr test = nd->test();
   process_node(test);
+
+  Type::PtrConst test_type = test->type();
+  if (test_type != Type::kBool)
+    Error::TestNotBoolean(test);
 
   Stmt::Ptr body = nd->body();
   process_node(body);
@@ -196,17 +209,45 @@ SemanticAnalyser::NodeFunctor::operator()(CallExpr *nd) {
   Identifier::Ptr function = nd->function();
   process_node(function);
 
-  /* obtaining function declaration */
-  FnDecl::PtrConst fn_decl = nd->fnDecl();
-  if (fn_decl == NULL) {
-    Error::IdentifierNotDeclared(function, kLookingForFunction);
-  }
-
   Expr::Ptr actual;
   CallExpr::const_actuals_iter it = nd->actualsBegin();
-  for(; it != nd->actualsEnd(); ++it) {
+  for (; it != nd->actualsEnd(); ++it) {
     actual = *it;
     process_node(actual);
+  }
+
+  FnDecl::PtrConst fn_decl = nd->fnDecl();
+  if (fn_decl == NULL) {
+    ClassDecl::PtrConst base_decl = nd->baseDecl();
+    if (base_decl && base != NULL) {
+      Error::FieldNotFoundInBase(function, base_decl->type());
+    } else {
+      Error::IdentifierNotDeclared(function, kLookingForFunction);
+    }
+  } else {
+    size_t args_expected = fn_decl->formalsCount();
+    size_t args_given = nd->actualsCount();
+
+    if (args_expected != args_given) {
+      Error::NumArgsMismatch(function, args_expected, args_given);
+
+    } else {
+      Expr::Ptr actual;
+      VarDecl::PtrConst formal;
+      Type::PtrConst actual_type, formal_type;
+
+      CallExpr::const_actuals_iter a_it = nd->actualsBegin();
+      FnDecl::const_formal_iter f_it = fn_decl->formalsBegin();
+      for(int i = 1; a_it != nd->actualsEnd(); ++a_it, ++f_it, ++i) {
+        actual = *a_it;
+        formal = *f_it;
+
+        actual_type = actual->type();
+        formal_type = formal->type();
+        if (not formal_type->subsumes(actual_type))
+          Error::ArgMismatch(actual, i, actual_type, formal_type);
+      }
+    }
   }
 }
 
@@ -297,6 +338,11 @@ void
 SemanticAnalyser::NodeFunctor::operator()(VarAccessExpr *nd) {
   Identifier::Ptr id = nd->identifier();
   process_node(id);
+
+  VarDecl::PtrConst var_decl = nd->varDecl();
+  if (var_decl == NULL) {
+    Error::IdentifierNotDeclared(id, kLookingForVariable);
+  }
 }
 
 void
@@ -316,7 +362,6 @@ SemanticAnalyser::NodeFunctor::operator()(FieldAccessExpr *nd) {
   Identifier::Ptr id = nd->field();
   process_node(id);
 }
-
 
 
 /* type */

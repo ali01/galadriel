@@ -6,8 +6,11 @@
 /* project includes */
 #include <scope.h>
 
-/* ast includes */
+/* ast/stmt includes */
 #include "stmt/stmt.h"
+
+/* ast/stmt/conditional/loop includes */
+#include "stmt/conditional/loop/loop_stmt.h"
 
 /* ast/decl includes */
 #include "decl/decl.h"
@@ -45,4 +48,22 @@ Node::enclosingClass() const {
     class_decl = parent_->enclosingClass();
 
   return class_decl;
+}
+
+FnDecl::PtrConst
+Node::enclosingFunction() const {
+  FnDecl::PtrConst fn_decl = NULL;
+  if (parent_)
+    fn_decl = parent_->enclosingFunction();
+
+  return fn_decl;
+}
+
+LoopStmt::PtrConst
+Node::enclosingLoop() const {
+  LoopStmt::PtrConst loop_stmt = NULL;
+  if (parent_)
+    loop_stmt = parent_->enclosingLoop();
+
+  return loop_stmt;
 }

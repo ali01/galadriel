@@ -15,8 +15,11 @@ public:
   typedef Simone::Ptr<const ConditionalStmt> PtrConst;
   typedef Simone::Ptr<ConditionalStmt> Ptr;
 
-  Simone::Ptr<Expr> test() const { return test_; }
-  Simone::Ptr<Stmt> body() const { return body_; }
+  Simone::Ptr<const Expr> test() const;
+  Simone::Ptr<const Stmt> body() const;
+
+  Simone::Ptr<Expr> test();
+  Simone::Ptr<Stmt> body();
 
 protected:
   ConditionalStmt(Simone::Ptr<Expr> test_expr, Stmt::Ptr body);

@@ -56,7 +56,7 @@ private:
       void operator()(StmtBlock *);
       void operator()(PrintStmt *);
       void operator()(ReturnStmt *);
-      /* void operator()(BreakStmt *); */
+      void operator()(BreakStmt *);
 
       /* stmt/conditional */
       void operator()(ConditionalStmt *);

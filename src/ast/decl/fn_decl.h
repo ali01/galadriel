@@ -39,6 +39,8 @@ public:
   formal_iter formalsEnd() { return formals_->end(); }
   const_formal_iter formalsEnd() const { return formals_->end(); }
 
+  size_t formalsCount() const { return formals_->size(); }
+
   Simone::Ptr<Type> returnType() const;
   Simone::Ptr<StmtBlock> body() const;
 
@@ -51,6 +53,8 @@ public:
   /* overloaded operators */
   bool operator==(const FnDecl& _o) const;
   bool operator!=(const FnDecl& _o) const { return !(*this == _o); }
+
+  FnDecl::PtrConst enclosingFunction() const { return this; }
 
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }

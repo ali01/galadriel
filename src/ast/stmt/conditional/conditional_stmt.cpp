@@ -14,3 +14,23 @@ ConditionalStmt::ConditionalStmt(Expr::Ptr t, Stmt::Ptr b) :
 {
   assert(test_ != NULL && body_ != NULL);
 }
+
+Expr::PtrConst
+ConditionalStmt::test() const {
+  return test_;
+}
+
+Stmt::PtrConst
+ConditionalStmt::body() const {
+  return body_;
+}
+
+Expr::Ptr
+ConditionalStmt::test() {
+  return test_;
+}
+
+Stmt::Ptr
+ConditionalStmt::body() {
+  return body_;
+}

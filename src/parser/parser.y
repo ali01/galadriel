@@ -405,11 +405,11 @@ ForStmt           : T_For '(' ExprOrEmpty ';' Expr';' ExprOrEmpty ')' Stmt {
                   ;
 
 ReturnStmt        : T_Return ExprOrEmpty ';' {
-                      $$ = new ReturnStmt(Join(@1, @3), $2);
+                      $$ = new ReturnStmt(@2, $2);
                     }
                   ;
 
-BreakStmt         : T_Break ';' { $$ = new BreakStmt(Join(@1, @2)); }
+BreakStmt         : T_Break ';' { $$ = new BreakStmt(@1); }
                   ;
 
 PrintStmt         : T_Print '(' ExprList ')' ';' { $$ = new PrintStmt($3); }

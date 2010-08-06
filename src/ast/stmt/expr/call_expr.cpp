@@ -14,6 +14,7 @@ using Simone::Deque;
 
 /* ast/decl includes */
 #include "../../decl/fn_decl.h"
+#include "../../decl/class_decl.h"
 
 /* ast/type includes */
 #include "../../type/type.h"
@@ -42,11 +43,8 @@ CallExpr::function() const {
   return function_;
 }
 
-FnDecl::PtrConst
-CallExpr::fnDecl() const {
-  FnDecl::PtrConst fn_decl = NULL;
-
-  Scope::PtrConst scope;
+ClassDecl::PtrConst
+CallExpr::baseDecl() const {
   ClassDecl::PtrConst base_decl = NULL;
 
   if (base_) {
@@ -58,6 +56,16 @@ CallExpr::fnDecl() const {
   } else {
     base_decl = enclosingClass();
   }
+
+  return base_decl;
+}
+
+FnDecl::PtrConst
+CallExpr::fnDecl() const {
+  FnDecl::PtrConst fn_decl = NULL;
+
+  Scope::PtrConst scope;
+  ClassDecl::PtrConst base_decl = this->baseDecl();
 
   if (base_decl) {
     scope = base_decl->scope();

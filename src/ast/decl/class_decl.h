@@ -88,6 +88,7 @@ public:
 
   /* override virtual in Node */
   ClassDecl::PtrConst enclosingClass() const { return this; }
+
   void scopeIs(Simone::Ptr<Scope> _s);
 
   /* support for double dispatch */
