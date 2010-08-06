@@ -88,7 +88,7 @@ public:
 
 private:
   /* override virtual in Node */
-  ClassDecl::PtrConst enclosingClass() const { return this; }
+  ClassDecl::PtrConst nearestClass() const { return this; }
 
   /* data members */
   NamedType::Ptr base_class_;

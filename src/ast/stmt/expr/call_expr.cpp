@@ -57,7 +57,7 @@ CallExpr::baseDecl() const {
     base_decl = base_decl_functor_->baseDecl();
 
   } else {
-    base_decl = enclosingClass(); // TODO: what about interfaces?
+    base_decl = nearestClass(); // TODO: what about interfaces?
   }
 
   return base_decl;

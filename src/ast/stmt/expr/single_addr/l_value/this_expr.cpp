@@ -9,7 +9,7 @@
 Type::PtrConst
 ThisExpr::type() const {
   Type::PtrConst type = Type::kError;
-  ClassDecl::PtrConst class_decl = enclosingClass();
+  ClassDecl::PtrConst class_decl = nearestClass();
   if (class_decl)
     type = class_decl->type();
 

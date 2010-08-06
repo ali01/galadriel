@@ -42,28 +42,28 @@ Node::scopeIs(Scope::Ptr _s) {
 }
 
 ClassDecl::PtrConst
-Node::enclosingClass() const { // TODO
+Node::nearestClass() const { // TODO
   ClassDecl::PtrConst class_decl = NULL;
   if (parent_)
-    class_decl = parent_->enclosingClass();
+    class_decl = parent_->nearestClass();
 
   return class_decl;
 }
 
 FnDecl::PtrConst
-Node::enclosingFunction() const {
+Node::nearestFunction() const {
   FnDecl::PtrConst fn_decl = NULL;
   if (parent_)
-    fn_decl = parent_->enclosingFunction();
+    fn_decl = parent_->nearestFunction();
 
   return fn_decl;
 }
 
 LoopStmt::PtrConst
-Node::enclosingLoop() const {
+Node::nearestLoop() const {
   LoopStmt::PtrConst loop_stmt = NULL;
   if (parent_)
-    loop_stmt = parent_->enclosingLoop();
+    loop_stmt = parent_->nearestLoop();
 
   return loop_stmt;
 }

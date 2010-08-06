@@ -143,7 +143,7 @@ SemanticAnalyser::NodeFunctor::operator()(ReturnStmt *nd) {
   Expr::Ptr expr = nd->expr();
   process_node(expr);
 
-  FnDecl::PtrConst fn_decl = nd->enclosingFunction();
+  FnDecl::PtrConst fn_decl = nd->nearestFunction();
 
   Type::PtrConst type_given = expr->type();
   Type::PtrConst type_expected = fn_decl->returnType();
@@ -154,7 +154,7 @@ SemanticAnalyser::NodeFunctor::operator()(ReturnStmt *nd) {
 
 void
 SemanticAnalyser::NodeFunctor::operator()(BreakStmt *nd) {
-  if (nd->enclosingLoop() == NULL)
+  if (nd->nearestLoop() == NULL)
     Error::BreakOutsideLoop(nd);
 }
 

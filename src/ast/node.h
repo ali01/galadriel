@@ -56,9 +56,9 @@ public:
   Node::PtrConst parent() const { return parent_; }
   void parentIs(Node::Ptr _parent) { parent_ = _parent; }
 
-  virtual Simone::Ptr<const ClassDecl> enclosingClass() const;
-  virtual Simone::Ptr<const FnDecl> enclosingFunction() const;
-  virtual Simone::Ptr<const LoopStmt> enclosingLoop() const;
+  virtual Simone::Ptr<const ClassDecl> nearestClass() const;
+  virtual Simone::Ptr<const FnDecl> nearestFunction() const;
+  virtual Simone::Ptr<const LoopStmt> nearestLoop() const;
 
   /* support for double dispatch */
   class Functor : public Simone::PtrInterface<Functor> {

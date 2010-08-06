@@ -16,7 +16,7 @@ public:
   typedef Simone::Ptr<const LoopStmt> PtrConst;
   typedef Simone::Ptr<LoopStmt> Ptr;
 
-  LoopStmt::PtrConst enclosingLoop() const { return this; }
+  LoopStmt::PtrConst nearestLoop() const { return this; }
 
 protected:
   LoopStmt(Simone::Ptr<Expr> _test_expr, Stmt::Ptr _body);
