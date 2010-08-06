@@ -17,11 +17,29 @@ NamedType::NamedType(Identifier::Ptr _id) :
   subsume_functor_ = NamedTypeSubsumeFunctor::NamedTypeSubsumeFunctorNew(this);
 }
 
-Identifier::Ptr
+Identifier::PtrConst
 NamedType::identifier() const {
   return id_;
 }
 
+Identifier::Ptr
+NamedType::identifier() {
+  return id_;
+}
+
+
+ClassDecl::Ptr
+NamedType::classDecl() {
+  Scope::Ptr scope = this->scope();
+  Identifier::PtrConst id = this->identifier();
+  return scope->classDecl(id);
+}
+
+ClassDecl::PtrConst
+NamedType::classDecl() const {
+  NamedType::Ptr me = const_cast<NamedType*>(this);
+  return me->classDecl();
+}
 
 
 NamedType::NamedTypeEqualityFunctor::NamedTypeEqualityFunctor(NamedType::Ptr t):
@@ -45,14 +63,7 @@ NamedType::NamedTypeSubsumeFunctor::operator()(NamedType *_o) {
   } else {
     /* static downcasting this_type_ from Type to NamedType */
     NamedType::PtrConst this_nt = Ptr::st_cast<const NamedType>(this_type_);
-
-    /* obtaining type identifier using accessor */
-    Identifier::PtrConst this_id = this_nt->identifier();
-
-    /* finding the named type's class declaration */
-    Scope::PtrConst scope = this_nt->scope();
-    ClassDecl::PtrConst class_decl = scope->classDecl(this_id);
-
+    ClassDecl::PtrConst class_decl = this_nt->classDecl();
     if (class_decl != NULL) {
       subsumes_other_ = class_decl->subsumersContain(_o);
     } else {

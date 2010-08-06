@@ -11,6 +11,7 @@
 
 /* ast/decl includes */
 #include "decl/decl.h"
+#include "decl/class_decl.h"
 
 Node::Node(yyltype loc) {
   location  = new yyltype(loc);
@@ -35,4 +36,13 @@ Node::scope() const {
 void
 Node::scopeIs(Scope::Ptr _s) {
   scope_ = _s;
+}
+
+ClassDecl::PtrConst
+Node::enclosingClass() const {
+  ClassDecl::PtrConst class_decl = NULL;
+  if (parent_)
+    class_decl = parent_->enclosingClass();
+
+  return class_decl;
 }

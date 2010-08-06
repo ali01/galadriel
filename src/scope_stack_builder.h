@@ -28,7 +28,7 @@ public:
       static Ptr NodeFunctorNew(ScopeStack::Ptr _s) {
         return new NodeFunctor(_s);
       }
-      
+
       /* operators that are not overriden appear as comments */
 
       /* top level */
@@ -98,10 +98,10 @@ public:
 
     private:
       NodeFunctor(ScopeStack::Ptr _s) : scope_stack_(_s) {}
-      
+
       /* member functions */
       void init_node_scope(Node::Ptr _nd, Node::Ptr _parent, Scope::Ptr _scope);
-      
+
       /* data members */
       ScopeStack::Ptr scope_stack_;
   };

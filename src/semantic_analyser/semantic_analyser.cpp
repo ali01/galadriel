@@ -155,10 +155,9 @@ void
 SemanticAnalyser::NodeFunctor::operator()(NewExpr *nd) {
   Scope::Ptr scope = nd->scope();
   NamedType::PtrConst type = nd->objectType();
-  Identifier::Ptr type_id = type->identifier();
-  ClassDecl::Ptr class_decl = scope->classDecl(type_id);
+  ClassDecl::PtrConst class_decl = type->classDecl();
   if (class_decl == NULL) {
-    Error::IdentifierNotDeclared(type_id, kLookingForClass);
+    Error::IdentifierNotDeclared(type->identifier(), kLookingForClass);
   }
 }
 
@@ -201,7 +200,7 @@ void
 SemanticAnalyser::NodeFunctor::operator()(NamedType *nd) {
   Scope::Ptr scope = nd->scope();
   Identifier::Ptr type_id = nd->identifier();
-  ClassDecl::Ptr class_decl = scope->classDecl(type_id);
+  ClassDecl::PtrConst class_decl = nd->classDecl();
   if (class_decl == NULL) {
     InterfaceDecl::Ptr intf_decl = scope->interfaceDecl(type_id);
     if (intf_decl == NULL) {

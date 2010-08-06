@@ -41,22 +41,31 @@ CallExpr::function() const {
 
 Type::PtrConst
 CallExpr::type() const {
-  Type::PtrConst type;
-  FnDecl::PtrConst fn_decl;
-  Scope::PtrConst scope = this->scope();
-  // TODO: finish
+  Type::PtrConst type = Type::kError;
+  Scope::PtrConst scope;
+  FnDecl::PtrConst fn_decl = NULL;
+  ClassDecl::PtrConst base_decl = NULL;
+
   if (base_) {
-    // NamedType::PtrConst base_type = base_->type();
-    // ClassDecl::PtrConst class_decl = 
+    NamedType::PtrConst base_type;
+    base_type = dynamic_cast<const NamedType*>(base_->type().ptr());
+    if (base_type)
+      base_decl = base_type->classDecl();
+
   } else {
+    base_decl = enclosingClass();
+  }
+
+  if (base_decl) {
+    scope = base_decl->scope();
+    fn_decl = scope->fnDecl(function_, false);
+  } else {
+    scope = this->scope();
     fn_decl = scope->fnDecl(function_);
   }
 
-  if (fn_decl) {
+  if (fn_decl)
     type = fn_decl->returnType();
-  } else {
-    type = Type::kError;
-  }
 
   return type;
 }

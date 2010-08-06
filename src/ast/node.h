@@ -128,7 +128,7 @@ public:
     virtual void operator()(ArrayType *) {}
   };
 
-  /* -- pure virtual interface -- */
+  virtual Simone::Ptr<const ClassDecl> enclosingClass() const;
 
   /* support for double dispatch */
   virtual void apply(Functor::Ptr _functor) = 0;

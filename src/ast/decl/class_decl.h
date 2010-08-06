@@ -77,10 +77,16 @@ public:
 
   /* attribute member functions */
 
-  NamedType::Ptr baseClass() const { return base_class_; }
+  NamedType::PtrConst baseClass() const { return base_class_; }
+  NamedType::Ptr baseClass() { return base_class_; }
+
+  NamedType::PtrConst type() const { return this_type_; }
 
   bool scopeIndexed() const { return scope_indexed_; }
   void scopeIndexedIs(bool _s) { scope_indexed_ = _s; }
+
+  /* override virtual in Node */
+  ClassDecl::PtrConst enclosingClass() const { return this; }
 
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
@@ -92,7 +98,7 @@ private:
   Deque<Decl::Ptr>::Ptr members_;
 
   Set<NamedType::PtrConst,NamedType::less> subsumers_;
-  NamedType::PtrConst this_type_;
+  NamedType::Ptr this_type_;
   bool scope_indexed_;
 
   /* operations disallowed */

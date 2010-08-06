@@ -3,6 +3,9 @@
 /* simone includes */
 #include <simone/utility.h>
 
+/* project includes */
+#include <scope.h>
+
 /* ast includes */
 #include "../../../../identifier.h"
 
@@ -42,7 +45,31 @@ FieldAccessExpr::field() const {
 
 Type::PtrConst
 FieldAccessExpr::type() const {
-  // TODO:
-  assert(false);
-  return NULL;
+  Type::PtrConst type = Type::kError;
+  Scope::PtrConst scope;
+  VarDecl::PtrConst var_decl = NULL;
+  ClassDecl::PtrConst base_decl = NULL;
+
+  if (base_) {
+    NamedType::PtrConst base_type;
+    base_type = dynamic_cast<const NamedType*>(base_->type().ptr());
+    if (base_type)
+      base_decl = base_type->classDecl();
+
+  } else {
+    base_decl = enclosingClass();
+  }
+
+  if (base_decl) {
+    scope = base_decl->scope();
+    var_decl = scope->varDecl(field_, false);
+  } else {
+    scope = this->scope();
+    var_decl = scope->varDecl(field_);
+  }
+
+  if(var_decl)
+    type = var_decl->type();
+
+  return type;
 }

@@ -11,6 +11,9 @@
 #include "type.h"
 
 
+/* forward declarations */
+class ClassDecl;
+
 class NamedType : public Type  {
 public:
   typedef Simone::Ptr<const NamedType> PtrConst;
@@ -31,7 +34,11 @@ public:
   NamedType(Identifier::Ptr i);
 
   /* attribute member functions */
-  Identifier::Ptr identifier() const;
+  Identifier::Ptr identifier();
+  Identifier::PtrConst identifier() const;
+
+  Simone::Ptr<ClassDecl> classDecl();
+  Simone::Ptr<const ClassDecl> classDecl() const;
 
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
