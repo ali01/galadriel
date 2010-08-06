@@ -111,9 +111,18 @@ void
 SemanticAnalyser::NodeFunctor::operator()(PrintStmt *nd) {
   Expr::Ptr arg;
   PrintStmt::const_arg_iterator it = nd->argsBegin();
-  for (; it != nd->argsEnd(); ++it) {
+  for (int i = 1; it != nd->argsEnd(); ++it, ++i) {
     arg = *it;
     process_node(arg);
+
+    Type::PtrConst arg_type = arg->type();
+    if (arg_type != Type::kInt &&
+        arg_type != Type::kString &&
+        arg_type != Type::kBool &&
+        arg_type != Type::kError)
+    {
+      Error::PrintArgMismatch(arg, i, arg_type);
+    }
   }
 }
 
@@ -224,6 +233,7 @@ SemanticAnalyser::NodeFunctor::operator()(CallExpr *nd) {
     } else {
       Error::IdentifierNotDeclared(function, kLookingForFunction);
     }
+
   } else {
     size_t args_expected = fn_decl->formalsCount();
     size_t args_given = nd->actualsCount();

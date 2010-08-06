@@ -206,7 +206,7 @@ Error::InaccessibleField(Identifier *field, Type::PtrConst base) {
 void
 Error::PrintArgMismatch(Expr::PtrConst arg, int argIndex, Type::PtrConst given) {
   ostringstream s;
-  s << "Incompatible argument " << argIndex << ": " << given;
+  s << "Incompatible argument " << argIndex << ": " << *given;
   s << " given, int/bool/string expected";
   OutputError(arg->lexLoc(), s.str());
 }

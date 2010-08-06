@@ -524,9 +524,13 @@ Expr              : LValue '=' Expr  {
                   | T_NewArray '(' Expr ',' Type ')' {
                       $$ = new NewArrayExpr(Join(@1, @6), $3, $5);
                     }
-                  | T_ReadInteger '(' ')' { $$ = new ReadIntegerExpr(@1); }
-                  | T_ReadLine '(' ')'    { $$ = new ReadLineExpr(@1);    }
-                  | T_This                { $$ = new ThisExpr(@1);        }
+                  | T_ReadInteger '(' ')' {
+                      $$ = new ReadIntegerExpr(Join(@1, @3));
+                    }
+                  | T_ReadLine '(' ')' {
+                      $$ = new ReadLineExpr(Join(@1, @3));
+                    }
+                  | T_This { $$ = new ThisExpr(@1); }
                   ;
 
 LValue            : T_Identifier {
