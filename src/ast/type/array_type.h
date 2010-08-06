@@ -38,7 +38,7 @@ protected:
         return new ArrayTypeEqualityFunctor(_type);
       }
 
-      void operator()(Type *_o) { equal_ = false; }
+      void operator()(Type *_o);
       void operator()(ArrayType *_o);
 
     private:
@@ -54,7 +54,7 @@ protected:
         return new ArrayTypeSubsumeFunctor(_this_type);
       }
 
-      void operator()(Type *_o) { subsumes_other_ = false; }
+      void operator()(Type *_o);
       void operator()(ArrayType *_o);
 
     private:

@@ -45,6 +45,17 @@ NamedType::classDecl() const {
 NamedType::NamedTypeEqualityFunctor::NamedTypeEqualityFunctor(NamedType::Ptr t):
   TypeEqualityFunctor(t) {}
 
+
+void
+NamedType::NamedTypeEqualityFunctor::operator()(Type *_o) {
+  Type::Ptr other = _o;
+  if (other == Type::kError) {
+    equal_ = true;
+  } else {
+    equal_ = false;
+  }
+}
+
 void
 NamedType::NamedTypeEqualityFunctor::operator()(NamedType *_o) {
   NamedType::PtrConst nt = Ptr::st_cast<const NamedType>(type_);
@@ -55,6 +66,16 @@ NamedType::NamedTypeEqualityFunctor::operator()(NamedType *_o) {
 
 NamedType::NamedTypeSubsumeFunctor::
 NamedTypeSubsumeFunctor(NamedType::Ptr _t) : TypeSubsumeFunctor(_t) {}
+
+void
+NamedType::NamedTypeSubsumeFunctor::operator()(Type *_o) {
+  Type::Ptr other = _o;
+  if (other == Type::kError || other == Type::kNull) {
+    subsumes_other_ = true;
+  } else {
+    subsumes_other_ = false;
+  }
+}
 
 void
 NamedType::NamedTypeSubsumeFunctor::operator()(NamedType *_o) {

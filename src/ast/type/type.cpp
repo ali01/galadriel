@@ -61,6 +61,62 @@ Type::operator==(const Type& _o) const {
   return eq_functor_->equal();
 }
 
+void
+Type::TypeEqualityFunctor::operator()(Type *_o) {
+  Type::Ptr other = _o;
+  if (type_ == Type::kError || other == Type::kError) {
+    equal_ = true;
+  } else {
+    equal_ = type_.ptr() == _o;
+  }
+}
+
+void
+Type::TypeEqualityFunctor::operator()(NamedType *_o) {
+  if (type_ == Type::kError) {
+    equal_ = true;
+  } else {
+    equal_ = false;
+  }
+}
+
+void
+Type::TypeEqualityFunctor::operator()(ArrayType *_o) {
+  if (type_ == Type::kError) {
+    equal_ = true;
+  } else {
+    equal_ = false;
+  }
+}
+
+
+void
+Type::TypeSubsumeFunctor::operator()(Type *_o) {
+  Type::Ptr other = _o;
+  if (this_type_ == Type::kError || other == Type::kError) {
+    subsumes_other_ = true;
+  } else {
+    subsumes_other_ = *this_type_ == *_o;
+  }
+}
+
+void
+Type::TypeSubsumeFunctor::operator()(NamedType *) {
+  if (this_type_ == Type::kError) {
+    subsumes_other_ = true;
+  } else {
+    subsumes_other_ = false;
+  }
+}
+
+void
+Type::TypeSubsumeFunctor::operator()(ArrayType *) {
+  if (this_type_ == Type::kError) {
+    subsumes_other_ = true;
+  } else {
+    subsumes_other_ = false;
+  }
+}
 
 ostream&
 operator<<(ostream& out, const Type& t) {

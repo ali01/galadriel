@@ -58,9 +58,9 @@ protected:
         return new TypeEqualityFunctor(_type);
       }
 
-      void operator()(Type *_o) { equal_ = type_.ptr() == _o; }
-      void operator()(NamedType *_o) { equal_ = false; }
-      void operator()(ArrayType *_o) { equal_ = false; }
+      void operator()(Type *_o);
+      void operator()(NamedType *_o);
+      void operator()(ArrayType *_o);
 
       bool equal() const { return equal_; }
 
@@ -81,9 +81,9 @@ protected:
         return new TypeSubsumeFunctor(_this_type);
       }
 
-      void operator()(Type *_o) { subsumes_other_ = *this_type_ == *_o; }
-      void operator()(NamedType *) { subsumes_other_ = false; }
-      void operator()(ArrayType *) { subsumes_other_ = false; }
+      void operator()(Type *_o);
+      void operator()(NamedType *);
+      void operator()(ArrayType *);
 
       bool subsumesOther() const { return subsumes_other_; }
 

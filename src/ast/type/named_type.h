@@ -53,7 +53,7 @@ protected:
         return new NamedTypeEqualityFunctor(_type);
       }
 
-      void operator()(Type *_o) { equal_ = false; }
+      void operator()(Type *_o);
       void operator()(NamedType *_o);
     
     private:
@@ -69,7 +69,7 @@ protected:
         return new NamedTypeSubsumeFunctor(_this_type);
       }
 
-      void operator()(Type *_o) { subsumes_other_ = false; }
+      void operator()(Type *_o);
       void operator()(NamedType *_o);
 
     private:
