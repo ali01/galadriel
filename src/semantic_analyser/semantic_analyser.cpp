@@ -196,6 +196,12 @@ SemanticAnalyser::NodeFunctor::operator()(CallExpr *nd) {
   Identifier::Ptr function = nd->function();
   process_node(function);
 
+  /* obtaining function declaration */
+  FnDecl::PtrConst fn_decl = nd->fnDecl();
+  if (fn_decl == NULL) {
+    Error::IdentifierNotDeclared(function, kLookingForFunction);
+  }
+
   Expr::Ptr actual;
   CallExpr::const_actuals_iter it = nd->actualsBegin();
   for(; it != nd->actualsEnd(); ++it) {
@@ -243,11 +249,16 @@ SemanticAnalyser::NodeFunctor::operator()(CompoundExpr *nd) {
   Expr::Ptr right = nd->right();
   process_node(right);
 
-  Type::PtrConst left_type = left->type();
-  Type::PtrConst right_type = right->type();
+  if (left) {
+    /* right must be non-null */
+    Type::PtrConst left_type = left->type();
+    Type::PtrConst right_type = right->type();
 
-  if (*left_type != *right_type) {
-    Error::IncompatibleOperands(op, left_type, right_type);
+    if (*left_type != *right_type)
+      Error::IncompatibleOperands(op, left_type, right_type);
+
+  } else {
+    
   }
 }
 

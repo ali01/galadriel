@@ -90,7 +90,7 @@ protected:
     protected:
       TypeSubsumeFunctor(Type::Ptr _this_type) :
         this_type_(_this_type), subsumes_other_(false) {}
-      
+
       /* data members */
       Type::Ptr this_type_;
       bool subsumes_other_;
