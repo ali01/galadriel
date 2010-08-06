@@ -62,11 +62,11 @@ class Apter:
 
     def run_tests(self):
         self.log("Running " + str(len(self.__file_comparison_dict)) + " tests",
-                 emphasis=2, stdout=True)
+                 emphasis=2, stdout=True, logfile=False)
         failed = 0
 
         for src_filename in self.__file_comparison_dict:
-            self.log("scanning: " + src_filename, stdout=True)
+            # self.log("scanning: " + src_filename, stdout=True)
             test_filename = self.run(src_filename)
             out_filename = self.__file_comparison_dict[src_filename]
 
@@ -78,9 +78,9 @@ class Apter:
             failed += 1
 
             df = diff(test_filename, out_filename)
+            self.log("\n\n")
             self.log("* failed: " + src_filename, emphasis=2, stdout=True)
             self.__logfile.writelines(df)
-            self.log("End of " + src_filename, emphasis=1, divider=False)
 
         if (failed == 0):
             self.log("\nAll tests were succesful", emphasis=2, stdout=True)
@@ -102,13 +102,15 @@ class Apter:
 
     def compile(self):
         shell_command = ' '.join(["make"])
-        self.log("Compiling ", emphasis=1, stdout=True)
-        self.exec_command(shell_command, stdout=True)
-        self.log("Compilation Complete", emphasis=1)
+        self.log("Compiling\n", emphasis=1, stdout=True, logfile=False)
+        self.exec_command(shell_command, stdout=True, logfile=False)
+        self.log("Compilation Complete\n",
+                 emphasis=1, stdout=True, logfile=False)
 
 
     kLogDivider = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-    def log(self, message, emphasis=0, divider=False, stdout=False):
+    def log(self, message,
+            emphasis=0, divider=False, stdout=False, logfile=True):
         if (message == None):
             return
 
@@ -120,23 +122,25 @@ class Apter:
 
         if (emphasis == 2):
             message = makeHeader(message)
+
         elif (emphasis == 1):
             message = makeHeader(message, vPadding=0)
 
-        self.__logfile.write(message + "\n")
-        if (divider):
-            self.__logfile.write(self.kLogDivider)
+        if (logfile):
+            self.__logfile.write(message + "\n")
+            if (divider):
+                self.__logfile.write(self.kLogDivider)
 
 
-    def exec_command(self, shell_command, stdout=False):
+    def exec_command(self, shell_command, stdout=False, logfile=True):
         process = Popen(shell_command, shell=True, stdout=PIPE, stderr=PIPE)
         (stdoutdata, stderrdata) = process.communicate()
 
         if (stdoutdata):
-            self.log(stdoutdata, stdout=stdout)
+            self.log(stdoutdata, stdout=stdout, logfile=logfile)
 
         if (stderrdata):
-            self.log(stderrdata, stdout=stdout)
+            self.log(stderrdata, stdout=stdout, logfile=logfile)
 
 
 def diff(fileA, fileB, context=4):
@@ -150,7 +154,7 @@ def diff(fileA, fileB, context=4):
                                 fileA, fileB, n=context)
 
 
-def makeHeader(string, width=78, fChar='#',
+def makeHeader(string, width=78, fChar='=',
                vPadding=1, chSpacing=0, tSpacing=4):
     ts = tSpacing * ' '
     header  = (' ' * chSpacing).join(string).replace('\n', '')
