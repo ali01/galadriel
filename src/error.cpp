@@ -97,11 +97,11 @@ Error::OverrideMismatch(FnDecl::PtrConst fnDecl) {
 }
 
 void
-Error::InterfaceNotImplemented(Decl *cd, Type::PtrConst interfaceType) {
+Error::InterfaceNotImplemented(Decl::PtrConst cd, Type::PtrConst _type) {
   ostringstream s;
-  s << "Class '" << cd;
-  s << "' does not implement entire interface '" << interfaceType << "'";
-  OutputError(interfaceType->lexLoc(), s.str());
+  s << "Class '" << *cd;
+  s << "' does not implement entire interface '" << *_type << "'";
+  OutputError(_type->lexLoc(), s.str());
 }
 
 void

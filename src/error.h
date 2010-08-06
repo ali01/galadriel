@@ -76,7 +76,7 @@ public:
                            Simone::Ptr<const Decl> prevDecl);
 
   static void OverrideMismatch(Simone::Ptr<const FnDecl> fnDecl);
-  static void InterfaceNotImplemented(Decl *classDecl,
+  static void InterfaceNotImplemented(Simone::Ptr<const Decl> classDecl,
                                       Simone::Ptr<const Type> intfType);
 
   static void InheritanceCycle(Simone::Ptr<const ClassDecl> class_decl);

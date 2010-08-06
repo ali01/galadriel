@@ -459,6 +459,10 @@ inherit_interface_scopes(ClassDecl::Ptr nd) {
     intf_decl = parent_scope->interfaceDecl(base_id);
 
     if (intf_decl != NULL) {
+      /* ensure interface is fully implemented */
+      if (not nd->implementsInterface(intf_decl))
+        Error::InterfaceNotImplemented(nd, intf_type);
+
       /* inherit interface scope */
       intf_scope = intf_decl->scope();
       scope->baseScopeIs(intf_scope);

@@ -8,6 +8,9 @@ using Simone::Deque;
 /* project includes */
 #include <scope.h>
 
+/* ast/decl includes */
+#include "interface_decl.h"
+
 /* ast/type includes */
 #include "../type/named_type.h"
 
@@ -46,6 +49,25 @@ ClassDecl::subsumersInsert(const_subsumer_iter first,
   subsumers_.insert(first, last);
 }
 
+
+bool
+ClassDecl::implementsInterface(InterfaceDecl::PtrConst _interface) const {
+  bool ret = true;
+
+  FnDecl::PtrConst intf_member, this_member;
+  Scope::PtrConst scope = this->scope();
+  InterfaceDecl::const_member_iter it = _interface->membersBegin();
+  for (; it != _interface->membersEnd(); ++it) {
+    intf_member = *it;
+    this_member = scope->fnDecl(intf_member->identifier(), false);
+    if (this_member == NULL) {
+      ret = false;
+      break;
+    }
+  }
+
+  return ret;
+}
 
 void
 ClassDecl::scopeIs(Scope::Ptr _s) {

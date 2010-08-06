@@ -19,6 +19,7 @@ using Simone::Set;
 
 /* forward declarations */
 class Identifier;
+class InterfaceDecl;
 class Scope;
 
 class ClassDecl : public Decl {
@@ -86,9 +87,12 @@ public:
   bool indexed() const { return scope_indexed_; }
   void indexedIs(bool _s) { scope_indexed_ = _s; }
 
+  bool implementsInterface(Simone::Ptr<const InterfaceDecl> _interface) const;
+
   /* override virtual in Node */
   ClassDecl::PtrConst enclosingClass() const { return this; }
 
+  /* override virtual in Node */
   void scopeIs(Simone::Ptr<Scope> _s);
 
   /* support for double dispatch */
