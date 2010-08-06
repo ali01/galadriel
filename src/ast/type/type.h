@@ -45,6 +45,10 @@ public:
   bool operator==(const Type& _o) const;
   bool operator!=(const Type& _o) const { return !(*this == _o); }
 
+  /* overriden by derived classes */
+  virtual bool isNamedType() const { return false; }
+  virtual bool isArrayType() const { return false; }
+
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 

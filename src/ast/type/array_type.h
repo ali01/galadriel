@@ -72,6 +72,9 @@ protected:
 
   /* data members */
   Type::Ptr elem_type_;
+
+private:
+  bool isArrayType() const { return true; }
 };
 
 /* forward declarations */

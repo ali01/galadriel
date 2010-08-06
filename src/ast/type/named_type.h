@@ -78,6 +78,10 @@ protected:
 
   /* data members */
   Identifier::Ptr id_;
+
+private:
+  /* override */
+  bool isNamedType() const { return true; }
 };
 
 #endif

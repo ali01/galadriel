@@ -13,18 +13,15 @@ ArrayAccessExpr::ArrayAccessExpr(yyltype loc, Expr::Ptr b, Expr::Ptr s) :
 
 Type::PtrConst
 ArrayAccessExpr::type() const {
-  Type::PtrConst elem_type;
+  Type::PtrConst elem_type, base_type;
 
-  ArrayType::PtrConst array_type;
-  array_type = dynamic_cast<const ArrayType*>(base_->type().ptr());
-
-  if (array_type != NULL) {
+  base_type = base_->type();
+  if (base_type->isArrayType()) {
+    ArrayType::PtrConst array_type = Ptr::st_cast<const ArrayType>(base_type);
     elem_type = array_type->elemType();
   } else {
     elem_type = Type::kError;
   }
-
-  // TODO: think about subscript requirements
 
   return elem_type;
 }

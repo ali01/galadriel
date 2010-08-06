@@ -281,12 +281,11 @@ SemanticAnalyser::NodeFunctor::operator()(NewArrayExpr *nd) {
   Expr::Ptr size = nd->size();
   process_node(size);
 
+  if (size->type() != Type::kInt)
+    Error::NewArraySizeNotInteger(size);
+
   ArrayType::Ptr type = nd->arrayType();
   process_node(type);
-
-  // TODO
-  // Type::Ptr type = nd->elemType();
-  //   process_node(type);
 }
 
 
@@ -362,8 +361,16 @@ SemanticAnalyser::NodeFunctor::operator()(ArrayAccessExpr *nd) {
   Expr::Ptr base = nd->base();
   process_node(base);
 
+  Type::PtrConst base_type = base->type();
+  if (not base_type->isArrayType())
+    Error::BracketsOnNonArray(base);
+
   Expr::Ptr subscript = nd->subscript();
   process_node(subscript);
+
+  Type::PtrConst subscript_type = subscript->type();
+  if (subscript_type != Type::kInt)
+    Error::SubscriptNotInteger(subscript);
 }
 
 void

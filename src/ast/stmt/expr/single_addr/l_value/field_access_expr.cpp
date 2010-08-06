@@ -51,10 +51,11 @@ FieldAccessExpr::type() const {
   ClassDecl::PtrConst base_decl = NULL;
 
   if (base_) {
-    NamedType::PtrConst base_type;
-    base_type = dynamic_cast<const NamedType*>(base_->type().ptr());
-    if (base_type)
-      base_decl = base_type->classDecl();
+    Type::PtrConst base_type = base_->type();
+    if (base_type->isNamedType()) {
+      NamedType::PtrConst named_type = Ptr::st_cast<const NamedType>(base_type);
+      base_decl = named_type->classDecl();
+    }
 
   } else {
     base_decl = enclosingClass();
