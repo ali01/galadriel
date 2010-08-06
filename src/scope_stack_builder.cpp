@@ -198,8 +198,7 @@ ScopeStackBuilder::NodeFunctor::operator()(ConditionalStmt *nd) {
 
 void
 ScopeStackBuilder::NodeFunctor::operator()(IfStmt *nd) {
-  ConditionalStmt *cond_stmt = nd;
-  (*this)(cond_stmt);
+  (*this)(static_cast<ConditionalStmt*>(nd));
 
   Scope::Ptr scope = nd->scope();
   Stmt::Ptr else_body = nd->elseBody();
