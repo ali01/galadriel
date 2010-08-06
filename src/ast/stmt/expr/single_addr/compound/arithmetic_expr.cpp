@@ -14,13 +14,15 @@ ArithmeticExpr::ArithmeticExpr(Expr::Ptr lhs, Operator::Ptr op, Expr::Ptr rhs) :
 
 Type::PtrConst
 ArithmeticExpr::type() const {
-  Type::PtrConst type = left_->type();
+  Type::PtrConst type = right_->type();
 
-  if (left_->type() != right_->type())
-    type = Type::kError;
+  if (left_) {
+    if (left_->type() != right_->type())
+      type = Type::kError;
 
-  if (left_->type() != Type::kInt && left_->type() != Type::kDouble)
-    type = Type::kError;
+    if (left_->type() != Type::kInt && left_->type() != Type::kDouble)
+      type = Type::kError;
+  }
 
   return type;
 }

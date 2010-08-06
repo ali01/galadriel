@@ -83,8 +83,8 @@ public:
 
   NamedType::PtrConst type() const { return this_type_; }
 
-  bool scopeIndexed() const { return scope_indexed_; }
-  void scopeIndexedIs(bool _s) { scope_indexed_ = _s; }
+  bool indexed() const { return scope_indexed_; }
+  void indexedIs(bool _s) { scope_indexed_ = _s; }
 
   /* override virtual in Node */
   ClassDecl::PtrConst enclosingClass() const { return this; }

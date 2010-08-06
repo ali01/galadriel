@@ -63,9 +63,9 @@ NamedType::NamedTypeSubsumeFunctor::operator()(NamedType *_o) {
   } else {
     /* static downcasting this_type_ from Type to NamedType */
     NamedType::PtrConst this_nt = Ptr::st_cast<const NamedType>(this_type_);
-    ClassDecl::PtrConst class_decl = this_nt->classDecl();
+    ClassDecl::PtrConst class_decl = _o->classDecl();
     if (class_decl != NULL) {
-      subsumes_other_ = class_decl->subsumersContain(_o);
+      subsumes_other_ = class_decl->subsumersContain(this_nt);
     } else {
       subsumes_other_ = false;
     }
