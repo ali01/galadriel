@@ -230,6 +230,8 @@ SemanticAnalyser::NodeFunctor::operator()(CallExpr *nd) {
     ClassDecl::PtrConst base_decl = nd->baseDecl();
     if (base_decl && base != NULL) {
       Error::FieldNotFoundInBase(function, base_decl->type());
+    } else if (base != NULL) {
+      Error::FieldNotFoundInBase(function, base->type());
     } else {
       Error::IdentifierNotDeclared(function, kLookingForFunction);
     }
