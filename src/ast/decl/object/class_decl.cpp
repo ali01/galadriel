@@ -46,6 +46,24 @@ ClassDecl::subsumersInsert(const_subsumer_iter first,
 }
 
 
+ClassDecl::Ptr
+ClassDecl::baseClassDecl() {
+  ClassDecl::Ptr base_decl = NULL;
+
+  NamedType::Ptr base_class_type = baseClass();
+  if (base_class_type != NULL) {
+    /* obtain base class identifier */
+    Identifier::Ptr base_id = base_class_type->identifier();
+
+    /* search for base class decl in scope */
+    Scope::Ptr scope = this->scope();
+    base_decl = scope->classDecl(base_id);
+  }
+
+  return base_decl;
+}
+
+
 bool
 ClassDecl::implementsInterface(InterfaceDecl::PtrConst _interface) const {
   bool ret = true;

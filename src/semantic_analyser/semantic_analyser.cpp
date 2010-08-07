@@ -76,9 +76,15 @@ SemanticAnalyser::NodeFunctor::operator()(ClassDecl *nd) {
   if (nd->indexed())
     return;
 
+  bool cyclic_inheritance = inheritance_contains_cycles(nd);
   nd->indexedIs(true);
 
-  inherit_base_class_scopes(nd);
+  if (not cyclic_inheritance) {
+    inherit_base_class_scopes(nd);
+  } else {
+    Error::InheritanceCycle(nd);
+  }
+
   inherit_interface_scopes(nd);
 
   /* apply this functor to upcasted nd */
@@ -461,36 +467,57 @@ SemanticAnalyser::NodeFunctor::process_node(Node::Ptr _node) {
     _node->apply(this);
 }
 
+
+bool
+SemanticAnalyser::NodeFunctor::
+inheritance_contains_cycles(Simone::Ptr<ClassDecl> nd,
+                            IdentifierSet::Ptr _seen) {
+  ClassDecl::Ptr base_decl = nd->baseClassDecl();
+
+  if (base_decl && not base_decl->indexed()) {
+
+    Identifier::PtrConst base_id = base_decl->identifier();
+
+    if (_seen == NULL) {
+      _seen = IdentifierSet::SetNew();
+    } else {
+      IdentifierSet::const_iterator it = _seen->element(base_id);
+      if (it != _seen->end())
+        return true;
+    }
+
+    _seen->elementIs(base_id);
+    return inheritance_contains_cycles(base_decl, _seen);
+  }
+
+  return false;
+}
+
 void
 SemanticAnalyser::NodeFunctor::
 inherit_base_class_scopes(ClassDecl::Ptr nd) {
-  NamedType::Ptr base_class_type = nd->baseClass();
-  if (base_class_type != NULL) {
-    /* obtain base class identifier */
-    Identifier::Ptr base_id = base_class_type->identifier();
+  ClassDecl::Ptr base_decl = nd->baseClassDecl();
+  NamedType::PtrConst base_class_type = nd->baseClass();
 
-    /* search for base class decl in scope */
+  if (base_decl != NULL) {
+    /* recursively process base_decl in order to inherit all ancestors */
+    process_node(base_decl);
+
+    /* inherit from base scope */
     Scope::Ptr scope = nd->scope();
-    ClassDecl::Ptr base_decl = scope->classDecl(base_id);
+    Scope::PtrConst base_scope = base_decl->scope();
+    scope->baseScopeIs(base_scope);
 
-    if (base_decl != NULL) {
-      /* recursively process base_decl in order to inherit all ancestors */
-      process_node(base_decl);
+    /* add base scope as a subsumer */
+    nd->subsumersInsert(base_class_type);
 
-      /* inherit from base scope */
-      Scope::PtrConst base_scope = base_decl->scope();
-      scope->baseScopeIs(base_scope);
+    /* inherit base scope's subsumers */
+    nd->subsumersInsert(base_decl->subsumersBegin(),
+                        base_decl->subsumersEnd());
 
-      /* add base scope as a subsumer */
-      nd->subsumersInsert(base_class_type);
-
-      /* inherit base scope's subsumers */
-      nd->subsumersInsert(base_decl->subsumersBegin(),
-                          base_decl->subsumersEnd());
-
-    } else {
-      Error::IdentifierNotDeclared(base_id, kLookingForClass);
-    }
+  } else if (base_class_type) {
+    Identifier::PtrConst base_id = base_class_type->identifier();
+    Error::IdentifierNotDeclared(base_id, kLookingForClass);
   }
 }
 

@@ -80,6 +80,7 @@ public:
 
   NamedType::PtrConst baseClass() const { return base_class_; }
   NamedType::Ptr baseClass() { return base_class_; }
+  ClassDecl::Ptr baseClassDecl();
 
   bool implementsInterface(Simone::Ptr<const InterfaceDecl> _interface) const;
 
