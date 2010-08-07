@@ -281,7 +281,8 @@ SemanticAnalyser::NodeFunctor::operator()(CallExpr *nd) {
         }
         
       } else {
-        Error::FieldNotFoundInBase(function, base_type);
+        if (base_type != Type::kError)
+          Error::FieldNotFoundInBase(function, base_type);
       }
 
     } else {
@@ -418,7 +419,8 @@ SemanticAnalyser::NodeFunctor::operator()(FieldAccessExpr *nd) {
          for this error */
       Error::FieldNotFoundInBase(id, base->type());
     } else {
-      Error::FieldNotFoundInBase(id, base->type());
+      if (base_type != Type::kError)
+        Error::FieldNotFoundInBase(id, base->type());
     }
   } else if (base_decl) {
     /* the var_decl may be inaccessible from the current scope */
