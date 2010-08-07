@@ -46,8 +46,11 @@ CallExpr::function() const {
   return function_;
 }
 
-ObjectDecl::PtrConst
-CallExpr::baseDecl() const {
+FnDecl::PtrConst
+CallExpr::fnDecl() const {
+  FnDecl::PtrConst fn_decl = NULL;
+
+  Scope::PtrConst scope;
   ObjectDecl::PtrConst base_decl = NULL;
 
   if (base_) {
@@ -55,20 +58,7 @@ CallExpr::baseDecl() const {
     Type::Ptr base_type = const_cast<Type*>(base_type_const.ptr());
     base_type->apply(base_decl_functor_);
     base_decl = base_decl_functor_->baseDecl();
-
-  } else {
-    base_decl = nearestClass();
   }
-
-  return base_decl;
-}
-
-FnDecl::PtrConst
-CallExpr::fnDecl() const {
-  FnDecl::PtrConst fn_decl = NULL;
-
-  Scope::PtrConst scope;
-  ObjectDecl::PtrConst base_decl = this->baseDecl();
 
   if (base_decl) {
     scope = base_decl->scope();

@@ -400,6 +400,8 @@ SemanticAnalyser::NodeFunctor::operator()(FieldAccessExpr *nd) {
 
   Identifier::Ptr id = nd->field();
   process_node(id);
+
+  
 }
 
 void

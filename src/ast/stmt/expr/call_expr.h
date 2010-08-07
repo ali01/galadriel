@@ -59,7 +59,6 @@ public:
 
   size_t actualsCount() const { return actuals_->size(); }
 
-  Simone::Ptr<const ObjectDecl> baseDecl() const;
   Simone::Ptr<const FnDecl> fnDecl() const;
 
   Simone::Ptr<const Type> type() const;
@@ -67,7 +66,7 @@ public:
   /* support for double dispatch */
   void apply(Functor::Ptr _functor) { (*_functor)(this); }
 
-protected:
+private:
 
   class BaseDeclFunctor : public Node::Functor {
     public:
