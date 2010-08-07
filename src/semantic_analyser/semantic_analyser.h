@@ -113,8 +113,7 @@ private:
 
       void process_node(Node::Ptr _nd);
 
-      void inherit_base_class_scopes(Simone::Ptr<ClassDecl> nd,
-                                    IdentifierSet::Ptr _seen=NULL);
+      void inherit_base_class_scopes(Simone::Ptr<ClassDecl> nd);
 
       void inherit_interface_scopes(Simone::Ptr<ClassDecl> nd);
   };

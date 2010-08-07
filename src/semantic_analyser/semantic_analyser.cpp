@@ -60,11 +60,6 @@ SemanticAnalyser::NodeFunctor::operator()(FnDecl *nd) {
 
 void
 SemanticAnalyser::NodeFunctor::operator()(ObjectDecl *nd) {
-  if (nd->indexed())
-    return;
-
-  nd->indexedIs(true);
-
   /* apply this functor to upcasted nd */
   (*this)(static_cast<Decl*>(nd));
 
@@ -165,7 +160,7 @@ SemanticAnalyser::NodeFunctor::operator()(ConditionalStmt *nd) {
   process_node(test);
 
   Type::PtrConst test_type = test->type();
-  if (test_type != Type::kBool)
+  if (test_type != Type::kBool && test_type != Type::kError)
     Error::TestNotBoolean(test);
 
   Stmt::Ptr body = nd->body();
@@ -239,13 +234,35 @@ SemanticAnalyser::NodeFunctor::operator()(CallExpr *nd) {
 
   FnDecl::PtrConst fn_decl = nd->fnDecl();
   if (fn_decl == NULL) {
+    bool field_not_found = false;;
+    
+    Type::PtrConst base_type;
     ObjectDecl::PtrConst base_decl = nd->baseDecl();
+
     if (base_decl && base != NULL) {
-      Error::FieldNotFoundInBase(function, base_decl->type());
+      base_type = base_decl->type();
+      field_not_found = true;
+
     } else if (base != NULL) {
-      Error::FieldNotFoundInBase(function, base->type());
+      base_type = base->type();
+      field_not_found = true;
+
     } else {
       Error::IdentifierNotDeclared(function, kLookingForFunction);
+    }
+
+    if (field_not_found) {
+      if (base_type->isNamedType()) {
+        NamedType::PtrConst nt = Ptr::st_cast<const NamedType>(base_type);
+        ObjectDecl::PtrConst object = nt->objectDecl();
+        if (object) {
+          /* only print error if object is declared;
+             otherwise a "declaration not found" error will be printed */
+          Error::FieldNotFoundInBase(function, base_type);
+        }
+      } else {
+        Error::FieldNotFoundInBase(function, base_type);
+      }
     }
 
   } else {
@@ -426,10 +443,9 @@ SemanticAnalyser::NodeFunctor::process_node(Node::Ptr _node) {
     _node->apply(this);
 }
 
-// TODO: implement in terms of NamedType function
 void
 SemanticAnalyser::NodeFunctor::
-inherit_base_class_scopes(ClassDecl::Ptr nd, IdentifierSet::Ptr _seen) {
+inherit_base_class_scopes(ClassDecl::Ptr nd) {
   NamedType::Ptr base_class_type = nd->baseClass();
   if (base_class_type != NULL) {
     /* obtain base class identifier */
@@ -440,21 +456,8 @@ inherit_base_class_scopes(ClassDecl::Ptr nd, IdentifierSet::Ptr _seen) {
     ClassDecl::Ptr base_decl = scope->classDecl(base_id);
 
     if (base_decl != NULL) {
-      /* ensure that there is no cycle in the inheritance hierarchy */
-      if (_seen == NULL) {
-        _seen = IdentifierSet::SetNew();
-      } else {
-        IdentifierSet::const_iterator it = _seen->element(base_id);
-        if (it != _seen->end()) {
-          Error::InheritanceCycle(base_decl);
-          return;
-        }
-      }
-
-      _seen->elementIs(base_id);
-
       /* recursively process base_decl in order to inherit all ancestors */
-      inherit_base_class_scopes(base_decl, _seen);
+      process_node(base_decl);
 
       /* inherit from base scope */
       Scope::PtrConst base_scope = base_decl->scope();
@@ -478,10 +481,10 @@ SemanticAnalyser::NodeFunctor::
 inherit_interface_scopes(ClassDecl::Ptr nd) {
   NamedType::Ptr intf_type;
   Identifier::Ptr base_id;
-  InterfaceDecl::PtrConst intf_decl;
+  InterfaceDecl::Ptr intf_decl;
 
   Scope::Ptr scope = nd->scope();
-  Scope::PtrConst intf_scope, parent_scope = scope->parentScope();
+  Scope::Ptr intf_scope, parent_scope = scope->parentScope();
 
   ClassDecl::const_intf_iter it = nd->interfacesBegin();
   for (; it != nd->interfacesEnd(); ++it) {
@@ -490,6 +493,8 @@ inherit_interface_scopes(ClassDecl::Ptr nd) {
     intf_decl = parent_scope->interfaceDecl(base_id);
 
     if (intf_decl != NULL) {
+      process_node(intf_decl);
+
       /* ensure interface is fully implemented */
       if (not nd->implementsInterface(intf_decl))
         Error::InterfaceNotImplemented(nd, intf_type);
