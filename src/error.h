@@ -117,7 +117,7 @@ public:
   /* errors used by semantic analyzer for field access */
   static void FieldNotFoundInBase(Simone::Ptr<const Identifier> field,
                                   Simone::Ptr<const Type> base);
-  static void InaccessibleField(Identifier *field,
+  static void InaccessibleField(Simone::Ptr<const Identifier> field,
                                 Simone::Ptr<const Type> base);
 
 

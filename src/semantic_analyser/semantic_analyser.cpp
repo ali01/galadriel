@@ -233,7 +233,33 @@ SemanticAnalyser::NodeFunctor::operator()(CallExpr *nd) {
   }
 
   FnDecl::PtrConst fn_decl = nd->fnDecl();
-  if (fn_decl == NULL) {
+  if (fn_decl != NULL) {
+    size_t args_expected = fn_decl->formalsCount();
+    size_t args_given = nd->actualsCount();
+
+    if (args_expected == args_given) {
+      Expr::Ptr actual;
+      VarDecl::PtrConst formal;
+      Type::PtrConst actual_type, formal_type;
+
+      CallExpr::const_actuals_iter a_it = nd->actualsBegin();
+      FnDecl::const_formal_iter f_it = fn_decl->formalsBegin();
+      for(int i = 1; a_it != nd->actualsEnd(); ++a_it, ++f_it, ++i) {
+        actual = *a_it;
+        formal = *f_it;
+
+        actual_type = actual->type();
+        formal_type = formal->type();
+        if (not formal_type->subsumes(actual_type))
+          Error::ArgMismatch(actual, i, actual_type, formal_type);
+      }
+
+    } else {
+      Error::NumArgsMismatch(function, args_expected, args_given);
+    }
+
+  } else {
+
     if (base != NULL) {
       Type::PtrConst base_type = base->type();
 
@@ -254,31 +280,6 @@ SemanticAnalyser::NodeFunctor::operator()(CallExpr *nd) {
 
     } else {
       Error::IdentifierNotDeclared(function, kLookingForFunction);
-    }
-
-  } else {
-    size_t args_expected = fn_decl->formalsCount();
-    size_t args_given = nd->actualsCount();
-
-    if (args_expected != args_given) {
-      Error::NumArgsMismatch(function, args_expected, args_given);
-
-    } else {
-      Expr::Ptr actual;
-      VarDecl::PtrConst formal;
-      Type::PtrConst actual_type, formal_type;
-
-      CallExpr::const_actuals_iter a_it = nd->actualsBegin();
-      FnDecl::const_formal_iter f_it = fn_decl->formalsBegin();
-      for(int i = 1; a_it != nd->actualsEnd(); ++a_it, ++f_it, ++i) {
-        actual = *a_it;
-        formal = *f_it;
-
-        actual_type = actual->type();
-        formal_type = formal->type();
-        if (not formal_type->subsumes(actual_type))
-          Error::ArgMismatch(actual, i, actual_type, formal_type);
-      }
     }
   }
 }
@@ -401,7 +402,24 @@ SemanticAnalyser::NodeFunctor::operator()(FieldAccessExpr *nd) {
   Identifier::Ptr id = nd->field();
   process_node(id);
 
-  
+  ClassDecl::PtrConst base_decl = nd->baseDecl();
+  VarDecl::PtrConst var_decl = nd->varDecl();
+  if (var_decl == NULL) {
+    Type::PtrConst base_type = base->type();
+    if (base_type->isNamedType() && base_decl) {
+      /* only print error if object is declared (i.e. base_decl != NULL);
+         otherwise a "declaration not found" error will obviate the need
+         for this error */
+      Error::FieldNotFoundInBase(id, base->type());
+    } else {
+      Error::FieldNotFoundInBase(id, base->type());
+    }
+  } else if (base_decl) {
+    /* the var_decl may be inaccessible from the current scope */
+    ClassDecl::PtrConst curr = nd->nearestClass();
+    if (curr == NULL  ||  curr->identifier() != base_decl->identifier())
+      Error::InaccessibleField(id, base->type());
+  }
 }
 
 void

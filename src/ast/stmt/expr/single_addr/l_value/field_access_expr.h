@@ -14,6 +14,7 @@
 class Expr;
 class Identifier;
 class Type;
+class VarDecl;
 
 /* Note that field access is used both for qualified names
  * base.field and just field without qualification. We don't
@@ -39,6 +40,8 @@ public:
   Simone::Ptr<Identifier> field();
   Simone::Ptr<const Identifier> field() const;
 
+  Simone::Ptr<const ClassDecl> baseDecl() const;
+  Simone::Ptr<const VarDecl> varDecl() const;
   Simone::Ptr<const Type> type() const;
 
   /* support for double dispatch */

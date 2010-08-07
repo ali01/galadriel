@@ -23,6 +23,8 @@ class FnDecl;
  * whether we need implicit "this." so we use one node type for either
  * and sort it out later. */
 
+// TODO: refactor into two classes: method and function exprs
+
 class CallExpr : public Expr {
 public:
   typedef Simone::Ptr<const CallExpr> PtrConst;

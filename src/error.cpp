@@ -197,9 +197,9 @@ Error::FieldNotFoundInBase(Identifier::PtrConst field, Type::PtrConst base) {
 }
 
 void
-Error::InaccessibleField(Identifier *field, Type::PtrConst base) {
+Error::InaccessibleField(Identifier::PtrConst field, Type::PtrConst base) {
   ostringstream s;
-  s  << base << " field '" << field << "' only accessible within class scope";
+  s  << *base << " field '" << *field << "' only accessible within class scope";
   OutputError(field->lexLoc(), s.str());
 }
 

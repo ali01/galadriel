@@ -30,7 +30,7 @@ FieldAccessExpr::FieldAccessExpr(Expr::Ptr b, Identifier::Ptr f) :
   base_(b), field_(f)
 {
   /* b can be null (just means no explicit base) */
-  assert(field_ != NULL);
+  assert(base_ != NULL && field_ != NULL);
 }
 
 Identifier::Ptr
@@ -43,32 +43,38 @@ FieldAccessExpr::field() const {
   return field_;
 }
 
-Type::PtrConst
-FieldAccessExpr::type() const {
-  Type::PtrConst type = Type::kError;
-  Scope::PtrConst scope;
-  VarDecl::PtrConst var_decl = NULL;
+ClassDecl::PtrConst
+FieldAccessExpr::baseDecl() const {
   ClassDecl::PtrConst base_decl = NULL;
 
-  if (base_) {
-    Type::PtrConst base_type = base_->type();
-    if (base_type->isNamedType()) {
-      NamedType::PtrConst named_type = Ptr::st_cast<const NamedType>(base_type);
-      base_decl = named_type->classDecl();
-    }
-
-  } else {
-    base_decl = nearestClass();
+  Type::PtrConst base_type = base_->type();
+  if (base_type->isNamedType()) {
+    NamedType::PtrConst named_type = Ptr::st_cast<const NamedType>(base_type);
+    base_decl = named_type->classDecl();
   }
 
+  return base_decl;
+}
+
+VarDecl::PtrConst
+FieldAccessExpr::varDecl() const {
+  Scope::PtrConst scope;
+  VarDecl::PtrConst var_decl = NULL;
+  
+  ClassDecl::PtrConst base_decl = baseDecl();
   if (base_decl) {
     scope = base_decl->scope();
     var_decl = scope->varDecl(field_, false);
-  } else {
-    scope = this->scope();
-    var_decl = scope->varDecl(field_);
   }
 
+  return var_decl;
+}
+
+Type::PtrConst
+FieldAccessExpr::type() const {
+  Type::PtrConst type = Type::kError;
+
+  VarDecl::PtrConst var_decl = varDecl();
   if(var_decl)
     type = var_decl->type();
 
