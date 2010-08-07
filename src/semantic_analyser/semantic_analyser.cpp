@@ -234,35 +234,26 @@ SemanticAnalyser::NodeFunctor::operator()(CallExpr *nd) {
 
   FnDecl::PtrConst fn_decl = nd->fnDecl();
   if (fn_decl == NULL) {
-    bool field_not_found = false;;
-    
-    Type::PtrConst base_type;
-    ObjectDecl::PtrConst base_decl = nd->baseDecl();
+    if (base != NULL) {
+      Type::PtrConst base_type = base->type();
 
-    if (base_decl && base != NULL) {
-      base_type = base_decl->type();
-      field_not_found = true;
-
-    } else if (base != NULL) {
-      base_type = base->type();
-      field_not_found = true;
-
-    } else {
-      Error::IdentifierNotDeclared(function, kLookingForFunction);
-    }
-
-    if (field_not_found) {
       if (base_type->isNamedType()) {
         NamedType::PtrConst nt = Ptr::st_cast<const NamedType>(base_type);
         ObjectDecl::PtrConst object = nt->objectDecl();
+
         if (object) {
           /* only print error if object is declared;
-             otherwise a "declaration not found" error will be printed */
+             otherwise a "declaration not found" error will obviate the need
+             for this error */
           Error::FieldNotFoundInBase(function, base_type);
         }
+        
       } else {
         Error::FieldNotFoundInBase(function, base_type);
       }
+
+    } else {
+      Error::IdentifierNotDeclared(function, kLookingForFunction);
     }
 
   } else {
@@ -409,6 +400,13 @@ SemanticAnalyser::NodeFunctor::operator()(FieldAccessExpr *nd) {
 
   Identifier::Ptr id = nd->field();
   process_node(id);
+}
+
+void
+SemanticAnalyser::NodeFunctor::operator()(ThisExpr *nd) {
+  ClassDecl::PtrConst class_decl = nd->nearestClass();
+  if (class_decl == NULL)
+    Error::ThisOutsideClassScope(nd);
 }
 
 

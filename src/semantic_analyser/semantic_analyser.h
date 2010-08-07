@@ -99,7 +99,7 @@ private:
       void operator()(VarAccessExpr *);
       void operator()(ArrayAccessExpr *);
       void operator()(FieldAccessExpr *);
-      /* void operator()(ThisExpr *); */
+      void operator()(ThisExpr *);
 
       /* type */
       /* void operator()(Type *); */

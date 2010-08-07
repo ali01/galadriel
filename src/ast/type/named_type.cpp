@@ -62,7 +62,7 @@ NamedType::NamedTypeEqualityFunctor::NamedTypeEqualityFunctor(NamedType::Ptr t):
 void
 NamedType::NamedTypeEqualityFunctor::operator()(Type *_o) {
   Type::Ptr other = _o;
-  if (other == Type::kError) {
+  if (other == Type::kError || other == Type::kNull) {
     equal_ = true;
   } else {
     equal_ = false;

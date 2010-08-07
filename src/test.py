@@ -107,8 +107,6 @@ class Apter:
         shell_command = ' '.join(["make"])
         self.log("Compiling\n", emphasis=1, stdout=True, logfile=False)
         self.exec_command(shell_command, stdout=True, logfile=False)
-        self.log("Compilation Complete\n",
-                 emphasis=1, stdout=True, logfile=False)
 
 
     kLogDivider = "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
