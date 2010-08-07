@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.1
+#!/usr/bin/env python
 # encoding: utf-8
 
 import os, sys, difflib, filecmp
@@ -14,7 +14,7 @@ def main():
         tester.compile()
         tester.run_tests()
     except:
-        print("\n")
+        print "\n"
 
 
 kDefaultOutSuffix = "out"
@@ -88,8 +88,8 @@ class Apter:
         if (failed == 0):
             self.log("\nAll tests were succesful", emphasis=2, stdout=True)
         else:
-            print(  "\nFailed:", failed)
-            print(  "See", self.__logfile.name)
+            print "\nFailed:", failed
+            print "See", self.__logfile.name
 
 
     def run(self, filename):
@@ -119,7 +119,7 @@ class Apter:
             message = str(message, "utf-8")
 
         if (stdout):
-            print(message);
+            print message;
 
         if (emphasis == 2):
             message = makeHeader(message)
