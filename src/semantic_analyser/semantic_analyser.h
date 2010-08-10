@@ -73,9 +73,13 @@ private:
       /* stmt/expr */
       /* void operator()(Expr *); */
       void operator()(AssignExpr *);
-      void operator()(CallExpr *);
       /* void operator()(NullExpr *); */
       /* void operator()(EmptyExpr *); */
+
+      /* stmt/expr/call_expr */
+      void operator()(CallExpr *);
+      void operator()(FunctionCallExpr *);
+      void operator()(MethodCallExpr *);
 
       /* stmt/expr/single_addr */
       /* void operator()(SingleAddrExpr *); */
@@ -117,6 +121,9 @@ private:
                                        IdentifierSet::Ptr _seen=NULL);
       void inherit_base_class_scopes(Simone::Ptr<ClassDecl> nd);
       void inherit_interface_scopes(Simone::Ptr<ClassDecl> nd);
+
+      static void verify_args_match(Simone::Ptr<const CallExpr> nd,
+                                    Simone::Ptr<const FnDecl> fn_decl);
   };
 
   /* data members */

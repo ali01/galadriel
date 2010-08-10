@@ -12,6 +12,9 @@ class Identifier;
 class Type;
 class VarDecl;
 
+/* TODO: think about making VarAccessExpr and FieldAccessExpr inherit from a 
+   common base class */
+
 class VarAccessExpr : public LValueExpr {
 public:
   typedef Simone::Ptr<const VarAccessExpr> PtrConst;

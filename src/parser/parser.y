@@ -544,13 +544,13 @@ LValue            : T_Identifier {
                   ;
 
 Call              : T_Identifier '(' Actuals ')' {
-                      Identifier::Ptr field = Identifier::IdentifierNew(@1, $1);
-                      $$ = new CallExpr(Join(@1, @4), NULL, field, $3);
+                      Identifier::Ptr fn_id = Identifier::IdentifierNew(@1, $1);
+                      $$ = new FunctionCallExpr(Join(@1, @4), fn_id, $3);
                     }
                   | Expr '.' T_Identifier '(' Actuals ')' {
-                      Identifier::Ptr field;
-                      field = Identifier::IdentifierNew(@3, $3);
-                      $$ = new CallExpr(Join(@1, @6), $1, field, $5);
+                      Identifier::Ptr fn_id;
+                      fn_id = Identifier::IdentifierNew(@3, $3);
+                      $$ = new MethodCallExpr(Join(@1, @6), $1, fn_id, $5);
                     }
                   ;
 

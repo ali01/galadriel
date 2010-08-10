@@ -225,72 +225,61 @@ SemanticAnalyser::NodeFunctor::operator()(AssignExpr *nd) {
 
 void
 SemanticAnalyser::NodeFunctor::operator()(CallExpr *nd) {
-  Expr::Ptr base = nd->base();
-  process_node(base);
-
   Identifier::Ptr function = nd->function();
   process_node(function);
 
   Expr::Ptr actual;
-  CallExpr::const_actuals_iter it = nd->actualsBegin();
+  FunctionCallExpr::const_actuals_iter it = nd->actualsBegin();
   for (; it != nd->actualsEnd(); ++it) {
     actual = *it;
     process_node(actual);
   }
+}
+
+void
+SemanticAnalyser::NodeFunctor::operator()(FunctionCallExpr *nd) {
+  /* applying this functor on upcasted nd */
+  (*this)(static_cast<CallExpr*>(nd));
 
   FnDecl::PtrConst fn_decl = nd->fnDecl();
   if (fn_decl != NULL) {
-    size_t args_expected = fn_decl->formalsCount();
-    size_t args_given = nd->actualsCount();
-
-    if (args_expected == args_given) {
-      Expr::Ptr actual;
-      VarDecl::PtrConst formal;
-      Type::PtrConst actual_type, formal_type;
-
-      CallExpr::const_actuals_iter a_it = nd->actualsBegin();
-      FnDecl::const_formal_iter f_it = fn_decl->formalsBegin();
-      for(int i = 1; a_it != nd->actualsEnd(); ++a_it, ++f_it, ++i) {
-        actual = *a_it;
-        formal = *f_it;
-
-        actual_type = actual->type();
-        formal_type = formal->type();
-        if (not formal_type->subsumes(actual_type))
-          Error::ArgMismatch(actual, i, actual_type, formal_type);
-      }
-
-    } else {
-      Error::NumArgsMismatch(function, args_expected, args_given);
-    }
-
+    verify_args_match(nd, fn_decl);
   } else {
-
-    if (base != NULL) {
-      Type::PtrConst base_type = base->type();
-
-      if (base_type->isNamedType()) {
-        NamedType::PtrConst nt = Ptr::st_cast<const NamedType>(base_type);
-        ObjectDecl::PtrConst object = nt->objectDecl();
-
-        if (object) {
-          /* only print error if object is declared;
-             otherwise a "declaration not found" error will obviate the need
-             for this error */
-          Error::FieldNotFoundInBase(function, base_type);
-        }
-        
-      } else {
-        if (base_type != Type::kError)
-          Error::FieldNotFoundInBase(function, base_type);
-      }
-
-    } else {
-      Error::IdentifierNotDeclared(function, kLookingForFunction);
-    }
+    Error::IdentifierNotDeclared(nd->function(), kLookingForFunction);
   }
 }
 
+void
+SemanticAnalyser::NodeFunctor::operator()(MethodCallExpr *nd) {
+  Expr::Ptr base = nd->base();
+  process_node(base);
+
+  /* applying this functor on upcasted nd */
+  (*this)(static_cast<CallExpr*>(nd));
+
+  FnDecl::PtrConst fn_decl = nd->fnDecl();
+  if (fn_decl != NULL) {
+    verify_args_match(nd, fn_decl);
+
+  } else {
+    Type::PtrConst base_type = base->type();
+    Identifier::Ptr function = nd->function();
+    if (base_type->isNamedType()) {
+      NamedType::PtrConst nt = Ptr::st_cast<const NamedType>(base_type);
+      ObjectDecl::PtrConst object = nt->objectDecl();
+
+      if (object) {
+        /* only print error if object is declared;
+           otherwise a "declaration not found" error will obviate the need
+           for this error */
+        Error::FieldNotFoundInBase(function, base_type);
+      }
+      
+    } else if (base_type != Type::kError) {
+      Error::FieldNotFoundInBase(function, base_type);
+    }
+  }
+}
 
 /* stmt/expr/single_addr */
 void
@@ -342,7 +331,7 @@ SemanticAnalyser::NodeFunctor::operator()(CompoundExpr *nd) {
     bool error = false;
 
     if (op->operatorType() == Operator::kSubtract) {
-      if (right_type != Type::kInt && right_type != Type::kDouble){
+      if (right_type != Type::kInt && right_type != Type::kDouble) {
         error = true;
       }
     } else if (op->operatorType() == Operator::kNot) {
@@ -418,9 +407,8 @@ SemanticAnalyser::NodeFunctor::operator()(FieldAccessExpr *nd) {
          otherwise a "declaration not found" error will obviate the need
          for this error */
       Error::FieldNotFoundInBase(id, base->type());
-    } else {
-      if (base_type != Type::kError)
-        Error::FieldNotFoundInBase(id, base->type());
+    } else if (base_type != Type::kError) {
+      Error::FieldNotFoundInBase(id, base->type());
     }
   } else if (base_decl) {
     /* the var_decl may be inaccessible from the current scope */
@@ -556,5 +544,34 @@ inherit_interface_scopes(ClassDecl::Ptr nd) {
     } else {
       Error::IdentifierNotDeclared(base_id, kLookingForInterface);
     }
+  }
+}
+
+
+void
+SemanticAnalyser::NodeFunctor::
+verify_args_match(CallExpr::PtrConst nd, FnDecl::PtrConst fn_decl) {
+  size_t args_expected = fn_decl->formalsCount();
+  size_t args_given = nd->actualsCount();
+
+  if (args_expected == args_given) {
+    Expr::Ptr actual;
+    VarDecl::PtrConst formal;
+    Type::PtrConst actual_type, formal_type;
+
+    FunctionCallExpr::const_actuals_iter a_it = nd->actualsBegin();
+    FnDecl::const_formal_iter f_it = fn_decl->formalsBegin();
+    for(int i = 1; a_it != nd->actualsEnd(); ++a_it, ++f_it, ++i) {
+      actual = *a_it;
+      formal = *f_it;
+
+      actual_type = actual->type();
+      formal_type = formal->type();
+      if (not formal_type->subsumes(actual_type))
+        Error::ArgMismatch(actual, i, actual_type, formal_type);
+    }
+
+  } else {
+    Error::NumArgsMismatch(nd->function(), args_expected, args_given);
   }
 }

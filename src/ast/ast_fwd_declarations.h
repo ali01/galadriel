@@ -37,9 +37,13 @@ class WhileStmt;
 /* stmt/expr */
 class Expr;
 class AssignExpr;
-class CallExpr;
 class NullExpr;
 class EmptyExpr;
+
+/* stmt/expr/call_expr */
+class CallExpr;
+class FunctionCallExpr;
+class MethodCallExpr;
 
 /* stmt/expr/single_addr */
 class SingleAddrExpr;

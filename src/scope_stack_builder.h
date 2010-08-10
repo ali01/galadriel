@@ -66,9 +66,13 @@ public:
       /* stmt/expr */
       /* void operator()(Expr *); */
       void operator()(AssignExpr *);
-      void operator()(CallExpr *);
       /* void operator()(NullExpr *); */
       /* void operator()(EmptyExpr *); */
+
+      /* stmt/expr/call_expr */
+      void operator()(CallExpr *);
+      void operator()(FunctionCallExpr *);
+      void operator()(MethodCallExpr *);
 
       /* stmt/expr/single_addr */
       /* void operator()(SingleAddrExpr *); */

@@ -1,5 +1,5 @@
 DIR_J4DDNKKK := ast/stmt/expr
-SUB_J4DDNKKK := single_addr
+SUB_J4DDNKKK := single_addr call_expr
 
 SRCS += $(wildcard $(DIR_J4DDNKKK)/*.$(EXT))
 

@@ -245,22 +245,37 @@ ScopeStackBuilder::NodeFunctor::operator()(AssignExpr *nd) {
   init_node_scope(right, nd, scope);
 }
 
+/* stmt/expr/call_expr */
 void
 ScopeStackBuilder::NodeFunctor::operator()(CallExpr *nd) {
   Scope::Ptr scope = nd->scope();
-
-  Expr::Ptr base = nd->base();
-  init_node_scope(base, nd, scope);
 
   Identifier::Ptr function = nd->function();
   init_node_scope(function, nd, scope);
 
   Expr::Ptr actual;
-  CallExpr::const_actuals_iter it = nd->actualsBegin();
+  FunctionCallExpr::const_actuals_iter it = nd->actualsBegin();
   for(; it != nd->actualsEnd(); ++it) {
     actual = *it;
     init_node_scope(actual, nd, scope);
   }
+}
+
+void
+ScopeStackBuilder::NodeFunctor::operator()(FunctionCallExpr *nd) {
+  /* applying this functor on upcasted nd */
+  (*this)(static_cast<CallExpr*>(nd));
+}
+
+void
+ScopeStackBuilder::NodeFunctor::operator()(MethodCallExpr *nd) {
+  Scope::Ptr scope = nd->scope();
+
+  Expr::Ptr base = nd->base();
+  init_node_scope(base, nd, scope);
+
+  /* applying this functor on upcasted nd */
+  (*this)(static_cast<CallExpr*>(nd));
 }
 
 

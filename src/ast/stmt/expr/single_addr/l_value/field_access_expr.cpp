@@ -29,7 +29,6 @@ FieldAccessExpr::FieldAccessExpr(Expr::Ptr b, Identifier::Ptr f) :
   LValueExpr(b != NULL ?  Join(b->lexLoc(), f->lexLoc()) : *f->lexLoc()),
   base_(b), field_(f)
 {
-  /* b can be null (just means no explicit base) */
   assert(base_ != NULL && field_ != NULL);
 }
 
@@ -58,12 +57,11 @@ FieldAccessExpr::baseDecl() const {
 
 VarDecl::PtrConst
 FieldAccessExpr::varDecl() const {
-  Scope::PtrConst scope;
   VarDecl::PtrConst var_decl = NULL;
   
   ClassDecl::PtrConst base_decl = baseDecl();
   if (base_decl) {
-    scope = base_decl->scope();
+    Scope::PtrConst scope = base_decl->scope();
     var_decl = scope->varDecl(field_, false);
   }
 

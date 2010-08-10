@@ -100,9 +100,13 @@ public:
     /* stmt/expr */
     virtual void operator()(Expr *) { ABORT(); }
     virtual void operator()(AssignExpr *) {}
-    virtual void operator()(CallExpr *) {}
     virtual void operator()(NullExpr *) {}
     virtual void operator()(EmptyExpr *) {}
+
+    /* stmt/expr/call_expr */
+    virtual void operator()(CallExpr *) { ABORT(); }
+    virtual void operator()(FunctionCallExpr *) {}
+    virtual void operator()(MethodCallExpr *) {}
 
     /* stmt/expr/single_addr */
     virtual void operator()(SingleAddrExpr *) { ABORT(); }

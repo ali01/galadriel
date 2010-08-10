@@ -1,0 +1,10 @@
+DIR_FH3V40OT := ast/stmt/expr/call_expr
+SUB_FH3V40OT := 
+
+SRCS += $(wildcard $(DIR_FH3V40OT)/*.$(EXT))
+
+MK_FH3V40OT := $(foreach sdir,$(SUB_FH3V40OT),$(wildcard $(DIR_FH3V40OT)/$(sdir)/*.$(SUBDIR_EXT)))
+ifneq ($(MK_FH3V40OT),)
+$(info -- including subdirectory makefiles ($(DIR_FH3V40OT)): $(MK_FH3V40OT)) 
+include $(MK_FH3V40OT)
+endif

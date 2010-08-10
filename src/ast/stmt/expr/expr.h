@@ -22,7 +22,7 @@ public:
 
 protected:
   Expr(yyltype loc) : Stmt(loc) {}
-  Expr() : Stmt()               {}
+  Expr() : Stmt() {}
 };
 
 #endif
