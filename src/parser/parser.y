@@ -19,6 +19,7 @@ using Simone::Deque;
 
 /* project includes */
 #include <semantic_analyser/semantic_analyser.h>
+#include <code_generator/code_generator.h>
 
 /* parser includes */
 #include "parser.h"
@@ -172,6 +173,11 @@ Program           : DeclList {
                       if (Error::NumErrors() == 0) {
                         SemanticAnalyser::Ptr semantic_analyser =
                           SemanticAnalyser::SemanticAnalyserNew(program);
+                      }
+
+                      if (Error::NumErrors() == 0) {
+                        CodeGenerator::Ptr code_generator =
+                          CodeGenerator::CodeGeneratorNew(program);
                       }
                     }
                   | /* empty */ {}
