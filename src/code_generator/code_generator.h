@@ -38,7 +38,6 @@ private:
       }
 
       /* top level */
-      /* void operator()(Node *); */
       void operator()(Program *);
       /* void operator()(Identifier *); */
       /* void operator()(Operator *); */
@@ -116,7 +115,7 @@ private:
       void process_node(Node::Ptr _nd);
 
       /* data members */
-      Simone::Ptr<Instruction::Functor> emit_functor_;
+      Simone::Ptr<Instruction::Functor> code_emit_functor_;
   };
 
   /* data members */

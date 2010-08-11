@@ -39,7 +39,6 @@ private:
       }
 
       /* top level */
-      /* void operator()(Node *); */
       void operator()(Program *);
       /* void operator()(Identifier *); */
       /* void operator()(Operator *); */

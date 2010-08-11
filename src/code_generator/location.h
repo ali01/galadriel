@@ -16,6 +16,8 @@ public:
   typedef int Offset;
   enum Segment { kStack, kData };
 
+  /* attribute member functions */
+  const string& name() const { return name_; }
 
 private:
   Location(Segment _segment, Offset _offset, const string& _name);
@@ -29,11 +31,5 @@ private:
   Location(const Location&);
   void operator=(const Location&);
 };
-
-// TODO: implement
-inline ostream&
-operator<<(ostream& out, const Location& _loc) {
-  return out;
-}
 
 #endif

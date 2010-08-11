@@ -19,7 +19,6 @@ public:
       typedef Simone::Ptr<Functor> Ptr;
       typedef Simone::Ptr<const Functor> PtrConst;
 
-      virtual void operator()(Instruction *) { ABORT(); }
       virtual void operator()(LoadIntConst *) {}
       virtual void operator()(LoadStrConst *) {}
       virtual void operator()(LoadLabel *) {}

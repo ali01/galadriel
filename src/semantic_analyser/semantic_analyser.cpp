@@ -225,8 +225,8 @@ SemanticAnalyser::NodeFunctor::operator()(AssignExpr *nd) {
 
 void
 SemanticAnalyser::NodeFunctor::operator()(CallExpr *nd) {
-  Identifier::Ptr function = nd->function();
-  process_node(function);
+  Identifier::Ptr fn_id = nd->identifier();
+  process_node(fn_id);
 
   Expr::Ptr actual;
   FunctionCallExpr::const_actuals_iter it = nd->actualsBegin();
@@ -245,7 +245,7 @@ SemanticAnalyser::NodeFunctor::operator()(FunctionCallExpr *nd) {
   if (fn_decl != NULL) {
     verify_args_match(nd, fn_decl);
   } else {
-    Error::IdentifierNotDeclared(nd->function(), kLookingForFunction);
+    Error::IdentifierNotDeclared(nd->identifier(), kLookingForFunction);
   }
 }
 
@@ -263,7 +263,7 @@ SemanticAnalyser::NodeFunctor::operator()(MethodCallExpr *nd) {
 
   } else {
     Type::PtrConst base_type = base->type();
-    Identifier::Ptr function = nd->function();
+    Identifier::Ptr fn_id = nd->identifier();
     if (base_type->isNamedType()) {
       NamedType::PtrConst nt = Ptr::st_cast<const NamedType>(base_type);
       ObjectDecl::PtrConst object = nt->objectDecl();
@@ -272,11 +272,11 @@ SemanticAnalyser::NodeFunctor::operator()(MethodCallExpr *nd) {
         /* only print error if object is declared;
            otherwise a "declaration not found" error will obviate the need
            for this error */
-        Error::FieldNotFoundInBase(function, base_type);
+        Error::FieldNotFoundInBase(fn_id, base_type);
       }
       
     } else if (base_type != Type::kError) {
-      Error::FieldNotFoundInBase(function, base_type);
+      Error::FieldNotFoundInBase(fn_id, base_type);
     }
   }
 }
@@ -574,6 +574,6 @@ verify_args_match(CallExpr::PtrConst nd, FnDecl::PtrConst fn_decl) {
     }
 
   } else {
-    Error::NumArgsMismatch(nd->function(), args_expected, args_given);
+    Error::NumArgsMismatch(nd->identifier(), args_expected, args_given);
   }
 }

@@ -10,21 +10,21 @@
 #include "../../../type/type.h"
 
 CallExpr::CallExpr(yyltype _loc,
-                   Simone::Ptr<Identifier> _function,
+                   Simone::Ptr<Identifier> _identifier,
                    Deque<Expr::Ptr>::Ptr _args) :
-  Expr(_loc), function_(_function), actuals_(_args)
+  Expr(_loc), identifier_(_identifier), actuals_(_args)
 {
-  assert(function_ != NULL && actuals_ != NULL);
+  assert(identifier_ != NULL && actuals_ != NULL);
 }
 
 Identifier::Ptr
-CallExpr::function() {
-  return function_;
+CallExpr::identifier() {
+  return identifier_;
 }
 
 Identifier::PtrConst
-CallExpr::function() const {
-  return function_;
+CallExpr::identifier() const {
+  return identifier_;
 }
 
 

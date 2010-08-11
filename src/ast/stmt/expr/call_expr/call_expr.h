@@ -25,8 +25,8 @@ public:
   typedef Deque<Expr::Ptr>::const_iterator const_actuals_iter;
   typedef Deque<Expr::Ptr>::iterator actuals_iter;
 
-  Simone::Ptr<Identifier> function();
-  Simone::Ptr<const Identifier> function() const;
+  Simone::Ptr<Identifier> identifier();
+  Simone::Ptr<const Identifier> identifier() const;
 
   const_actuals_iter actualsBegin() const { return actuals_->begin(); }
   actuals_iter actualsBegin() { return actuals_->begin(); }
@@ -46,11 +46,11 @@ public:
 
 protected:
   CallExpr(yyltype _loc,
-           Simone::Ptr<Identifier> _function,
+           Simone::Ptr<Identifier> _identifier,
            Deque<Expr::Ptr>::Ptr _args);
 
   /* data members */
-  Simone::Ptr<Identifier> function_;
+  Simone::Ptr<Identifier> identifier_;
   Deque<Expr::Ptr>::Ptr actuals_;
 
 private:

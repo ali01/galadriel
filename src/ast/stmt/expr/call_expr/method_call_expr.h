@@ -15,14 +15,14 @@ public:
 
   static Ptr MethodCallExprNew(yyltype _loc,
                                Expr::Ptr _base,
-                               Simone::Ptr<Identifier> _method,
+                               Simone::Ptr<Identifier> _identifier,
                                Deque<Expr::Ptr>::Ptr _args) {
-    return new MethodCallExpr(_loc, _base, _method, _args);
+    return new MethodCallExpr(_loc, _base, _identifier, _args);
   }
 
   MethodCallExpr(yyltype _loc,
                  Expr::Ptr _base,
-                 Simone::Ptr<Identifier> _method,
+                 Simone::Ptr<Identifier> _identifier,
                  Deque<Expr::Ptr>::Ptr _args);
 
   /* attribute member functions */

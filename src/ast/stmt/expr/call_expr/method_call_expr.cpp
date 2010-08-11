@@ -13,9 +13,9 @@
 
 MethodCallExpr::MethodCallExpr(yyltype _loc,
                                Expr::Ptr _base,
-                               Simone::Ptr<Identifier> _method,
+                               Simone::Ptr<Identifier> _identifier,
                                Deque<Expr::Ptr>::Ptr _args) :
-  CallExpr(_loc, _method, _args), base_(_base)
+  CallExpr(_loc, _identifier, _args), base_(_base)
 {
   assert(base_);
   base_decl_functor_ = BaseDeclFunctor::BaseDeclFunctorNew(this);
@@ -38,7 +38,7 @@ MethodCallExpr::fnDecl() const {
   ObjectDecl::PtrConst base_decl = baseDecl();
   if (base_decl) {
     Scope::PtrConst scope = base_decl->scope();
-    fn_decl = scope->fnDecl(function_, false);
+    fn_decl = scope->fnDecl(identifier_, false);
   }
 
   return fn_decl;

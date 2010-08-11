@@ -66,7 +66,6 @@ public:
     typedef Simone::Ptr<const Functor> PtrConst;
 
     /* top level */
-    virtual void operator()(Node *) { ABORT(); }
     virtual void operator()(Program *) {}
     virtual void operator()(Identifier *) {}
     virtual void operator()(Operator *) {}

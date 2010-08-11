@@ -32,7 +32,6 @@ public:
       /* operators that are not overriden appear as comments */
 
       /* top level */
-      /* void operator()(Node *); */
       void operator()(Program *);
       /* void operator()(Identifier *); */
       /* void operator()(Operator *); */

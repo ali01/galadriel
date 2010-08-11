@@ -1,7 +1,7 @@
 #ifndef LOAD_CONST_H_MQ27Z88Q
 #define LOAD_CONST_H_MQ27Z88Q
 
-/* code_generator/instruction includes */
+/* local includes */
 #include "instruction.h"
 
 /* forward declarations */

@@ -250,8 +250,8 @@ void
 ScopeStackBuilder::NodeFunctor::operator()(CallExpr *nd) {
   Scope::Ptr scope = nd->scope();
 
-  Identifier::Ptr function = nd->function();
-  init_node_scope(function, nd, scope);
+  Identifier::Ptr fn_id = nd->identifier();
+  init_node_scope(fn_id, nd, scope);
 
   Expr::Ptr actual;
   FunctionCallExpr::const_actuals_iter it = nd->actualsBegin();

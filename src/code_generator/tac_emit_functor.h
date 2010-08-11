@@ -13,25 +13,24 @@ public:
     return new TACEmitFunctor();
   }
 
-  // void operator()(Instruction *) { ABORT(); }
   void operator()(LoadIntConst *);
-  // void operator()(LoadStrConst *) {}
-  // void operator()(LoadLabel *) {}
-  // void operator()(Assign *) {}
-  // void operator()(Load *) {}
-  // void operator()(Store *) {}
-  // void operator()(BinaryOp *) {}
-  // void operator()(Label *) {}
-  // void operator()(Goto *) {}
-  // void operator()(IfZ *) {}
-  // void operator()(BeginFunc *) {}
-  // void operator()(EndFunc *) {}
-  // void operator()(Return *) {}
-  // void operator()(PushParam *) {}
-  // void operator()(PopParams *) {}
-  // void operator()(LCall *) {}
-  // void operator()(ACall *) {}
-  // void operator()(VTable *) {}
+  void operator()(LoadStrConst *);
+  // void operator()(LoadLabel *);
+  // void operator()(Assign *);
+  // void operator()(Load *);
+  // void operator()(Store *);
+  // void operator()(BinaryOp *);
+  void operator()(Label *);
+  // void operator()(Goto *);
+  // void operator()(IfZ *);
+  void operator()(BeginFunc *);
+  // void operator()(EndFunc *);
+  // void operator()(Return *);
+  // void operator()(PushParam *);
+  // void operator()(PopParams *);
+  void operator()(LCall *);
+  // void operator()(ACall *);
+  // void operator()(VTable *);
 
 private:
   TACEmitFunctor() {}

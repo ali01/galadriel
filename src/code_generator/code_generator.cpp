@@ -17,9 +17,9 @@ CodeGenerator::CodeGenerator(Simone::Ptr<Program> _prog) {
 
 CodeGenerator::NodeFunctor::NodeFunctor() {
   if (IsDebugOn("tac")) {
-    emit_functor_ = TACEmitFunctor::TACEmitFunctorNew();
+    code_emit_functor_ = TACEmitFunctor::TACEmitFunctorNew();
   } else {
-    // TODO: MIPSEmitFunctor
+    code_emit_functor_ = MIPSEmitFunctor::MIPSEmitFunctorNew();
   }
 }
 
@@ -53,6 +53,12 @@ CodeGenerator::NodeFunctor::operator()(VarDecl *nd) {
 
 void
 CodeGenerator::NodeFunctor::operator()(FnDecl *nd) {
+  Identifier::Ptr fn_id = nd->identifier();
+  Label::Ptr label_i = Label::LabelNew(fn_id); // TODO: think about identifier
+  BeginFunc::Ptr begin_func_i  = BeginFunc::BeginFuncNew(label_i, 0); // TODO: 0
+
+  code_emit_functor_(begin_func_i);
+
   /* apply this functor to upcasted nd */
   (*this)(static_cast<Decl*>(nd));
 
@@ -196,8 +202,8 @@ CodeGenerator::NodeFunctor::operator()(AssignExpr *nd) {
 /* stmt/expr/call_expr */
 void
 CodeGenerator::NodeFunctor::operator()(CallExpr *nd) {
-  Identifier::Ptr function = nd->function();
-  process_node(function);
+  Identifier::Ptr fn_id = nd->identifier();
+  process_node(fn_id);
 
   Expr::Ptr actual;
   FunctionCallExpr::const_actuals_iter it = nd->actualsBegin();
@@ -209,6 +215,12 @@ CodeGenerator::NodeFunctor::operator()(CallExpr *nd) {
 
 void
 CodeGenerator::NodeFunctor::operator()(FunctionCallExpr *nd) {
+  Identifier::Ptr fn_id = nd->identifier();
+  Label::Ptr label_i = Label::LabelNew(fn_id);
+  LCall::Ptr l_call_i = LCall::LCallNew(label_i, NULL); // TODO: resolve NULL
+
+  code_emit_functor_(l_call_i);
+
   /* applying this functor on upcasted nd */
   (*this)(static_cast<CallExpr*>(nd));
 }
@@ -227,8 +239,9 @@ CodeGenerator::NodeFunctor::operator()(MethodCallExpr *nd) {
 void
 CodeGenerator::NodeFunctor::operator()(IntConstExpr *nd) {
   // TODO: resolve NULL
-  // LoadIntConst::Ptr load_i = LoadIntConst::LoadIntConstNew(NULL, nd->value());
-  // emit_functor_(load_i);
+  LoadIntConst::Ptr load_i;
+  load_i = LoadIntConst::LoadIntConstNew(NULL, nd->value());
+  code_emit_functor_(load_i);
 }
 
 void

@@ -19,14 +19,14 @@ public:
   typedef Simone::Ptr<FunctionCallExpr> Ptr;
 
   static Ptr FunctionCallExprNew(yyltype _loc,
-                                 Simone::Ptr<Identifier> _function,
+                                 Simone::Ptr<Identifier> _identifier,
                                  Deque<Expr::Ptr>::Ptr _args) {
-    return new FunctionCallExpr(_loc, _function, _args);
+    return new FunctionCallExpr(_loc, _identifier, _args);
   }
 
 
   FunctionCallExpr(yyltype _loc,
-                   Simone::Ptr<Identifier> _function,
+                   Simone::Ptr<Identifier> _identifier,
                    Deque<Expr::Ptr>::Ptr _args);
 
 

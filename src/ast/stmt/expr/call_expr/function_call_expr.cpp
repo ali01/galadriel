@@ -10,12 +10,12 @@
 #include "../../../type/type.h"
 
 FunctionCallExpr::FunctionCallExpr(yyltype _loc,
-                                   Identifier::Ptr _function,
+                                   Identifier::Ptr _identifier,
                                    Deque<Expr::Ptr>::Ptr _args) :
-  CallExpr(_loc, _function, _args) {}
+  CallExpr(_loc, _identifier, _args) {}
 
 FnDecl::PtrConst
 FunctionCallExpr::fnDecl() const {
   Scope::PtrConst scope = this->scope();
-  return scope->fnDecl(function_);;
+  return scope->fnDecl(identifier_);;
 }
