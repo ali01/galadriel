@@ -1,11 +1,24 @@
 #include "code_generator.h"
 
 /* project includes */
-#include <ast.h>
+#include <ast_includes.h>
+#include <utility.h> // TODO
+
+/* local includes */
+#include "tac_emit_functor.h"
+#include "mips_emit_functor.h"
 
 CodeGenerator::CodeGenerator(Simone::Ptr<Program> _prog) {
   node_functor_ = NodeFunctor::NodeFunctorNew();
   _prog->apply(node_functor_);
+}
+
+CodeGenerator::NodeFunctor::NodeFunctor() {
+  if (IsDebugOn("tac")) {
+    emit_functor_ = TACEmitFunctor::TACEmitFunctorNew();
+  } else {
+    // TODO: MIPSEmitFunctor
+  }
 }
 
 /* top level */

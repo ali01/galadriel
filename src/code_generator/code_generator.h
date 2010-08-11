@@ -7,8 +7,13 @@
 /* ast includes */
 #include <ast/node.h>
 
+/* instruction includes */
+#include "instruction/instruction.h"
+
 /* forward declarations */
 class Program;
+class TACEmitFunctor;
+class MIPSEmitFunctor;
 
 class CodeGenerator : public Simone::PtrInterface<CodeGenerator> {
 public:
@@ -105,12 +110,13 @@ private:
       void operator()(ArrayType *);
 
     private:
-      NodeFunctor() {}
+      NodeFunctor();
 
       /* member functions */
       void process_node(Node::Ptr _nd);
 
-      
+      /* data members */
+      Simone::Ptr<Instruction::Functor> emit_functor_;
   };
 
   /* data members */

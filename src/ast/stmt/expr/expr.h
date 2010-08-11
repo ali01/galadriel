@@ -5,7 +5,7 @@
 #include <simone/ptr_interface.h>
 
 /* project includes */
-#include "lex_loc.h"
+#include "lex_location.h"
 
 /* stmt includes */
 #include "../stmt.h"

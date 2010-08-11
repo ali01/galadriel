@@ -5,7 +5,7 @@
 #include <simone/ptr_interface.h>
 
 /* project includes */
-#include <lex_loc.h>
+#include <lex_location.h>
 
 /* ast/stmt/expr/singl_addr includes */
 #include "../single_addr_expr.h"

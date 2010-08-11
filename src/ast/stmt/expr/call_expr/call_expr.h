@@ -7,7 +7,7 @@
 using Simone::Deque;
 
 /* project includes */
-#include <lex_loc.h>
+#include <lex_location.h>
 
 /* ast/stmt/expr includes */
 #include "../expr.h"

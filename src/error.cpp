@@ -12,7 +12,7 @@
 #include "parser/scanner.h" // for GetLineNumbered
 
 /* ast includes */
-#include "ast.h"
+#include "ast_includes.h"
 
 int Error::numErrors = 0;
 

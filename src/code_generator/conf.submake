@@ -1,5 +1,5 @@
 DIR_I90VZC6U := code_generator
-SUB_I90VZC6U := 
+SUB_I90VZC6U := instruction
 
 SRCS += $(wildcard $(DIR_I90VZC6U)/*.$(EXT))
 

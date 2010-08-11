@@ -5,7 +5,7 @@
 #include <simone/ptr_interface.h>
 
 /* project includes */
-#include "ast.h"
+#include "ast_includes.h"
 #include "scope_stack.h"
 
 /* forward declarations */

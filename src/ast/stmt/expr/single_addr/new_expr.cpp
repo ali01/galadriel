@@ -4,7 +4,7 @@
 #include <simone/utility.h>
 
 /* project includes */
-#include <lex_loc.h>
+#include <lex_location.h>
 
 /* ast/decl includes */
 #include "../../../decl/object/class_decl.h"

@@ -1,0 +1,10 @@
+DIR_HY0DNKLY := code_generator/instruction
+SUB_HY0DNKLY := 
+
+SRCS += $(wildcard $(DIR_HY0DNKLY)/*.$(EXT))
+
+MK_HY0DNKLY := $(foreach sdir,$(SUB_HY0DNKLY),$(wildcard $(DIR_HY0DNKLY)/$(sdir)/*.$(SUBDIR_EXT)))
+ifneq ($(MK_HY0DNKLY),)
+$(info -- including subdirectory makefiles ($(DIR_HY0DNKLY)): $(MK_HY0DNKLY)) 
+include $(MK_HY0DNKLY)
+endif

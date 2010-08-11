@@ -2,7 +2,7 @@
 #define LEX_LOC_H_VMHXC2K9
 
 
-/* File: lex_loc.h
+/* File: lex_location.h
  * ----------------
  * This file just contains features relative to the location structure
  * used to record the lexical position of a token or symbol.  This file

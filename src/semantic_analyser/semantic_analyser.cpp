@@ -1,7 +1,7 @@
 #include "semantic_analyser.h"
 
 /* project includes */
-#include <ast.h>
+#include <ast_includes.h>
 #include <error.h>
 #include <scope_stack_builder.h>
 

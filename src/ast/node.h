@@ -29,10 +29,10 @@
 #include <simone/utility.h>
 
 /* project includes */
-#include <lex_loc.h>
+#include <lex_location.h>
 
 /* local includes */
-#include "ast_fwd_declarations.h"
+#include "../ast_fwd_declarations.h"
 
 /* forward declarations */
 class Scope;
@@ -43,7 +43,7 @@ public:
   typedef Simone::Ptr<const Node> PtrConst;
   typedef Simone::Ptr<Node> Ptr;
 
-  yyltype *lexLoc() const { return location; }
+  yyltype *lexLoc() const { return lex_location_; }
 
   /* -- attribute member functions -- */
 
@@ -147,7 +147,7 @@ protected:
   virtual ~Node();
 
   /* data members */
-  yyltype *location;
+  yyltype *lex_location_;
 
   Node::Ptr parent_;
   Simone::Ptr<Scope> scope_;

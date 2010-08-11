@@ -17,11 +17,11 @@
 #include "decl/object/class_decl.h"
 
 Node::Node(yyltype loc) {
-  location  = new yyltype(loc);
+  lex_location_  = new yyltype(loc);
 }
 
 Node::Node() {
-  location = NULL;
+  lex_location_ = NULL;
 }
 
 Node::~Node() {}

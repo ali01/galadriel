@@ -5,7 +5,7 @@
 using std::ostream;
 
 /* project includes */
-#include <lex_loc.h>
+#include <lex_location.h>
 
 Identifier::Identifier(yyltype loc, const string& n) : Node(loc), name_(n) {}
 

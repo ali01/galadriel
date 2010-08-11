@@ -10,7 +10,7 @@
 #include "scanner.h" /* for kMaxIdentifierLength */
 
 /* ast includes */
-#include "ast.h"
+#include "ast_includes.h"
 
 
 /* We want to get the exported defines for the token codes and
