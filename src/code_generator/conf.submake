@@ -1,0 +1,10 @@
+DIR_I90VZC6U := code_generator
+SUB_I90VZC6U := 
+
+SRCS += $(wildcard $(DIR_I90VZC6U)/*.$(EXT))
+
+MK_I90VZC6U := $(foreach sdir,$(SUB_I90VZC6U),$(wildcard $(DIR_I90VZC6U)/$(sdir)/*.$(SUBDIR_EXT)))
+ifneq ($(MK_I90VZC6U),)
+$(info -- including subdirectory makefiles ($(DIR_I90VZC6U)): $(MK_I90VZC6U)) 
+include $(MK_I90VZC6U)
+endif
