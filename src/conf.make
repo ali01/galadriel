@@ -1,5 +1,5 @@
 PROJECT       := dcc
-SUBDIRS       := ast parser semantic_analyser simone
+SUBDIRS       := ast parser semantic_analyser code_generator simone
 
 LIBS          := -lc -lm -ll
 EXTERNAL_OBJS := parser/y.tab.o parser/lex.yy.o
