@@ -139,7 +139,7 @@ public:
   };
 
   /* support for double dispatch */
-  virtual void apply(Functor::Ptr _functor) = 0;
+  virtual void self_apply(Functor::Ptr _functor) = 0;
 
 protected:
   Node(yyltype loc);

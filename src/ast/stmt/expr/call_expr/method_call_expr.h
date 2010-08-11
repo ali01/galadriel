@@ -33,7 +33,7 @@ public:
   Simone::Ptr<const FnDecl> fnDecl() const;
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) { (*_functor)(this); }
+  void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
   class BaseDeclFunctor : public Node::Functor {

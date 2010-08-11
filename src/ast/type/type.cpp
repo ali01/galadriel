@@ -42,7 +42,7 @@ Type::subsumes(const Type::PtrConst& _o) const {
      subsume_functor_, implemented in type.h, doesn't modify the object */
   Type::Ptr o_mutable = const_cast<Type*>(_o.ptr());
 
-  o_mutable->apply(subsume_functor_);
+  subsume_functor_(o_mutable);
   return subsume_functor_->subsumesOther();
 }
 
@@ -52,7 +52,7 @@ Type::operator==(const Type& _o) const {
      eq_functor_, implemented in type.h, doesn't modify the object */
   Type &o_mutable = const_cast<Type&>(_o);
 
-  o_mutable.apply(eq_functor_);
+  eq_functor_(&o_mutable);
   return eq_functor_->equal();
 }
 

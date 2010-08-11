@@ -13,24 +13,26 @@ public:
   typedef Simone::Ptr<const Location> PtrConst;
   typedef Simone::Ptr<Location> Ptr;
 
+  typedef int Offset;
   enum Segment { kStack, kData };
 
-  // Segment _seg, int _offset, 
-  static Ptr LocationNew() {
-    return new Location();
-  }
-
-protected:
-  Location() {}
 
 private:
+  Location(Segment _segment, Offset _offset, const string& _name);
+
+  /* data members */
+  Segment segment_;
+  Offset offset_;
+  string name_;  
 
   /* disallowed operations */
   Location(const Location&);
   void operator=(const Location&);
 };
 
-inline ostream& operator<<(ostream& out, const Location& _loc) {
+// TODO: implement
+inline ostream&
+operator<<(ostream& out, const Location& _loc) {
   return out;
 }
 

@@ -45,7 +45,7 @@ public:
   Simone::Ptr<const ClassDecl> classDecl() const;
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) { (*_functor)(this); }
+  void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 protected:
   class NamedTypeEqualityFunctor : public Type::TypeEqualityFunctor {

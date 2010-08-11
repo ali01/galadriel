@@ -22,16 +22,19 @@ public:
     return new IntConstExpr(loc, val);
   }
 
-  IntConstExpr(yyltype loc, int val) : SingleAddrExpr(loc) { value = val; }
+  IntConstExpr(yyltype loc, int _val) : SingleAddrExpr(loc) { value_ = _val; }
+
+  /* attribute member functions */
+  int value() const { return value_; }
 
   Simone::Ptr<const Type> type() const;
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) { (*_functor)(this); }
+  void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:  
   /* data members */
-  int value;
+  int value_;
 };
 
 #endif

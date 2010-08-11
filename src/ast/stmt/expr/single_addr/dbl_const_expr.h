@@ -27,7 +27,7 @@ public:
   Simone::Ptr<const Type> type() const;
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) { (*_functor)(this); }
+  void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 protected:
   /* data members */

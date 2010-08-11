@@ -8,7 +8,7 @@
 SemanticAnalyser::SemanticAnalyser(Program::Ptr _prog) {
   sm_builder_ = ScopeStackBuilder::ScopeStackBuilderNew(_prog);
   node_functor_ = NodeFunctor::NodeFunctorNew();
-  _prog->apply(node_functor_);
+  node_functor_(_prog);
 }
 
 /* top level */
@@ -453,8 +453,10 @@ SemanticAnalyser::NodeFunctor::operator()(ArrayType *nd) {
 
 void
 SemanticAnalyser::NodeFunctor::process_node(Node::Ptr _node) {
-  if (_node)
-    _node->apply(this);
+  if (_node) {
+    NodeFunctor::Ptr this_functor = this;
+    this_functor(_node);
+  }
 }
 
 

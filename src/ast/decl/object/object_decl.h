@@ -42,7 +42,7 @@ public:
   void scopeIs(Simone::Ptr<Scope> _s);
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) { (*_functor)(this); }
+  void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 protected:
   ObjectDecl(Simone::Ptr<Identifier> _name, Deque<Decl::Ptr>::Ptr _members);

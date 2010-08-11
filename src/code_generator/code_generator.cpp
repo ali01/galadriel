@@ -5,12 +5,14 @@
 #include <utility.h> // TODO
 
 /* local includes */
-#include "tac_emit_functor.h"
+#include "instruction_includes.h"
+#include "location.h"
 #include "mips_emit_functor.h"
+#include "tac_emit_functor.h"
 
 CodeGenerator::CodeGenerator(Simone::Ptr<Program> _prog) {
   node_functor_ = NodeFunctor::NodeFunctorNew();
-  _prog->apply(node_functor_);
+  node_functor_(_prog);
 }
 
 CodeGenerator::NodeFunctor::NodeFunctor() {
@@ -223,6 +225,13 @@ CodeGenerator::NodeFunctor::operator()(MethodCallExpr *nd) {
 
 /* stmt/expr/single_addr */
 void
+CodeGenerator::NodeFunctor::operator()(IntConstExpr *nd) {
+  // TODO: resolve NULL
+  // LoadIntConst::Ptr load_i = LoadIntConst::LoadIntConstNew(NULL, nd->value());
+  // emit_functor_(load_i);
+}
+
+void
 CodeGenerator::NodeFunctor::operator()(NewExpr *nd) {
   
 }
@@ -314,6 +323,8 @@ CodeGenerator::NodeFunctor::operator()(ArrayType *nd) {
 
 void
 CodeGenerator::NodeFunctor::process_node(Node::Ptr _node) {
-  if (_node)
-    _node->apply(this);
+  if (_node) {
+    NodeFunctor::Ptr this_functor = this;
+    this_functor(_node);
+  }
 }

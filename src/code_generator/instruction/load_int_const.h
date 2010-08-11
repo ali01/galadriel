@@ -19,7 +19,7 @@ public:
   int value() const { return value_; }
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) { (*_functor)(this); }
+  void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
   LoadIntConst(Simone::Ptr<const Location> _loc, int _val);
@@ -32,6 +32,5 @@ private:
   LoadIntConst(const LoadIntConst&);
   void operator=(const LoadIntConst&);
 };
-
 
 #endif

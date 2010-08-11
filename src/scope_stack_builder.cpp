@@ -8,7 +8,7 @@ ScopeStackBuilder::ScopeStackBuilder(Program::Ptr _program) {
   scope_stack_ = ScopeStack::ScopeStackNew();
 
   node_functor_ = NodeFunctor::NodeFunctorNew(scope_stack_);
-  _program->apply(node_functor_);
+  node_functor_(_program);
 }
 
 void
@@ -391,6 +391,7 @@ init_node_scope(Node::Ptr _node, Node::Ptr _parent, Scope::Ptr _scope) {
     _node->scopeIs(_scope);
 
     /* recursively apply this functor to node object */
-    _node->apply(this);
+    NodeFunctor::Ptr this_functor = this;
+    this_functor(_node);
   }
 }

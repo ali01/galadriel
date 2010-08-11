@@ -26,7 +26,7 @@ ObjectDecl::PtrConst
 MethodCallExpr::baseDecl() const {
   Type::PtrConst base_type_const = base_->type();
   Type::Ptr base_type = const_cast<Type*>(base_type_const.ptr());
-  base_type->apply(base_decl_functor_);
+  base_decl_functor_(base_type);
   return base_decl_functor_->baseDecl();
 }
 

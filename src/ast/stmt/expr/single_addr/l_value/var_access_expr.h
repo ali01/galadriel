@@ -34,7 +34,7 @@ public:
   Simone::Ptr<const VarDecl> varDecl() const;
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) { (*_functor)(this); }
+  void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
   Simone::Ptr<Identifier> identifier_;

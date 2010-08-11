@@ -34,7 +34,7 @@ public:
   arg_iterator argsEnd() { return args_->end(); }
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) { (*_functor)(this); }
+  void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
   /* data members */

@@ -44,7 +44,7 @@ public:
   op_type operatorType() const { return op_type_; }
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) { (*_functor)(this); }
+  void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 protected:
   const op_type op_type_;

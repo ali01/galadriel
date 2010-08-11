@@ -13,7 +13,7 @@ Scope::declIs(Decl::Ptr _decl) {
   Decl::PtrConst local_decl = decl(id, false);
   if (local_decl == NULL) {
     decls_[id] = _decl;
-    _decl->apply(node_functor_);
+    node_functor_(_decl);
   } else {
     Error::DeclConflict(_decl, local_decl);
   }

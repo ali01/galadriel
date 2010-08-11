@@ -29,7 +29,7 @@ public:
   Simone::Ptr<ClassDecl> builtinClassDecl();
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) { (*_functor)(this); }
+  void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
   /* built-in array class identifier */
   static Simone::Ptr<Identifier> kArrayClassIdentifier;

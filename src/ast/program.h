@@ -35,7 +35,7 @@ public:
   void declInsert(Decl::Ptr _decl) { decls_->pushBack(_decl); }
 
   /* support for double dispatch */
-  void apply(Functor::Ptr _functor) { (*_functor)(this); }
+  void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 protected:
   Program(Deque<Decl::Ptr>::Ptr _decl_list);
