@@ -114,7 +114,6 @@ private:
       NodeFunctor() {}
 
       /* member functions */
-
       void process_node(Node::Ptr _nd);
 
       bool inheritance_contains_cycles(Simone::Ptr<ClassDecl> nd,
@@ -129,6 +128,10 @@ private:
   /* data members */
   Simone::Ptr<ScopeStackBuilder> sm_builder_;
   NodeFunctor::Ptr node_functor_;
+  
+  /* operations disallowed */
+  SemanticAnalyser(const SemanticAnalyser&);
+  void operator=(const SemanticAnalyser&);
 };
 
 #endif
