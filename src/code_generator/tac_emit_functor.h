@@ -1,13 +1,22 @@
 #ifndef TAC_EMITTER_H_HKKQ4WIR
 #define TAC_EMITTER_H_HKKQ4WIR
 
-#include "instruction/instruction.h"
+/* stl includes */
+#include <string>
+using std::string;
+
+/* instruction includes */
 #include "instruction_fwd_declarations.h"
+#include "instruction/instruction.h"
+
 
 class TACEmitFunctor : public In::Instruction::Functor {
 public:
   typedef Simone::Ptr<const TACEmitFunctor> PtrConst;
   typedef Simone::Ptr<TACEmitFunctor> Ptr;
+
+  static const string kIndent;
+  static const string kDelimit;
 
   static Ptr TACEmitFunctorNew() {
     return new TACEmitFunctor();
@@ -26,11 +35,11 @@ public:
   void operator()(In::BeginFunc *);
   void operator()(In::EndFunc *);
   void operator()(In::Return *);
-  // void operator()(In::PushParam *);
-  // void operator()(In::PopParams *);
+  void operator()(In::PushParam *);
+  void operator()(In::PopParams *);
   void operator()(In::LCall *);
-  // void operator()(In::ACall *);
-  // void operator()(In::VTable *);
+  void operator()(In::ACall *);
+  void operator()(In::VTable *);
 
 private:
   TACEmitFunctor() {}
