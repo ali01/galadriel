@@ -8,6 +8,8 @@
 /* local includes */
 #include "../instruction_fwd_declarations.h"
 
+namespace In {
+
 class Instruction : public Simone::PtrInterface<Instruction> {
 public:
   typedef Simone::Ptr<const Instruction> PtrConst;
@@ -54,5 +56,7 @@ private:
   Instruction(const Instruction&);
   void operator=(const Instruction&);
 };
+
+} /* end of namespace In */
 
 #endif

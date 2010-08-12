@@ -54,8 +54,9 @@ CodeGenerator::NodeFunctor::operator()(VarDecl *nd) {
 void
 CodeGenerator::NodeFunctor::operator()(FnDecl *nd) {
   Identifier::Ptr fn_id = nd->identifier();
-  Label::Ptr label_i = Label::LabelNew(fn_id); // TODO: think about identifier
-  BeginFunc::Ptr begin_func_i  = BeginFunc::BeginFuncNew(label_i, 0); // TODO: 0
+  In::Label::Ptr label_i = In::Label::LabelNew(fn_id);
+  // TODO: resolve 0
+  In::BeginFunc::Ptr begin_func_i = In::BeginFunc::BeginFuncNew(label_i, 0); 
 
   code_emit_functor_(begin_func_i);
 
@@ -196,6 +197,10 @@ CodeGenerator::NodeFunctor::operator()(AssignExpr *nd) {
 
   Expr::Ptr rhs = nd->right();
   process_node(rhs);
+
+  // TODO: resolve NULLs
+  In::Assign::Ptr assign_i = In::Assign::AssignNew(NULL, NULL);
+  code_emit_functor_(assign_i);
 }
 
 
@@ -216,8 +221,9 @@ CodeGenerator::NodeFunctor::operator()(CallExpr *nd) {
 void
 CodeGenerator::NodeFunctor::operator()(FunctionCallExpr *nd) {
   Identifier::Ptr fn_id = nd->identifier();
-  Label::Ptr label_i = Label::LabelNew(fn_id);
-  LCall::Ptr l_call_i = LCall::LCallNew(label_i, NULL); // TODO: resolve NULL
+  In::Label::Ptr label_i = In::Label::LabelNew(fn_id);
+  // TODO: resolve NULL
+  In::LCall::Ptr l_call_i = In::LCall::LCallNew(label_i, NULL);
 
   code_emit_functor_(l_call_i);
 
@@ -239,8 +245,10 @@ CodeGenerator::NodeFunctor::operator()(MethodCallExpr *nd) {
 void
 CodeGenerator::NodeFunctor::operator()(IntConstExpr *nd) {
   // TODO: resolve NULL
-  LoadIntConst::Ptr load_i;
-  load_i = LoadIntConst::LoadIntConstNew(NULL, nd->value());
+
+  In::LoadIntConst::Ptr load_i;
+  load_i = In::LoadIntConst::LoadIntConstNew(NULL, nd->value());
+
   code_emit_functor_(load_i);
 }
 

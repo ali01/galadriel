@@ -4,7 +4,7 @@
 #include "instruction/instruction.h"
 #include "instruction_fwd_declarations.h"
 
-class TACEmitFunctor : public Instruction::Functor {
+class TACEmitFunctor : public In::Instruction::Functor {
 public:
   typedef Simone::Ptr<const TACEmitFunctor> PtrConst;
   typedef Simone::Ptr<TACEmitFunctor> Ptr;
@@ -13,24 +13,24 @@ public:
     return new TACEmitFunctor();
   }
 
-  void operator()(LoadIntConst *);
-  void operator()(LoadStrConst *);
-  // void operator()(LoadLabel *);
-  // void operator()(Assign *);
-  // void operator()(Load *);
-  // void operator()(Store *);
-  // void operator()(BinaryOp *);
-  void operator()(Label *);
-  // void operator()(Goto *);
-  // void operator()(IfZ *);
-  void operator()(BeginFunc *);
-  // void operator()(EndFunc *);
-  // void operator()(Return *);
-  // void operator()(PushParam *);
-  // void operator()(PopParams *);
-  void operator()(LCall *);
-  // void operator()(ACall *);
-  // void operator()(VTable *);
+  void operator()(In::LoadIntConst *);
+  void operator()(In::LoadStrConst *);
+  void operator()(In::LoadLabel *);
+  void operator()(In::Load *);
+  void operator()(In::Assign *);
+  void operator()(In::Store *);
+  void operator()(In::BinaryOp *);
+  void operator()(In::Label *);
+  void operator()(In::Goto *);
+  void operator()(In::IfZ *);
+  void operator()(In::BeginFunc *);
+  // void operator()(In::EndFunc *);
+  // void operator()(In::Return *);
+  // void operator()(In::PushParam *);
+  // void operator()(In::PopParams *);
+  void operator()(In::LCall *);
+  // void operator()(In::ACall *);
+  // void operator()(In::VTable *);
 
 private:
   TACEmitFunctor() {}

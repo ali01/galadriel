@@ -19,12 +19,16 @@ public:
   /* attribute member functions */
   const string& name() const { return name_; }
 
+  Offset secondaryOffset() const { return secondary_offset_; }
+  void secondaryOffsetIs(Offset _off) { secondary_offset_ = _off; }
+
 private:
   Location(Segment _segment, Offset _offset, const string& _name);
 
   /* data members */
   Segment segment_;
   Offset offset_;
+  Offset secondary_offset_;
   string name_;  
 
   /* disallowed operations */

@@ -2,6 +2,8 @@
 
 #include "../location.h"
 
+namespace In {
+
 LoadStrConst::Ptr
 LoadStrConst::LoadStrConstNew(Simone::Ptr<Location> _location,
                               const string& _value) {
@@ -26,3 +28,5 @@ Location::PtrConst
 LoadStrConst::location() const {
   return location_;
 }
+
+} /* end of namespace In */

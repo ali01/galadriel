@@ -13,6 +13,8 @@ using std::ostream;
 /* forward declarations */
 class Location;
 
+namespace In {
+
 class LoadStrConst : public Instruction {
 public:
   typedef Simone::Ptr<const LoadStrConst> PtrConst;
@@ -43,5 +45,7 @@ private:
   LoadStrConst(const LoadStrConst&);
   void operator=(const LoadStrConst&);
 };
+
+} /* end of namespace In */
 
 #endif

@@ -3,6 +3,8 @@
 /* code_generator includes */
 #include "../location.h"
 
+namespace In {
+
 LoadIntConst::Ptr
 LoadIntConst::LoadIntConstNew(Location::PtrConst _loc, int _val) {
   return new LoadIntConst(_loc, _val);
@@ -17,3 +19,5 @@ Location::PtrConst
 LoadIntConst::location() const {
   return location_;
 }
+
+} /* end of namespace In */

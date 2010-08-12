@@ -1,6 +1,8 @@
 #ifndef INSTRUCTION_FWD_DECLARATIONS_H_UTC7A43Q
 #define INSTRUCTION_FWD_DECLARATIONS_H_UTC7A43Q
 
+namespace In {
+
 class Instruction;
 class LoadIntConst;
 class LoadStrConst;
@@ -20,5 +22,7 @@ class PopParams;
 class LCall;
 class ACall;
 class VTable;
+
+} /* end of namespace In */
 
 #endif

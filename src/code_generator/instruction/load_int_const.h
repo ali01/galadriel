@@ -7,6 +7,8 @@
 /* forward declarations */
 class Location;
 
+namespace In {
+
 class LoadIntConst : public Instruction {
 public:
   typedef Simone::Ptr<const LoadIntConst> PtrConst;
@@ -32,5 +34,7 @@ private:
   LoadIntConst(const LoadIntConst&);
   void operator=(const LoadIntConst&);
 };
+
+} /* end of namespace In */
 
 #endif

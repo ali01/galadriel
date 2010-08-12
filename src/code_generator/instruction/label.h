@@ -13,6 +13,8 @@ using std::iostream;
 /* forward declarations */
 class Identifier;
 
+namespace In {
+
 class Label : public Instruction {
 public:
   typedef Simone::Ptr<const Label> PtrConst;
@@ -45,5 +47,7 @@ inline ostream&
 operator<<(ostream& out, const Label& _label) {
   return out << _label.label_;
 }
+
+} /* end of namespace In */
 
 #endif

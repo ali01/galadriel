@@ -5,8 +5,13 @@
 #include "instruction.h"
 
 /* forward declarations */
-class Label;
 class Location;
+
+
+namespace In {
+
+/* forward declarations */
+class Label;
 
 class LCall : public Instruction {
 public:
@@ -38,5 +43,7 @@ private:
   LCall(const LCall&);
   void operator=(const LCall&);
 };
+
+} /* end of namespace In */
 
 #endif

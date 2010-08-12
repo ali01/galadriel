@@ -4,6 +4,8 @@
 /* local includes */
 #include "instruction.h"
 
+namespace In {
+
 /* forward declarations */
 class Label;
 
@@ -37,5 +39,7 @@ private:
   BeginFunc(const BeginFunc&);
   void operator=(const BeginFunc&);
 };
+
+} /* end of namespace In */
 
 #endif

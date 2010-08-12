@@ -21,7 +21,7 @@ public:
   typedef Simone::Ptr<const Operator> PtrConst;
   typedef Simone::Ptr<Operator> Ptr;
 
-  enum op_type {
+  enum OpCode {
     /* arithmetic */
     kAdd, kSubtract, kMultiply, kDivide, kModulo,
 
@@ -35,19 +35,19 @@ public:
     kAssign
   };
 
-  static Ptr OperatorNew(yyltype loc, op_type _op_type) {
-    return new Operator(loc, _op_type);
+  static Ptr OperatorNew(yyltype loc, OpCode _OpCode) {
+    return new Operator(loc, _OpCode);
   }
 
-  Operator(yyltype loc, op_type _op_type);
+  Operator(yyltype loc, OpCode _OpCode);
 
-  op_type operatorType() const { return op_type_; }
+  OpCode operatorType() const { return OpCode_; }
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 protected:
-  const op_type op_type_;
+  const OpCode OpCode_;
 };
 
 /* forward declarations */

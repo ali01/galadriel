@@ -1,5 +1,5 @@
-#ifndef LOAD_H_DVXHXZ1T
-#define LOAD_H_DVXHXZ1T
+#ifndef STORE_H_YSIVAGVJ
+#define STORE_H_YSIVAGVJ
 
 /* local includes */
 #include "instruction.h"
@@ -9,13 +9,13 @@ class Location;
 
 namespace In {
 
-class Load : public Instruction {
+class Store : public Instruction {
 public:
-  typedef Simone::Ptr<const Load> PtrConst;
-  typedef Simone::Ptr<Load> Ptr;
+  typedef Simone::Ptr<const Store> PtrConst;
+  typedef Simone::Ptr<Store> Ptr;
 
-  static Ptr LoadNew(Simone::Ptr<Location> _src,
-                     Simone::Ptr<Location> _dst);
+  static Ptr StoreNew(Simone::Ptr<Location> _src,
+                      Simone::Ptr<Location> _dst);
 
   /* attribute member functions */
   Simone::Ptr<Location> src();
@@ -28,17 +28,16 @@ public:
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
-  Load(Simone::Ptr<Location> _src, Simone::Ptr<Location> _dst);
+  Store(Simone::Ptr<Location> _src, Simone::Ptr<Location> _dst);
 
   /* data members */
   Simone::Ptr<Location> src_;
   Simone::Ptr<Location> dst_;
 
   /* operations disallowed */
-  Load(const Load&);
-  void operator=(const Load&);
+  Store(const Store&);
+  void operator=(const Store&);
 };
-
 
 } /* end of namespace In */
 

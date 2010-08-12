@@ -6,6 +6,8 @@
 /* local includes */
 #include "label.h"
 
+namespace In {
+
 const BeginFunc::FrameSize BeginFunc::kInvalidFrameSize =
   std::numeric_limits<BeginFunc::FrameSize>::max();
 
@@ -29,3 +31,5 @@ Label::PtrConst
 BeginFunc::label() const {
   return label_;
 }
+
+} /* end of namespace In */

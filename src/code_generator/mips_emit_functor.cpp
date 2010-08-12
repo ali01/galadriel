@@ -8,6 +8,6 @@ using std::cout;
 #include "location.h"
 
 void
-MIPSEmitFunctor::operator()(LoadIntConst *nd) {
+MIPSEmitFunctor::operator()(In::LoadIntConst *nd) {
   
 }

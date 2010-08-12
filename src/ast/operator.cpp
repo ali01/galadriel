@@ -9,7 +9,7 @@
 /* ast includes */
 #include "node.h"
 
-Operator::Operator(yyltype loc, op_type _op) : Node(loc), op_type_(_op) {}
+Operator::Operator(yyltype loc, OpCode _op) : Node(loc), OpCode_(_op) {}
 
 ostream&
 operator<<(ostream& out, const Operator& _op) {

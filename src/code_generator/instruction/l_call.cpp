@@ -6,6 +6,8 @@
 /* code_generator includes */
 #include "../location.h"
 
+namespace In {
+
 LCall::Ptr
 LCall::LCallNew(Label::Ptr _label, Location::Ptr _return_loc) {
   return new LCall(_label, _return_loc);
@@ -36,3 +38,5 @@ Location::PtrConst
 LCall::returnLocation() const {
   return return_loc_;
 }
+
+} /* end of namespace In */
