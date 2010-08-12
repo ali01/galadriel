@@ -89,6 +89,19 @@ TACEmitFunctor::operator()(In::IfZ *in) {
 }
 
 void
+TACEmitFunctor::operator()(In::EndFunc *in) {
+  cout << "EndFunc";
+}
+
+void
+TACEmitFunctor::operator()(In::Return *in) {
+  Location::PtrConst ret_loc = in->returnLocation();
+  cout << "Return ";
+  if (ret_loc)
+    cout << ret_loc->name();
+}
+
+void
 TACEmitFunctor::operator()(In::BeginFunc *in) {
   /* emitting label */
   In::Label::Ptr label = in->label();

@@ -24,8 +24,8 @@ public:
   void operator()(In::Goto *);
   void operator()(In::IfZ *);
   void operator()(In::BeginFunc *);
-  // void operator()(In::EndFunc *);
-  // void operator()(In::Return *);
+  void operator()(In::EndFunc *);
+  void operator()(In::Return *);
   // void operator()(In::PushParam *);
   // void operator()(In::PopParams *);
   void operator()(In::LCall *);
