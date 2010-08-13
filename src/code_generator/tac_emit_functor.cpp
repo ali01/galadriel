@@ -2,9 +2,12 @@
 
 /* stl includes */
 #include <string>
+#include <sstream>
 #include <iostream>
-using std::string;
 using std::cout;
+using std::ostringstream;
+using std::string;
+
 
 #include "location.h"
 #include "instruction_includes.h"
@@ -14,175 +17,230 @@ const string TACEmitFunctor::kDelimit = ";\n";
 
 void
 TACEmitFunctor::operator()(In::LoadIntConst *in) {
+  ostringstream s;
+
   Location::PtrConst loc = in->location();
-  cout << kIndent<< loc->name() << " = " << in->value() << kDelimit;
+  s << loc->name() << " = " << in->value();
+
+  emit(s.str());
 }
 
 void
 TACEmitFunctor::operator()(In::LoadStrConst *in) {
+  ostringstream s;
+
   Location::PtrConst loc = in->location();
-  cout << kIndent << loc->name() << " = \"" << in->value() << "\"" << kDelimit;
+  s << loc->name() << " = \"" << in->value() << "\"";
+
+  emit(s.str());
 }
 
 void
 TACEmitFunctor::operator()(In::LoadLabel *in) {
+  ostringstream s;
+
   Location::PtrConst loc = in->location();
-  cout << kIndent << loc->name() << " = " << *in->label() << kDelimit;
+  s << loc->name() << " = " << *in->label();
+
+  emit(s.str());
 }
 
 void
 TACEmitFunctor::operator()(In::Load *in) {
+  ostringstream s;
+
   Location::PtrConst src = in->src();
   Location::PtrConst dst = in->dst();
 
-  cout << kIndent;
-  cout << dst->name() << " = " << "*(";
+  s << dst->name() << " = " << "*(";
 
   if (src->secondaryOffset() != 0) {
-    cout << src->name() << " + " << src->secondaryOffset() << ")";
+    s << src->name() << " + " << src->secondaryOffset() << ")";
   } else {
-    cout << src->name() << ")";
+    s << src->name() << ")";
   }
 
-  cout << kDelimit;
+  emit(s.str());
 }
 
 void
 TACEmitFunctor::operator()(In::Assign *in) {
+  ostringstream s;
+
   Location::PtrConst src = in->src();
   Location::PtrConst dst = in->dst();
-  cout << kIndent << dst->name() << " = " << src->name() << kDelimit;
+  s << dst->name() << " = " << src->name();
+
+  emit(s.str());
 }
 
 void
 TACEmitFunctor::operator()(In::Store *in) {
+  ostringstream s;
+
   Location::PtrConst src = in->src();
   Location::PtrConst dst = in->dst();
 
-  cout << kIndent;
-
   if (src->secondaryOffset() != 0) {
-    cout << "*(" << dst->name() << " + " << src->secondaryOffset() << ")";
+    s << "*(" << dst->name() << " + " << src->secondaryOffset() << ")";
   } else {
-    cout << "*(" << dst->name() << ")";
+    s << "*(" << dst->name() << ")";
   }
 
-  cout << " = " << src->name() << kDelimit;
+  s << " = " << src->name();
+
+  emit(s.str());
 }
 
 void
 TACEmitFunctor::operator()(In::BinaryOp *in) {
+  ostringstream s;
+
   Location::PtrConst dst = in->dst();
   Location::PtrConst lhs = in->lhs();
   Location::PtrConst rhs = in->rhs();
 
-  cout << kIndent;
-  cout << dst->name() << " = ";
-  cout << lhs->name() << " " << in->op_str() << " " << rhs->name();
-  cout << kDelimit;
+  s << dst->name() << " = ";
+  s << lhs->name() << " " << in->op_str() << " " << rhs->name();
+
+  emit(s.str());
 }
 
 void
 TACEmitFunctor::operator()(In::Label *in) {
-  cout << *in << ":\n";
+  ostringstream s;
+  s << *in << ":\n";
+
+  emit(s.str());
 }
 
 void
 TACEmitFunctor::operator()(In::Goto *in) {
-  cout << kIndent << "Goto " << *in->label() << kDelimit;
+  ostringstream s;
+  s << "Goto " << *in->label();
+
+  emit(s.str());
 }
 
 void
 TACEmitFunctor::operator()(In::IfZ *in) {
+  ostringstream s;
   Location::PtrConst test = in->test();
 
-  cout << kIndent;
-  cout << "IfZ " << test->name() << " Goto " << *in->label() << kDelimit;
+  s << "IfZ " << test->name() << " Goto " << *in->label();
+
+  emit(s.str());
 }
 
 void
 TACEmitFunctor::operator()(In::BeginFunc *in) {
+  ostringstream s;
+
   /* emitting label */
   In::Label::Ptr label = in->label();
   Functor::Ptr this_functor = this;
   this_functor(label);
 
-  cout << kIndent;
-
   /* emitting BeginFunc statement */
   In::BeginFunc::FrameSize f_size = in->frameSize();
   if (f_size != In::BeginFunc::kInvalidFrameSize) {
-    cout << "BeginFunc " << f_size;
+    s << "BeginFunc " << f_size;
   } else {
-    cout << "BeginFunc (unassigned)";
+    s << "BeginFunc (unassigned)";
   }
 
-  cout << kDelimit;
+  emit(s.str());
 }
 
 void
 TACEmitFunctor::operator()(In::EndFunc *in) {
-  cout << kIndent << "EndFunc" << kDelimit;
+  ostringstream s;
+  s << "EndFunc";
+
+  emit(s.str());
 }
 
 void
 TACEmitFunctor::operator()(In::Return *in) {
+  ostringstream s;
   Location::PtrConst ret_loc = in->returnLocation();
-  cout << kIndent << "Return";
+  s << "Return";
 
   if (ret_loc)
-    cout << " " << ret_loc->name();
+    s << " " << ret_loc->name();
 
-  cout << kDelimit;
+  emit(s.str());
 }
 
 void
 TACEmitFunctor::operator()(In::PushParam *in) {
+  ostringstream s;
   Location::PtrConst param_loc = in->paramLocation();
-  cout << kIndent << "PushParam " << param_loc->name() << kDelimit;
+  s << "PushParam " << param_loc->name();
+
+  emit(s.str());
 }
 
 void
 TACEmitFunctor::operator()(In::PopParams *in) {
-  cout << kIndent << "PopParams " << in->bytes() << kDelimit;
+  ostringstream s;
+  s << "PopParams " << in->bytes();
+
+  emit(s.str());
 }
 
 void
 TACEmitFunctor::operator()(In::LCall *in) {
+  ostringstream s;
+
   Location::PtrConst ret_loc = in->returnLocation();
-
-  cout << kIndent;
-
   if (ret_loc != NULL)
-    cout << ret_loc->name() << " = ";
+    s << ret_loc->name() << " = ";
 
-  cout << *in->label() << kDelimit;
+  s << *in->label();
+
+  emit(s.str());
 }
 
 void
 TACEmitFunctor::operator()(In::ACall *in) {
+  ostringstream s;
+
   Location::PtrConst ret_loc = in->returnLocation();
   Location::PtrConst fn_loc = in->functionLocation();
 
-  cout << kIndent;
-
   if (ret_loc != NULL)
-    cout << ret_loc->name() << " = ";
+    s << ret_loc->name() << " = ";
 
-  cout << fn_loc->name() << kDelimit;
+  s << fn_loc->name();
+
+  emit(s.str());
 }
 
 void
 TACEmitFunctor::operator()(In::VTable *in) {
+  ostringstream s;
+
   In::Label::PtrConst class_label = in->classLabel();
-  cout << kIndent << "VTable " << *class_label << " =\n";
+  s << "VTable " << *class_label << " =\n";
 
   In::Label::PtrConst fn_label;
   In::VTable::const_label_iter it = in->fnLabelsBegin();
   for (; it != in->fnLabelsEnd(); ++it) {
     fn_label = *it;
-    cout << "  " << *fn_label << ",\n";
+    s << "  " << *fn_label << ",\n";
   }
 
-  cout << kDelimit;
+  emit(s.str());
+}
+
+
+/* private interface */
+
+void
+TACEmitFunctor::emit(const string& _in_str) const {
+  if (indent_on_)
+    cout << kIndent;
+
+  cout << _in_str << kDelimit;
 }

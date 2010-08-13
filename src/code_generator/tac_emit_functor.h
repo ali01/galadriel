@@ -22,6 +22,10 @@ public:
     return new TACEmitFunctor();
   }
 
+  bool indentOn() const { return indent_on_; }
+  void indentOnIs(bool _s) { indent_on_ = _s; }
+
+  /* functor operators */
   void operator()(In::LoadIntConst *);
   void operator()(In::LoadStrConst *);
   void operator()(In::LoadLabel *);
@@ -42,7 +46,13 @@ public:
   void operator()(In::VTable *);
 
 private:
-  TACEmitFunctor() {}
+  TACEmitFunctor() : indent_on_(true) {}
+
+  /* private member functions */
+  void emit(const string& _in_str) const;
+
+  /* data members */
+  bool indent_on_;
 
   /* disallowed operations */
   TACEmitFunctor(const TACEmitFunctor&);
