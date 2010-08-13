@@ -26,6 +26,10 @@ public:
 
   static Ptr LabelNew(Simone::Ptr<const Identifier> _id);
 
+  /* attribute member functions */
+  string str() const;
+  const char *c_str() const;
+
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 

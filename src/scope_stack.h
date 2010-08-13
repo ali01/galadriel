@@ -18,14 +18,13 @@ public:
     return new ScopeStack();
   }
 
-  Scope::Ptr scope() const;
   Scope::Ptr scopeNew();
-
   void scopePop();
 
 private:
   ScopeStack() {}
-  
+  Scope::Ptr scope() const;
+
   /* data members */
   Deque<Scope::Ptr> scope_stack_;
 };

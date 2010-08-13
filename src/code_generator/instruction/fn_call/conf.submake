@@ -1,0 +1,10 @@
+DIR_CSE1Q3A9 := code_generator/instruction/fn_call
+SUB_CSE1Q3A9 := 
+
+SRCS += $(wildcard $(DIR_CSE1Q3A9)/*.$(EXT))
+
+MK_CSE1Q3A9 := $(foreach sdir,$(SUB_CSE1Q3A9),$(wildcard $(DIR_CSE1Q3A9)/$(sdir)/*.$(SUBDIR_EXT)))
+ifneq ($(MK_CSE1Q3A9),)
+$(info -- including subdirectory makefiles ($(DIR_CSE1Q3A9)): $(MK_CSE1Q3A9)) 
+include $(MK_CSE1Q3A9)
+endif

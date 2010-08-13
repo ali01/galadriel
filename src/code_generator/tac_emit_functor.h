@@ -41,15 +41,17 @@ public:
   void operator()(In::Return *);
   void operator()(In::PushParam *);
   void operator()(In::PopParams *);
+  void operator()(In::VTable *);
+
+  /* void operator()(In::FnCall *); */
   void operator()(In::LCall *);
   void operator()(In::ACall *);
-  void operator()(In::VTable *);
 
 private:
   TACEmitFunctor() : indent_on_(true) {}
 
   /* private member functions */
-  void emit(const string& _in_str) const;
+  void emit(const string& _in_str, bool _supress_indent=false) const;
 
   /* data members */
   bool indent_on_;

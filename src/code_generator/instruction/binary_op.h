@@ -36,6 +36,7 @@ public:
 
   /* attribute member functions */
   string op_str() const;
+  OpCode op_code() const { return op_code_; }
 
   Simone::Ptr<Location> dst();
   Simone::Ptr<const Location> dst() const;

@@ -39,7 +39,6 @@ private:
   void operator=(const Load&);
 };
 
-
 } /* end of namespace In */
 
 #endif

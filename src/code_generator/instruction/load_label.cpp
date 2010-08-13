@@ -14,19 +14,19 @@ LoadLabel::LoadLabelNew(Location::Ptr _loc, Label::Ptr _label) {
 }
 
 LoadLabel::LoadLabel(Location::Ptr _loc, Label::Ptr _label) :
-  location_(_loc), label_(_label)
+  dst_(_loc), label_(_label)
 {
   assert(_loc && _label);
 }
 
 Location::Ptr
-LoadLabel::location() {
-  return location_;
+LoadLabel::dst() {
+  return dst_;
 }
 
 Location::PtrConst
-LoadLabel::location() const {
-  return location_;
+LoadLabel::dst() const {
+  return dst_;
 }
 
 Label::Ptr

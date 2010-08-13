@@ -1,6 +1,7 @@
 #ifndef INSTRUCTIONS_H_T6CHSAC4
 #define INSTRUCTIONS_H_T6CHSAC4
 
+/* top level */
 #include "instruction/load_int_const.h"
 #include "instruction/load_str_const.h"
 #include "instruction/load_label.h"
@@ -16,8 +17,10 @@
 #include "instruction/return.h"
 #include "instruction/push_param.h"
 #include "instruction/pop_params.h"
-#include "instruction/l_call.h"
-#include "instruction/a_call.h"
 #include "instruction/v_table.h"
+
+/* fn_call */
+#include "instruction/fn_call/l_call.h"
+#include "instruction/fn_call/a_call.h"
 
 #endif

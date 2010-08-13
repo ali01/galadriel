@@ -79,49 +79,44 @@ public:
   decl_iter declsEnd() { return decls_.end(); }
 
 
+
+
   /* -- attribute member functions -- */
 
-  void declIs(Decl::Ptr _decl);
-  void baseScopeIs(Scope::PtrConst _scope);
-
-
-  /* const interface */
-
+  Decl::Ptr decl(Identifier::PtrConst _id, bool recursive=true);
   Decl::PtrConst decl(Identifier::PtrConst _id, bool recursive=true) const;
 
+
+  VarDecl::Ptr varDecl(Identifier::PtrConst _id, bool recursive=true);
   VarDecl::PtrConst varDecl(Identifier::PtrConst _id,
                             bool recursive=true) const;
 
+
+  FnDecl::Ptr fnDecl(Identifier::PtrConst _id, bool recursive=true);
   FnDecl::PtrConst fnDecl(Identifier::PtrConst _id, bool recursive=true) const;
 
+
+  ObjectDecl::Ptr objectDecl(Identifier::PtrConst _id, bool recursive=true);
   ObjectDecl::PtrConst objectDecl(Identifier::PtrConst _id,
                                   bool recursive=true) const;
 
+
+  ClassDecl::Ptr classDecl(Identifier::PtrConst _id, bool recursive=true);
   ClassDecl::PtrConst classDecl(Identifier::PtrConst _id,
                                 bool recursive=true) const;
 
+
+  InterfaceDecl::Ptr interfaceDecl(Identifier::PtrConst _id, bool rcsv=true);
   InterfaceDecl::PtrConst interfaceDecl(Identifier::PtrConst _id,
                                         bool recursive=true) const;
 
+
   Scope::PtrConst parentScope() const { return parent_scope_; }
-
-
-  /* non-const interface */
-
-  Decl::Ptr decl(Identifier::PtrConst _id, bool recursive=true);
-
-  VarDecl::Ptr varDecl(Identifier::PtrConst _id, bool recursive=true);
-
-  FnDecl::Ptr fnDecl(Identifier::PtrConst _id, bool recursive=true);
-
-  ObjectDecl::Ptr objectDecl(Identifier::PtrConst _id, bool recursive=true);
-
-  ClassDecl::Ptr classDecl(Identifier::PtrConst _id, bool recursive=true);
-
-  InterfaceDecl::Ptr interfaceDecl(Identifier::PtrConst _id,
-                                   bool recursive=true);
-
   Scope::Ptr parentScope() { return parent_scope_; }
+
+
+  void declIs(Decl::Ptr _decl);
+  void baseScopeIs(Scope::PtrConst _scope);
 
 private:
   /* private constructor called by factory constructor in ScopeStack */

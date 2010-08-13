@@ -21,6 +21,7 @@ public:
       typedef Simone::Ptr<Functor> Ptr;
       typedef Simone::Ptr<const Functor> PtrConst;
 
+      /* top level */
       virtual void operator()(LoadIntConst *) {}
       virtual void operator()(LoadStrConst *) {}
       virtual void operator()(LoadLabel *) {}
@@ -36,9 +37,12 @@ public:
       virtual void operator()(Return *) {}
       virtual void operator()(PushParam *) {}
       virtual void operator()(PopParams *) {}
+      virtual void operator()(VTable *) {}
+
+      /* fn_call */
+      virtual void operator()(FnCall *) { ABORT(); }
       virtual void operator()(LCall *) {}
       virtual void operator()(ACall *) {}
-      virtual void operator()(VTable *) {}
   };
 
   /* support for double dispatch */
@@ -50,7 +54,6 @@ protected:
 
 private:
   /* data members */
-  // TODO: output
 
   /* disallowed operations */
   Instruction(const Instruction&);

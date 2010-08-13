@@ -19,8 +19,8 @@ public:
                           Simone::Ptr<Label> _label);
 
   /* attribute member functions */
-  Simone::Ptr<Location> location();
-  Simone::Ptr<const Location> location() const;
+  Simone::Ptr<Location> dst();
+  Simone::Ptr<const Location> dst() const;
 
   Simone::Ptr<Label> label();
   Simone::Ptr<const Label> label() const;
@@ -32,7 +32,7 @@ private:
   LoadLabel(Simone::Ptr<Location> _loc, Simone::Ptr<Label> _label);
 
   /* data members */
-  Simone::Ptr<Location> location_;
+  Simone::Ptr<Location> dst_;
   Simone::Ptr<Label> label_;
 
   /* operations disallowed */

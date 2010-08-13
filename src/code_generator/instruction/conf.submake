@@ -1,5 +1,5 @@
 DIR_HY0DNKLY := code_generator/instruction
-SUB_HY0DNKLY := 
+SUB_HY0DNKLY := fn_call
 
 SRCS += $(wildcard $(DIR_HY0DNKLY)/*.$(EXT))
 

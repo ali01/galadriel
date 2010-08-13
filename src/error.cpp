@@ -8,6 +8,7 @@
 #include <sstream>
 #include <stdarg.h>
 #include <stdio.h>
+using std::ostringstream;
 
 #include "parser/scanner.h" // for GetLineNumbered
 

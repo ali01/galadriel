@@ -106,7 +106,7 @@ public:
       NodeFunctor(ScopeStack::Ptr _s) : scope_stack_(_s) {}
 
       /* member functions */
-      void init_node_scope(Node::Ptr _nd, Node::Ptr _parent, Scope::Ptr _scope);
+      void process_node(Node::Ptr _nd, Node::Ptr _parent, Scope::Ptr _scope);
 
       /* data members */
       ScopeStack::Ptr scope_stack_;

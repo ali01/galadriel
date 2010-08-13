@@ -3,6 +3,7 @@
 
 namespace In {
 
+/* top level */
 class Instruction;
 class LoadIntConst;
 class LoadStrConst;
@@ -19,9 +20,12 @@ class EndFunc;
 class Return;
 class PushParam;
 class PopParams;
+class VTable;
+
+/* fn_call */
+class FnCall;
 class LCall;
 class ACall;
-class VTable;
 
 } /* end of namespace In */
 

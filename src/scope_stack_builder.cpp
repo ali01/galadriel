@@ -19,19 +19,19 @@ ScopeStackBuilder::NodeFunctor::operator()(Program *nd) {
 
   /* inserting library built-ins */
   ClassDecl::Ptr array_class;
-  array_class = ClassDecl::ClassDeclNew(ArrayType::kArrayClassIdentifier);
-  
   FnDecl::Ptr length_fn;
+
   length_fn = FnDecl::FnDeclNew(ArrayType::kLengthFnIdentifier, Type::kInt);
+  array_class = ClassDecl::ClassDeclNew(ArrayType::kArrayClassIdentifier);
   array_class->memberInsert(length_fn);
 
-  nd->declInsert(array_class);
+  nd->declInsert(array_class); // TODO: mark to avoid code emission of libs
 
   Decl::Ptr decl;
   Program::const_decl_iter it = nd->declsBegin();
   for (; it != nd->declsEnd(); ++it) {
     decl = *it;
-    init_node_scope(decl, nd, scope);
+    process_node(decl, nd, scope);
   }
 
   scope_stack_->scopePop();
@@ -45,7 +45,7 @@ void
 ScopeStackBuilder::NodeFunctor::operator()(Decl *nd) {
   Scope::Ptr scope = nd->scope();
   Identifier::Ptr id = nd->identifier();
-  init_node_scope(id, nd, scope);
+  process_node(id, nd, scope);
 }
 
 void
@@ -53,12 +53,12 @@ ScopeStackBuilder::NodeFunctor::operator()(VarDecl *nd) {
   /* apply this functor to upcasted nd */
   (*this)(static_cast<Decl*>(nd));
 
-  Scope::Ptr scope = scope_stack_->scope();
+  Scope::Ptr scope = nd->scope();
   scope->declIs(nd);
   
   /* initializing scope in type object */
   Type::Ptr type = nd->type();
-  init_node_scope(type, nd, scope);
+  process_node(type, nd, scope);
 }
 
 void
@@ -67,7 +67,7 @@ ScopeStackBuilder::NodeFunctor::operator()(FnDecl *nd) {
   (*this)(static_cast<Decl*>(nd));
 
   /* FnDecl's context scope (i.e. class, interface or global scope) */
-  Scope::Ptr parent_scope = scope_stack_->scope();
+  Scope::Ptr parent_scope = nd->scope();
   parent_scope->declIs(nd);
 
   /* FnDecl's parameter level scope (independent copy) */
@@ -78,14 +78,14 @@ ScopeStackBuilder::NodeFunctor::operator()(FnDecl *nd) {
   FnDecl::const_formal_iter it = nd->formalsBegin();
   for (; it != nd->formalsEnd(); ++it) {
     decl = *it;
-    init_node_scope(decl, nd, scope);
+    process_node(decl, nd, scope);
   }
 
   StmtBlock::Ptr stmt_block = nd->body();
-  init_node_scope(stmt_block, nd, scope);
+  process_node(stmt_block, nd, scope);
 
   Type::Ptr return_type = nd->returnType();
-  init_node_scope(return_type, nd, scope);
+  process_node(return_type, nd, scope);
 
   scope_stack_->scopePop();
 }
@@ -97,7 +97,7 @@ ScopeStackBuilder::NodeFunctor::operator()(ObjectDecl *nd) {
   (*this)(static_cast<Decl*>(nd));
 
   /* Object's context scope (i.e. global scope) */
-  Scope::Ptr parent_scope = scope_stack_->scope();
+  Scope::Ptr parent_scope = nd->scope();
   parent_scope->declIs(nd);
 
   /* Object's own scope (independent copy) */
@@ -108,7 +108,7 @@ ScopeStackBuilder::NodeFunctor::operator()(ObjectDecl *nd) {
   ClassDecl::const_member_iter member_it = nd->membersBegin();
   for (; member_it != nd->membersEnd(); ++member_it) {
     decl = *member_it;
-    init_node_scope(decl, nd, scope);
+    process_node(decl, nd, scope);
   }
 
   scope_stack_->scopePop();
@@ -123,13 +123,13 @@ ScopeStackBuilder::NodeFunctor::operator()(ClassDecl *nd) {
 
   /* initializing scope in base class Type object */
   NamedType::Ptr base = nd->baseClass();
-  init_node_scope(base, nd, scope);
+  process_node(base, nd, scope);
 
   /* initializing scope in interface Type objects */
   ClassDecl::const_intf_iter intf_it = nd->interfacesBegin();
   for (; intf_it != nd->interfacesEnd(); ++intf_it) {
     base = *intf_it;
-    init_node_scope(base, nd, scope);
+    process_node(base, nd, scope);
   }
 }
 
@@ -152,14 +152,14 @@ ScopeStackBuilder::NodeFunctor::operator()(StmtBlock *nd) {
   StmtBlock::const_decl_iter decl_it = nd->declsBegin();
   for (; decl_it != nd->declsEnd(); ++decl_it) {
     var_decl = *decl_it;
-    init_node_scope(var_decl, nd, scope);
+    process_node(var_decl, nd, scope);
   }
 
   Stmt::Ptr stmt;
   StmtBlock::const_stmt_iter stmt_it = nd->stmtsBegin();
   for (; stmt_it != nd->stmtsEnd(); ++stmt_it) {
     stmt = *stmt_it;
-    init_node_scope(stmt, nd, scope);
+    process_node(stmt, nd, scope);
   }
 
   scope_stack_->scopePop();
@@ -173,7 +173,7 @@ ScopeStackBuilder::NodeFunctor::operator()(PrintStmt *nd) {
   PrintStmt::const_arg_iterator it = nd->argsBegin();
   for (; it != nd->argsEnd(); ++it) {
     arg = *it;
-    init_node_scope(arg, nd, scope);
+    process_node(arg, nd, scope);
   }
 }
 
@@ -182,7 +182,7 @@ ScopeStackBuilder::NodeFunctor::operator()(ReturnStmt *nd) {
   Scope::Ptr scope = nd->scope();
   
   Expr::Ptr expr = nd->expr();
-  init_node_scope(expr, nd, scope);
+  process_node(expr, nd, scope);
 }
 
 /* stmt/conditional */
@@ -192,10 +192,10 @@ ScopeStackBuilder::NodeFunctor::operator()(ConditionalStmt *nd) {
   Scope::Ptr scope = nd->scope();
 
   Expr::Ptr test = nd->test();
-  init_node_scope(test, nd, scope);
+  process_node(test, nd, scope);
 
   Stmt::Ptr body = nd->body();
-  init_node_scope(body, nd, scope);
+  process_node(body, nd, scope);
 }
 
 void
@@ -204,7 +204,7 @@ ScopeStackBuilder::NodeFunctor::operator()(IfStmt *nd) {
 
   Scope::Ptr scope = nd->scope();
   Stmt::Ptr else_body = nd->elseBody();
-  init_node_scope(else_body, nd, scope);
+  process_node(else_body, nd, scope);
 }
 
 
@@ -214,13 +214,13 @@ ScopeStackBuilder::NodeFunctor::operator()(ForStmt *nd) {
   Scope::Ptr scope = nd->scope();
 
   Expr::Ptr init = nd->init();
-  init_node_scope(init, nd, scope);
+  process_node(init, nd, scope);
 
   /* applying this functor on upcasted nd */
   (*this)(static_cast<ConditionalStmt*>(nd));
 
   Expr::Ptr step = nd->step();
-  init_node_scope(step, nd, scope);
+  process_node(step, nd, scope);
 }
 
 void
@@ -236,13 +236,13 @@ ScopeStackBuilder::NodeFunctor::operator()(AssignExpr *nd) {
   Scope::Ptr scope = nd->scope();
 
   Expr::Ptr left = nd->left();
-  init_node_scope(left, nd, scope);
+  process_node(left, nd, scope);
 
   Operator::Ptr op = nd->op();
-  init_node_scope(op, nd, scope);
+  process_node(op, nd, scope);
 
   Expr::Ptr right = nd->right();
-  init_node_scope(right, nd, scope);
+  process_node(right, nd, scope);
 }
 
 /* stmt/expr/call_expr */
@@ -251,13 +251,13 @@ ScopeStackBuilder::NodeFunctor::operator()(CallExpr *nd) {
   Scope::Ptr scope = nd->scope();
 
   Identifier::Ptr fn_id = nd->identifier();
-  init_node_scope(fn_id, nd, scope);
+  process_node(fn_id, nd, scope);
 
   Expr::Ptr actual;
   FunctionCallExpr::const_actuals_iter it = nd->actualsBegin();
   for(; it != nd->actualsEnd(); ++it) {
     actual = *it;
-    init_node_scope(actual, nd, scope);
+    process_node(actual, nd, scope);
   }
 }
 
@@ -272,7 +272,7 @@ ScopeStackBuilder::NodeFunctor::operator()(MethodCallExpr *nd) {
   Scope::Ptr scope = nd->scope();
 
   Expr::Ptr base = nd->base();
-  init_node_scope(base, nd, scope);
+  process_node(base, nd, scope);
 
   /* applying this functor on upcasted nd */
   (*this)(static_cast<CallExpr*>(nd));
@@ -285,7 +285,7 @@ ScopeStackBuilder::NodeFunctor::operator()(NewExpr *nd) {
   Scope::Ptr scope = nd->scope();
 
   NamedType::Ptr type = nd->objectType();
-  init_node_scope(type, nd, scope);
+  process_node(type, nd, scope);
 }
 
 void
@@ -293,10 +293,10 @@ ScopeStackBuilder::NodeFunctor::operator()(NewArrayExpr *nd) {
   Scope::Ptr scope = nd->scope();
 
   Expr::Ptr size = nd->size();
-  init_node_scope(size, nd, scope);
+  process_node(size, nd, scope);
 
   ArrayType::Ptr type = nd->arrayType();
-  init_node_scope(type, nd, scope);
+  process_node(type, nd, scope);
 }
 
 
@@ -306,13 +306,13 @@ ScopeStackBuilder::NodeFunctor::operator()(CompoundExpr *nd) {
   Scope::Ptr scope = nd->scope();
 
   Expr::Ptr left = nd->left();
-  init_node_scope(left, nd, scope);
+  process_node(left, nd, scope);
 
   Operator::Ptr op = nd->op();
-  init_node_scope(op, nd, scope);
+  process_node(op, nd, scope);
 
   Expr::Ptr right = nd->right();
-  init_node_scope(right, nd, scope);
+  process_node(right, nd, scope);
 }
 
 void
@@ -337,7 +337,7 @@ void
 ScopeStackBuilder::NodeFunctor::operator()(VarAccessExpr *nd) {
   Scope::Ptr scope = nd->scope();
   Identifier::Ptr id = nd->identifier();
-  init_node_scope(id, nd, scope);
+  process_node(id, nd, scope);
 }
 
 void
@@ -345,10 +345,10 @@ ScopeStackBuilder::NodeFunctor::operator()(ArrayAccessExpr *nd) {
   Scope::Ptr scope = nd->scope();
 
   Expr::Ptr base = nd->base();
-  init_node_scope(base, nd, scope);
+  process_node(base, nd, scope);
 
   Expr::Ptr subscript = nd->subscript();
-  init_node_scope(subscript, nd, scope);
+  process_node(subscript, nd, scope);
 }
 
 void
@@ -356,10 +356,10 @@ ScopeStackBuilder::NodeFunctor::operator()(FieldAccessExpr *nd) {
   Scope::Ptr scope = nd->scope();
 
   Expr::Ptr base = nd->base();
-  init_node_scope(base, nd, scope);
+  process_node(base, nd, scope);
 
   Identifier::Ptr id = nd->field();
-  init_node_scope(id, nd, scope);
+  process_node(id, nd, scope);
 }
 
 
@@ -368,14 +368,14 @@ void
 ScopeStackBuilder::NodeFunctor::operator()(NamedType *nd) {
   Scope::Ptr scope = nd->scope();
   Identifier::Ptr id = nd->identifier();
-  init_node_scope(id, nd, scope);
+  process_node(id, nd, scope);
 }
 
 void
 ScopeStackBuilder::NodeFunctor::operator()(ArrayType *nd) {
   Scope::Ptr scope = nd->scope();
   Type::Ptr elem_type = nd->elemType();
-  init_node_scope(elem_type, nd, scope);
+  process_node(elem_type, nd, scope);
 }
 
 
@@ -383,7 +383,7 @@ ScopeStackBuilder::NodeFunctor::operator()(ArrayType *nd) {
 /* private member functions */
 void
 ScopeStackBuilder::NodeFunctor::
-init_node_scope(Node::Ptr _node, Node::Ptr _parent, Scope::Ptr _scope) {
+process_node(Node::Ptr _node, Node::Ptr _parent, Scope::Ptr _scope) {
   if (_node) {
     _node->parentIs(_parent);
   

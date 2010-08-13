@@ -19,7 +19,7 @@ void
 TACEmitFunctor::operator()(In::LoadIntConst *in) {
   ostringstream s;
 
-  Location::PtrConst loc = in->location();
+  Location::PtrConst loc = in->dst();
   s << loc->name() << " = " << in->value();
 
   emit(s.str());
@@ -29,7 +29,7 @@ void
 TACEmitFunctor::operator()(In::LoadStrConst *in) {
   ostringstream s;
 
-  Location::PtrConst loc = in->location();
+  Location::PtrConst loc = in->dst();
   s << loc->name() << " = \"" << in->value() << "\"";
 
   emit(s.str());
@@ -39,7 +39,7 @@ void
 TACEmitFunctor::operator()(In::LoadLabel *in) {
   ostringstream s;
 
-  Location::PtrConst loc = in->location();
+  Location::PtrConst loc = in->dst();
   s << loc->name() << " = " << *in->label();
 
   emit(s.str());
@@ -111,7 +111,7 @@ TACEmitFunctor::operator()(In::Label *in) {
   ostringstream s;
   s << *in << ":\n";
 
-  emit(s.str());
+  emit(s.str(), true);
 }
 
 void
@@ -238,8 +238,8 @@ TACEmitFunctor::operator()(In::VTable *in) {
 /* private interface */
 
 void
-TACEmitFunctor::emit(const string& _in_str) const {
-  if (indent_on_)
+TACEmitFunctor::emit(const string& _in_str, bool _supress_indent) const {
+  if (indent_on_ == true && _supress_indent == false)
     cout << kIndent;
 
   cout << _in_str << kDelimit;

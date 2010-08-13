@@ -18,9 +18,13 @@ public:
 
   /* attribute member functions */
   const string& name() const { return name_; }
+  Segment segment() const { return segment_; }
+  Offset offset() const { return offset_; }
 
   Offset secondaryOffset() const { return secondary_offset_; }
   void secondaryOffsetIs(Offset _off) { secondary_offset_ = _off; }
+
+  bool operator==(const Location& _other);
 
 private:
   Location(Segment _segment, Offset _offset, const string& _name);
