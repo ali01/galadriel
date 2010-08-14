@@ -2,7 +2,9 @@
 #define CODE_GENERATOR_H_TBNBRHRW
 
 /* simone includes */
+#include <simone/deque.h>
 #include <simone/ptr_interface.h>
+using Simone::Deque;
 
 /* ast includes */
 #include <ast/node.h>
@@ -114,7 +116,8 @@ private:
       /* member functions */
       void process_node(Node::Ptr _nd);
 
-      /* data members */
+      /* data members */      
+      Deque<In::Instruction::Ptr> in_stream_;
       Simone::Ptr<In::Instruction::Functor> code_emit_functor_;
   };
 
