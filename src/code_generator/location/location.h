@@ -8,7 +8,6 @@ using std::ostream;
 /* simone includes */
 #include <simone/ptr_interface.h>
 
-// TODO: think about making Locations immutable
 class Location : public Simone::PtrInterface<Location> {
 public:
   typedef Simone::Ptr<const Location> PtrConst;

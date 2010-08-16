@@ -43,6 +43,8 @@ private:
   };
 
   /* data members */
+  uint32_t temps_;
+  bool var_decls_finalized_;
 
   /* operations disallowed */
   LocalScope(const LocalScope&);
@@ -51,6 +53,5 @@ private:
   /* friends */
   friend class ScopeStack;
 };
-
 
 #endif
