@@ -1,7 +1,13 @@
 #include "scope_stack_builder.h"
 
-#include <scope/scope.h>
+/* scope includes */
+#include <scope/global_scope.h>
+#include <scope/object_scope.h>
+#include <scope/param_scope.h>
+#include <scope/local_scope.h>
 
+/* code_generator includes */
+#include <code_generator/location/tmp_location.h>
 
 
 ScopeStackBuilder::ScopeStackBuilder(Program::Ptr _program) {
@@ -280,6 +286,14 @@ ScopeStackBuilder::NodeFunctor::operator()(MethodCallExpr *nd) {
 
 
 /* stmt/expr/single_addr */
+void
+ScopeStackBuilder::NodeFunctor::operator()(BoolConstExpr *nd) {
+  LocalScope::Ptr local_scope = Ptr::st_cast<LocalScope>(nd->scope());
+  Location::PtrConst loc = local_scope->tempNew();
+  // nd->locationIs(loc); // TODO:
+}
+
+
 void
 ScopeStackBuilder::NodeFunctor::operator()(NewExpr *nd) {
   Scope::Ptr scope = nd->scope();

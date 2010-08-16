@@ -7,12 +7,17 @@
 /* local includes */
 #include "scope.h"
 
+/* forward declarations */
+class TmpLocation;
+
 class LocalScope : public Scope {
 public:
   typedef Simone::Ptr<const LocalScope> PtrConst;
   typedef Simone::Ptr<LocalScope> Ptr;
 
   static const int kLocalsOffset = -2;
+
+  Simone::Ptr<const TmpLocation> tempNew();
 
 private:
   LocalScope(Scope::Ptr _parent_scope);

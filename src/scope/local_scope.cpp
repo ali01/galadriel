@@ -2,9 +2,15 @@
 
 /* code_generator includes */
 #include <code_generator/location/var_location.h>
+#include <code_generator/location/tmp_location.h>
 
 LocalScope::LocalScope(Scope::Ptr _parent_scope) : Scope(_parent_scope) {
   node_functor_ = NodeFunctor::NodeFunctorNew(this);
+}
+
+TmpLocation::PtrConst
+LocalScope::tempNew() {
+  return NULL; // TODO:
 }
 
 void
