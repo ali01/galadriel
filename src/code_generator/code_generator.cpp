@@ -253,7 +253,7 @@ CodeGenerator::NodeFunctor::operator()(AssignExpr *nd) {
   Location::PtrConst lhs_loc = l_val->location();
   Location::PtrConst rhs_loc = rhs->location();
 
-  In::Assign::Ptr assign_i = In::Assign::AssignNew(lhs_loc, rhs_loc);
+  In::Assign::Ptr assign_i = In::Assign::AssignNew(rhs_loc, lhs_loc);
   process_instruction(assign_i);
 }
 

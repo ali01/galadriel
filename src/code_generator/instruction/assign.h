@@ -15,7 +15,8 @@ public:
   typedef Simone::Ptr<const Assign> PtrConst;
   typedef Simone::Ptr<Assign> Ptr;
 
-  static Ptr AssignNew(Simone::Ptr<const Location> _src, Simone::Ptr<const Location> _dst);
+  static Ptr AssignNew(Simone::Ptr<const Location> _src,
+                       Simone::Ptr<const Location> _dst);
 
   /* attribute member functions */
   Simone::Ptr<const Location> src();

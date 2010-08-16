@@ -1,11 +1,19 @@
 #include "tmp_location.h"
+#include <sstream>
+using std::stringstream;
 
 uint32_t TmpLocation::temp_num_ = 0;
 
 TmpLocation::PtrConst
 TmpLocation::TmpLocationNew(Offset _offset) {
-  string name = "_tmp" + temp_num_++;
-  return new TmpLocation(_offset, name);
+  stringstream temp_num_out;
+  temp_num_out << temp_num_;
+
+  string name = "_tmp" + temp_num_out.str();
+  TmpLocation::PtrConst loc = new TmpLocation(_offset, name);
+  temp_num_++;
+
+  return loc;
 }
 
 TmpLocation::TmpLocation(Offset _offset, const string& _name) :
