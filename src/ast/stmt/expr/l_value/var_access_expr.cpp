@@ -36,9 +36,8 @@ VarAccessExpr::type() const {
   Type::PtrConst type = Type::kError;
 
   VarDecl::PtrConst var_decl = this->varDecl();
-  if (var_decl != NULL) {
+  if (var_decl != NULL)
     type = var_decl->type();
-  }
 
   return type;
 }
