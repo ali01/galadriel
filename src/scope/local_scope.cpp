@@ -22,6 +22,11 @@ LocalScope::tempNew() {
   return loc;
 }
 
+size_t
+LocalScope::frameSize() const {
+  return this->varDeclCount() + temps_;
+}
+
 void
 LocalScope::NodeFunctor::operator()(VarDecl *_d) {
   LocalScope::Ptr local_scope = Ptr::st_cast<LocalScope>(scope_);

@@ -1,10 +1,7 @@
 #include "scope_stack_builder.h"
 
 /* scope includes */
-#include <scope/global_scope.h>
-#include <scope/object_scope.h>
-#include <scope/param_scope.h>
-#include <scope/local_scope.h>
+#include <scope_includes.h>
 
 /* code_generator includes */
 #include <code_generator/location/tmp_location.h>

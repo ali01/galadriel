@@ -4,6 +4,9 @@
 #include <ast_includes.h>
 #include <utility.h> // TODO
 
+/* scope includes */
+#include <scope_includes.h>
+
 /* local includes */
 #include "instruction_includes.h"
 #include "location/location.h"
@@ -69,13 +72,16 @@ CodeGenerator::NodeFunctor::operator()(FnDecl *nd) {
   /* stmt_block could be NULL in the case of a function prototype */
   StmtBlock::Ptr stmt_block = nd->body();
   process_node(stmt_block);
-  
-  
-  
+
+  LocalScope::PtrConst local_scope;
+  local_scope = Ptr::st_cast<LocalScope>(stmt_block->scope());
+
   Identifier::Ptr fn_id = nd->identifier();
   In::Label::Ptr label_i = In::Label::LabelNew(fn_id);
-  In::BeginFunc::Ptr begin_func_i = In::BeginFunc::BeginFuncNew(label_i, 0);
-  // TODO: resolve FrameSize
+  In::BeginFunc::FrameSize frame_size = local_scope->frameSize();
+
+  In::BeginFunc::Ptr begin_func_i;
+  begin_func_i = In::BeginFunc::BeginFuncNew(label_i, frame_size);
   process_instruction(begin_func_i);
 }
 

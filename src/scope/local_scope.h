@@ -15,9 +15,12 @@ public:
   typedef Simone::Ptr<const LocalScope> PtrConst;
   typedef Simone::Ptr<LocalScope> Ptr;
 
+  typedef size_t FrameSize;
+
   static const int kLocalsOffset = -2;
 
   Simone::Ptr<const TmpLocation> tempNew();
+  FrameSize frameSize() const;
 
 private:
   LocalScope(Scope::Ptr _parent_scope);

@@ -7,10 +7,7 @@
 #include <simone/exception.h>
 
 /* scope includes */
-#include <scope/global_scope.h>
-#include <scope/object_scope.h>
-#include <scope/param_scope.h>
-#include <scope/local_scope.h>
+#include <scope_includes.h>
 
 Scope::Ptr
 ScopeStack::scopeNew(ScopeType _type) {
