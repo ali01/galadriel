@@ -1,7 +1,7 @@
 #include "ifz.h"
 
 /* code_generator includes */
-#include "../location/location.h"
+#include "../location_includes.h"
 
 /* local includes */
 #include "label.h"

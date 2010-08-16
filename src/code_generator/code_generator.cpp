@@ -9,7 +9,7 @@
 
 /* local includes */
 #include "instruction_includes.h"
-#include "location/location.h"
+#include "location_includes.h"
 #include "mips_emit_functor.h"
 #include "tac_emit_functor.h"
 
@@ -132,7 +132,7 @@ CodeGenerator::NodeFunctor::operator()(StmtBlock *nd) {
 }
 
 void
-CodeGenerator::NodeFunctor::operator()(PrintStmt *nd) {
+CodeGenerator::NodeFunctor::operator()(PrintStmt *nd) { // TODO
   Expr::Ptr arg;
   PrintStmt::const_arg_iterator it = nd->argsBegin();
   for (int i = 1; it != nd->argsEnd(); ++it, ++i) {
@@ -219,7 +219,6 @@ CodeGenerator::NodeFunctor::operator()(AssignExpr *nd) {
   Location::PtrConst lhs_loc = l_val->location();
   Location::PtrConst rhs_loc = rhs->location();
 
-  // TODO: resolve NULLs
   In::Assign::Ptr assign_i = In::Assign::AssignNew(lhs_loc, rhs_loc);
   process_instruction(assign_i);
 }

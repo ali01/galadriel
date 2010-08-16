@@ -9,7 +9,7 @@ using std::ostringstream;
 using std::string;
 
 
-#include "location/location.h"
+#include "location_includes.h"
 #include "instruction_includes.h"
 
 const string TACEmitFunctor::kIndent = "  ";

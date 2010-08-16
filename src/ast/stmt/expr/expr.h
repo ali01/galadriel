@@ -21,7 +21,6 @@ public:
 
   virtual Simone::Ptr<const Type> type() const = 0;
   virtual Simone::Ptr<const Location> location() const = 0;
-  
 
 protected:
   Expr(yyltype loc) : Stmt(loc) {}

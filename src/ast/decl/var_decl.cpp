@@ -1,7 +1,7 @@
 #include "var_decl.h"
 
 /* code_generator includes */
-#include <code_generator/location/var_location.h>
+#include <code_generator/location_includes.h>
 
 /* ast includes */
 #include "../identifier.h"

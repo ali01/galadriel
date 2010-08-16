@@ -4,7 +4,7 @@
 #include <scope_includes.h>
 
 /* code_generator includes */
-#include <code_generator/location/tmp_location.h>
+#include <code_generator/location_includes.h>
 
 
 ScopeStackBuilder::ScopeStackBuilder(Program::Ptr _program) {

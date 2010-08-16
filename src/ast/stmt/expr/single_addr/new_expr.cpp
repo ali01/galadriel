@@ -7,7 +7,7 @@
 #include <lex_location.h>
 
 /* code_generator includes */
-#include <code_generator/location/location.h>
+#include <code_generator/location_includes.h>
 
 /* ast/decl includes */
 #include "../../../decl/object/class_decl.h"

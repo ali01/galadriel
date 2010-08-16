@@ -1,7 +1,7 @@
 #include "relational_expr.h"
 
 /* code_generator includes */
-#include <code_generator/location/location.h>
+#include <code_generator/location_includes.h>
 
 /* ast includes */
 #include "../../../../operator.h"

@@ -1,7 +1,7 @@
 #include "global_scope.h"
 
 /* code_generator includes */
-#include <code_generator/location/var_location.h>
+#include <code_generator/location_includes.h>
 
 GlobalScope::GlobalScope() : Scope(NULL) {
   node_functor_ = NodeFunctor::NodeFunctorNew(this);

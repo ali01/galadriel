@@ -4,7 +4,7 @@
 #include <simone/utility.h>
 
 /* code_generator includes */
-#include <code_generator/location/location.h>
+#include <code_generator/location_includes.h>
 
 /* ast/stmt/expr includes */
 #include "../expr.h"

@@ -1,7 +1,7 @@
 #include "var_access_expr.h"
 
 /* code_generator includes */
-#include <code_generator/location/location.h>
+#include <code_generator/location_includes.h>
 
 /* project includes */
 #include <scope/scope.h>
@@ -45,5 +45,6 @@ VarAccessExpr::type() const {
 
 Location::PtrConst
 VarAccessExpr::location() const {
-  return NULL;
+  VarDecl::PtrConst var_decl = this->varDecl();
+  return var_decl->location();
 }

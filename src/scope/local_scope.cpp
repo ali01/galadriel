@@ -1,8 +1,7 @@
 #include "local_scope.h"
 
 /* code_generator includes */
-#include <code_generator/location/var_location.h>
-#include <code_generator/location/tmp_location.h>
+#include <code_generator/location_includes.h>
 
 LocalScope::LocalScope(Scope::Ptr _parent_scope) :
   Scope(_parent_scope), temps_(0), var_decls_finalized_(false)
