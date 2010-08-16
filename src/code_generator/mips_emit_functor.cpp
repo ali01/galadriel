@@ -216,7 +216,7 @@ MIPSEmitFunctor::operator()(In::BeginFunc *in) {
   emit("sw $ra, 4($sp)      # save ra");
   emit("addiu $fp, $sp, 8   # set up new fp");
 
-  In::BeginFunc::FrameSize frame_size = in->frameSize();
+  In::BeginFunc::FrameSize frame_size = in->frameSize() * kWordSize;
   if (frame_size > 0) {
     snprintf(buf_, sizeof buf_,
              "subu $sp, $sp, %lu   # decrement sp for locals/temps", 
@@ -478,11 +478,11 @@ MIPSEmitFunctor::spill_register(RegisterName reg)
       segment = registers_[gp].name_;
     }
 
-    assert(var->offset() % 4 == 0); /* all variables are 4 bytes in size */
+    Location::Offset off = var->offset() * kWordSize;
 
     snprintf(buf_, sizeof buf_, "sw %s, %d(%s)\t# spill %s from %s to %s%+d",
-             registers_[reg].name_, var->offset(), segment, var->name().c_str(),
-             registers_[reg].name_, segment,var->offset());
+             registers_[reg].name_, off, segment, var->name().c_str(),
+             registers_[reg].name_, segment, off);
 
     emit(buf_);
   }

@@ -17,22 +17,21 @@ public:
   typedef Simone::Ptr<const LCall> PtrConst;
   typedef Simone::Ptr<LCall> Ptr;
 
-  static Ptr LCallNew(Simone::Ptr<Label> _label,
+  static Ptr LCallNew(Simone::Ptr<const Label> _label,
                       Simone::Ptr<const Location> _return_loc);
 
   /* attribute member functions */
-  Simone::Ptr<Label> label();
   Simone::Ptr<const Label> label() const;
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
-  LCall(Simone::Ptr<Label> _label,
+  LCall(Simone::Ptr<const Label> _label,
         Simone::Ptr<const Location> _return_loc);
 
   /* data members */
-  Simone::Ptr<Label> label_;
+  Simone::Ptr<const Label> label_;
 
   /* operations disallowed */
   LCall(const LCall&);

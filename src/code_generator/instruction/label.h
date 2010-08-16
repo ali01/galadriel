@@ -20,6 +20,10 @@ public:
   typedef Simone::Ptr<const Label> PtrConst;
   typedef Simone::Ptr<Label> Ptr;
 
+  static PtrConst kPrintInt;
+  static PtrConst kPrintBool;
+  static PtrConst kPrintString;
+
   static Ptr LabelNew(const string& _label) {
     return new Label(_label);
   }

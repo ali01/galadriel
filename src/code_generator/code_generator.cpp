@@ -137,12 +137,41 @@ CodeGenerator::NodeFunctor::operator()(StmtBlock *nd) {
 }
 
 void
-CodeGenerator::NodeFunctor::operator()(PrintStmt *nd) { // TODO
+CodeGenerator::NodeFunctor::operator()(PrintStmt *nd) {
   Expr::Ptr arg;
+
+  /* arg location */
+  Location::PtrConst loc;
+
+  /* PushParam and LCall instructions */
+  In::PushParam::Ptr push_param_i;
+  In::Label::PtrConst label_i;
+  In::LCall::Ptr l_call_i;
+  
   PrintStmt::const_arg_iterator it = nd->argsBegin();
   for (int i = 1; it != nd->argsEnd(); ++it, ++i) {
     arg = *it;
     process_node(arg);
+
+    /* PushParam */
+    loc = arg->location();
+    push_param_i = In::PushParam::PushParamNew(loc);
+    process_instruction(push_param_i);
+
+    /* label for LCall */
+    Type::PtrConst arg_type = arg->type();
+    if (arg_type == Type::kInt) {
+      label_i = In::Label::kPrintInt;
+
+    } else if (arg_type == Type::kBool) {
+      label_i = In::Label::kPrintBool;
+
+    } else if (arg_type == Type::kString) {
+      label_i = In::Label::kPrintString;
+    }
+    
+    l_call_i = In::LCall::LCallNew(label_i, NULL);
+    process_instruction(l_call_i);
   }
 }
 

@@ -197,7 +197,7 @@ TACEmitFunctor::operator()(In::LCall *in) {
   if (ret_loc != NULL)
     s << ret_loc->name() << " = ";
 
-  s << *in->label();
+  s << "LCall " << *in->label();
 
   emit(s.str());
 }
@@ -212,7 +212,7 @@ TACEmitFunctor::operator()(In::ACall *in) {
   if (ret_loc != NULL)
     s << ret_loc->name() << " = ";
 
-  s << fn_loc->name();
+  s << "ACall " << fn_loc->name();
 
   emit(s.str());
 }

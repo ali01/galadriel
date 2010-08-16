@@ -9,19 +9,14 @@
 namespace In {
 
 LCall::Ptr
-LCall::LCallNew(Label::Ptr _label, Location::PtrConst _return_loc) {
+LCall::LCallNew(Label::PtrConst _label, Location::PtrConst _return_loc) {
   return new LCall(_label, _return_loc);
 }
 
-LCall::LCall(Label::Ptr _label, Location::PtrConst _return_loc) :
+LCall::LCall(Label::PtrConst _label, Location::PtrConst _return_loc) :
   FnCall(_return_loc), label_(_label)
 {
   assert(_label != NULL);
-}
-
-Label::Ptr
-LCall::label() {
-  return label_;
 }
 
 Label::PtrConst

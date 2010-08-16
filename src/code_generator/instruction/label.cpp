@@ -9,6 +9,10 @@ using std::ostringstream;
 
 namespace In {
 
+Label::PtrConst Label::kPrintInt    = Label::LabelNew("_PrintInt");
+Label::PtrConst Label::kPrintBool   = Label::LabelNew("_PrintBool");
+Label::PtrConst Label::kPrintString = Label::LabelNew("_PrintString");
+
 Label::Ptr
 Label::LabelNew(Identifier::PtrConst _id) {
   return new Label(_id->name());

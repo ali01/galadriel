@@ -40,6 +40,7 @@ public:
   typedef Simone::Ptr<const MIPSEmitFunctor> PtrConst;
   typedef Simone::Ptr<MIPSEmitFunctor> Ptr;
 
+  static const size_t kWordSize = 4;
   static const string kIndent;
   static const string kDelimit;
 
