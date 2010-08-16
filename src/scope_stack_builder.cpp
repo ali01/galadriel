@@ -26,9 +26,10 @@ ScopeStackBuilder::NodeFunctor::operator()(Program *nd) {
 
   length_fn = FnDecl::FnDeclNew(ArrayType::kLengthFnIdentifier, Type::kInt);
   array_class = ClassDecl::ClassDeclNew(ArrayType::kArrayClassIdentifier);
+  array_class->isLibraryStubIs(true);
   array_class->memberInsert(length_fn);
 
-  nd->declInsert(array_class); // TODO: mark to avoid code emission of libs
+  nd->declInsert(array_class);
 
   Decl::Ptr decl;
   Program::const_decl_iter it = nd->declsBegin();

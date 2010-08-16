@@ -16,14 +16,7 @@
 CodeGenerator::CodeGenerator(Simone::Ptr<Program> _prog) {
   node_functor_ = NodeFunctor::NodeFunctorNew();
   node_functor_(_prog);
-}
-
-CodeGenerator::NodeFunctor::NodeFunctor() {
-  if (IsDebugOn("tac")) {
-    code_emit_functor_ = TACEmitFunctor::TACEmitFunctorNew();
-  } else {
-    code_emit_functor_ = MIPSEmitFunctor::MIPSEmitFunctorNew();
-  }
+  emit_instruction_stream();
 }
 
 /* top level */
@@ -73,16 +66,18 @@ CodeGenerator::NodeFunctor::operator()(FnDecl *nd) {
   StmtBlock::Ptr stmt_block = nd->body();
   process_node(stmt_block);
 
-  LocalScope::PtrConst local_scope;
-  local_scope = Ptr::st_cast<LocalScope>(stmt_block->scope());
+  if (stmt_block) {
+    LocalScope::PtrConst local_scope;
+    local_scope = Ptr::st_cast<LocalScope>(stmt_block->scope());
 
-  Identifier::Ptr fn_id = nd->identifier();
-  In::Label::Ptr label_i = In::Label::LabelNew(fn_id);
-  In::BeginFunc::FrameSize frame_size = local_scope->frameSize();
+    Identifier::Ptr fn_id = nd->identifier();
+    In::Label::Ptr label_i = In::Label::LabelNew(fn_id);
+    In::BeginFunc::FrameSize frame_size = local_scope->frameSize();
 
-  In::BeginFunc::Ptr begin_func_i;
-  begin_func_i = In::BeginFunc::BeginFuncNew(label_i, frame_size);
-  process_instruction(begin_func_i);
+    In::BeginFunc::Ptr begin_func_i;
+    begin_func_i = In::BeginFunc::BeginFuncNew(label_i, frame_size);
+    process_instruction(begin_func_i);
+  }
 }
 
 
@@ -102,8 +97,10 @@ CodeGenerator::NodeFunctor::operator()(ObjectDecl *nd) {
 
 void
 CodeGenerator::NodeFunctor::operator()(ClassDecl *nd) {
-  /* apply this functor to upcasted nd */
-  (*this)(static_cast<ObjectDecl*>(nd));
+  if (not nd->isLibraryStub()) {
+    /* apply this functor to upcasted nd */
+    (*this)(static_cast<ObjectDecl*>(nd));
+  }
 }
 
 void
@@ -386,4 +383,19 @@ CodeGenerator::NodeFunctor::process_node(Node::Ptr _node) {
 void
 CodeGenerator::NodeFunctor::process_instruction(In::Instruction::Ptr _in) {
   in_stream_.pushBack(_in);
+}
+
+void
+CodeGenerator::emit_instruction_stream() {
+  if (IsDebugOn("tac")) {
+    code_emit_functor_ = TACEmitFunctor::TACEmitFunctorNew();
+  } else {
+    code_emit_functor_ = MIPSEmitFunctor::MIPSEmitFunctorNew();
+  }
+
+  NodeFunctor::const_instruction_iter it = node_functor_->beginIn();
+  for(; it != node_functor_->endIn(); ++it) {
+    In::Instruction::Ptr in = *it;
+    code_emit_functor_(in);
+  }
 }

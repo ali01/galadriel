@@ -12,7 +12,7 @@ public:
   typedef Simone::Ptr<const VarLocation> PtrConst;
 
   static PtrConst VarLocationNew(Segment _segment, Offset _offset,
-                            Simone::Ptr<const VarDecl> _var_decl);
+                                 Simone::Ptr<const VarDecl> _var_decl);
 
 private:
   VarLocation(Segment _segment, Offset _offset,
@@ -22,6 +22,5 @@ private:
   VarLocation(const VarLocation&);
   void operator=(const VarLocation&);
 };
-
 
 #endif

@@ -366,7 +366,6 @@ StmtBlock         : '{' VariableDeclList StmtList '}' {
                       var_decl_list = new Deque<VarDecl::Ptr>();
 
                       Deque<Stmt::Ptr>::Ptr stmt_list = new Deque<Stmt::Ptr>();
-
                       $$ = new StmtBlock(var_decl_list, stmt_list);
                     }
                   ;

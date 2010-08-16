@@ -70,19 +70,20 @@ public:
   subsumer_iter subsumersEnd() { return subsumers_.end(); }
 
 
-  /* member functions */
+  /* attribute member functions */
 
   bool subsumersContain(NamedType::PtrConst _type) const;
   void subsumersInsert(NamedType::PtrConst _type);
   void subsumersInsert(const_subsumer_iter first, const_subsumer_iter last);
-
-  /* attribute member functions */
 
   NamedType::PtrConst baseClass() const { return base_class_; }
   NamedType::Ptr baseClass() { return base_class_; }
   ClassDecl::Ptr baseClassDecl();
 
   bool implementsInterface(Simone::Ptr<const InterfaceDecl> _interface) const;
+
+  bool isLibraryStub() const { return is_library_stub_; }
+  void isLibraryStubIs(bool _s) { is_library_stub_ = true; }
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
@@ -96,6 +97,8 @@ private:
   Deque<NamedType::Ptr>::Ptr interfaces_;
 
   Set<NamedType::PtrConst,NamedType::less> subsumers_;
+
+  bool is_library_stub_;
 
   /* operations disallowed */
   ClassDecl(const ClassDecl&);

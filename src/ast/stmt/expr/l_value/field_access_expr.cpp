@@ -61,7 +61,7 @@ FieldAccessExpr::baseDecl() const {
 VarDecl::PtrConst
 FieldAccessExpr::varDecl() const {
   VarDecl::PtrConst var_decl = NULL;
-  
+
   ClassDecl::PtrConst base_decl = baseDecl();
   if (base_decl) {
     Scope::PtrConst scope = base_decl->scope();
@@ -84,5 +84,7 @@ FieldAccessExpr::type() const {
 
 Location::PtrConst
 FieldAccessExpr::location() const {
+  // VarLocation::PtrConst loc;
+  // loc = VarLocation::VarLocationNew()
   return NULL;
 }

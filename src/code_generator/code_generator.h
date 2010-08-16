@@ -35,9 +35,15 @@ private:
       typedef Simone::Ptr<const NodeFunctor> PtrConst;
       typedef Simone::Ptr<NodeFunctor> Ptr;
 
+      typedef Deque<In::Instruction::Ptr>::const_iterator 
+              const_instruction_iter;
+
       static Ptr NodeFunctorNew() {
         return new NodeFunctor();
       }
+      
+      const_instruction_iter beginIn() const { return in_stream_.begin(); }
+      const_instruction_iter endIn() const { return in_stream_.end(); }
 
       /* top level */
       void operator()(Program *);
@@ -111,7 +117,7 @@ private:
       void operator()(ArrayType *);
 
     private:
-      NodeFunctor();
+      NodeFunctor() {}
 
       /* member functions */
       void process_node(Node::Ptr _nd);
@@ -119,11 +125,13 @@ private:
 
       /* data members */      
       Deque<In::Instruction::Ptr> in_stream_;
-      Simone::Ptr<In::Instruction::Functor> code_emit_functor_;
   };
+
+  void emit_instruction_stream();
 
   /* data members */
   NodeFunctor::Ptr node_functor_;
+  Simone::Ptr<In::Instruction::Functor> code_emit_functor_;
 
   /* disallowed operations */
   CodeGenerator(const CodeGenerator&);

@@ -19,7 +19,8 @@ ClassDecl::ClassDecl(Identifier::Ptr _name, NamedType::Ptr _extends,
                      Deque<Decl::Ptr>::Ptr _members) :
   ObjectDecl(_name, _members),
   base_class_(_extends),
-  interfaces_(_implements)
+  interfaces_(_implements),
+  is_library_stub_(false)
 {
   /* extends can be NULL, impl & mem may be empty lists but cannot be NULL */
   assert(interfaces_ != NULL);
