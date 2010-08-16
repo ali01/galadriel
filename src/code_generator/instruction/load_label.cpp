@@ -9,17 +9,17 @@
 namespace In {
 
 LoadLabel::Ptr
-LoadLabel::LoadLabelNew(Location::Ptr _loc, Label::Ptr _label) {
+LoadLabel::LoadLabelNew(Location::PtrConst _loc, Label::Ptr _label) {
   return new LoadLabel(_loc, _label);
 }
 
-LoadLabel::LoadLabel(Location::Ptr _loc, Label::Ptr _label) :
+LoadLabel::LoadLabel(Location::PtrConst _loc, Label::Ptr _label) :
   dst_(_loc), label_(_label)
 {
   assert(_loc && _label);
 }
 
-Location::Ptr
+Location::PtrConst
 LoadLabel::dst() {
   return dst_;
 }

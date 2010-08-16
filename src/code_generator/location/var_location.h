@@ -10,9 +10,8 @@ class VarDecl;
 class VarLocation : public Location {
 public:
   typedef Simone::Ptr<const VarLocation> PtrConst;
-  typedef Simone::Ptr<VarLocation> Ptr;
 
-  static Ptr VarLocationNew(Segment _segment, Offset _offset,
+  static PtrConst VarLocationNew(Segment _segment, Offset _offset,
                             Simone::Ptr<const VarDecl> _var_decl);
 
 private:

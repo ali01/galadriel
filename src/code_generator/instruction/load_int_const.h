@@ -14,21 +14,21 @@ public:
   typedef Simone::Ptr<const LoadIntConst> PtrConst;
   typedef Simone::Ptr<LoadIntConst> Ptr;
 
-  static Ptr LoadIntConstNew(Simone::Ptr<Location> _loc, int _val);
+  static Ptr LoadIntConstNew(Simone::Ptr<const Location> _loc, int _val);
 
   /* attribute member functions */
   Simone::Ptr<const Location> dst() const;
-  Simone::Ptr<Location> dst();
+  Simone::Ptr<const Location> dst();
   int value() const { return value_; }
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
-  LoadIntConst(Simone::Ptr<Location> _loc, int _val);
+  LoadIntConst(Simone::Ptr<const Location> _loc, int _val);
 
   /* data members */
-  Simone::Ptr<Location> dst_;
+  Simone::Ptr<const Location> dst_;
   int value_;
 
   /* disallowed operations */

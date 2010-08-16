@@ -26,7 +26,6 @@ public:
   BoolConstExpr(yyltype loc, bool val) : SingleAddrExpr(loc) { value = val; }
 
   Simone::Ptr<const Type> type() const;
-  Simone::Ptr<Location> location();
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
@@ -34,7 +33,6 @@ public:
 protected:
   /* data members */
   bool value;
-  Simone::Ptr<Location> location_;
 };
 
 #endif

@@ -14,21 +14,21 @@ public:
   typedef Simone::Ptr<const ACall> PtrConst;
   typedef Simone::Ptr<ACall> Ptr;
 
-  static Ptr ACallNew(Simone::Ptr<Location> _fn_loc,
-                      Simone::Ptr<Location> _ret_loc);
+  static Ptr ACallNew(Simone::Ptr<const Location> _fn_loc,
+                      Simone::Ptr<const Location> _ret_loc);
 
   /* attribute member functions */
-  Simone::Ptr<Location> functionLocation();
+  Simone::Ptr<const Location> functionLocation();
   Simone::Ptr<const Location> functionLocation() const;
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
-  ACall(Simone::Ptr<Location> _fn_loc, Simone::Ptr<Location> _ret_loc);
+  ACall(Simone::Ptr<const Location> _fn_loc, Simone::Ptr<const Location> _ret_loc);
 
   /* data members */
-  Simone::Ptr<Location> fn_loc_;
+  Simone::Ptr<const Location> fn_loc_;
 
   /* operations disallowed */
   ACall(const ACall&);

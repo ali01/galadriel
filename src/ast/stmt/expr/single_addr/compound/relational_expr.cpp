@@ -19,7 +19,7 @@ RelationalExpr::type() const {
   return Type::kBool;
 }
 
-Location::Ptr
+Location::PtrConst
 RelationalExpr::location() {
   return NULL;
 }

@@ -43,7 +43,7 @@ VarAccessExpr::type() const {
   return type;
 }
 
-Location::Ptr
-VarAccessExpr::location() {
+Location::PtrConst
+VarAccessExpr::location() const {
   return NULL;
 }

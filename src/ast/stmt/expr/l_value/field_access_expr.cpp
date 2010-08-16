@@ -82,7 +82,7 @@ FieldAccessExpr::type() const {
   return type;
 }
 
-Location::Ptr
-FieldAccessExpr::location() {
+Location::PtrConst
+FieldAccessExpr::location() const {
   return NULL;
 }

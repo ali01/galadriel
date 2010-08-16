@@ -9,7 +9,7 @@ Location::name() const {
 }
 
 bool
-Location::operator==(const Location& _other) {
+Location::operator==(const Location& _other) const {
   if (this == &_other)
     return true;
 

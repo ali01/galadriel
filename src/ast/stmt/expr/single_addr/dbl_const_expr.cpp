@@ -10,8 +10,3 @@ Type::PtrConst
 DblConstExpr::type() const {
   return Type::kDouble;
 }
-
-Location::Ptr
-DblConstExpr::location() {
-  return location_;
-}

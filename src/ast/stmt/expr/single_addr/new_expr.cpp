@@ -39,8 +39,3 @@ Type::PtrConst
 NewExpr::type() const {
   return objectType();
 }
-
-Location::Ptr
-NewExpr::location() {
-  return NULL; // TODO;
-}

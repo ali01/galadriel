@@ -30,21 +30,21 @@ public:
   };
 
   static Ptr BinaryOpNew(OpCode _op,
-                         Simone::Ptr<Location> _dst,
-                         Simone::Ptr<Location> _lhs,
-                         Simone::Ptr<Location> _rhs);
+                         Simone::Ptr<const Location> _dst,
+                         Simone::Ptr<const Location> _lhs,
+                         Simone::Ptr<const Location> _rhs);
 
   /* attribute member functions */
   string op_str() const;
   OpCode op_code() const { return op_code_; }
 
-  Simone::Ptr<Location> dst();
+  Simone::Ptr<const Location> dst();
   Simone::Ptr<const Location> dst() const;
 
-  Simone::Ptr<Location> lhs();
+  Simone::Ptr<const Location> lhs();
   Simone::Ptr<const Location> lhs() const;
 
-  Simone::Ptr<Location> rhs();
+  Simone::Ptr<const Location> rhs();
   Simone::Ptr<const Location> rhs() const;
 
   /* support for double dispatch */
@@ -52,13 +52,13 @@ public:
 
 private:
   BinaryOp(OpCode _op,
-           Simone::Ptr<Location> _dst,
-           Simone::Ptr<Location> _lhs,
-           Simone::Ptr<Location> _rhs);
+           Simone::Ptr<const Location> _dst,
+           Simone::Ptr<const Location> _lhs,
+           Simone::Ptr<const Location> _rhs);
 
   /* data members */
   OpCode op_code_;
-  Simone::Ptr<Location> dst_, lhs_, rhs_;
+  Simone::Ptr<const Location> dst_, lhs_, rhs_;
 
   /* operations disallowed */
   BinaryOp(const BinaryOp&);

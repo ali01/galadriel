@@ -23,7 +23,7 @@ public:
   ThisExpr(yyltype loc) : LValueExpr(loc) {}
 
   Simone::Ptr<const Type> type() const;
-  Simone::Ptr<Location> location();
+  Simone::Ptr<const Location> location() const;
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }

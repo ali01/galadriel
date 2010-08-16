@@ -62,7 +62,7 @@ MIPSEmitFunctor::operator()(In::LoadIntConst *in) {
   emit_tac_comment(in);
 
   int val = in->value();
-  Location::Ptr dst = in->dst();
+  Location::PtrConst dst = in->dst();
   RegisterName reg = alloc_register(dst, kWrite);
 
   snprintf(buf_, sizeof buf_, "li %s, %d\t\t# load constant value %d into %s",
@@ -84,7 +84,7 @@ MIPSEmitFunctor::operator()(In::LoadStrConst *in) {
   emit(buf_);
   emit(".text");
 
-  Location::Ptr dst = in->dst();
+  Location::PtrConst dst = in->dst();
   In::Label::Ptr label = In::Label::LabelNew(label_str);
   In::LoadLabel::Ptr load_label_i = In::LoadLabel::LoadLabelNew(dst, label);
 
@@ -97,7 +97,7 @@ MIPSEmitFunctor::operator()(In::LoadLabel *in) {
   emit_tac_comment(in);
 
   In::Label::PtrConst label = in->label();
-  Location::Ptr dst = in->dst();
+  Location::PtrConst dst = in->dst();
   RegisterName reg = alloc_register(dst, kWrite);
 
   snprintf(buf_, sizeof buf_, "la %s, %s    # load label",
@@ -109,8 +109,8 @@ void
 MIPSEmitFunctor::operator()(In::Assign *in) {
   emit_tac_comment(in);
 
-  Location::Ptr src = in->src();
-  Location::Ptr dst = in->dst();
+  Location::PtrConst src = in->src();
+  Location::PtrConst dst = in->dst();
   RegisterName r_src = alloc_register(src, kRead);
   RegisterName r_dst = alloc_register(dst, kWrite);
 
@@ -123,8 +123,8 @@ void
 MIPSEmitFunctor::operator()(In::Load *in) {
   emit_tac_comment(in);
 
-  Location::Ptr src = in->src();
-  Location::Ptr dst = in->dst();
+  Location::PtrConst src = in->src();
+  Location::PtrConst dst = in->dst();
   RegisterName r_src = alloc_register(src, kRead);
   RegisterName r_dst = alloc_register(dst, kWrite, r_src);
 
@@ -139,8 +139,8 @@ void
 MIPSEmitFunctor::operator()(In::Store *in) {
   emit_tac_comment(in);
 
-  Location::Ptr src = in->src();
-  Location::Ptr dst = in->dst();
+  Location::PtrConst src = in->src();
+  Location::PtrConst dst = in->dst();
   RegisterName r_src = alloc_register(src, kRead);
   RegisterName r_dst = alloc_register(dst, kRead, r_src);
 
@@ -155,9 +155,9 @@ void
 MIPSEmitFunctor::operator()(In::BinaryOp *in) {
   emit_tac_comment(in);
 
-  Location::Ptr lhs = in->lhs();
-  Location::Ptr rhs = in->rhs();
-  Location::Ptr dst = in->dst();
+  Location::PtrConst lhs = in->lhs();
+  Location::PtrConst rhs = in->rhs();
+  Location::PtrConst dst = in->dst();
 
   RegisterName r_lhs = alloc_register(lhs, kRead);
   RegisterName r_rhs = alloc_register(rhs, kRead, r_lhs);
@@ -193,7 +193,7 @@ MIPSEmitFunctor::operator()(In::IfZ *in) {
 
   In::Label::PtrConst label = in->label();
 
-  Location::Ptr test_loc = in->test();
+  Location::PtrConst test_loc = in->test();
   RegisterName test_reg = alloc_register(test_loc, kRead);
 
   spill_dirty_registers();
@@ -236,7 +236,7 @@ void
 MIPSEmitFunctor::operator()(In::Return *in) {
   emit_tac_comment(in);
 
-  Location::Ptr ret_loc = in->returnLocation();
+  Location::PtrConst ret_loc = in->returnLocation();
   RegisterName r_ret_loc = alloc_register(ret_loc, kRead);
   if (ret_loc != NULL) {
     snprintf(buf_, sizeof buf_,
@@ -256,7 +256,7 @@ void
 MIPSEmitFunctor::operator()(In::PushParam *in) {
   emit_tac_comment(in);
 
-  Location::Ptr param_loc = in->paramLocation();
+  Location::PtrConst param_loc = in->paramLocation();
   RegisterName reg = alloc_register(param_loc, kRead);
 
   emit("subu $sp, $sp, 4    # decrement sp to make space for param");
@@ -279,7 +279,7 @@ MIPSEmitFunctor::operator()(In::PopParams *in) {
 
 void
 MIPSEmitFunctor::operator()(In::FnCall *in) {
-  Location::Ptr ret_loc = in->returnLocation();
+  Location::PtrConst ret_loc = in->returnLocation();
 
   if (ret_loc != NULL) {
     RegisterName reg = alloc_register(ret_loc, kWrite);
@@ -311,7 +311,7 @@ MIPSEmitFunctor::operator()(In::ACall *in) {
 
   spill_dirty_registers();
 
-  Location::Ptr fn_loc = in->functionLocation();
+  Location::PtrConst fn_loc = in->functionLocation();
   RegisterName reg = alloc_register(fn_loc, kRead);
   snprintf(buf_, sizeof buf_, "jalr %-15s    # jump to function address",
            registers_[reg].name_);
@@ -380,7 +380,7 @@ MIPSEmitFunctor::emit_tac_comment(In::Instruction::Ptr _in) const {
  * new value).
  */
 MIPSEmitFunctor::RegisterName
-MIPSEmitFunctor::alloc_register(Location::Ptr var,
+MIPSEmitFunctor::alloc_register(Location::PtrConst var,
                                 RegPurpose reason,
                                 RegisterName avoid1,
                                 RegisterName avoid2) {
@@ -464,7 +464,7 @@ MIPSEmitFunctor::register_to_spill(RegisterName avoid1, RegisterName avoid2) {
 void
 MIPSEmitFunctor::spill_register(RegisterName reg)
 {
-  Location::Ptr var = registers_[reg].var_;
+  Location::PtrConst var = registers_[reg].var_;
   if (var && registers_[reg].is_dirty_) {
 
     const char *segment;
@@ -541,9 +541,9 @@ MIPSEmitFunctor::spill_for_end_func() {
  * register by reference, and returns true/false on whether match found.
  */
 bool
-MIPSEmitFunctor::register_with_contents(Location::Ptr var, RegisterName& reg) {
+MIPSEmitFunctor::register_with_contents(Location::PtrConst var, RegisterName& reg) {
   for (reg = zero; reg < num_registers_; reg = (RegisterName)(reg+1)) {
-    Location::Ptr rvar = registers_[reg].var_;
+    Location::PtrConst rvar = registers_[reg].var_;
     bool locations_equal = (var == rvar || (var && rvar && *var == *rvar));
     if (registers_[reg].is_general_purpose_ && locations_equal)
       return true;

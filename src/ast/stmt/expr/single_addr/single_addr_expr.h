@@ -19,6 +19,7 @@ public:
   typedef Simone::Ptr<const SingleAddrExpr> PtrConst;
   typedef Simone::Ptr<SingleAddrExpr> Ptr;
 
+  Simone::Ptr<const Location> location() const;
   void locationIs(Simone::Ptr<const Location> _loc);
 
 protected:

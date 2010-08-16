@@ -141,7 +141,7 @@ CodeGenerator::NodeFunctor::operator()(ReturnStmt *nd) {
   process_node(expr);
 
   if (expr != NULL) {
-    Location::Ptr eval_loc = expr->location();
+    Location::PtrConst eval_loc = expr->location();
     In::Return::Ptr return_i = In::Return::ReturnNew(eval_loc);
     process_instruction(return_i);
   }
@@ -169,7 +169,7 @@ CodeGenerator::NodeFunctor::operator()(IfStmt *nd) {
   (*this)(static_cast<ConditionalStmt*>(nd));
 
   Expr::Ptr test = nd->test();
-  Location::Ptr test_loc = test->location();
+  Location::PtrConst test_loc = test->location();
   In::IfZ::Ptr ifz_i = In::IfZ::IfZNew(test_loc, NULL); // TODO
   process_instruction(ifz_i);
 
@@ -210,8 +210,8 @@ CodeGenerator::NodeFunctor::operator()(AssignExpr *nd) {
   Expr::Ptr rhs = nd->right();
   process_node(rhs);
 
-  Location::Ptr lhs_loc = l_val->location();
-  Location::Ptr rhs_loc = rhs->location();
+  Location::PtrConst lhs_loc = l_val->location();
+  Location::PtrConst rhs_loc = rhs->location();
 
   // TODO: resolve NULLs
   In::Assign::Ptr assign_i = In::Assign::AssignNew(lhs_loc, rhs_loc);
@@ -253,7 +253,7 @@ CodeGenerator::NodeFunctor::operator()(ThisExpr *nd) {
 /* stmt/expr/single_addr */
 void
 CodeGenerator::NodeFunctor::operator()(IntConstExpr *nd) {
-  Location::Ptr int_loc = nd->location();
+  Location::PtrConst int_loc = nd->location();
   In::LoadIntConst::Ptr load_i;
   load_i = In::LoadIntConst::LoadIntConstNew(int_loc, nd->value());
 
@@ -282,7 +282,7 @@ CodeGenerator::NodeFunctor::operator()(CallExpr *nd) {
   process_node(fn_id);
 
   Expr::Ptr actual;
-  Location::Ptr actual_loc;
+  Location::PtrConst actual_loc;
   In::PushParam::Ptr push_param_i;
   FunctionCallExpr::const_actuals_iter it = nd->actualsEnd();
   for (; it != nd->actualsBegin(); --it) {
@@ -301,7 +301,7 @@ CodeGenerator::NodeFunctor::operator()(FunctionCallExpr *nd) {
   (*this)(static_cast<CallExpr*>(nd));
 
   Identifier::Ptr fn_id = nd->identifier();
-  Location::Ptr ret_loc = nd->location();
+  Location::PtrConst ret_loc = nd->location();
   In::Label::Ptr label_i = In::Label::LabelNew(fn_id);
   In::LCall::Ptr l_call_i = In::LCall::LCallNew(label_i, ret_loc);
 
@@ -317,7 +317,7 @@ CodeGenerator::NodeFunctor::operator()(MethodCallExpr *nd) {
   process_node(base);
 
   /* pushing "this" pointer onto the stack */
-  Location::Ptr base_loc = base->location();
+  Location::PtrConst base_loc = base->location();
   In::PushParam::Ptr push_param_i = In::PushParam::PushParamNew(base_loc);
   process_instruction(push_param_i);
 

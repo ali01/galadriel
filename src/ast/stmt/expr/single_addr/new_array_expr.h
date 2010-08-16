@@ -39,8 +39,6 @@ public:
   Simone::Ptr<const ArrayType> arrayType() const;
   Simone::Ptr<ArrayType> arrayType();
 
-  Simone::Ptr<Location> location();
-
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 

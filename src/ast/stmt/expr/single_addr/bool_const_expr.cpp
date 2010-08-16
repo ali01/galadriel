@@ -10,8 +10,3 @@ Type::PtrConst
 BoolConstExpr::type() const {
   return Type::kBool;
 }
-
-Location::Ptr
-BoolConstExpr::location() {
-  return location_;
-}

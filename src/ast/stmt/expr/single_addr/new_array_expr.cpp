@@ -30,12 +30,6 @@ NewArrayExpr::arrayType() {
   return type_;
 }
 
-Location::Ptr
-NewArrayExpr::location() {
-  // TODO:
-  return NULL;
-}
-
 Type::PtrConst
 NewArrayExpr::type() const {
   return type_;

@@ -17,7 +17,7 @@ LogicalExpr::type() const {
   return Type::kBool;
 }
 
-Location::Ptr
+Location::PtrConst
 LogicalExpr::location() {
   return NULL; // TODO
 }

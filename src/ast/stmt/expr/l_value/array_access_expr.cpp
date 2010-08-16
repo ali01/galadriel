@@ -29,7 +29,7 @@ ArrayAccessExpr::type() const {
   return elem_type;
 }
 
-Location::Ptr
-ArrayAccessExpr::location() {
+Location::PtrConst
+ArrayAccessExpr::location() const {
   return NULL;
 }

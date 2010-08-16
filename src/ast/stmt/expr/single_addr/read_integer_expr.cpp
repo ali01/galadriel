@@ -10,8 +10,3 @@ Type::PtrConst
 ReadIntegerExpr::type() const {
   return Type::kInt;
 }
-
-Location::Ptr
-ReadIntegerExpr::location() {
-  return NULL; // TODO
-}

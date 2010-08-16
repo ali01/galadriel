@@ -18,7 +18,7 @@ public:
   typedef Simone::Ptr<LCall> Ptr;
 
   static Ptr LCallNew(Simone::Ptr<Label> _label,
-                      Simone::Ptr<Location> _return_loc);
+                      Simone::Ptr<const Location> _return_loc);
 
   /* attribute member functions */
   Simone::Ptr<Label> label();
@@ -29,7 +29,7 @@ public:
 
 private:
   LCall(Simone::Ptr<Label> _label,
-        Simone::Ptr<Location> _return_loc);
+        Simone::Ptr<const Location> _return_loc);
 
   /* data members */
   Simone::Ptr<Label> label_;

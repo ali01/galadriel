@@ -5,9 +5,9 @@
 
 namespace In {
 
-FnCall::FnCall(Location::Ptr _ret_loc) : ret_loc_(_ret_loc) {}
+FnCall::FnCall(Location::PtrConst _ret_loc) : ret_loc_(_ret_loc) {}
 
-Location::Ptr
+Location::PtrConst
 FnCall::returnLocation() {
   return ret_loc_;
 }

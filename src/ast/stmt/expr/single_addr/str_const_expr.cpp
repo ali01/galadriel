@@ -20,8 +20,3 @@ Type::PtrConst
 StrConstExpr::type() const {
   return Type::kString;
 }
-
-Location::Ptr
-StrConstExpr::location() {
-  return location_;
-}

@@ -7,7 +7,7 @@ EmptyExpr::type() const {
   return Type::kVoid;
 }
 
-Location::Ptr
-EmptyExpr::location() {
+Location::PtrConst
+EmptyExpr::location() const {
   return NULL;
 }

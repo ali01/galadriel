@@ -68,7 +68,7 @@ MethodCallExpr::BaseDeclFunctor::operator()(ArrayType *_type) {
   base_decl_ = _type->builtinClassDecl();
 }
 
-Location::Ptr
+Location::PtrConst
 MethodCallExpr::location() {
   return NULL;
 }

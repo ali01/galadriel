@@ -6,17 +6,17 @@
 namespace In {
 
 Load::Ptr
-Load::LoadNew(Location::Ptr _src, Location::Ptr _dst) {
+Load::LoadNew(Location::PtrConst _src, Location::PtrConst _dst) {
   return new Load(_src, _dst);
 }
 
-Load::Load(Location::Ptr _src, Location::Ptr _dst) : 
+Load::Load(Location::PtrConst _src, Location::PtrConst _dst) : 
   src_(_src), dst_(_dst)
 {
   assert(src_ && dst_);
 }
 
-Location::Ptr
+Location::PtrConst
 Load::src() {
   return src_;
 }
@@ -26,7 +26,7 @@ Load::src() const {
   return src_;
 }
 
-Location::Ptr
+Location::PtrConst
 Load::dst() {
   return dst_;
 }

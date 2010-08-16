@@ -12,7 +12,6 @@ using std::ostream;
 class Location : public Simone::PtrInterface<Location> {
 public:
   typedef Simone::Ptr<const Location> PtrConst;
-  typedef Simone::Ptr<Location> Ptr;
 
   typedef int Offset;
   enum Segment { kStack, kData, kHeap }; // TODO: think about kHeap
@@ -25,7 +24,7 @@ public:
   Offset secondaryOffset() const { return secondary_offset_; }
   void secondaryOffsetIs(Offset _off) { secondary_offset_ = _off; }
 
-  bool operator==(const Location& _other);
+  bool operator==(const Location& _other) const;
 
 protected:
   Location(Segment _segment, Offset _offset, const string& _name);

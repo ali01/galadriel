@@ -31,7 +31,7 @@ public:
 
 
   Simone::Ptr<const FnDecl> fnDecl() const;
-  Simone::Ptr<Location> location();
+  Simone::Ptr<const Location> location();
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }

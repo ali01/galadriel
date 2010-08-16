@@ -10,8 +10,3 @@ Type::PtrConst
 IntConstExpr::type() const {
   return Type::kInt;
 }
-
-Location::Ptr
-IntConstExpr::location() {
-  return location_;
-}

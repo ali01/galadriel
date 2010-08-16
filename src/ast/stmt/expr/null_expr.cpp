@@ -11,7 +11,7 @@ NullExpr::type() const {
   return Type::kNull;
 }
 
-Location::Ptr
-NullExpr::location() {
+Location::PtrConst
+NullExpr::location() const {
   return NULL;
 }

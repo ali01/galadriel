@@ -19,7 +19,7 @@ ThisExpr::type() const {
   return type;
 }
 
-Location::Ptr
-ThisExpr::location() {
+Location::PtrConst
+ThisExpr::location() const {
   return NULL;
 }

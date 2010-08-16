@@ -31,7 +31,7 @@ class MIPSEmitFunctor : public In::Instruction::Functor {
 
   struct Register {
     bool is_dirty_;
-    Simone::Ptr<Location> var_;
+    Simone::Ptr<const Location> var_;
     const char *name_;
     bool is_general_purpose_;
   } registers_[num_registers_];
@@ -78,7 +78,7 @@ private:
   void emit(const string& _in_str, bool _supress_indent=false) const;
   void emit_tac_comment(In::Instruction::Ptr _in) const;
 
-  RegisterName alloc_register(Simone::Ptr<Location> var,
+  RegisterName alloc_register(Simone::Ptr<const Location> var,
                               RegPurpose reason,
                               RegisterName avoid1=zero,
                               RegisterName avoid2=zero);
@@ -88,7 +88,7 @@ private:
   void spill_dirty_registers();
   void spill_for_end_func();
 
-  bool register_with_contents(Simone::Ptr<Location> var, RegisterName& reg);
+  bool register_with_contents(Simone::Ptr<const Location> var, RegisterName& reg);
 
   static string op_str(In::BinaryOp::PtrConst _op);
 

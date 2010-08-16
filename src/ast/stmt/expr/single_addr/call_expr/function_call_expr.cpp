@@ -23,7 +23,7 @@ FunctionCallExpr::fnDecl() const {
   return scope->fnDecl(identifier_);;
 }
 
-Location::Ptr
+Location::PtrConst
 FunctionCallExpr::location() {
   return NULL;
 }

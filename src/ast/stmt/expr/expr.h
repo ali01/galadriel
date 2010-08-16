@@ -20,9 +20,7 @@ public:
   typedef Simone::Ptr<Expr> Ptr;
 
   virtual Simone::Ptr<const Type> type() const = 0;
-
-  // TODO: think about making const
-  virtual Simone::Ptr<Location> location() = 0;
+  virtual Simone::Ptr<const Location> location() const = 0;
   
 
 protected:

@@ -29,7 +29,6 @@ public:
   int value() const { return value_; }
 
   Simone::Ptr<const Type> type() const;
-  Simone::Ptr<Location> location();
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
@@ -37,7 +36,6 @@ public:
 private:  
   /* data members */
   int value_;
-  Simone::Ptr<Location> location_;
 };
 
 #endif

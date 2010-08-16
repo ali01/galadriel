@@ -22,11 +22,11 @@ public:
 
   static const size_t kMaxStringLength = 50;
 
-  static Ptr LoadStrConstNew(Simone::Ptr<Location> _dst,
+  static Ptr LoadStrConstNew(Simone::Ptr<const Location> _dst,
                              const string& _value);
 
   /* attribute member functions */
-  Simone::Ptr<Location> dst();
+  Simone::Ptr<const Location> dst();
   Simone::Ptr<const Location> dst() const;
 
   const string& value() const { return value_; }
@@ -35,10 +35,10 @@ public:
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
-  LoadStrConst(Simone::Ptr<Location> _dst, const string& _value);
+  LoadStrConst(Simone::Ptr<const Location> _dst, const string& _value);
 
   /* data members */
-  Simone::Ptr<Location> dst_;
+  Simone::Ptr<const Location> dst_;
   string value_;
 
   /* operations disallowed */

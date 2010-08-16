@@ -6,17 +6,17 @@
 namespace In {
 
 Store::Ptr
-Store::StoreNew(Location::Ptr _src, Location::Ptr _dst) {
+Store::StoreNew(Location::PtrConst _src, Location::PtrConst _dst) {
   return new Store(_src, _dst);
 }
 
-Store::Store(Location::Ptr _src, Location::Ptr _dst) :
+Store::Store(Location::PtrConst _src, Location::PtrConst _dst) :
   src_(_src), dst_(_dst)
 {
   assert(src_ && dst_);
 }
 
-Location::Ptr
+Location::PtrConst
 Store::src() {
   return src_;
 }
@@ -26,7 +26,7 @@ Store::src() const {
   return src_;
 }
 
-Location::Ptr
+Location::PtrConst
 Store::dst() {
   return dst_;
 }

@@ -2,7 +2,7 @@
 
 uint32_t TmpLocation::temp_num_ = 0;
 
-TmpLocation::Ptr
+TmpLocation::PtrConst
 TmpLocation::TmpLocationNew(Offset _offset) {
   string name = "_tmp" + temp_num_++;
   return new TmpLocation(_offset, name);

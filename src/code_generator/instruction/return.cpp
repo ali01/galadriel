@@ -6,13 +6,13 @@
 namespace In {
 
 Return::Ptr
-Return::ReturnNew(Location::Ptr _ret) {
+Return::ReturnNew(Location::PtrConst _ret) {
   return new Return(_ret);
 }
 
-Return::Return(Location::Ptr _ret) : ret_loc_(_ret) {}
+Return::Return(Location::PtrConst _ret) : ret_loc_(_ret) {}
 
-Location::Ptr
+Location::PtrConst
 Return::returnLocation() {
   return ret_loc_;
 }

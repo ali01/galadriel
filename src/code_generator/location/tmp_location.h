@@ -11,9 +11,8 @@ using std::string;
 class TmpLocation : public Location {
 public:
   typedef Simone::Ptr<const TmpLocation> PtrConst;
-  typedef Simone::Ptr<TmpLocation> Ptr;
 
-  static Ptr TmpLocationNew(Offset _offset);
+  static PtrConst TmpLocationNew(Offset _offset);
 
   /* attribute member functions */
 

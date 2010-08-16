@@ -10,8 +10,3 @@ Type::PtrConst
 ReadLineExpr::type() const {
   return Type::kString;
 }
-
-Location::Ptr
-ReadLineExpr::location() {
-  return NULL;
-}

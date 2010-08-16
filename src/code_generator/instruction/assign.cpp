@@ -6,17 +6,17 @@
 namespace In {
 
 Assign::Ptr
-Assign::AssignNew(Location::Ptr _src, Location::Ptr _dst) {
+Assign::AssignNew(Location::PtrConst _src, Location::PtrConst _dst) {
   return new Assign(_src, _dst);
 }
 
-Assign::Assign(Location::Ptr _src, Location::Ptr _dst) :
+Assign::Assign(Location::PtrConst _src, Location::PtrConst _dst) :
   src_(_src), dst_(_dst)
 {
   assert(src_ && dst_);
 }
 
-Location::Ptr
+Location::PtrConst
 Assign::src() {
   return src_;
 }
@@ -26,7 +26,7 @@ Assign::src() const {
   return src_;
 }
 
-Location::Ptr
+Location::PtrConst
 Assign::dst() {
   return dst_;
 }

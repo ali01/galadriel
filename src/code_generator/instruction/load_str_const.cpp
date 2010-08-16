@@ -5,12 +5,12 @@
 namespace In {
 
 LoadStrConst::Ptr
-LoadStrConst::LoadStrConstNew(Simone::Ptr<Location> _dst,
+LoadStrConst::LoadStrConstNew(Simone::Ptr<const Location> _dst,
                               const string& _value) {
   return new LoadStrConst(_dst, _value);
 }
 
-LoadStrConst::LoadStrConst(Simone::Ptr<Location> _dst,
+LoadStrConst::LoadStrConst(Simone::Ptr<const Location> _dst,
                            const string& _value) :
   dst_(_dst), value_(_value)
 {
@@ -19,7 +19,7 @@ LoadStrConst::LoadStrConst(Simone::Ptr<Location> _dst,
     value_ = value_.substr(0, kMaxStringLength) + "...";
 }
 
-Location::Ptr
+Location::PtrConst
 LoadStrConst::dst() {
   return dst_;
 }

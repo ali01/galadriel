@@ -30,7 +30,7 @@ ArithmeticExpr::type() const {
   return type;
 }
 
-Location::Ptr
+Location::PtrConst
 ArithmeticExpr::location() {
   return NULL;// TODO
 }
