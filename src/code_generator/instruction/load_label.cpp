@@ -1,7 +1,7 @@
 #include "load_label.h"
 
 /* code_generator includes */
-#include "../location.h"
+#include "../location/location.h"
 
 /* local includes */
 #include "label.h"

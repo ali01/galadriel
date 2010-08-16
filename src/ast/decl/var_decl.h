@@ -10,6 +10,10 @@
 /* ast/decl includes */
 #include "decl.h"
 
+/* forward declarations */
+class VarLocation;
+
+
 class VarDecl : public Decl {
 public:
   typedef Simone::Ptr<const VarDecl> PtrConst;
@@ -21,12 +25,16 @@ public:
 
   Simone::Ptr<Type> type() const;
 
+  void locationIs(Simone::Ptr<const VarLocation> _loc);
+  Simone::Ptr<const VarLocation> location() const;
+
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
   /* data members */
   Simone::Ptr<Type> type_;
+  Simone::Ptr<const VarLocation> location_;
 };
 
 #endif

@@ -1,7 +1,7 @@
 #include "binary_op.h"
 
 /* code_generator includes */
-#include "../location.h"
+#include "../location/location.h"
 
 namespace In {
 

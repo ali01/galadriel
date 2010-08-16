@@ -3,8 +3,11 @@
 /* simone includes */
 #include <simone/utility.h>
 
+/* code_generator includes */
+#include <code_generator/location/location.h>
+
 /* project includes */
-#include <scope.h>
+#include <scope/scope.h>
 
 /* ast includes */
 #include "../../../../identifier.h"
@@ -77,4 +80,9 @@ FieldAccessExpr::type() const {
     type = var_decl->type();
 
   return type;
+}
+
+Location::Ptr
+FieldAccessExpr::location() {
+  return NULL;
 }

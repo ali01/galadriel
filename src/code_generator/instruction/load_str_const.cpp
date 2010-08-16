@@ -1,6 +1,6 @@
 #include "load_str_const.h"
 
-#include "../location.h"
+#include "../location/location.h"
 
 namespace In {
 

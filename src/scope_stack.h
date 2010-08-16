@@ -7,7 +7,7 @@
 using Simone::Deque;
 
 /* project includes */
-#include "scope.h"
+#include <scope/scope.h>
 
 class ScopeStack : public Simone::PtrInterface<ScopeStack> {
 public:

@@ -1,5 +1,8 @@
 #include "arithmetic_expr.h"
 
+/* code_generator includes */
+#include <code_generator/location/location.h>
+
 /* ast includes */
 #include "../../../../operator.h"
 
@@ -25,4 +28,9 @@ ArithmeticExpr::type() const {
   }
 
   return type;
+}
+
+Location::Ptr
+ArithmeticExpr::location() {
+  return NULL;// TODO
 }

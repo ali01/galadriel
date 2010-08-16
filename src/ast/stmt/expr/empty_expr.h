@@ -4,6 +4,9 @@
 /* simone includes */
 #include <simone/ptr_interface.h>
 
+/* code_generator includes */
+#include <code_generator/location/location.h>
+
 /* ast/stmt/expr includes */
 #include "expr.h"
 
@@ -25,6 +28,7 @@ public:
   EmptyExpr() : Expr() {}
 
   Simone::Ptr<const Type> type() const;
+  Simone::Ptr<Location> location();
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }

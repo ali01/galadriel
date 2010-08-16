@@ -6,7 +6,7 @@
 
 /* local includes */
 #include "instruction_includes.h"
-#include "location.h"
+#include "location/location.h"
 #include "mips_emit_functor.h"
 #include "tac_emit_functor.h"
 
@@ -76,7 +76,7 @@ CodeGenerator::NodeFunctor::operator()(FnDecl *nd) {
   In::Label::Ptr label_i = In::Label::LabelNew(fn_id);
   In::BeginFunc::Ptr begin_func_i = In::BeginFunc::BeginFuncNew(label_i, 0);
   // TODO: resolve FrameSize
-  // code_emit_functor_(begin_func_i);
+  process_instruction(begin_func_i);
 }
 
 
@@ -139,6 +139,12 @@ void
 CodeGenerator::NodeFunctor::operator()(ReturnStmt *nd) {
   Expr::Ptr expr = nd->expr();
   process_node(expr);
+
+  if (expr != NULL) {
+    Location::Ptr eval_loc = expr->location();
+    In::Return::Ptr return_i = In::Return::ReturnNew(eval_loc);
+    process_instruction(return_i);
+  }
 }
 
 void
@@ -161,6 +167,11 @@ void
 CodeGenerator::NodeFunctor::operator()(IfStmt *nd) {
   /* applying this functor on upcasted nd */
   (*this)(static_cast<ConditionalStmt*>(nd));
+
+  Expr::Ptr test = nd->test();
+  Location::Ptr test_loc = test->location();
+  In::IfZ::Ptr ifz_i = In::IfZ::IfZNew(test_loc, NULL); // TODO
+  process_instruction(ifz_i);
 
   Stmt::Ptr else_body = nd->elseBody();
   process_node(else_body);
@@ -199,9 +210,12 @@ CodeGenerator::NodeFunctor::operator()(AssignExpr *nd) {
   Expr::Ptr rhs = nd->right();
   process_node(rhs);
 
+  Location::Ptr lhs_loc = l_val->location();
+  Location::Ptr rhs_loc = rhs->location();
+
   // TODO: resolve NULLs
-  // In::Assign::Ptr assign_i = In::Assign::AssignNew(NULL, NULL);
-  // code_emit_functor_(assign_i);
+  In::Assign::Ptr assign_i = In::Assign::AssignNew(lhs_loc, rhs_loc);
+  process_instruction(assign_i);
 }
 
 
@@ -212,43 +226,57 @@ CodeGenerator::NodeFunctor::operator()(CallExpr *nd) {
   process_node(fn_id);
 
   Expr::Ptr actual;
-  FunctionCallExpr::const_actuals_iter it = nd->actualsBegin();
-  for (; it != nd->actualsEnd(); ++it) {
+  Location::Ptr actual_loc;
+  In::PushParam::Ptr push_param_i;
+  FunctionCallExpr::const_actuals_iter it = nd->actualsEnd();
+  for (; it != nd->actualsBegin(); --it) {
     actual = *it;
     process_node(actual);
+
+    actual_loc = actual->location();
+    push_param_i = In::PushParam::PushParamNew(actual_loc);
+    process_instruction(push_param_i);
   }
 }
 
 void
 CodeGenerator::NodeFunctor::operator()(FunctionCallExpr *nd) {
-  Identifier::Ptr fn_id = nd->identifier();
-  In::Label::Ptr label_i = In::Label::LabelNew(fn_id);
-  // TODO: resolve NULL
-  // In::LCall::Ptr l_call_i = In::LCall::LCallNew(label_i, NULL);
-
-  // code_emit_functor_(l_call_i);
-
   /* applying this functor on upcasted nd */
   (*this)(static_cast<CallExpr*>(nd));
+
+  Identifier::Ptr fn_id = nd->identifier();
+  Location::Ptr ret_loc = nd->location();
+  In::Label::Ptr label_i = In::Label::LabelNew(fn_id);
+  In::LCall::Ptr l_call_i = In::LCall::LCallNew(label_i, ret_loc);
+
+  process_instruction(l_call_i);
 }
 
 void
 CodeGenerator::NodeFunctor::operator()(MethodCallExpr *nd) {
+  /* applying this functor on upcasted nd */
+  (*this)(static_cast<CallExpr*>(nd));
+
   Expr::Ptr base = nd->base();
   process_node(base);
 
-  /* applying this functor on upcasted nd */
-  (*this)(static_cast<CallExpr*>(nd));
+  /* pushing "this" pointer onto the stack */
+  Location::Ptr base_loc = base->location();
+  In::PushParam::Ptr push_param_i = In::PushParam::PushParamNew(base_loc);
+  process_instruction(push_param_i);
+
+  // TODO: ACall
 }
 
 
 /* stmt/expr/single_addr */
 void
 CodeGenerator::NodeFunctor::operator()(IntConstExpr *nd) {
+  Location::Ptr int_loc = nd->location();
   In::LoadIntConst::Ptr load_i;
-  // load_i = In::LoadIntConst::LoadIntConstNew(NULL, nd->value()); // TODO
+  load_i = In::LoadIntConst::LoadIntConstNew(int_loc, nd->value());
 
-  // code_emit_functor_(load_i);
+  process_instruction(load_i);
 }
 
 void
@@ -347,4 +375,9 @@ CodeGenerator::NodeFunctor::process_node(Node::Ptr _node) {
     NodeFunctor::Ptr this_functor = this;
     this_functor(_node);
   }
+}
+
+void
+CodeGenerator::NodeFunctor::process_instruction(In::Instruction::Ptr _in) {
+  in_stream_.pushBack(_in);
 }

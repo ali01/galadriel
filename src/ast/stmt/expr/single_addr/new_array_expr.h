@@ -12,6 +12,7 @@
 
 /* forward declarations */
 class Expr;
+class Location;
 class NamedType;
 class ArrayType;
 class Type;
@@ -29,7 +30,7 @@ public:
 
   NewArrayExpr(yyltype loc,
                Expr::Ptr size_expr,
-               Simone::Ptr<Type> size_expr);
+               Simone::Ptr<Type> elem_type);
 
   /* attribute member functions */
   Expr::PtrConst size() const { return size_; }
@@ -37,6 +38,8 @@ public:
 
   Simone::Ptr<const ArrayType> arrayType() const;
   Simone::Ptr<ArrayType> arrayType();
+
+  Simone::Ptr<Location> location();
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }

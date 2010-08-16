@@ -1,0 +1,10 @@
+DIR_P1WIZMX3 := scope
+SUB_P1WIZMX3 := 
+
+SRCS += $(wildcard $(DIR_P1WIZMX3)/*.$(EXT))
+
+MK_P1WIZMX3 := $(foreach sdir,$(SUB_P1WIZMX3),$(wildcard $(DIR_P1WIZMX3)/$(sdir)/*.$(SUBDIR_EXT)))
+ifneq ($(MK_P1WIZMX3),)
+$(info -- including subdirectory makefiles ($(DIR_P1WIZMX3)): $(MK_P1WIZMX3)) 
+include $(MK_P1WIZMX3)
+endif

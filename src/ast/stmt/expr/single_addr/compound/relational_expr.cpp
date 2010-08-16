@@ -1,5 +1,8 @@
 #include "relational_expr.h"
 
+/* code_generator includes */
+#include <code_generator/location/location.h>
+
 /* ast includes */
 #include "../../../../operator.h"
 
@@ -14,4 +17,9 @@ RelationalExpr::RelationalExpr(Expr::Ptr lhs,
 Type::PtrConst
 RelationalExpr::type() const {
   return Type::kBool;
+}
+
+Location::Ptr
+RelationalExpr::location() {
+  return NULL;
 }

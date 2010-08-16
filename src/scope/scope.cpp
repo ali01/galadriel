@@ -1,7 +1,7 @@
 #include "scope.h"
 
 /* project includes */
-#include "error.h"
+#include <error.h>
 
 Scope::Scope(Scope::Ptr _parent_scope) : parent_scope_(_parent_scope) {
   node_functor_ = NodeFunctor::NodeFunctorNew(this);

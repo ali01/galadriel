@@ -3,6 +3,9 @@
 /* simone includes */
 #include <simone/utility.h>
 
+/* code_generator includes */
+#include <code_generator/location/location.h>
+
 /* ast/stmt/expr includes */
 #include "../expr.h"
 
@@ -25,6 +28,12 @@ NewArrayExpr::arrayType() const {
 ArrayType::Ptr
 NewArrayExpr::arrayType() {
   return type_;
+}
+
+Location::Ptr
+NewArrayExpr::location() {
+  // TODO:
+  return NULL;
 }
 
 Type::PtrConst

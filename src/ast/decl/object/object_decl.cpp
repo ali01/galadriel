@@ -1,7 +1,7 @@
 #include "object_decl.h"
 
 /* project includes */
-#include <scope.h>
+#include <scope/scope.h>
 
 /* ast includes */
 #include "../../identifier.h"

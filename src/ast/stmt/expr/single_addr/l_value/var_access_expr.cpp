@@ -1,7 +1,10 @@
 #include "var_access_expr.h"
 
+/* code_generator includes */
+#include <code_generator/location/location.h>
+
 /* project includes */
-#include <scope.h>
+#include <scope/scope.h>
 
 /* ast includes */
 #include "../../../../identifier.h"
@@ -38,4 +41,9 @@ VarAccessExpr::type() const {
   }
 
   return type;
+}
+
+Location::Ptr
+VarAccessExpr::location() {
+  return NULL;
 }

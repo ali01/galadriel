@@ -4,7 +4,7 @@
 #include <simone/utility.h>
 
 /* project includes */
-#include <scope.h>
+#include <scope/scope.h>
 
 #include "../identifier.h"
 #include "../decl/object/class_decl.h"

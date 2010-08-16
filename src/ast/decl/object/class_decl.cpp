@@ -6,7 +6,7 @@
 using Simone::Deque;
 
 /* project includes */
-#include <scope.h>
+#include <scope/scope.h>
 
 /* ast/decl includes */
 #include "interface_decl.h"

@@ -115,6 +115,7 @@ private:
 
       /* member functions */
       void process_node(Node::Ptr _nd);
+      void process_instruction(In::Instruction::Ptr _in);
 
       /* data members */      
       Deque<In::Instruction::Ptr> in_stream_;

@@ -7,16 +7,16 @@
 using Simone::Map;
 
 /* ast includes */
-#include "ast/identifier.h"
-#include "ast/node.h"
+#include <ast/identifier.h>
+#include <ast/node.h>
 
 /* ast/decl includes */
-#include "ast/decl/decl.h"
-#include "ast/decl/var_decl.h"
-#include "ast/decl/fn_decl.h"
-#include "ast/decl/object/object_decl.h"
-#include "ast/decl/object/class_decl.h"
-#include "ast/decl/object/interface_decl.h"
+#include <ast/decl/decl.h>
+#include <ast/decl/var_decl.h>
+#include <ast/decl/fn_decl.h>
+#include <ast/decl/object/object_decl.h>
+#include <ast/decl/object/class_decl.h>
+#include <ast/decl/object/interface_decl.h>
 
 /* instances obtained via factory constructor in ScopeStack class */
 class Scope : public Simone::PtrInterface<Scope> {
@@ -91,7 +91,6 @@ public:
   VarDecl::PtrConst varDecl(Identifier::PtrConst _id,
                             bool recursive=true) const;
 
-
   FnDecl::Ptr fnDecl(Identifier::PtrConst _id, bool recursive=true);
   FnDecl::PtrConst fnDecl(Identifier::PtrConst _id, bool recursive=true) const;
 
@@ -111,6 +110,8 @@ public:
                                         bool recursive=true) const;
 
 
+  size_t varDeclCount() const { return var_decls_.size(); }
+
   Scope::PtrConst parentScope() const { return parent_scope_; }
   Scope::Ptr parentScope() { return parent_scope_; }
 
@@ -118,11 +119,11 @@ public:
   void declIs(Decl::Ptr _decl);
   void baseScopeIs(Scope::PtrConst _scope);
 
-private:
-  /* private constructor called by factory constructor in ScopeStack */
+protected:
+  /* protected constructor called by derived classes;
+     scope objects are constructed by factory member function in ScopeStack */
   explicit Scope(Scope::Ptr _parent_scope);
-
-  ~Scope() {}
+  virtual ~Scope() {}
 
   /* double dispatch */
   class NodeFunctor : public Node::Functor {
@@ -134,17 +135,22 @@ private:
         return new NodeFunctor(_s);
       }
 
-      void operator()(VarDecl *_d) { scope_->varDeclIs(_d); }
-      void operator()(FnDecl *_d) { scope_->fnDeclIs(_d); }
-      void operator()(ClassDecl *_d) { scope_->classDeclIs(_d); }
-      void operator()(InterfaceDecl *_d) { scope_->interfaceDeclIs(_d); }
+      virtual void operator()(VarDecl *_d) { scope_->varDeclIs(_d); }
+      virtual void operator()(FnDecl *_d) { scope_->fnDeclIs(_d); }
+      virtual void operator()(ClassDecl *_d) { scope_->classDeclIs(_d); }
+      virtual void operator()(InterfaceDecl *_d) { scope_->interfaceDeclIs(_d);}
 
-    private:
-      NodeFunctor(Scope::Ptr _s) : scope_(_s) {}
-      
+    protected:
+      explicit NodeFunctor(Scope::Ptr _s) : scope_(_s) {}
+
       /* data members */
       Scope::Ptr scope_;
   };
+
+  /* data members */
+  NodeFunctor::Ptr node_functor_;
+
+private:
 
   /* private member functions */
   void varDeclIs(VarDecl::Ptr _decl);
@@ -161,8 +167,6 @@ private:
     intf_decls_;
 
   Scope::Ptr parent_scope_;
-
-  NodeFunctor::Ptr node_functor_;
 
   /* operations disallowed */
   Scope(const Scope&);

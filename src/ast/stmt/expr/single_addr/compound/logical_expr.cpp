@@ -1,15 +1,23 @@
 #include "logical_expr.h"
 
+/* code_generator includes */
+#include <code_generator/location/location.h>
+
 /* ast includes */
 #include "../../../../operator.h"
 #include "../../../../type/type.h"
 
 LogicalExpr::LogicalExpr(Expr::Ptr lhs,
-                         Simone::Ptr<Operator> op,
+                         Operator::Ptr op,
                          Expr::Ptr rhs) : 
   CompoundExpr(lhs,op,rhs) {}
 
 Type::PtrConst
 LogicalExpr::type() const {
   return Type::kBool;
+}
+
+Location::Ptr
+LogicalExpr::location() {
+  return NULL; // TODO
 }

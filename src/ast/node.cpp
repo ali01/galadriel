@@ -4,7 +4,7 @@
 #include <string>
 
 /* project includes */
-#include <scope.h>
+#include <scope/scope.h>
 
 /* ast/stmt includes */
 #include "stmt/stmt.h"

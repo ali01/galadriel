@@ -1,6 +1,6 @@
 #include "scope_stack_builder.h"
 
-#include "scope.h"
+#include <scope/scope.h>
 
 
 

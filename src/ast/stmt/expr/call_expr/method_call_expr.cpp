@@ -1,7 +1,13 @@
 #include "method_call_expr.h"
 
 /* project includes */
-#include <scope.h>
+#include <scope/scope.h>
+
+/* code_generator includes */
+#include <code_generator/location/location.h>
+
+/* ast includes */
+#include "../../../identifier.h"
 
 /* ast/decl includes */
 #include "../../../decl/fn_decl.h"
@@ -13,7 +19,7 @@
 
 MethodCallExpr::MethodCallExpr(yyltype _loc,
                                Expr::Ptr _base,
-                               Simone::Ptr<Identifier> _identifier,
+                               Identifier::Ptr _identifier,
                                Deque<Expr::Ptr>::Ptr _args) :
   CallExpr(_loc, _identifier, _args), base_(_base)
 {
@@ -60,4 +66,9 @@ MethodCallExpr::BaseDeclFunctor::operator()(NamedType *_type) {
 void
 MethodCallExpr::BaseDeclFunctor::operator()(ArrayType *_type) {
   base_decl_ = _type->builtinClassDecl();
+}
+
+Location::Ptr
+MethodCallExpr::location() {
+  return NULL;
 }

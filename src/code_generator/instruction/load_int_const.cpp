@@ -1,7 +1,7 @@
 #include "load_int_const.h"
 
 /* code_generator includes */
-#include "../location.h"
+#include "../location/location.h"
 
 namespace In {
 

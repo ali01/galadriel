@@ -1,7 +1,7 @@
 #include "ifz.h"
 
 /* code_generator includes */
-#include "../location.h"
+#include "../location/location.h"
 
 /* local includes */
 #include "label.h"
@@ -28,7 +28,6 @@ Location::PtrConst
 IfZ::test() const {
   return test_;
 }
-
 
 Label::Ptr
 IfZ::label() {

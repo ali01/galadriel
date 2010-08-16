@@ -1,5 +1,8 @@
 #include "this_expr.h"
 
+/* code_generator includes */
+#include <code_generator/location/location.h>
+
 /* ast/decl includes */
 #include "../../../../decl/object/class_decl.h"
 
@@ -14,4 +17,9 @@ ThisExpr::type() const {
     type = class_decl->type();
 
   return type;
+}
+
+Location::Ptr
+ThisExpr::location() {
+  return NULL;
 }

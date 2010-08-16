@@ -11,6 +11,7 @@
 #include "single_addr_expr.h"
 
 /* forward declarations */
+class Location;
 class Type;
 
 class DblConstExpr : public SingleAddrExpr {
@@ -25,6 +26,7 @@ public:
   DblConstExpr(yyltype loc, double v) : SingleAddrExpr(loc) { value = v; }
 
   Simone::Ptr<const Type> type() const;
+  Simone::Ptr<Location> location();
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
@@ -32,6 +34,7 @@ public:
 protected:
   /* data members */
   double value;
+  Simone::Ptr<Location> location_;
 };
 
 #endif

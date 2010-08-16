@@ -25,6 +25,7 @@ public:
   ReadLineExpr(yyltype loc) : SingleAddrExpr(loc) {}
 
   Simone::Ptr<const Type> type() const;
+  Simone::Ptr<Location> location();
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }

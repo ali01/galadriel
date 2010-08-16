@@ -29,6 +29,8 @@ public:
   Simone::Ptr<const NamedType> objectType() const;
   Simone::Ptr<NamedType> objectType();
 
+  Simone::Ptr<Location> location();
+
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 

@@ -1,7 +1,10 @@
 #include "function_call_expr.h"
 
 /* project includes */
-#include <scope.h>
+#include <scope/scope.h>
+
+/* code_generator includes */
+#include <code_generator/location/location.h>
 
 /* ast/decl includes */
 #include "../../../decl/fn_decl.h"
@@ -18,4 +21,9 @@ FnDecl::PtrConst
 FunctionCallExpr::fnDecl() const {
   Scope::PtrConst scope = this->scope();
   return scope->fnDecl(identifier_);;
+}
+
+Location::Ptr
+FunctionCallExpr::location() {
+  return NULL;
 }

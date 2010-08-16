@@ -6,6 +6,9 @@
 /* project includes */
 #include <lex_location.h>
 
+/* code_generator includes */
+#include <code_generator/location/location.h>
+
 /* ast/decl includes */
 #include "../../../decl/object/class_decl.h"
 
@@ -35,4 +38,9 @@ NewExpr::objectType() {
 Type::PtrConst
 NewExpr::type() const {
   return objectType();
+}
+
+Location::Ptr
+NewExpr::location() {
+  return NULL; // TODO;
 }

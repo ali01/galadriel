@@ -6,7 +6,7 @@ using std::cout;
 
 /* local includes */
 #include "instruction_includes.h"
-#include "location.h"
+#include "location/location.h"
 #include "tac_emit_functor.h"
 
 const string MIPSEmitFunctor::kIndent = "  ";

@@ -6,6 +6,9 @@
 /* project includes */
 #include <lex_location.h>
 
+/* code_generator includes */
+#include <code_generator/location/location.h>
+
 /* ast includes */
 #include "../../operator.h"
 
@@ -19,8 +22,8 @@
 #include "single_addr/single_addr_expr.h"
 #include "single_addr/l_value/l_value_expr.h"
 
-AssignExpr::AssignExpr(Simone::Ptr<LValueExpr> _l_val,
-                       Simone::Ptr<Operator> _op,
+AssignExpr::AssignExpr(LValueExpr::Ptr _l_val,
+                       Operator::Ptr _op,
                        Expr::Ptr _rhs) :
   Expr(Join(_l_val->lexLoc(), _rhs->lexLoc())),
   l_value_(_l_val), op_(_op), right_(_rhs)
@@ -31,4 +34,9 @@ AssignExpr::AssignExpr(Simone::Ptr<LValueExpr> _l_val,
 Type::PtrConst
 AssignExpr::type() const {
   return l_value_->type();
+}
+
+Location::Ptr
+AssignExpr::location() {
+  return l_value_->location();
 }

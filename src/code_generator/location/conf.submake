@@ -1,0 +1,10 @@
+DIR_QVI4GV4P := code_generator/location
+SUB_QVI4GV4P := 
+
+SRCS += $(wildcard $(DIR_QVI4GV4P)/*.$(EXT))
+
+MK_QVI4GV4P := $(foreach sdir,$(SUB_QVI4GV4P),$(wildcard $(DIR_QVI4GV4P)/$(sdir)/*.$(SUBDIR_EXT)))
+ifneq ($(MK_QVI4GV4P),)
+$(info -- including subdirectory makefiles ($(DIR_QVI4GV4P)): $(MK_QVI4GV4P)) 
+include $(MK_QVI4GV4P)
+endif

@@ -1,5 +1,8 @@
 #include "array_access_expr.h"
 
+/* code_generator includes */
+#include <code_generator/location/location.h>
+
 /* ast/stmt/expr includes */
 #include "../../expr.h"
 
@@ -24,4 +27,9 @@ ArrayAccessExpr::type() const {
   }
 
   return elem_type;
+}
+
+Location::Ptr
+ArrayAccessExpr::location() {
+  return NULL;
 }

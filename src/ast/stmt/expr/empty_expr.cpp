@@ -6,3 +6,8 @@ Type::PtrConst
 EmptyExpr::type() const {
   return Type::kVoid;
 }
+
+Location::Ptr
+EmptyExpr::location() {
+  return NULL;
+}
