@@ -66,19 +66,25 @@ CodeGenerator::NodeFunctor::operator()(FnDecl *nd) {
   StmtBlock::Ptr stmt_block = nd->body();
 
   if (stmt_block) {
+    /* BeginFunc instruction */
     In::BeginFunc::Ptr begin_func_i;
     Identifier::Ptr fn_id = nd->identifier();
     In::Label::Ptr label_i = In::Label::LabelNew(fn_id);
     begin_func_i = In::BeginFunc::BeginFuncNew(label_i);
     process_instruction(begin_func_i);
 
+    /* processing function body */
     process_node(stmt_block);
 
+    /* back patching frame size */
     LocalScope::PtrConst local_scope;
     local_scope = Ptr::st_cast<LocalScope>(stmt_block->scope());
     In::BeginFunc::FrameSize frame_size = local_scope->frameSize();
-
     begin_func_i->frameSizeIs(frame_size);
+
+    /* EndFunc instruction */
+    In::EndFunc::Ptr end_func_i = In::EndFunc::EndFuncNew();
+    process_instruction(end_func_i);
   }
 }
 

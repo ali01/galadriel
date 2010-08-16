@@ -52,9 +52,9 @@ MIPSEmitFunctor::MIPSEmitFunctor() : reg_last_used_(zero), str_num_(0) {
 
   /* emitting preamble */
   emit("# standard Decaf preamble ", true);
-  emit(".text");
-  emit(".align 2");
-  emit(".globl main");
+  emit(".text", true);
+  emit(".align 2", true);
+  emit(".globl main", true);
 }
 
 void
