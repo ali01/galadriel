@@ -6,8 +6,12 @@
 # Compiles decaf-file and executes (spim).
 #
 
-# SPIM=/usr/class/cs143/bin/spim
-SPIM=spim
+if [[ $mac_os == true ]] ; then
+   SPIM=spim
+else
+   SPIM=/usr/class/cs143/bin/spim
+fi
+
 COMPILER=dcc
 
 if [ $# -lt 1 ]; then
