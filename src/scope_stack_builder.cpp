@@ -251,9 +251,115 @@ ScopeStackBuilder::NodeFunctor::operator()(AssignExpr *nd) {
   process_node(right, nd, scope);
 }
 
-/* stmt/expr/call_expr */
+
+/* stmt/expr/l_value */
+
+void
+ScopeStackBuilder::NodeFunctor::operator()(VarAccessExpr *nd) {
+  Scope::Ptr scope = nd->scope();
+  Identifier::Ptr id = nd->identifier();
+  process_node(id, nd, scope);
+}
+
+void
+ScopeStackBuilder::NodeFunctor::operator()(ArrayAccessExpr *nd) {
+  Scope::Ptr scope = nd->scope();
+
+  Expr::Ptr base = nd->base();
+  process_node(base, nd, scope);
+
+  Expr::Ptr subscript = nd->subscript();
+  process_node(subscript, nd, scope);
+}
+
+void
+ScopeStackBuilder::NodeFunctor::operator()(FieldAccessExpr *nd) {
+  Scope::Ptr scope = nd->scope();
+
+  Expr::Ptr base = nd->base();
+  process_node(base, nd, scope);
+
+  Identifier::Ptr id = nd->field();
+  process_node(id, nd, scope);
+}
+
+
+/* stmt/expr/single_addr */
+
+void
+ScopeStackBuilder::NodeFunctor::operator()(SingleAddrExpr *nd) {
+  LocalScope::Ptr local_scope = Ptr::st_cast<LocalScope>(nd->scope());
+  Location::PtrConst loc = local_scope->tempNew();
+  nd->locationIs(loc);
+}
+
+void
+ScopeStackBuilder::NodeFunctor::operator()(BoolConstExpr *nd) {
+  /* applying this functor to upcasted nd */
+  (*this)(static_cast<SingleAddrExpr*>(nd));
+}
+
+void
+ScopeStackBuilder::NodeFunctor::operator()(IntConstExpr *nd) {
+  /* applying this functor to upcasted nd */
+  (*this)(static_cast<SingleAddrExpr*>(nd));
+}
+
+void
+ScopeStackBuilder::NodeFunctor::operator()(DblConstExpr *nd) {
+  /* applying this functor to upcasted nd */
+  (*this)(static_cast<SingleAddrExpr*>(nd));
+}
+
+void
+ScopeStackBuilder::NodeFunctor::operator()(StrConstExpr *nd) {
+  /* applying this functor to upcasted nd */
+  (*this)(static_cast<SingleAddrExpr*>(nd));
+}
+
+void
+ScopeStackBuilder::NodeFunctor::operator()(ReadLineExpr *nd) {
+  /* applying this functor to upcasted nd */
+  (*this)(static_cast<SingleAddrExpr*>(nd));
+}
+
+void
+ScopeStackBuilder::NodeFunctor::operator()(ReadIntegerExpr *nd) {
+  /* applying this functor to upcasted nd */
+  (*this)(static_cast<SingleAddrExpr*>(nd));
+}
+
+void
+ScopeStackBuilder::NodeFunctor::operator()(NewExpr *nd) {
+  /* applying this functor to upcasted nd */
+  (*this)(static_cast<SingleAddrExpr*>(nd));
+
+  Scope::Ptr scope = nd->scope();
+  NamedType::Ptr type = nd->objectType();
+  process_node(type, nd, scope);
+}
+
+void
+ScopeStackBuilder::NodeFunctor::operator()(NewArrayExpr *nd) {
+  /* applying this functor to upcasted nd */
+  (*this)(static_cast<SingleAddrExpr*>(nd));
+
+  Scope::Ptr scope = nd->scope();
+
+  Expr::Ptr size = nd->size();
+  process_node(size, nd, scope);
+
+  ArrayType::Ptr type = nd->arrayType();
+  process_node(type, nd, scope);
+}
+
+
+/* stmt/expr/single_addr/call_expr */
 void
 ScopeStackBuilder::NodeFunctor::operator()(CallExpr *nd) {
+  /* applying this functor to upcasted nd */
+  (*this)(static_cast<SingleAddrExpr*>(nd));
+
   Scope::Ptr scope = nd->scope();
 
   Identifier::Ptr fn_id = nd->identifier();
@@ -285,38 +391,13 @@ ScopeStackBuilder::NodeFunctor::operator()(MethodCallExpr *nd) {
 }
 
 
-/* stmt/expr/single_addr */
-void
-ScopeStackBuilder::NodeFunctor::operator()(BoolConstExpr *nd) {
-  LocalScope::Ptr local_scope = Ptr::st_cast<LocalScope>(nd->scope());
-  Location::PtrConst loc = local_scope->tempNew();
-  // nd->locationIs(loc); // TODO:
-}
-
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(NewExpr *nd) {
-  Scope::Ptr scope = nd->scope();
-
-  NamedType::Ptr type = nd->objectType();
-  process_node(type, nd, scope);
-}
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(NewArrayExpr *nd) {
-  Scope::Ptr scope = nd->scope();
-
-  Expr::Ptr size = nd->size();
-  process_node(size, nd, scope);
-
-  ArrayType::Ptr type = nd->arrayType();
-  process_node(type, nd, scope);
-}
-
 
 /* stmt/expr/single_addr/compound */
 void
 ScopeStackBuilder::NodeFunctor::operator()(CompoundExpr *nd) {
+  /* applying this functor to upcasted nd */
+  (*this)(static_cast<SingleAddrExpr*>(nd));
+
   Scope::Ptr scope = nd->scope();
 
   Expr::Ptr left = nd->left();
@@ -342,38 +423,6 @@ ScopeStackBuilder::NodeFunctor::operator()(LogicalExpr *nd) {
 void
 ScopeStackBuilder::NodeFunctor::operator()(RelationalExpr *nd) {
   (*this)(static_cast<CompoundExpr*>(nd));
-}
-
-
-/* stmt/expr/single_addr/l_value */
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(VarAccessExpr *nd) {
-  Scope::Ptr scope = nd->scope();
-  Identifier::Ptr id = nd->identifier();
-  process_node(id, nd, scope);
-}
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(ArrayAccessExpr *nd) {
-  Scope::Ptr scope = nd->scope();
-
-  Expr::Ptr base = nd->base();
-  process_node(base, nd, scope);
-
-  Expr::Ptr subscript = nd->subscript();
-  process_node(subscript, nd, scope);
-}
-
-void
-ScopeStackBuilder::NodeFunctor::operator()(FieldAccessExpr *nd) {
-  Scope::Ptr scope = nd->scope();
-
-  Expr::Ptr base = nd->base();
-  process_node(base, nd, scope);
-
-  Identifier::Ptr id = nd->field();
-  process_node(id, nd, scope);
 }
 
 

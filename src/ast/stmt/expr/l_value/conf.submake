@@ -1,4 +1,4 @@
-DIR_HBUJE5LO := ast/stmt/expr/single_addr/l_value
+DIR_HBUJE5LO := ast/stmt/expr/l_value
 SUB_HBUJE5LO :=
 
 SRCS += $(wildcard $(DIR_HBUJE5LO)/*.$(EXT))

@@ -4,11 +4,11 @@
 #include <code_generator/location/location.h>
 
 /* ast/stmt/expr includes */
-#include "../../expr.h"
+#include "../expr.h"
 
 /* ast/type includes */
-#include "../../../../type/type.h"
-#include "../../../../type/array_type.h"
+#include "../../../type/type.h"
+#include "../../../type/array_type.h"
 
 
 ArrayAccessExpr::ArrayAccessExpr(yyltype loc, Expr::Ptr b, Expr::Ptr s) :

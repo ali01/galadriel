@@ -68,34 +68,34 @@ public:
       /* void operator()(NullExpr *); */
       /* void operator()(EmptyExpr *); */
 
-      /* stmt/expr/call_expr */
+      /* stmt/expr/l_value */
+      /* void operator()(LValueExpr *); */
+      void operator()(VarAccessExpr *);
+      void operator()(ArrayAccessExpr *);
+      void operator()(FieldAccessExpr *);
+      /* void operator()(ThisExpr *); */
+
+      /* stmt/expr/single_addr */
+      void operator()(SingleAddrExpr *);
+      void operator()(BoolConstExpr *);
+      void operator()(IntConstExpr *); 
+      void operator()(DblConstExpr *); 
+      void operator()(StrConstExpr *); 
+      void operator()(ReadLineExpr *); 
+      void operator()(ReadIntegerExpr *); 
+      void operator()(NewExpr *);
+      void operator()(NewArrayExpr *);
+
+      /* stmt/expr/single_addr/call_expr */
       void operator()(CallExpr *);
       void operator()(FunctionCallExpr *);
       void operator()(MethodCallExpr *);
-
-      /* stmt/expr/single_addr */
-      /* void operator()(SingleAddrExpr *); */
-      void operator()(BoolConstExpr *); 
-      /* void operator()(IntConstExpr *); */
-      /* void operator()(DblConstExpr *); */
-      /* void operator()(StrConstExpr *); */
-      /* void operator()(ReadLineExpr *); */
-      /* void operator()(ReadIntegerExpr *); */
-      void operator()(NewExpr *);
-      void operator()(NewArrayExpr *);
 
       /* stmt/expr/single_addr/compound */
       void operator()(CompoundExpr *);
       void operator()(ArithmeticExpr *);
       void operator()(LogicalExpr *);
       void operator()(RelationalExpr *);
-
-      /* stmt/expr/single_addr/l_value */
-      /* void operator()(LValueExpr *); */
-      void operator()(VarAccessExpr *);
-      void operator()(ArrayAccessExpr *);
-      void operator()(FieldAccessExpr *);
-      /* void operator()(ThisExpr *); */
 
       /* type */
       /* void operator()(Type *); */

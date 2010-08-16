@@ -223,145 +223,8 @@ SemanticAnalyser::NodeFunctor::operator()(AssignExpr *nd) {
   }
 }
 
-void
-SemanticAnalyser::NodeFunctor::operator()(CallExpr *nd) {
-  Identifier::Ptr fn_id = nd->identifier();
-  process_node(fn_id);
 
-  Expr::Ptr actual;
-  FunctionCallExpr::const_actuals_iter it = nd->actualsBegin();
-  for (; it != nd->actualsEnd(); ++it) {
-    actual = *it;
-    process_node(actual);
-  }
-}
-
-void
-SemanticAnalyser::NodeFunctor::operator()(FunctionCallExpr *nd) {
-  /* applying this functor on upcasted nd */
-  (*this)(static_cast<CallExpr*>(nd));
-
-  FnDecl::PtrConst fn_decl = nd->fnDecl();
-  if (fn_decl != NULL) {
-    verify_args_match(nd, fn_decl);
-  } else {
-    Error::IdentifierNotDeclared(nd->identifier(), kLookingForFunction);
-  }
-}
-
-void
-SemanticAnalyser::NodeFunctor::operator()(MethodCallExpr *nd) {
-  Expr::Ptr base = nd->base();
-  process_node(base);
-
-  /* applying this functor on upcasted nd */
-  (*this)(static_cast<CallExpr*>(nd));
-
-  FnDecl::PtrConst fn_decl = nd->fnDecl();
-  if (fn_decl != NULL) {
-    verify_args_match(nd, fn_decl);
-
-  } else {
-    Type::PtrConst base_type = base->type();
-    Identifier::Ptr fn_id = nd->identifier();
-    if (base_type->isNamedType()) {
-      NamedType::PtrConst nt = Ptr::st_cast<const NamedType>(base_type);
-      ObjectDecl::PtrConst object = nt->objectDecl();
-
-      if (object) {
-        /* only print error if object is declared;
-           otherwise a "declaration not found" error will obviate the need
-           for this error */
-        Error::FieldNotFoundInBase(fn_id, base_type);
-      }
-      
-    } else if (base_type != Type::kError) {
-      Error::FieldNotFoundInBase(fn_id, base_type);
-    }
-  }
-}
-
-/* stmt/expr/single_addr */
-void
-SemanticAnalyser::NodeFunctor::operator()(NewExpr *nd) {
-  NamedType::Ptr type = nd->objectType();
-  ClassDecl::Ptr class_decl = type->classDecl();
-  if (class_decl) {
-    process_node(class_decl);
-  } else {
-    Error::IdentifierNotDeclared(type->identifier(), kLookingForClass);
-  }
-}
-
-void
-SemanticAnalyser::NodeFunctor::operator()(NewArrayExpr *nd) {
-  Expr::Ptr size = nd->size();
-  process_node(size);
-
-  if (size->type() != Type::kInt)
-    Error::NewArraySizeNotInteger(size);
-
-  ArrayType::Ptr type = nd->arrayType();
-  process_node(type);
-}
-
-
-/* stmt/expr/single_addr/compound */
-void
-SemanticAnalyser::NodeFunctor::operator()(CompoundExpr *nd) {
-  Expr::Ptr left = nd->left();
-  process_node(left);
-
-  Operator::Ptr op = nd->op();
-  process_node(op);
-
-  Expr::Ptr right = nd->right();
-  process_node(right);
-
-  /* right must be non-null */
-  Type::PtrConst right_type = right->type();
-
-  if (left) {
-    Type::PtrConst left_type = left->type();
-
-    if (*left_type != *right_type)
-      Error::IncompatibleOperands(op, left_type, right_type);
-
-  } else {
-    bool error = false;
-
-    if (op->operatorType() == Operator::kSubtract) {
-      if (right_type != Type::kInt && right_type != Type::kDouble) {
-        error = true;
-      }
-    } else if (op->operatorType() == Operator::kNot) {
-      if (right_type != Type::kBool) {
-        error = true;
-      }
-    }
-
-    if (error)
-      Error::IncompatibleOperand(op, right_type);
-  }
-}
-
-void
-SemanticAnalyser::NodeFunctor::operator()(ArithmeticExpr *nd) {
-  (*this)(static_cast<CompoundExpr*>(nd));
-}
-
-void
-SemanticAnalyser::NodeFunctor::operator()(LogicalExpr *nd) {
-  (*this)(static_cast<CompoundExpr*>(nd));
-}
-
-void
-SemanticAnalyser::NodeFunctor::operator()(RelationalExpr *nd) {
-  (*this)(static_cast<CompoundExpr*>(nd));
-}
-
-
-/* stmt/expr/single_addr/l_value */
+/* stmt/expr/l_value */
 void
 SemanticAnalyser::NodeFunctor::operator()(VarAccessExpr *nd) {
   Identifier::Ptr id = nd->identifier();
@@ -424,6 +287,149 @@ SemanticAnalyser::NodeFunctor::operator()(ThisExpr *nd) {
   if (class_decl == NULL)
     Error::ThisOutsideClassScope(nd);
 }
+
+
+
+/* stmt/expr/single_addr */
+void
+SemanticAnalyser::NodeFunctor::operator()(NewExpr *nd) {
+  NamedType::Ptr type = nd->objectType();
+  ClassDecl::Ptr class_decl = type->classDecl();
+  if (class_decl) {
+    process_node(class_decl);
+  } else {
+    Error::IdentifierNotDeclared(type->identifier(), kLookingForClass);
+  }
+}
+
+void
+SemanticAnalyser::NodeFunctor::operator()(NewArrayExpr *nd) {
+  Expr::Ptr size = nd->size();
+  process_node(size);
+
+  if (size->type() != Type::kInt)
+    Error::NewArraySizeNotInteger(size);
+
+  ArrayType::Ptr type = nd->arrayType();
+  process_node(type);
+}
+
+
+/* stmt/expr/single_addr/call_expr */
+void
+SemanticAnalyser::NodeFunctor::operator()(CallExpr *nd) {
+  Identifier::Ptr fn_id = nd->identifier();
+  process_node(fn_id);
+
+  Expr::Ptr actual;
+  FunctionCallExpr::const_actuals_iter it = nd->actualsBegin();
+  for (; it != nd->actualsEnd(); ++it) {
+    actual = *it;
+    process_node(actual);
+  }
+}
+
+void
+SemanticAnalyser::NodeFunctor::operator()(FunctionCallExpr *nd) {
+  /* applying this functor on upcasted nd */
+  (*this)(static_cast<CallExpr*>(nd));
+
+  FnDecl::PtrConst fn_decl = nd->fnDecl();
+  if (fn_decl != NULL) {
+    verify_args_match(nd, fn_decl);
+  } else {
+    Error::IdentifierNotDeclared(nd->identifier(), kLookingForFunction);
+  }
+}
+
+void
+SemanticAnalyser::NodeFunctor::operator()(MethodCallExpr *nd) {
+  Expr::Ptr base = nd->base();
+  process_node(base);
+
+  /* applying this functor on upcasted nd */
+  (*this)(static_cast<CallExpr*>(nd));
+
+  FnDecl::PtrConst fn_decl = nd->fnDecl();
+  if (fn_decl != NULL) {
+    verify_args_match(nd, fn_decl);
+
+  } else {
+    Type::PtrConst base_type = base->type();
+    Identifier::Ptr fn_id = nd->identifier();
+    if (base_type->isNamedType()) {
+      NamedType::PtrConst nt = Ptr::st_cast<const NamedType>(base_type);
+      ObjectDecl::PtrConst object = nt->objectDecl();
+
+      if (object) {
+        /* only print error if object is declared;
+           otherwise a "declaration not found" error will obviate the need
+           for this error */
+        Error::FieldNotFoundInBase(fn_id, base_type);
+      }
+      
+    } else if (base_type != Type::kError) {
+      Error::FieldNotFoundInBase(fn_id, base_type);
+    }
+  }
+}
+
+
+
+/* stmt/expr/single_addr/compound */
+void
+SemanticAnalyser::NodeFunctor::operator()(CompoundExpr *nd) {
+  Expr::Ptr left = nd->left();
+  process_node(left);
+
+  Operator::Ptr op = nd->op();
+  process_node(op);
+
+  Expr::Ptr right = nd->right();
+  process_node(right);
+
+  /* right must be non-null */
+  Type::PtrConst right_type = right->type();
+
+  if (left) {
+    Type::PtrConst left_type = left->type();
+
+    if (*left_type != *right_type)
+      Error::IncompatibleOperands(op, left_type, right_type);
+
+  } else {
+    bool error = false;
+
+    if (op->operatorType() == Operator::kSubtract) {
+      if (right_type != Type::kInt && right_type != Type::kDouble) {
+        error = true;
+      }
+    } else if (op->operatorType() == Operator::kNot) {
+      if (right_type != Type::kBool) {
+        error = true;
+      }
+    }
+
+    if (error)
+      Error::IncompatibleOperand(op, right_type);
+  }
+}
+
+void
+SemanticAnalyser::NodeFunctor::operator()(ArithmeticExpr *nd) {
+  (*this)(static_cast<CompoundExpr*>(nd));
+}
+
+void
+SemanticAnalyser::NodeFunctor::operator()(LogicalExpr *nd) {
+  (*this)(static_cast<CompoundExpr*>(nd));
+}
+
+void
+SemanticAnalyser::NodeFunctor::operator()(RelationalExpr *nd) {
+  (*this)(static_cast<CompoundExpr*>(nd));
+}
+
 
 
 /* type */

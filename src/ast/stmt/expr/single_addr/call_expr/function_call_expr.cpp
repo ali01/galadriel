@@ -7,10 +7,10 @@
 #include <code_generator/location/location.h>
 
 /* ast/decl includes */
-#include "../../../decl/fn_decl.h"
+#include "../../../../decl/fn_decl.h"
 
 /* ast/type includes */
-#include "../../../type/type.h"
+#include "../../../../type/type.h"
 
 FunctionCallExpr::FunctionCallExpr(yyltype _loc,
                                    Identifier::Ptr _identifier,

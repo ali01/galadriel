@@ -8,15 +8,15 @@
 #include <lex_location.h>
 
 /* ast/stmt/expr/singl_addr includes */
-#include "../single_addr_expr.h"
+#include "../expr.h"
 
-class LValueExpr : public SingleAddrExpr {
+class LValueExpr : public Expr {
 public:
   typedef Simone::Ptr<const LValueExpr> PtrConst;
   typedef Simone::Ptr<LValueExpr> Ptr;  
 
 protected:
-  LValueExpr(yyltype loc) : SingleAddrExpr(loc) {}
+  LValueExpr(yyltype loc) : Expr(loc) {}
 };
 
 #endif

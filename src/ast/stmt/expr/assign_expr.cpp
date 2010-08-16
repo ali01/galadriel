@@ -18,9 +18,11 @@
 /* ast/stmt/expr includes */
 #include "expr.h"
 
+/* ast/stmt/l_value includes */
+#include "l_value/l_value_expr.h"
+
 /* ast/stmt/expr/single_addr includes */
 #include "single_addr/single_addr_expr.h"
-#include "single_addr/l_value/l_value_expr.h"
 
 AssignExpr::AssignExpr(LValueExpr::Ptr _l_val,
                        Operator::Ptr _op,

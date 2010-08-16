@@ -102,10 +102,12 @@ public:
     virtual void operator()(NullExpr *) {}
     virtual void operator()(EmptyExpr *) {}
 
-    /* stmt/expr/call_expr */
-    virtual void operator()(CallExpr *) { ABORT(); }
-    virtual void operator()(FunctionCallExpr *) {}
-    virtual void operator()(MethodCallExpr *) {}
+    /* stmt/expr/l_value */
+    virtual void operator()(LValueExpr *) { ABORT(); }
+    virtual void operator()(VarAccessExpr *) {}
+    virtual void operator()(ArrayAccessExpr *) {}
+    virtual void operator()(FieldAccessExpr *) {}
+    virtual void operator()(ThisExpr *) {}
 
     /* stmt/expr/single_addr */
     virtual void operator()(SingleAddrExpr *) { ABORT(); }
@@ -118,18 +120,16 @@ public:
     virtual void operator()(NewExpr *) {}
     virtual void operator()(NewArrayExpr *) {}
 
+    /* stmt/expr/single_addr/call_expr */
+    virtual void operator()(CallExpr *) { ABORT(); }
+    virtual void operator()(FunctionCallExpr *) {}
+    virtual void operator()(MethodCallExpr *) {}
+
     /* stmt/expr/single_addr/compound */
     virtual void operator()(CompoundExpr *) { ABORT(); }
     virtual void operator()(ArithmeticExpr *) {}
     virtual void operator()(LogicalExpr *) {}
     virtual void operator()(RelationalExpr *) {}
-
-    /* stmt/expr/single_addr/l_value */
-    virtual void operator()(LValueExpr *) { ABORT(); }
-    virtual void operator()(VarAccessExpr *) {}
-    virtual void operator()(ArrayAccessExpr *) {}
-    virtual void operator()(FieldAccessExpr *) {}
-    virtual void operator()(ThisExpr *) {}
 
     /* type */
     virtual void operator()(Type *) {}

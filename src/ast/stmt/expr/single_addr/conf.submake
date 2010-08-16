@@ -1,5 +1,5 @@
 DIR_E3HA8KZ8 := ast/stmt/expr/single_addr
-SUB_E3HA8KZ8 := compound l_value
+SUB_E3HA8KZ8 := call_expr compound
 
 SRCS += $(wildcard $(DIR_E3HA8KZ8)/*.$(EXT))
 

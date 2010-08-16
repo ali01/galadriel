@@ -219,7 +219,63 @@ CodeGenerator::NodeFunctor::operator()(AssignExpr *nd) {
 }
 
 
-/* stmt/expr/call_expr */
+/* stmt/expr/l_value */
+void
+CodeGenerator::NodeFunctor::operator()(VarAccessExpr *nd) {
+  Identifier::Ptr id = nd->identifier();
+  process_node(id);
+}
+
+void
+CodeGenerator::NodeFunctor::operator()(ArrayAccessExpr *nd) {
+  Expr::Ptr base = nd->base();
+  process_node(base);
+
+  Expr::Ptr subscript = nd->subscript();
+  process_node(subscript);
+}
+
+void
+CodeGenerator::NodeFunctor::operator()(FieldAccessExpr *nd) {
+  Expr::Ptr base = nd->base();
+  process_node(base);
+
+  Identifier::Ptr id = nd->field();
+  process_node(id);
+}
+
+void
+CodeGenerator::NodeFunctor::operator()(ThisExpr *nd) {
+  
+}
+
+
+/* stmt/expr/single_addr */
+void
+CodeGenerator::NodeFunctor::operator()(IntConstExpr *nd) {
+  Location::Ptr int_loc = nd->location();
+  In::LoadIntConst::Ptr load_i;
+  load_i = In::LoadIntConst::LoadIntConstNew(int_loc, nd->value());
+
+  process_instruction(load_i);
+}
+
+void
+CodeGenerator::NodeFunctor::operator()(NewExpr *nd) {
+  
+}
+
+void
+CodeGenerator::NodeFunctor::operator()(NewArrayExpr *nd) {
+  Expr::Ptr size = nd->size();
+  process_node(size);
+
+  ArrayType::Ptr type = nd->arrayType();
+  process_node(type);
+}
+
+
+/* stmt/expr/single_addr/call_expr */
 void
 CodeGenerator::NodeFunctor::operator()(CallExpr *nd) {
   Identifier::Ptr fn_id = nd->identifier();
@@ -269,31 +325,6 @@ CodeGenerator::NodeFunctor::operator()(MethodCallExpr *nd) {
 }
 
 
-/* stmt/expr/single_addr */
-void
-CodeGenerator::NodeFunctor::operator()(IntConstExpr *nd) {
-  Location::Ptr int_loc = nd->location();
-  In::LoadIntConst::Ptr load_i;
-  load_i = In::LoadIntConst::LoadIntConstNew(int_loc, nd->value());
-
-  process_instruction(load_i);
-}
-
-void
-CodeGenerator::NodeFunctor::operator()(NewExpr *nd) {
-  
-}
-
-void
-CodeGenerator::NodeFunctor::operator()(NewArrayExpr *nd) {
-  Expr::Ptr size = nd->size();
-  process_node(size);
-
-  ArrayType::Ptr type = nd->arrayType();
-  process_node(type);
-}
-
-
 /* stmt/expr/single_addr/compound */
 void
 CodeGenerator::NodeFunctor::operator()(CompoundExpr *nd) {
@@ -322,36 +353,6 @@ CodeGenerator::NodeFunctor::operator()(RelationalExpr *nd) {
   (*this)(static_cast<CompoundExpr*>(nd));
 }
 
-
-/* stmt/expr/single_addr/l_value */
-void
-CodeGenerator::NodeFunctor::operator()(VarAccessExpr *nd) {
-  Identifier::Ptr id = nd->identifier();
-  process_node(id);
-}
-
-void
-CodeGenerator::NodeFunctor::operator()(ArrayAccessExpr *nd) {
-  Expr::Ptr base = nd->base();
-  process_node(base);
-
-  Expr::Ptr subscript = nd->subscript();
-  process_node(subscript);
-}
-
-void
-CodeGenerator::NodeFunctor::operator()(FieldAccessExpr *nd) {
-  Expr::Ptr base = nd->base();
-  process_node(base);
-
-  Identifier::Ptr id = nd->field();
-  process_node(id);
-}
-
-void
-CodeGenerator::NodeFunctor::operator()(ThisExpr *nd) {
-  
-}
 
 
 /* type */

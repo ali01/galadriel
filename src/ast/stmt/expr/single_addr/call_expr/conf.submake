@@ -1,4 +1,4 @@
-DIR_FH3V40OT := ast/stmt/expr/call_expr
+DIR_FH3V40OT := ast/stmt/expr/single_addr/call_expr
 SUB_FH3V40OT := 
 
 SRCS += $(wildcard $(DIR_FH3V40OT)/*.$(EXT))

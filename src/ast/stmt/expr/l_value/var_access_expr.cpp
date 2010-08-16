@@ -7,7 +7,7 @@
 #include <scope/scope.h>
 
 /* ast includes */
-#include "../../../../identifier.h"
+#include "../../../identifier.h"
 
 VarAccessExpr::VarAccessExpr(Identifier::Ptr _id) : 
   LValueExpr(*_id->lexLoc()), identifier_(_id)

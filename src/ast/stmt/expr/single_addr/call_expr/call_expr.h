@@ -10,14 +10,14 @@ using Simone::Deque;
 #include <lex_location.h>
 
 /* ast/stmt/expr includes */
-#include "../expr.h"
+#include "../single_addr_expr.h"
 
 /* forward declarations */
 class Identifier;
 class Type;
 
 
-class CallExpr : public Expr {
+class CallExpr : public SingleAddrExpr {
 public:
   typedef Simone::Ptr<const CallExpr> PtrConst;
   typedef Simone::Ptr<CallExpr> Ptr;

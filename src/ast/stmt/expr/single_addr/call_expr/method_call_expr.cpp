@@ -7,15 +7,15 @@
 #include <code_generator/location/location.h>
 
 /* ast includes */
-#include "../../../identifier.h"
+#include "../../../../identifier.h"
 
 /* ast/decl includes */
-#include "../../../decl/fn_decl.h"
-#include "../../../decl/object/object_decl.h"
+#include "../../../../decl/fn_decl.h"
+#include "../../../../decl/object/object_decl.h"
 
 /* ast/type includes */
-#include "../../../type/named_type.h"
-#include "../../../type/array_type.h"
+#include "../../../../type/named_type.h"
+#include "../../../../type/array_type.h"
 
 MethodCallExpr::MethodCallExpr(yyltype _loc,
                                Expr::Ptr _base,

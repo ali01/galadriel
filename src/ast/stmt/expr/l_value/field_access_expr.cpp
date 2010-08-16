@@ -10,21 +10,21 @@
 #include <scope/scope.h>
 
 /* ast includes */
-#include "../../../../identifier.h"
+#include "../../../identifier.h"
 
 /* ast/decl includes */
-#include "../../../../decl/var_decl.h"
+#include "../../../decl/var_decl.h"
 
 /* ast/decl/object includes */
-#include "../../../../decl/object/class_decl.h"
+#include "../../../decl/object/class_decl.h"
 
 /* ast/type/named includes */
-#include "../../../../type/named_type.h"
+#include "../../../type/named_type.h"
 
 /* ast/stmt/expr includes */
-#include "../../expr.h"
+#include "../expr.h"
 
-/* ast/stmt/expr/single_addr/l_value includes */
+/* ast/stmt/expr/l_value includes */
 #include "l_value_expr.h"
 
 

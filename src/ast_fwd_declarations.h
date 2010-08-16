@@ -40,10 +40,12 @@ class AssignExpr;
 class NullExpr;
 class EmptyExpr;
 
-/* stmt/expr/call_expr */
-class CallExpr;
-class FunctionCallExpr;
-class MethodCallExpr;
+/* stmt/expr/l_value */
+class LValueExpr;
+class VarAccessExpr;
+class ArrayAccessExpr;
+class FieldAccessExpr;
+class ThisExpr;
 
 /* stmt/expr/single_addr */
 class SingleAddrExpr;
@@ -56,18 +58,16 @@ class ReadIntegerExpr;
 class NewExpr;
 class NewArrayExpr;
 
+/* stmt/expr/single_addr/call_expr */
+class CallExpr;
+class FunctionCallExpr;
+class MethodCallExpr;
+
 /* stmt/expr/single_addr/compound */
 class CompoundExpr;
 class ArithmeticExpr;
 class LogicalExpr;
 class RelationalExpr;
-
-/* stmt/expr/single_addr/l_value */
-class LValueExpr;
-class VarAccessExpr;
-class ArrayAccessExpr;
-class FieldAccessExpr;
-class ThisExpr;
 
 /* type */
 class Type;

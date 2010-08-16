@@ -7,7 +7,7 @@
 /* project includes */
 #include <lex_location.h>
 
-/* ast/stmt/expr/single_addr/l_value includes */
+/* ast/stmt/expr/l_value includes */
 #include "l_value_expr.h"
 
 /* forward declarations */
