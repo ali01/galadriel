@@ -111,7 +111,7 @@ TACEmitFunctor::operator()(In::Label *in) {
   ostringstream s;
   s << *in << ":\n";
 
-  emit(s.str(), true);
+  emit(s.str(), true, true);
 }
 
 void
@@ -238,9 +238,13 @@ TACEmitFunctor::operator()(In::VTable *in) {
 /* private interface */
 
 void
-TACEmitFunctor::emit(const string& _in_str, bool _supress_indent) const {
+TACEmitFunctor::emit(const string& _in_str,
+                     bool _supress_indent, bool _supress_delimit) const {
   if (indent_on_ == true && _supress_indent == false)
     cout << kIndent;
 
-  cout << _in_str << kDelimit;
+  cout << _in_str;
+
+  if (not _supress_delimit)
+    cout << kDelimit;
 }

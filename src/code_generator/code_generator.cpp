@@ -64,19 +64,21 @@ CodeGenerator::NodeFunctor::operator()(FnDecl *nd) {
 
   /* stmt_block could be NULL in the case of a function prototype */
   StmtBlock::Ptr stmt_block = nd->body();
-  process_node(stmt_block);
 
   if (stmt_block) {
-    LocalScope::PtrConst local_scope;
-    local_scope = Ptr::st_cast<LocalScope>(stmt_block->scope());
-
+    In::BeginFunc::Ptr begin_func_i;
     Identifier::Ptr fn_id = nd->identifier();
     In::Label::Ptr label_i = In::Label::LabelNew(fn_id);
+    begin_func_i = In::BeginFunc::BeginFuncNew(label_i);
+    process_instruction(begin_func_i);
+
+    process_node(stmt_block);
+
+    LocalScope::PtrConst local_scope;
+    local_scope = Ptr::st_cast<LocalScope>(stmt_block->scope());
     In::BeginFunc::FrameSize frame_size = local_scope->frameSize();
 
-    In::BeginFunc::Ptr begin_func_i;
-    begin_func_i = In::BeginFunc::BeginFuncNew(label_i, frame_size);
-    process_instruction(begin_func_i);
+    begin_func_i->frameSizeIs(frame_size);
   }
 }
 

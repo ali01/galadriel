@@ -7,3 +7,5 @@ y.output
 samples
 samples/
 log.diff
+tmp.errors
+tmp.asm

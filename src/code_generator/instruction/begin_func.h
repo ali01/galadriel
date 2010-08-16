@@ -18,10 +18,11 @@ public:
 
   static const FrameSize kInvalidFrameSize;
 
-  static Ptr BeginFuncNew(Simone::Ptr<Label> _label, FrameSize _size);
+  static Ptr BeginFuncNew(Simone::Ptr<Label> _label);
 
   /* attribute member functions */
   FrameSize frameSize() const { return frame_size_; }
+  void frameSizeIs(FrameSize _s) { frame_size_ = _s; }
 
   Simone::Ptr<Label> label();
   Simone::Ptr<const Label> label() const;
@@ -30,7 +31,7 @@ public:
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
-  BeginFunc(Simone::Ptr<Label> _label, FrameSize _size);
+  BeginFunc(Simone::Ptr<Label> _label);
 
   Simone::Ptr<Label> label_;
   FrameSize frame_size_;

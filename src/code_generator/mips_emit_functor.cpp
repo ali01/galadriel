@@ -51,7 +51,7 @@ MIPSEmitFunctor::MIPSEmitFunctor() : reg_last_used_(zero), str_num_(0) {
   tac_emit_functor_->indentOnIs(false);
 
   /* emitting preamble */
-  emit("# standard Decaf preamble ");
+  emit("# standard Decaf preamble ", true);
   emit(".text");
   emit(".align 2");
   emit(".globl main");
@@ -205,8 +205,12 @@ MIPSEmitFunctor::operator()(In::IfZ *in) {
 
 void
 MIPSEmitFunctor::operator()(In::BeginFunc *in) {
-  emit_tac_comment(in);
-
+  /* emitting label */
+  In::Label::Ptr label = in->label();
+  Functor::Ptr this_functor = this;
+  this_functor(label);
+  
+  emit("# BeginFunc", true); // TODO: use tac functor (will require refactor)
   emit("subu $sp, $sp, 8    # decrement sp to make space to save ra, fp");
   emit("sw $fp, 8($sp)      # save fp");
   emit("sw $ra, 4($sp)      # save ra");
@@ -500,11 +504,11 @@ MIPSEmitFunctor::spill_dirty_registers() {
   for (i = zero; i < num_registers_; i = (RegisterName)(i+1)) {
     if (registers_[i].var_ && registers_[i].is_dirty_)
       break;
+  }
 
-    if (i != num_registers_){
-      /* only print if at least one register is dirty */
-      emit("# (save modified registers before flow of control change)");
-    }
+  if (i != num_registers_){
+    /* only print if at least one register is dirty */
+    emit("# (save modified registers before flow of control change)");
   }
 
   for (i = zero; i < num_registers_; i = (RegisterName)(i+1)) {

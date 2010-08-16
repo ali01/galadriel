@@ -51,7 +51,9 @@ private:
   TACEmitFunctor() : indent_on_(true) {}
 
   /* private member functions */
-  void emit(const string& _in_str, bool _supress_indent=false) const;
+  void emit(const string& _in_str,
+            bool _supress_indent=false,
+            bool _supress_delimit=false) const;
 
   /* data members */
   bool indent_on_;
