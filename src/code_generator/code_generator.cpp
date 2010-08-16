@@ -291,10 +291,30 @@ CodeGenerator::NodeFunctor::operator()(ThisExpr *nd) {
 
 /* stmt/expr/single_addr */
 void
+CodeGenerator::NodeFunctor::operator()(BoolConstExpr *nd) {
+  Location::PtrConst bool_loc = nd->location();
+  int value = nd->value() ? 1 : 0;
+
+  In::LoadIntConst::Ptr load_i;
+  load_i = In::LoadIntConst::LoadIntConstNew(bool_loc, value);
+
+  process_instruction(load_i);
+}
+
+void
 CodeGenerator::NodeFunctor::operator()(IntConstExpr *nd) {
   Location::PtrConst int_loc = nd->location();
   In::LoadIntConst::Ptr load_i;
   load_i = In::LoadIntConst::LoadIntConstNew(int_loc, nd->value());
+
+  process_instruction(load_i);
+}
+
+void
+CodeGenerator::NodeFunctor::operator()(StrConstExpr *nd) {
+  Location::PtrConst str_loc = nd->location();
+  In::LoadStrConst::Ptr load_i;
+  load_i = In::LoadStrConst::LoadStrConstNew(str_loc, nd->value());
 
   process_instruction(load_i);
 }

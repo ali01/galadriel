@@ -91,10 +91,10 @@ private:
 
       /* stmt/expr/single_addr */
       /* void operator()(SingleAddrExpr *); */
-      /* void operator()(BoolConstExpr *); */
+      void operator()(BoolConstExpr *); 
       void operator()(IntConstExpr *);
       /* void operator()(DblConstExpr *); */
-      /* void operator()(StrConstExpr *); */
+       void operator()(StrConstExpr *); 
       /* void operator()(ReadLineExpr *); */
       /* void operator()(ReadIntegerExpr *); */
       void operator()(NewExpr *);

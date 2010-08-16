@@ -23,16 +23,17 @@ public:
     return new BoolConstExpr(loc, val);
   }
 
-  BoolConstExpr(yyltype loc, bool val) : SingleAddrExpr(loc) { value = val; }
+  BoolConstExpr(yyltype loc, bool val) : SingleAddrExpr(loc) { value_ = val; }
 
   Simone::Ptr<const Type> type() const;
+  bool value() const { return value_; }
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 protected:
   /* data members */
-  bool value;
+  bool value_;
 };
 
 #endif

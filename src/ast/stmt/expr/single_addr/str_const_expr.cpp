@@ -9,12 +9,8 @@
 /* ast/type includes */
 #include "../../../type/type.h"
 
-StrConstExpr::StrConstExpr(yyltype loc, const char *val) :
-  SingleAddrExpr(loc)
-{
-  assert(val != NULL);
-  value = strdup(val);
-}
+StrConstExpr::StrConstExpr(yyltype loc, const string& _value) :
+  SingleAddrExpr(loc), value_(_value) {}
 
 Type::PtrConst
 StrConstExpr::type() const {
