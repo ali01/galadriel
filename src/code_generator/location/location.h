@@ -15,7 +15,7 @@ public:
   typedef Simone::Ptr<Location> Ptr;
 
   typedef int Offset;
-  enum Segment { kStack, kData };
+  enum Segment { kStack, kData, kHeap }; // TODO: think about kHeap
 
   /* attribute member functions */
   const string& name() const;

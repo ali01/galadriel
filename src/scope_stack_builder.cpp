@@ -14,7 +14,7 @@ ScopeStackBuilder::ScopeStackBuilder(Program::Ptr _program) {
 void
 ScopeStackBuilder::NodeFunctor::operator()(Program *nd) {
   /* initialize global scope */
-  Scope::Ptr scope = scope_stack_->scopeNew();
+  Scope::Ptr scope = scope_stack_->scopeNew(ScopeStack::kGlobal);
   nd->scopeIs(scope);
 
   /* inserting library built-ins */
@@ -71,7 +71,7 @@ ScopeStackBuilder::NodeFunctor::operator()(FnDecl *nd) {
   parent_scope->declIs(nd);
 
   /* FnDecl's parameter level scope (independent copy) */
-  Scope::Ptr scope = scope_stack_->scopeNew();
+  Scope::Ptr scope = scope_stack_->scopeNew(ScopeStack::kParam);
   nd->scopeIs(scope);
 
   VarDecl::Ptr decl;
@@ -101,7 +101,7 @@ ScopeStackBuilder::NodeFunctor::operator()(ObjectDecl *nd) {
   parent_scope->declIs(nd);
 
   /* Object's own scope (independent copy) */
-  Scope::Ptr scope = scope_stack_->scopeNew();
+  Scope::Ptr scope = scope_stack_->scopeNew(ScopeStack::kObject);
   nd->scopeIs(scope);
 
   Decl::Ptr decl;
@@ -145,7 +145,7 @@ ScopeStackBuilder::NodeFunctor::operator()(InterfaceDecl *nd) {
 void
 ScopeStackBuilder::NodeFunctor::operator()(StmtBlock *nd) {
   /* initialize stmt_block scope */
-  Scope::Ptr scope = scope_stack_->scopeNew();
+  Scope::Ptr scope = scope_stack_->scopeNew(ScopeStack::kLocal);
   nd->scopeIs(scope);
 
   VarDecl::Ptr var_decl;

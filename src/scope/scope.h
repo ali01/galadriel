@@ -171,9 +171,6 @@ private:
   /* operations disallowed */
   Scope(const Scope&);
   void operator=(const Scope&);
-
-  /* friends */
-  friend class ScopeStack;
 };
 
 #endif

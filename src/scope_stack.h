@@ -14,15 +14,19 @@ public:
   typedef Simone::Ptr<const ScopeStack> PtrConst;
   typedef Simone::Ptr<ScopeStack> Ptr;
 
+  enum ScopeType { kGlobal, kObject, kParam, kLocal };
+
   static Ptr ScopeStackNew() {
     return new ScopeStack();
   }
 
-  Scope::Ptr scopeNew();
+  Scope::Ptr scopeNew(ScopeType _type);
   void scopePop();
 
 private:
   ScopeStack() {}
+
+  /* member functions */
   Scope::Ptr scope() const;
 
   /* data members */

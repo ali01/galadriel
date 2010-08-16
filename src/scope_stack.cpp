@@ -6,9 +6,38 @@
 /* simone includes */
 #include <simone/exception.h>
 
+/* scope includes */
+#include <scope/global_scope.h>
+#include <scope/object_scope.h>
+#include <scope/param_scope.h>
+#include <scope/local_scope.h>
+
 Scope::Ptr
-ScopeStack::scopeNew() {
-  Scope::Ptr scope = new Scope(this->scope());
+ScopeStack::scopeNew(ScopeType _type) {
+  Scope::Ptr scope;
+
+  switch (_type) {
+    case kGlobal:
+      assert(this->scope() == NULL);
+      scope = new GlobalScope();
+      break;
+
+    case kObject:
+      scope = new ObjectScope(this->scope());
+      break;
+
+    case kParam:
+      scope = new ParamScope(this->scope());
+      break;
+
+    case kLocal:
+      scope = new LocalScope(this->scope());
+      break;
+
+    default:
+      ABORT();
+  }
+
   scope_stack_.pushBack(scope);
   return scope;
 }
