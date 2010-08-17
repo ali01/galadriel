@@ -16,7 +16,7 @@ public:
 
   /* attribute member functions */
   void referenceIs(bool _s) { is_reference_ = _s; }
-  bool reference() const { return true; }
+  bool reference() const { return is_reference_; }
 
 private:
   TmpLocation(Offset _offset, const string& name);

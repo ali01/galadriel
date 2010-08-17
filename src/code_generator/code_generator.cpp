@@ -755,8 +755,8 @@ void
 CodeGenerator::NodeFunctor::process_location(Location::Ptr _loc) {
   if (_loc->reference()) {
     /* dereference */
-    In::Store::Ptr store_i = In::Store::StoreNew(_loc, _loc);
-    process_instruction(store_i);
+    In::Load::Ptr load_i = In::Load::LoadNew(_loc, _loc);
+    process_instruction(load_i);
   }
 }
 
