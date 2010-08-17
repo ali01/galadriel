@@ -341,11 +341,8 @@ ScopeStackBuilder::NodeFunctor::operator()(NewExpr *nd) {
   process_node(type, nd, scope);
 
   LocalScope::Ptr local_scope = Ptr::st_cast<LocalScope>(nd->scope());
-  Location::Ptr size_loc = local_scope->tempNew();
-  nd->sizeLocationIs(size_loc);
-
-  Location::Ptr v_ptr_loc = local_scope->tempNew();
-  nd->vPtrLocationIs(v_ptr_loc);
+  Location::Ptr aux_loc = local_scope->tempNew();
+  nd->auxLocationIs(aux_loc);
 }
 
 void
@@ -390,7 +387,7 @@ ScopeStackBuilder::NodeFunctor::operator()(CallExpr *nd) {
 
   LocalScope::Ptr local_scope = Ptr::st_cast<LocalScope>(nd->scope());
   Location::Ptr fn_loc = local_scope->tempNew();
-  nd->fnLocationIs(fn_loc);
+  nd->auxLocationIs(fn_loc);
 }
 
 void

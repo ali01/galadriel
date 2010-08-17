@@ -32,7 +32,7 @@ public:
 
     MethodCallExpr::Ptr ex;
     ex = new MethodCallExpr(*_fn_call->lexLoc(), base, id, actuals);
-    ex->fnLocationIs(_fn_call->fnLocation());
+    ex->auxLocationIs(_fn_call->auxLocation());
     return ex;
   }
 

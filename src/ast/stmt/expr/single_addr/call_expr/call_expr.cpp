@@ -49,11 +49,11 @@ CallExpr::type() const {
 }
 
 Location::Ptr
-CallExpr::fnLocation() const {
-  return fn_location_;
+CallExpr::auxLocation() const {
+  return aux_location_;
 }
 
 void
-CallExpr::fnLocationIs(Location::Ptr _loc) {
-  fn_location_ = _loc;
+CallExpr::auxLocationIs(Location::Ptr _loc) {
+  aux_location_ = _loc;
 }

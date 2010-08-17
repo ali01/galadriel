@@ -195,6 +195,7 @@ CodeGenerator::NodeFunctor::operator()(ReturnStmt *nd) {
   Location::Ptr eval_loc;
   if (expr != NULL) {
     eval_loc = expr->location();
+    process_location(eval_loc);
   } else {
     eval_loc = NULL;
   }
@@ -218,6 +219,8 @@ CodeGenerator::NodeFunctor::operator()(IfStmt *nd) {
   process_node(test);
 
   Location::Ptr test_loc = test->location();
+  process_location(test_loc);
+
   In::Label::Ptr else_label = labelNew();
   In::IfZ::Ptr ifz_i = In::IfZ::IfZNew(test_loc, else_label);
   process_instruction(ifz_i);
@@ -268,6 +271,8 @@ CodeGenerator::NodeFunctor::operator()(ForStmt *nd) {
 
   /* for test logic */
   Location::Ptr test_loc = test->location();
+  process_location(test_loc);
+
   In::IfZ::Ptr ifz_i = In::IfZ::IfZNew(test_loc, end_label);
   process_instruction(ifz_i);
 
@@ -299,6 +304,8 @@ CodeGenerator::NodeFunctor::operator()(WhileStmt *nd) {
 
   /* while test logic */
   Location::Ptr test_loc = test->location();
+  process_location(test_loc);
+
   In::IfZ::Ptr ifz_i = In::IfZ::IfZNew(test_loc, end_label);
   process_instruction(ifz_i);
 
@@ -365,16 +372,24 @@ CodeGenerator::NodeFunctor::operator()(ArrayAccessExpr *nd) {
   process_instruction(load_int_i);
 
   /* multiply elem size by number of elements */
-  In::BinaryOp::Ptr binary_op_i;
   Location::Ptr sub_loc = subscript->location();
+  process_location(sub_loc);
+
+  /* computing offset */
+  In::BinaryOp::Ptr binary_op_i;
   binary_op_i = In::BinaryOp::BinaryOpNew(In::BinaryOp::kMultiply,
                                           aux_loc, aux_loc, sub_loc);
   process_instruction(binary_op_i);
 
+  /* computing base of array */
   Location::Ptr base_loc = nd->base()->location();
+  process_location(base_loc);
+
+  /* adding offset to base of array */
   binary_op_i = In::BinaryOp::BinaryOpNew(In::BinaryOp::kAdd,
                                           aux_loc, base_loc, aux_loc);
   process_instruction(binary_op_i);
+
   aux_loc->referenceIs(true);
   nd->locationIs(aux_loc);
 }
@@ -428,15 +443,15 @@ CodeGenerator::NodeFunctor::operator()(NewExpr *nd) {
   size *= MIPSEmitFunctor::kWordSize;
   // todo: remove hardware dependency (requires changing library)
 
-  Location::Ptr int_loc = nd->sizeLocation();
+  Location::Ptr aux_loc = nd->auxLocation();
 
   /* load size param into temporary */
   In::LoadIntConst::Ptr load_i;
-  load_i = In::LoadIntConst::LoadIntConstNew(int_loc, static_cast<int>(size));
+  load_i = In::LoadIntConst::LoadIntConstNew(aux_loc, static_cast<int>(size));
   process_instruction(load_i);
 
   /* push size param */
-  In::PushParam::Ptr push_param_i = In::PushParam::PushParamNew(int_loc);
+  In::PushParam::Ptr push_param_i = In::PushParam::PushParamNew(aux_loc);
   process_instruction(push_param_i);
 
   /* call alloc */
@@ -446,13 +461,11 @@ CodeGenerator::NodeFunctor::operator()(NewExpr *nd) {
   process_instruction(In::PopParams::PopParamsNew(1));
 
   /* assign v_ptr */
-  Location::Ptr v_ptr_loc = nd->vPtrLocation();
-
   In::LoadLabel::Ptr load_label_i;
-  load_label_i = In::LoadLabel::LoadLabelNew(v_ptr_loc, type->objectLabel());
+  load_label_i = In::LoadLabel::LoadLabelNew(aux_loc, type->objectLabel());
   process_instruction(load_label_i);
 
-  In::Store::Ptr store_i = In::Store::StoreNew(v_ptr_loc, ret_loc);
+  In::Store::Ptr store_i = In::Store::StoreNew(aux_loc, ret_loc);
   process_instruction(store_i);
 }
 
@@ -474,9 +487,12 @@ CodeGenerator::NodeFunctor::operator()(NewArrayExpr *nd) {
   load_int_i = In::LoadIntConst::LoadIntConstNew(aux_loc, (int)elem_size);
   process_instruction(load_int_i);
 
+  /* size location */
+  Location::Ptr size_loc = size->location();
+  process_location(size_loc);
+
   /* multiply elem size by number of elements */
   In::BinaryOp::Ptr binary_op_i;
-  Location::Ptr size_loc = size->location();
   binary_op_i = In::BinaryOp::BinaryOpNew(In::BinaryOp::kMultiply,
                                           aux_loc, aux_loc, size_loc);
   process_instruction(binary_op_i);
@@ -509,6 +525,8 @@ CodeGenerator::NodeFunctor::operator()(CallExpr *nd) {
     process_node(actual);
 
     actual_loc = actual->location();
+    process_location(actual_loc);
+
     push_param_i = In::PushParam::PushParamNew(actual_loc);
     process_instruction(push_param_i);
   }
@@ -550,6 +568,8 @@ CodeGenerator::NodeFunctor::operator()(MethodCallExpr *nd) {
 
   /* pushing "this" pointer onto the stack */
   Location::Ptr base_loc = base->location();
+  process_location(base_loc);
+
   In::PushParam::Ptr push_param_i = In::PushParam::PushParamNew(base_loc);
   process_instruction(push_param_i);
 
@@ -557,7 +577,7 @@ CodeGenerator::NodeFunctor::operator()(MethodCallExpr *nd) {
   Location::Ptr ret_loc = nd->location();
 
   /* obtaining function's location */
-  Location::Ptr v_ptr_loc = nd->fnLocation();
+  Location::Ptr v_ptr_loc = nd->auxLocation();
   In::Load::Ptr load_i = In::Load::LoadNew(base_loc, v_ptr_loc);
   process_instruction(load_i);
 
@@ -628,6 +648,9 @@ CodeGenerator::NodeFunctor::operator()(ArithmeticExpr *nd) {
   Location::Ptr lhs_loc = nd->left()->location();
   Location::Ptr rhs_loc = nd->right()->location();
 
+  process_location(lhs_loc);
+  process_location(rhs_loc);
+
   In::BinaryOp::Ptr binary_op_i;
   binary_op_i = In::BinaryOp::BinaryOpNew(op_code, dst_loc, lhs_loc, rhs_loc);
   process_instruction(binary_op_i);
@@ -663,9 +686,11 @@ CodeGenerator::NodeFunctor::operator()(LogicalExpr *nd) {
 
   Location::Ptr dst_loc = nd->location();
   Location::Ptr rhs_loc = right->location();
+  process_location(rhs_loc);
 
   if (not unary) {
     Location::Ptr lhs_loc = left->location();
+    process_location(lhs_loc);
 
     In::BinaryOp::Ptr binary_op_i;
     binary_op_i = In::BinaryOp::BinaryOpNew(op_code, dst_loc, lhs_loc, rhs_loc);
@@ -685,6 +710,9 @@ CodeGenerator::NodeFunctor::operator()(RelationalExpr *nd) {
   Location::Ptr dst_loc = nd->location();
   Location::Ptr lhs_loc = nd->left()->location();
   Location::Ptr rhs_loc = nd->right()->location();
+
+  process_location(lhs_loc);
+  process_location(rhs_loc);
 
   bool negate = false;
   Operator::OpCode op_type = nd->op()->operatorType();
@@ -757,6 +785,7 @@ CodeGenerator::NodeFunctor::process_location(Location::Ptr _loc) {
     /* dereference */
     In::Load::Ptr load_i = In::Load::LoadNew(_loc, _loc);
     process_instruction(load_i);
+    _loc->referenceIs(false);
   }
 }
 

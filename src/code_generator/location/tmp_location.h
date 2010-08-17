@@ -15,8 +15,8 @@ public:
   static Ptr TmpLocationNew(Offset _offset);
 
   /* attribute member functions */
-  void referenceIs(bool _s) { is_reference_ = _s; }
   bool reference() const { return is_reference_; }
+  void referenceIs(bool _s) { is_reference_ = _s; }
 
 private:
   TmpLocation(Offset _offset, const string& name);

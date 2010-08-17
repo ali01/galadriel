@@ -29,11 +29,8 @@ public:
   Simone::Ptr<const NamedType> objectType() const;
   Simone::Ptr<NamedType> objectType();
 
-  Simone::Ptr<Location> sizeLocation() const;
-  void sizeLocationIs(Simone::Ptr<Location> _loc);
-
-  Simone::Ptr<Location> vPtrLocation() const;
-  void vPtrLocationIs(Simone::Ptr<Location> _loc);
+  Simone::Ptr<Location> auxLocation() const;
+  void auxLocationIs(Simone::Ptr<Location> _loc);
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
@@ -43,8 +40,7 @@ private:
 
   /* data members */
   Simone::Ptr<NamedType> type_;
-  Simone::Ptr<Location> size_loc_;
-  Simone::Ptr<Location> v_ptr_loc_;
+  Simone::Ptr<Location> aux_loc_;
 };
 
 

@@ -32,6 +32,7 @@ public:
   void secondaryOffsetIs(Offset _off) { secondary_offset_ = _off; }
 
   virtual bool reference() const { return false; }
+  virtual void referenceIs(bool _s) {}
 
   bool operator==(const Location& _other) const;
 
