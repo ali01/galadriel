@@ -28,6 +28,12 @@ ObjectDecl::type() const {
   return this_type_;
 }
 
+In::Label::Ptr
+ObjectDecl::label() const {
+  Identifier::PtrConst id = this->identifier();
+  return In::Label::LabelNew(id->name());
+}
+
 Deque<In::Label::Ptr>::Ptr
 ObjectDecl::functionLabels() const {
   Deque<In::Label::Ptr>::Ptr labels = Deque<In::Label::Ptr>::DequeNew();

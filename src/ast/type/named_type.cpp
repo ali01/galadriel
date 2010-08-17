@@ -61,6 +61,12 @@ NamedType::allocSize() const {
   return object->size();
 }
 
+In::Label::Ptr
+NamedType::objectLabel() const {
+  ObjectDecl::PtrConst object = this->objectDecl();
+  return object->label();
+}
+
 NamedType::NamedTypeEqualityFunctor::NamedTypeEqualityFunctor(NamedType::Ptr t):
   TypeEqualityFunctor(t) {}
 

@@ -115,10 +115,8 @@ CodeGenerator::NodeFunctor::operator()(ClassDecl *nd) {
     (*this)(static_cast<ObjectDecl*>(nd));
 
     /* emitting v_table */
-    Identifier::PtrConst class_id = nd->identifier();
-    In::Label::Ptr class_label = In::Label::LabelNew(class_id->name());
     Deque<In::Label::Ptr>::Ptr fn_labels = nd->functionLabels();
-    In::VTable::Ptr v_table_i = In::VTable::VTableNew(class_label, fn_labels);
+    In::VTable::Ptr v_table_i = In::VTable::VTableNew(nd->label(), fn_labels);
     process_instruction(v_table_i);
   }
 }
@@ -402,20 +400,33 @@ CodeGenerator::NodeFunctor::operator()(NewExpr *nd) {
 
   NamedType::PtrConst type = nd->objectType();
   size_t size = type->allocSize() * MIPSEmitFunctor::kWordSize;
-   // TODO: remove hardware dependency
+   // TODO: remove hardware dependency (requires changing library)
 
   Location::PtrConst int_loc = nd->sizeLocation();
 
+  /* load size param into temporary */
   In::LoadIntConst::Ptr load_i;
   load_i = In::LoadIntConst::LoadIntConstNew(int_loc, static_cast<int>(size));
   process_instruction(load_i);
 
+  /* push size param */
   In::PushParam::Ptr push_param_i = In::PushParam::PushParamNew(int_loc);
   process_instruction(push_param_i);
 
+  /* call alloc */
   In::Label::PtrConst label_i = In::Label::kAlloc;
   In::LCall::Ptr l_call_i = In::LCall::LCallNew(label_i, ret_loc);
   process_instruction(l_call_i);
+
+  /* assign v_ptr */
+  Location::PtrConst v_ptr_loc = nd->vPtrLocation();
+
+  In::LoadLabel::Ptr load_label_i;
+  load_label_i = In::LoadLabel::LoadLabelNew(v_ptr_loc, type->objectLabel());
+  process_instruction(load_label_i);
+
+  In::Store::Ptr store_i = In::Store::StoreNew(v_ptr_loc, ret_loc);
+  process_instruction(store_i);
 }
 
 void

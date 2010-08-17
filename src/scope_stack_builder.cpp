@@ -337,8 +337,11 @@ ScopeStackBuilder::NodeFunctor::operator()(NewExpr *nd) {
   process_node(type, nd, scope);
 
   LocalScope::Ptr local_scope = Ptr::st_cast<LocalScope>(nd->scope());
-  Location::PtrConst loc = local_scope->tempNew();
-  nd->sizeLocationIs(loc);
+  Location::PtrConst size_loc = local_scope->tempNew();
+  nd->sizeLocationIs(size_loc);
+
+  Location::PtrConst v_ptr_loc = local_scope->tempNew();
+  nd->vPtrLocationIs(v_ptr_loc);
 }
 
 void

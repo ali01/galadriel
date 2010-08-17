@@ -10,6 +10,8 @@
 /* ast/type includes */
 #include "type.h"
 
+/* code_generator/instruction includes */
+#include <code_generator/instruction/label.h>
 
 /* forward declarations */
 class ClassDecl;
@@ -45,6 +47,7 @@ public:
   Simone::Ptr<const ClassDecl> classDecl() const;
 
   size_t allocSize() const;
+  In::Label::Ptr objectLabel() const;
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }

@@ -45,6 +45,16 @@ NewExpr::sizeLocationIs(Location::PtrConst _loc) {
   size_loc_ = _loc;
 }
 
+Location::PtrConst
+NewExpr::vPtrLocation() const {
+  return v_ptr_loc_;
+}
+
+void
+NewExpr::vPtrLocationIs(Location::PtrConst _loc) {
+  v_ptr_loc_ = _loc;
+}
+
 Type::PtrConst
 NewExpr::type() const {
   return objectType();
