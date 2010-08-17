@@ -69,7 +69,7 @@ private:
       void operator()(BreakStmt *);
 
       /* stmt/conditional */
-      void operator()(ConditionalStmt *);
+      /* void operator()(ConditionalStmt *); */
       void operator()(IfStmt *);
 
       /* stmt/conditional/loop */

@@ -199,14 +199,6 @@ CodeGenerator::NodeFunctor::operator()(BreakStmt *nd) {
 
 
 /* stmt/conditional */
-void
-CodeGenerator::NodeFunctor::operator()(ConditionalStmt *nd) {
-  Expr::Ptr test = nd->test();
-  process_node(test);
-
-  Stmt::Ptr body = nd->body();
-  process_node(body);
-}
 
 void
 CodeGenerator::NodeFunctor::operator()(IfStmt *nd) {
@@ -247,16 +239,40 @@ CodeGenerator::NodeFunctor::operator()(IfStmt *nd) {
 
 
 /* stmt/conditional/loop */
+
 void
 CodeGenerator::NodeFunctor::operator()(ForStmt *nd) {
+  /* initialization */
   Expr::Ptr init = nd->init();
   process_node(init);
 
-  /* applying this functor on upcasted nd */
-  (*this)(static_cast<ConditionalStmt*>(nd));
+  In::Label::Ptr repeat_label = labelNew();
+  In::Label::Ptr end_label = labelNew();
+
+  process_instruction(repeat_label);
+
+  /* evaluating test expression */
+  Expr::Ptr test = nd->test();
+  process_node(test);
+
+  /* for test logic */
+  Location::PtrConst test_loc = test->location();
+  In::IfZ::Ptr ifz_i = In::IfZ::IfZNew(test_loc, end_label);
+  process_instruction(ifz_i);
+
+  /* for stmt_block */
+  Stmt::Ptr body = nd->body();
+  process_node(body);
 
   Expr::Ptr step = nd->step();
   process_node(step);
+
+  /* return to beginning of for loop */
+  In::Goto::Ptr goto_i = In::Goto::GotoNew(repeat_label);
+  process_instruction(goto_i);
+
+  /* end label */
+  process_instruction(end_label);
 }
 
 void
