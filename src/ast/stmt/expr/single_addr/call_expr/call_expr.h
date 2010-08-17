@@ -46,8 +46,8 @@ public:
 
   Simone::Ptr<const Type> type() const;
 
-  Simone::Ptr<const Location> fnLocation() const;
-  void fnLocationIs(Simone::Ptr<const Location> _loc);
+  Simone::Ptr<Location> fnLocation() const;
+  void fnLocationIs(Simone::Ptr<Location> _loc);
 
   /* pure virtual */
   virtual Simone::Ptr<const FnDecl> fnDecl() const = 0;
@@ -64,7 +64,7 @@ protected:
   Simone::Ptr<Identifier> identifier_;
   Deque<Expr::Ptr>::Ptr actuals_;
 
-  Simone::Ptr<const Location> fn_location_;
+  Simone::Ptr<Location> fn_location_;
 
 private:
 

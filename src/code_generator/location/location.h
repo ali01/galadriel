@@ -10,16 +10,16 @@ using std::ostream;
 
 class Location : public Simone::PtrInterface<Location> {
 public:
-  typedef Simone::Ptr<const Location> PtrConst;
+  typedef Simone::Ptr<Location> Ptr;
 
   typedef int Offset;
   enum Segment { kStack, kData, kHeap };
 
-  static PtrConst LocationNew(Segment _seg, Offset _off, const string& _name) {
+  static Ptr LocationNew(Segment _seg, Offset _off, const string& _name) {
     return new Location(_seg, _off, _name);
   }
 
-  static PtrConst LocationNew(Location::PtrConst _o) {
+  static Ptr LocationNew(Location::Ptr _o) {
     return new Location(*_o);
   }
 
@@ -29,7 +29,7 @@ public:
   Offset offset() const { return offset_; }
 
   Offset secondaryOffset() const { return secondary_offset_; }
-  void secondaryOffsetIs(Offset _off) const { secondary_offset_ = _off; }
+  void secondaryOffsetIs(Offset _off) { secondary_offset_ = _off; }
 
   virtual bool reference() const { return false; }
 
@@ -44,7 +44,7 @@ protected:
   Offset offset_;
   string name_;
 
-  mutable Offset secondary_offset_; // TODO: should not be mutable
+  Offset secondary_offset_;
 };
 
 #endif

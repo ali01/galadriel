@@ -28,14 +28,14 @@ public:
 
   Simone::Ptr<const Type> type() const;
 
-  Simone::Ptr<const Location> auxLocation() const;
-  void auxLocationIs(Simone::Ptr<const Location> _loc);
+  Simone::Ptr<Location> auxLocation() const;
+  void auxLocationIs(Simone::Ptr<Location> _loc);
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
-  Simone::Ptr<const Location> aux_loc_;
+  Simone::Ptr<Location> aux_loc_;
 };
 
 #endif

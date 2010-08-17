@@ -38,7 +38,7 @@ AssignExpr::type() const {
   return l_value_->type();
 }
 
-Location::PtrConst
+Location::Ptr
 AssignExpr::location() const {
   return l_value_->location();
 }

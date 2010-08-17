@@ -15,12 +15,12 @@ LogicalExpr::type() const {
   return Type::kBool;
 }
 
-Location::PtrConst
+Location::Ptr
 LogicalExpr::auxLocation() const {
   return aux_loc_;
 }
 
 void
-LogicalExpr::auxLocationIs(Location::PtrConst _loc) {
+LogicalExpr::auxLocationIs(Location::Ptr _loc) {
   aux_loc_ = _loc;
 }

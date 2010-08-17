@@ -25,8 +25,8 @@ public:
 
   Simone::Ptr<Type> type() const;
 
-  void locationIs(Simone::Ptr<const VarLocation> _loc);
-  Simone::Ptr<const VarLocation> location() const;
+  void locationIs(Simone::Ptr<VarLocation> _loc);
+  Simone::Ptr<VarLocation> location() const;
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
@@ -34,7 +34,7 @@ public:
 private:
   /* data members */
   Simone::Ptr<Type> type_;
-  Simone::Ptr<const VarLocation> location_;
+  Simone::Ptr<VarLocation> location_;
 };
 
 #endif

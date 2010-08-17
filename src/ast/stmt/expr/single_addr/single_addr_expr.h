@@ -19,14 +19,14 @@ public:
   typedef Simone::Ptr<const SingleAddrExpr> PtrConst;
   typedef Simone::Ptr<SingleAddrExpr> Ptr;
 
-  Simone::Ptr<const Location> location() const;
-  void locationIs(Simone::Ptr<const Location> _loc);
+  Simone::Ptr<Location> location() const;
+  void locationIs(Simone::Ptr<Location> _loc);
 
 protected:
   SingleAddrExpr(yyltype loc);
   virtual ~SingleAddrExpr();
 
-  Simone::Ptr<const Location> location_;
+  Simone::Ptr<Location> location_;
 };
 
 #endif

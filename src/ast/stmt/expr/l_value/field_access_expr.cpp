@@ -82,7 +82,7 @@ FieldAccessExpr::type() const {
   return type;
 }
 
-Location::PtrConst
+Location::Ptr
 FieldAccessExpr::location() const {
   VarDecl::PtrConst var_decl = this->varDecl();
   return var_decl->location();

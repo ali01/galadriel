@@ -20,12 +20,12 @@ RelationalExpr::type() const {
 }
 
 
-Location::PtrConst
+Location::Ptr
 RelationalExpr::auxLocation() const {
   return aux_loc_;
 }
 
 void
-RelationalExpr::auxLocationIs(Location::PtrConst _loc) {
+RelationalExpr::auxLocationIs(Location::Ptr _loc) {
   aux_loc_ = _loc;
 }

@@ -7,12 +7,12 @@ SingleAddrExpr::SingleAddrExpr(yyltype loc) : Expr(loc) {}
 
 SingleAddrExpr::~SingleAddrExpr() {}
 
-Location::PtrConst
+Location::Ptr
 SingleAddrExpr::location() const {
   return location_;
 }
 
 void
-SingleAddrExpr::locationIs(Simone::Ptr<const Location> _loc) {
+SingleAddrExpr::locationIs(Simone::Ptr<Location> _loc) {
   location_ = _loc;
 }

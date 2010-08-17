@@ -19,7 +19,7 @@ void
 TACEmitFunctor::operator()(In::LoadIntConst *in) {
   ostringstream s;
 
-  Location::PtrConst loc = in->dst();
+  Location::Ptr loc = in->dst();
   s << loc->name() << " = " << in->value();
 
   emit(s.str());
@@ -29,7 +29,7 @@ void
 TACEmitFunctor::operator()(In::LoadStrConst *in) {
   ostringstream s;
 
-  Location::PtrConst loc = in->dst();
+  Location::Ptr loc = in->dst();
   s << loc->name() << " = " << in->value();
 
   emit(s.str());
@@ -39,7 +39,7 @@ void
 TACEmitFunctor::operator()(In::LoadLabel *in) {
   ostringstream s;
 
-  Location::PtrConst loc = in->dst();
+  Location::Ptr loc = in->dst();
   s << loc->name() << " = " << *in->label();
 
   emit(s.str());
@@ -49,8 +49,8 @@ void
 TACEmitFunctor::operator()(In::Load *in) {
   ostringstream s;
 
-  Location::PtrConst src = in->src();
-  Location::PtrConst dst = in->dst();
+  Location::Ptr src = in->src();
+  Location::Ptr dst = in->dst();
 
   s << dst->name() << " = " << "*(";
 
@@ -67,8 +67,8 @@ void
 TACEmitFunctor::operator()(In::Assign *in) {
   ostringstream s;
 
-  Location::PtrConst src = in->src();
-  Location::PtrConst dst = in->dst();
+  Location::Ptr src = in->src();
+  Location::Ptr dst = in->dst();
   s << dst->name() << " = " << src->name();
 
   emit(s.str());
@@ -78,8 +78,8 @@ void
 TACEmitFunctor::operator()(In::Store *in) {
   ostringstream s;
 
-  Location::PtrConst src = in->src();
-  Location::PtrConst dst = in->dst();
+  Location::Ptr src = in->src();
+  Location::Ptr dst = in->dst();
 
   if (src->secondaryOffset() != 0) {
     s << "*(" << dst->name() << " + " << src->secondaryOffset() << ")";
@@ -96,9 +96,9 @@ void
 TACEmitFunctor::operator()(In::BinaryOp *in) {
   ostringstream s;
 
-  Location::PtrConst dst = in->dst();
-  Location::PtrConst lhs = in->lhs();
-  Location::PtrConst rhs = in->rhs();
+  Location::Ptr dst = in->dst();
+  Location::Ptr lhs = in->lhs();
+  Location::Ptr rhs = in->rhs();
 
   s << dst->name() << " = ";
   s << lhs->name() << " " << in->op_str() << " " << rhs->name();
@@ -125,7 +125,7 @@ TACEmitFunctor::operator()(In::Goto *in) {
 void
 TACEmitFunctor::operator()(In::IfZ *in) {
   ostringstream s;
-  Location::PtrConst test = in->test();
+  Location::Ptr test = in->test();
 
   s << "IfZ " << test->name() << " Goto " << *in->label();
 
@@ -163,7 +163,7 @@ TACEmitFunctor::operator()(In::EndFunc *in) {
 void
 TACEmitFunctor::operator()(In::Return *in) {
   ostringstream s;
-  Location::PtrConst ret_loc = in->returnLocation();
+  Location::Ptr ret_loc = in->returnLocation();
   s << "Return";
 
   if (ret_loc)
@@ -175,7 +175,7 @@ TACEmitFunctor::operator()(In::Return *in) {
 void
 TACEmitFunctor::operator()(In::PushParam *in) {
   ostringstream s;
-  Location::PtrConst param_loc = in->paramLocation();
+  Location::Ptr param_loc = in->paramLocation();
   s << "PushParam " << param_loc->name();
 
   emit(s.str());
@@ -193,7 +193,7 @@ void
 TACEmitFunctor::operator()(In::LCall *in) {
   ostringstream s;
 
-  Location::PtrConst ret_loc = in->returnLocation();
+  Location::Ptr ret_loc = in->returnLocation();
   if (ret_loc != NULL)
     s << ret_loc->name() << " = ";
 
@@ -206,8 +206,8 @@ void
 TACEmitFunctor::operator()(In::ACall *in) {
   ostringstream s;
 
-  Location::PtrConst ret_loc = in->returnLocation();
-  Location::PtrConst fn_loc = in->functionLocation();
+  Location::Ptr ret_loc = in->returnLocation();
+  Location::Ptr fn_loc = in->functionLocation();
 
   if (ret_loc != NULL)
     s << ret_loc->name() << " = ";

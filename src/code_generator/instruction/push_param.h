@@ -14,20 +14,20 @@ public:
   typedef Simone::Ptr<const PushParam> PtrConst;
   typedef Simone::Ptr<PushParam> Ptr;
 
-  static Ptr PushParamNew(Simone::Ptr<const Location> _param_loc);
+  static Ptr PushParamNew(Simone::Ptr<Location> _param_loc);
 
   /* attribute member functions */
-  Simone::Ptr<const Location> paramLocation();
-  Simone::Ptr<const Location> paramLocation() const;
+  Simone::Ptr<Location> paramLocation();
+  Simone::Ptr<Location> paramLocation() const;
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
-  PushParam(Simone::Ptr<const Location> _param_loc);
+  PushParam(Simone::Ptr<Location> _param_loc);
 
   /* data members */
-  Simone::Ptr<const Location> param_loc_;
+  Simone::Ptr<Location> param_loc_;
 
   /* operations disallowed */
   PushParam(const PushParam&);

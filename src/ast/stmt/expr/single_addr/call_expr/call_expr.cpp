@@ -48,12 +48,12 @@ CallExpr::type() const {
   return type;
 }
 
-Location::PtrConst
+Location::Ptr
 CallExpr::fnLocation() const {
   return fn_location_;
 }
 
 void
-CallExpr::fnLocationIs(Location::PtrConst _loc) {
+CallExpr::fnLocationIs(Location::Ptr _loc) {
   fn_location_ = _loc;
 }

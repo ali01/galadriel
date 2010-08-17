@@ -22,7 +22,7 @@ public:
   NullExpr(yyltype loc) : Expr(loc) {}
 
   Simone::Ptr<const Type> type() const;
-  Simone::Ptr<const Location> location() const;
+  Simone::Ptr<Location> location() const;
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }

@@ -15,11 +15,11 @@ public:
   typedef Simone::Ptr<const IfZ> PtrConst;
   typedef Simone::Ptr<IfZ> Ptr;
 
-  static Ptr IfZNew(Simone::Ptr<const Location> _test, Simone::Ptr<Label> _label);
+  static Ptr IfZNew(Simone::Ptr<Location> _test, Simone::Ptr<Label> _label);
 
   /* attribute member functions */
-  Simone::Ptr<const Location> test();
-  Simone::Ptr<const Location> test() const;
+  Simone::Ptr<Location> test();
+  Simone::Ptr<Location> test() const;
 
   Simone::Ptr<Label> label();
   Simone::Ptr<const Label> label() const;
@@ -28,10 +28,10 @@ public:
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
-  IfZ(Simone::Ptr<const Location> _test, Simone::Ptr<Label> _label);
+  IfZ(Simone::Ptr<Location> _test, Simone::Ptr<Label> _label);
 
   /* data members */
-  Simone::Ptr<const Location> test_;
+  Simone::Ptr<Location> test_;
   Simone::Ptr<Label> label_;
 
   /* operations disallowed */

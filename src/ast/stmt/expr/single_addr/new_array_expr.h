@@ -39,8 +39,8 @@ public:
   Simone::Ptr<const ArrayType> arrayType() const;
   Simone::Ptr<ArrayType> arrayType();
 
-  Simone::Ptr<const Location> auxLocation() const;
-  void auxLocationIs(Simone::Ptr<const Location> _loc);
+  Simone::Ptr<Location> auxLocation() const;
+  void auxLocationIs(Simone::Ptr<Location> _loc);
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
@@ -51,7 +51,7 @@ private:
   /* data members */
   Expr::Ptr size_;
   Simone::Ptr<ArrayType> type_;
-  Simone::Ptr<const Location> aux_loc_;
+  Simone::Ptr<Location> aux_loc_;
 };
 
 #endif

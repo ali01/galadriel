@@ -10,7 +10,7 @@ LocalScope::LocalScope(Scope::Ptr _parent_scope) :
   node_functor_ = NodeFunctor::NodeFunctorNew(this);
 }
 
-TmpLocation::PtrConst
+TmpLocation::Ptr
 LocalScope::tempNew() {
   var_decls_finalized_ = true;
   Location::Offset off = kLocalsOffset - this->size();
@@ -49,7 +49,7 @@ LocalScope::NodeFunctor::operator()(VarDecl *_d) {
   Location::Offset off = kLocalsOffset - scope_->varDeclCount();
   Location::Segment seg = Location::kStack;
 
-  VarLocation::PtrConst loc = VarLocation::VarLocationNew(seg, off, _d);
+  VarLocation::Ptr loc = VarLocation::VarLocationNew(seg, off, _d);
   _d->locationIs(loc);
 
   /* calling base class version */

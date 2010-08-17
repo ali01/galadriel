@@ -150,7 +150,7 @@ CodeGenerator::NodeFunctor::operator()(PrintStmt *nd) {
   Expr::Ptr arg;
 
   /* arg location */
-  Location::PtrConst loc;
+  Location::Ptr loc;
 
   /* PushParam and LCall instructions */
   In::PushParam::Ptr push_param_i;
@@ -192,7 +192,7 @@ CodeGenerator::NodeFunctor::operator()(ReturnStmt *nd) {
   Expr::Ptr expr = nd->expr();
   process_node(expr);
 
-  Location::PtrConst eval_loc;
+  Location::Ptr eval_loc;
   if (expr != NULL) {
     eval_loc = expr->location();
   } else {
@@ -217,7 +217,7 @@ CodeGenerator::NodeFunctor::operator()(IfStmt *nd) {
   Expr::Ptr test = nd->test();
   process_node(test);
 
-  Location::PtrConst test_loc = test->location();
+  Location::Ptr test_loc = test->location();
   In::Label::Ptr else_label = labelNew();
   In::IfZ::Ptr ifz_i = In::IfZ::IfZNew(test_loc, else_label);
   process_instruction(ifz_i);
@@ -267,7 +267,7 @@ CodeGenerator::NodeFunctor::operator()(ForStmt *nd) {
   process_node(test);
 
   /* for test logic */
-  Location::PtrConst test_loc = test->location();
+  Location::Ptr test_loc = test->location();
   In::IfZ::Ptr ifz_i = In::IfZ::IfZNew(test_loc, end_label);
   process_instruction(ifz_i);
 
@@ -298,7 +298,7 @@ CodeGenerator::NodeFunctor::operator()(WhileStmt *nd) {
   process_node(test);
 
   /* while test logic */
-  Location::PtrConst test_loc = test->location();
+  Location::Ptr test_loc = test->location();
   In::IfZ::Ptr ifz_i = In::IfZ::IfZNew(test_loc, end_label);
   process_instruction(ifz_i);
 
@@ -327,8 +327,8 @@ CodeGenerator::NodeFunctor::operator()(AssignExpr *nd) {
   Expr::Ptr rhs = nd->right();
   process_node(rhs);
 
-  Location::PtrConst lhs_loc = l_val->location();
-  Location::PtrConst rhs_loc = rhs->location();
+  Location::Ptr lhs_loc = l_val->location();
+  Location::Ptr rhs_loc = rhs->location();
 
   if (not lhs_loc->reference()) {
     In::Assign::Ptr assign_i = In::Assign::AssignNew(rhs_loc, lhs_loc);
@@ -360,22 +360,22 @@ CodeGenerator::NodeFunctor::operator()(ArrayAccessExpr *nd) {
 
   /* load elem size into aux_loc */
   In::LoadIntConst::Ptr load_int_i;
-  TmpLocation::PtrConst aux_loc = nd->auxLocation();
+  TmpLocation::Ptr aux_loc = nd->auxLocation();
   load_int_i = In::LoadIntConst::LoadIntConstNew(aux_loc, (int)elem_size);
   process_instruction(load_int_i);
 
   /* multiply elem size by number of elements */
   In::BinaryOp::Ptr binary_op_i;
-  Location::PtrConst sub_loc = subscript->location();
+  Location::Ptr sub_loc = subscript->location();
   binary_op_i = In::BinaryOp::BinaryOpNew(In::BinaryOp::kMultiply,
                                           aux_loc, aux_loc, sub_loc);
   process_instruction(binary_op_i);
 
-  Location::PtrConst base_loc = nd->base()->location();
+  Location::Ptr base_loc = nd->base()->location();
   binary_op_i = In::BinaryOp::BinaryOpNew(In::BinaryOp::kAdd,
                                           aux_loc, base_loc, aux_loc);
   process_instruction(binary_op_i);
-  // aux_loc->referenceIs(true);
+  aux_loc->referenceIs(true);
   nd->locationIs(aux_loc);
 }
 
@@ -392,7 +392,7 @@ CodeGenerator::NodeFunctor::operator()(FieldAccessExpr *nd) {
 /* stmt/expr/single_addr */
 void
 CodeGenerator::NodeFunctor::operator()(BoolConstExpr *nd) {
-  Location::PtrConst bool_loc = nd->location();
+  Location::Ptr bool_loc = nd->location();
   int value = nd->value() ? 1 : 0;
 
   In::LoadIntConst::Ptr load_i;
@@ -403,7 +403,7 @@ CodeGenerator::NodeFunctor::operator()(BoolConstExpr *nd) {
 
 void
 CodeGenerator::NodeFunctor::operator()(IntConstExpr *nd) {
-  Location::PtrConst int_loc = nd->location();
+  Location::Ptr int_loc = nd->location();
   In::LoadIntConst::Ptr load_i;
   load_i = In::LoadIntConst::LoadIntConstNew(int_loc, nd->value());
 
@@ -412,7 +412,7 @@ CodeGenerator::NodeFunctor::operator()(IntConstExpr *nd) {
 
 void
 CodeGenerator::NodeFunctor::operator()(StrConstExpr *nd) {
-  Location::PtrConst str_loc = nd->location();
+  Location::Ptr str_loc = nd->location();
   In::LoadStrConst::Ptr load_i;
   load_i = In::LoadStrConst::LoadStrConstNew(str_loc, nd->value());
 
@@ -421,14 +421,14 @@ CodeGenerator::NodeFunctor::operator()(StrConstExpr *nd) {
 
 void
 CodeGenerator::NodeFunctor::operator()(NewExpr *nd) {
-  Location::PtrConst ret_loc = nd->location();
+  Location::Ptr ret_loc = nd->location();
 
   NamedType::PtrConst type = nd->objectType();
   size_t size = type->allocSize() + 1; /* +1 for this ptr */
   size *= MIPSEmitFunctor::kWordSize;
   // todo: remove hardware dependency (requires changing library)
 
-  Location::PtrConst int_loc = nd->sizeLocation();
+  Location::Ptr int_loc = nd->sizeLocation();
 
   /* load size param into temporary */
   In::LoadIntConst::Ptr load_i;
@@ -446,7 +446,7 @@ CodeGenerator::NodeFunctor::operator()(NewExpr *nd) {
   process_instruction(In::PopParams::PopParamsNew(1));
 
   /* assign v_ptr */
-  Location::PtrConst v_ptr_loc = nd->vPtrLocation();
+  Location::Ptr v_ptr_loc = nd->vPtrLocation();
 
   In::LoadLabel::Ptr load_label_i;
   load_label_i = In::LoadLabel::LoadLabelNew(v_ptr_loc, type->objectLabel());
@@ -470,13 +470,13 @@ CodeGenerator::NodeFunctor::operator()(NewArrayExpr *nd) {
 
   /* load elem size into aux_loc */
   In::LoadIntConst::Ptr load_int_i;
-  Location::PtrConst aux_loc = nd->auxLocation();
+  Location::Ptr aux_loc = nd->auxLocation();
   load_int_i = In::LoadIntConst::LoadIntConstNew(aux_loc, (int)elem_size);
   process_instruction(load_int_i);
 
   /* multiply elem size by number of elements */
   In::BinaryOp::Ptr binary_op_i;
-  Location::PtrConst size_loc = size->location();
+  Location::Ptr size_loc = size->location();
   binary_op_i = In::BinaryOp::BinaryOpNew(In::BinaryOp::kMultiply,
                                           aux_loc, aux_loc, size_loc);
   process_instruction(binary_op_i);
@@ -486,7 +486,7 @@ CodeGenerator::NodeFunctor::operator()(NewArrayExpr *nd) {
   process_instruction(push_param_i);
 
   /* call alloc */
-  Location::PtrConst ret_loc = nd->location();
+  Location::Ptr ret_loc = nd->location();
   In::Label::PtrConst label_i = In::Label::kAlloc;
   In::LCall::Ptr l_call_i = In::LCall::LCallNew(label_i, ret_loc);
   process_instruction(l_call_i);
@@ -501,7 +501,7 @@ CodeGenerator::NodeFunctor::operator()(CallExpr *nd) {
   process_node(fn_id);
 
   Expr::Ptr actual;
-  Location::PtrConst actual_loc;
+  Location::Ptr actual_loc;
   In::PushParam::Ptr push_param_i;
   FunctionCallExpr::const_reverse_actuals_iter it = nd->actualsReverseBegin();
   for (; it != nd->actualsReverseEnd(); ++it) {
@@ -527,7 +527,7 @@ CodeGenerator::NodeFunctor::operator()(FunctionCallExpr *nd) {
     /* applying this functor on upcasted nd */
     (*this)(static_cast<CallExpr*>(nd));
 
-    Location::PtrConst ret_loc = nd->location();
+    Location::Ptr ret_loc = nd->location();
     Identifier::Ptr fn_id = nd->identifier();
     In::Label::Ptr label_i = In::Label::LabelNew(fn_id);
     In::LCall::Ptr l_call_i = In::LCall::LCallNew(label_i, ret_loc);
@@ -549,20 +549,20 @@ CodeGenerator::NodeFunctor::operator()(MethodCallExpr *nd) {
   process_node(base);
 
   /* pushing "this" pointer onto the stack */
-  Location::PtrConst base_loc = base->location();
+  Location::Ptr base_loc = base->location();
   In::PushParam::Ptr push_param_i = In::PushParam::PushParamNew(base_loc);
   process_instruction(push_param_i);
 
   /* return location */
-  Location::PtrConst ret_loc = nd->location();
+  Location::Ptr ret_loc = nd->location();
 
   /* obtaining function's location */
-  Location::PtrConst v_ptr_loc = nd->fnLocation();
+  Location::Ptr v_ptr_loc = nd->fnLocation();
   In::Load::Ptr load_i = In::Load::LoadNew(base_loc, v_ptr_loc);
   process_instruction(load_i);
 
   /* offset from bottom of vtable */
-  Location::PtrConst method_loc = Location::LocationNew(v_ptr_loc); /* copy */
+  Location::Ptr method_loc = Location::LocationNew(v_ptr_loc); /* copy */
   v_ptr_loc->secondaryOffsetIs(nd->vTableOffset());
 
   /* dereferencing to obtain function address in v_table */
@@ -624,9 +624,9 @@ CodeGenerator::NodeFunctor::operator()(ArithmeticExpr *nd) {
       ABORT();
   }
 
-  Location::PtrConst dst_loc = nd->location();
-  Location::PtrConst lhs_loc = nd->left()->location();
-  Location::PtrConst rhs_loc = nd->right()->location();
+  Location::Ptr dst_loc = nd->location();
+  Location::Ptr lhs_loc = nd->left()->location();
+  Location::Ptr rhs_loc = nd->right()->location();
 
   In::BinaryOp::Ptr binary_op_i;
   binary_op_i = In::BinaryOp::BinaryOpNew(op_code, dst_loc, lhs_loc, rhs_loc);
@@ -661,11 +661,11 @@ CodeGenerator::NodeFunctor::operator()(LogicalExpr *nd) {
       ABORT();
   }
 
-  Location::PtrConst dst_loc = nd->location();
-  Location::PtrConst rhs_loc = right->location();
+  Location::Ptr dst_loc = nd->location();
+  Location::Ptr rhs_loc = right->location();
 
   if (not unary) {
-    Location::PtrConst lhs_loc = left->location();
+    Location::Ptr lhs_loc = left->location();
 
     In::BinaryOp::Ptr binary_op_i;
     binary_op_i = In::BinaryOp::BinaryOpNew(op_code, dst_loc, lhs_loc, rhs_loc);
@@ -673,7 +673,7 @@ CodeGenerator::NodeFunctor::operator()(LogicalExpr *nd) {
 
   } else {
     assert(left == NULL);
-    Location::PtrConst aux_loc = nd->auxLocation();
+    Location::Ptr aux_loc = nd->auxLocation();
     negate_logical_value(dst_loc, rhs_loc, aux_loc);
   }
 }
@@ -682,9 +682,9 @@ void
 CodeGenerator::NodeFunctor::operator()(RelationalExpr *nd) {
   (*this)(static_cast<CompoundExpr*>(nd));
 
-  Location::PtrConst dst_loc = nd->location();
-  Location::PtrConst lhs_loc = nd->left()->location();
-  Location::PtrConst rhs_loc = nd->right()->location();
+  Location::Ptr dst_loc = nd->location();
+  Location::Ptr lhs_loc = nd->left()->location();
+  Location::Ptr rhs_loc = nd->right()->location();
 
   bool negate = false;
   Operator::OpCode op_type = nd->op()->operatorType();
@@ -706,7 +706,7 @@ CodeGenerator::NodeFunctor::operator()(RelationalExpr *nd) {
         op_code = In::BinaryOp::kLess;
 
         /* swap */
-        Location::PtrConst tmp_loc = lhs_loc;
+        Location::Ptr tmp_loc = lhs_loc;
         lhs_loc = rhs_loc;
         rhs_loc = tmp_loc;
       }
@@ -721,7 +721,7 @@ CodeGenerator::NodeFunctor::operator()(RelationalExpr *nd) {
   process_instruction(binary_op_i);
 
   if (negate) {
-    Location::PtrConst rhs_loc = nd->auxLocation();
+    Location::Ptr rhs_loc = nd->auxLocation();
     negate_logical_value(dst_loc, dst_loc, rhs_loc);
   }
 }
@@ -752,7 +752,7 @@ CodeGenerator::NodeFunctor::process_node(Node::Ptr _node) {
 }
 
 void
-CodeGenerator::NodeFunctor::process_location(Location::PtrConst _loc) {
+CodeGenerator::NodeFunctor::process_location(Location::Ptr _loc) {
   if (_loc->reference()) {
     /* dereference */
     In::Store::Ptr store_i = In::Store::StoreNew(_loc, _loc);
@@ -793,9 +793,9 @@ CodeGenerator::emit_instruction_stream() {
 }
 
 void
-CodeGenerator::NodeFunctor::negate_logical_value(Location::PtrConst dst_loc,
-                                                 Location::PtrConst rhs_loc,
-                                                 Location::PtrConst aux) {
+CodeGenerator::NodeFunctor::negate_logical_value(Location::Ptr dst_loc,
+                                                 Location::Ptr rhs_loc,
+                                                 Location::Ptr aux) {
   In::LoadIntConst::Ptr l_i = In::LoadIntConst::LoadIntConstNew(aux, 1);
   process_instruction(l_i);
 

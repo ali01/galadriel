@@ -14,20 +14,20 @@ public:
   typedef Simone::Ptr<const Return> PtrConst;
   typedef Simone::Ptr<Return> Ptr;
 
-  static Ptr ReturnNew(Simone::Ptr<const Location> _ret);
+  static Ptr ReturnNew(Simone::Ptr<Location> _ret);
 
   /* attribute member functions */
-  Simone::Ptr<const Location> returnLocation();
-  Simone::Ptr<const Location> returnLocation() const;
+  Simone::Ptr<Location> returnLocation();
+  Simone::Ptr<Location> returnLocation() const;
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
-  Return(Simone::Ptr<const Location> _ret);
+  Return(Simone::Ptr<Location> _ret);
 
   /* data members */
-  Simone::Ptr<const Location> ret_loc_;
+  Simone::Ptr<Location> ret_loc_;
 
   /* operations disallowed */
   Return(const Return&);

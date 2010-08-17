@@ -15,12 +15,12 @@ public:
   typedef Simone::Ptr<const LoadLabel> PtrConst;
   typedef Simone::Ptr<LoadLabel> Ptr;
 
-  static Ptr LoadLabelNew(Simone::Ptr<const Location> _loc,
+  static Ptr LoadLabelNew(Simone::Ptr<Location> _loc,
                           Simone::Ptr<Label> _label);
 
   /* attribute member functions */
-  Simone::Ptr<const Location> dst();
-  Simone::Ptr<const Location> dst() const;
+  Simone::Ptr<Location> dst();
+  Simone::Ptr<Location> dst() const;
 
   Simone::Ptr<Label> label();
   Simone::Ptr<const Label> label() const;
@@ -29,10 +29,10 @@ public:
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
-  LoadLabel(Simone::Ptr<const Location> _loc, Simone::Ptr<Label> _label);
+  LoadLabel(Simone::Ptr<Location> _loc, Simone::Ptr<Label> _label);
 
   /* data members */
-  Simone::Ptr<const Location> dst_;
+  Simone::Ptr<Location> dst_;
   Simone::Ptr<Label> label_;
 
   /* operations disallowed */

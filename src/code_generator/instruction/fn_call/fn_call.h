@@ -15,17 +15,17 @@ public:
   typedef Simone::Ptr<FnCall> Ptr;
 
   /* attribute member functions */
-  Simone::Ptr<const Location> returnLocation();
-  Simone::Ptr<const Location> returnLocation() const;
+  Simone::Ptr<Location> returnLocation();
+  Simone::Ptr<Location> returnLocation() const;
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 protected:
-  FnCall(Simone::Ptr<const Location> _ret_loc);
+  FnCall(Simone::Ptr<Location> _ret_loc);
 
   /* data members */
-  Simone::Ptr<const Location> ret_loc_;
+  Simone::Ptr<Location> ret_loc_;
 
 private:
   /* operations disallowed */

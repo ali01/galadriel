@@ -19,7 +19,7 @@ public:
 
   static const int kLocalsOffset = -2;
 
-  Simone::Ptr<const TmpLocation> tempNew();
+  Simone::Ptr<TmpLocation> tempNew();
   FrameSize size(bool include_parents=true) const;
 
 private:

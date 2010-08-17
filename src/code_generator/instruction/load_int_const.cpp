@@ -6,21 +6,21 @@
 namespace In {
 
 LoadIntConst::Ptr
-LoadIntConst::LoadIntConstNew(Location::PtrConst _loc, int _val) {
+LoadIntConst::LoadIntConstNew(Location::Ptr _loc, int _val) {
   return new LoadIntConst(_loc, _val);
 }
 
-LoadIntConst::LoadIntConst(Location::PtrConst _loc, int _val) :
+LoadIntConst::LoadIntConst(Location::Ptr _loc, int _val) :
                            dst_(_loc), value_(_val) {
   assert(dst_ != NULL);
 }
 
-Location::PtrConst
+Location::Ptr
 LoadIntConst::dst() {
   return dst_;
 }
 
-Location::PtrConst
+Location::Ptr
 LoadIntConst::dst() const {
   return dst_;
 }

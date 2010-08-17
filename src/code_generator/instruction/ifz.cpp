@@ -9,22 +9,22 @@
 namespace In {
 
 IfZ::Ptr
-IfZ::IfZNew(Location::PtrConst _test, Label::Ptr _label) {
+IfZ::IfZNew(Location::Ptr _test, Label::Ptr _label) {
   return new IfZ(_test, _label);
 }
 
-IfZ::IfZ(Location::PtrConst _test, Label::Ptr _label) :
+IfZ::IfZ(Location::Ptr _test, Label::Ptr _label) :
   test_(_test), label_(_label)
 {
   assert(test_ && label_);
 }
 
-Location::PtrConst
+Location::Ptr
 IfZ::test() {
   return test_;
 }
 
-Location::PtrConst
+Location::Ptr
 IfZ::test() const {
   return test_;
 }

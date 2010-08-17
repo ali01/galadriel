@@ -12,7 +12,7 @@ GlobalScope::NodeFunctor::operator()(VarDecl *_d) {
   Location::Offset off = scope_->varDeclCount();
   Location::Segment seg = Location::kData;
 
-  VarLocation::PtrConst loc;
+  VarLocation::Ptr loc;
   loc = VarLocation::VarLocationNew(seg, off, _d);
 
   _d->locationIs(loc);

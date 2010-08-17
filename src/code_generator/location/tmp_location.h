@@ -10,9 +10,9 @@ using std::string;
 
 class TmpLocation : public Location {
 public:
-  typedef Simone::Ptr<const TmpLocation> PtrConst;
+  typedef Simone::Ptr<TmpLocation> Ptr;
 
-  static PtrConst TmpLocationNew(Offset _offset);
+  static Ptr TmpLocationNew(Offset _offset);
 
   /* attribute member functions */
   void referenceIs(bool _s) { is_reference_ = _s; }

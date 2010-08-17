@@ -6,15 +6,15 @@
 namespace In {
 
 BinaryOp::Ptr
-BinaryOp::BinaryOpNew(OpCode _op, Location::PtrConst _dst,
-                                  Location::PtrConst _lhs,
-                                  Location::PtrConst _rhs) {
+BinaryOp::BinaryOpNew(OpCode _op, Location::Ptr _dst,
+                                  Location::Ptr _lhs,
+                                  Location::Ptr _rhs) {
   return new BinaryOp(_op, _dst, _lhs, _rhs);
 }
 
-BinaryOp::BinaryOp(OpCode _op, Location::PtrConst _dst,
-                               Location::PtrConst _lhs,
-                               Location::PtrConst _rhs) :
+BinaryOp::BinaryOp(OpCode _op, Location::Ptr _dst,
+                               Location::Ptr _lhs,
+                               Location::Ptr _rhs) :
   op_code_(_op), dst_(_dst), lhs_(_lhs), rhs_(_rhs)
 {
   assert(dst_ && lhs_ && rhs_);
@@ -37,34 +37,34 @@ BinaryOp::op_str() const {
   return "(unknown operator)";
 }
 
-Location::PtrConst
+Location::Ptr
 BinaryOp::dst() {
   return dst_;
 }
 
-Location::PtrConst
+Location::Ptr
 BinaryOp::dst() const {
   return dst_;
 }
 
 
-Location::PtrConst
+Location::Ptr
 BinaryOp::lhs() {
   return lhs_;
 }
 
-Location::PtrConst
+Location::Ptr
 BinaryOp::lhs() const {
   return lhs_;
 }
 
 
-Location::PtrConst
+Location::Ptr
 BinaryOp::rhs() {
   return rhs_;
 }
 
-Location::PtrConst
+Location::Ptr
 BinaryOp::rhs() const {
   return rhs_;
 }

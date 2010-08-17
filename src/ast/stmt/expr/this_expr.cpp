@@ -19,7 +19,7 @@ ThisExpr::type() const {
   return type;
 }
 
-Location::PtrConst
+Location::Ptr
 ThisExpr::location() const {
   return Location::LocationNew(Location::kStack, 1, "this");
 }

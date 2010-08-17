@@ -12,7 +12,7 @@ ObjectScope::NodeFunctor::operator()(VarDecl *_d) { // TODO:is this ever called?
   Location::Offset off = scope_->varDeclCount();
   Location::Segment seg = Location::kHeap;
 
-  VarLocation::PtrConst loc;
+  VarLocation::Ptr loc;
   loc = VarLocation::VarLocationNew(seg, off, _d);
 
   _d->locationIs(loc);

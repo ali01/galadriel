@@ -16,7 +16,7 @@ ParamScope::NodeFunctor::operator()(VarDecl *_d) {
 
   Location::Segment seg = Location::kStack;
 
-  VarLocation::PtrConst loc;
+  VarLocation::Ptr loc;
   loc = VarLocation::VarLocationNew(seg, off, _d);
 
   _d->locationIs(loc);

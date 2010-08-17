@@ -270,7 +270,7 @@ ScopeStackBuilder::NodeFunctor::operator()(ArrayAccessExpr *nd) {
   process_node(subscript, nd, scope);
 
   LocalScope::Ptr local_scope = Ptr::st_cast<LocalScope>(nd->scope());
-  TmpLocation::PtrConst loc = local_scope->tempNew();
+  TmpLocation::Ptr loc = local_scope->tempNew();
   nd->auxLocationIs(loc);
 }
 
@@ -291,7 +291,7 @@ ScopeStackBuilder::NodeFunctor::operator()(FieldAccessExpr *nd) {
 void
 ScopeStackBuilder::NodeFunctor::operator()(SingleAddrExpr *nd) {
   LocalScope::Ptr local_scope = Ptr::st_cast<LocalScope>(nd->scope());
-  Location::PtrConst loc = local_scope->tempNew();
+  Location::Ptr loc = local_scope->tempNew();
   nd->locationIs(loc);
 }
 
@@ -341,10 +341,10 @@ ScopeStackBuilder::NodeFunctor::operator()(NewExpr *nd) {
   process_node(type, nd, scope);
 
   LocalScope::Ptr local_scope = Ptr::st_cast<LocalScope>(nd->scope());
-  Location::PtrConst size_loc = local_scope->tempNew();
+  Location::Ptr size_loc = local_scope->tempNew();
   nd->sizeLocationIs(size_loc);
 
-  Location::PtrConst v_ptr_loc = local_scope->tempNew();
+  Location::Ptr v_ptr_loc = local_scope->tempNew();
   nd->vPtrLocationIs(v_ptr_loc);
 }
 
@@ -362,7 +362,7 @@ ScopeStackBuilder::NodeFunctor::operator()(NewArrayExpr *nd) {
   process_node(type, nd, scope);
 
   LocalScope::Ptr local_scope = Ptr::st_cast<LocalScope>(nd->scope());
-  Location::PtrConst loc = local_scope->tempNew();
+  Location::Ptr loc = local_scope->tempNew();
   nd->auxLocationIs(loc);
 }
 
@@ -389,7 +389,7 @@ ScopeStackBuilder::NodeFunctor::operator()(CallExpr *nd) {
   }
 
   LocalScope::Ptr local_scope = Ptr::st_cast<LocalScope>(nd->scope());
-  Location::PtrConst fn_loc = local_scope->tempNew();
+  Location::Ptr fn_loc = local_scope->tempNew();
   nd->fnLocationIs(fn_loc);
 }
 
@@ -440,7 +440,7 @@ ScopeStackBuilder::NodeFunctor::operator()(LogicalExpr *nd) {
   (*this)(static_cast<CompoundExpr*>(nd));
 
   LocalScope::Ptr local_scope = Ptr::st_cast<LocalScope>(nd->scope());
-  Location::PtrConst aux_loc = local_scope->tempNew();
+  Location::Ptr aux_loc = local_scope->tempNew();
   nd->auxLocationIs(aux_loc);
 }
 
@@ -449,7 +449,7 @@ ScopeStackBuilder::NodeFunctor::operator()(RelationalExpr *nd) {
   (*this)(static_cast<CompoundExpr*>(nd));
 
   LocalScope::Ptr local_scope = Ptr::st_cast<LocalScope>(nd->scope());
-  Location::PtrConst aux_loc = local_scope->tempNew();
+  Location::Ptr aux_loc = local_scope->tempNew();
   nd->auxLocationIs(aux_loc);
 }
 

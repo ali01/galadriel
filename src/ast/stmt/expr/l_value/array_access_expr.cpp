@@ -29,22 +29,22 @@ ArrayAccessExpr::type() const {
   return elem_type;
 }
 
-Location::PtrConst
+Location::Ptr
 ArrayAccessExpr::location() const {
   return location_;
 }
 
 void
-ArrayAccessExpr::locationIs(Location::PtrConst _loc) {
+ArrayAccessExpr::locationIs(Location::Ptr _loc) {
   location_ = _loc;
 }
 
-TmpLocation::PtrConst
+TmpLocation::Ptr
 ArrayAccessExpr::auxLocation() const {
   return aux_loc_;
 }
 
 void
-ArrayAccessExpr::auxLocationIs(TmpLocation::PtrConst _loc) {
+ArrayAccessExpr::auxLocationIs(TmpLocation::Ptr _loc) {
   aux_loc_ = _loc;
 }

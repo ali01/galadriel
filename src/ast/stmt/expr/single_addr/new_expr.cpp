@@ -35,23 +35,23 @@ NewExpr::objectType() {
   return type_;
 }
 
-Location::PtrConst
+Location::Ptr
 NewExpr::sizeLocation() const {
   return size_loc_;
 }
 
 void
-NewExpr::sizeLocationIs(Location::PtrConst _loc) {
+NewExpr::sizeLocationIs(Location::Ptr _loc) {
   size_loc_ = _loc;
 }
 
-Location::PtrConst
+Location::Ptr
 NewExpr::vPtrLocation() const {
   return v_ptr_loc_;
 }
 
 void
-NewExpr::vPtrLocationIs(Location::PtrConst _loc) {
+NewExpr::vPtrLocationIs(Location::Ptr _loc) {
   v_ptr_loc_ = _loc;
 }
 
