@@ -14,7 +14,6 @@ ObjectScope::NodeFunctor::operator()(VarDecl *_d) { // TODO:is this ever called?
 
   VarLocation::Ptr loc;
   loc = VarLocation::VarLocationNew(seg, off, _d);
-
   _d->locationIs(loc);
 
   /* calling base class version */

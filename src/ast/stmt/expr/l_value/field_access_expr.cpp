@@ -7,6 +7,7 @@
 #include <code_generator/location_includes.h>
 
 /* project includes */
+#include <lex_location.h>
 #include <scope/scope.h>
 
 /* ast includes */
@@ -23,26 +24,13 @@
 
 /* ast/stmt/expr includes */
 #include "../expr.h"
-
-/* ast/stmt/expr/l_value includes */
-#include "l_value_expr.h"
+#include "../this_expr.h"
 
 
 FieldAccessExpr::FieldAccessExpr(Expr::Ptr b, Identifier::Ptr f) :
-  LValueExpr(b != NULL ?  Join(b->lexLoc(), f->lexLoc()) : *f->lexLoc()),
-  base_(b), field_(f)
+  LValueExpr(Join(b->lexLoc(), f->lexLoc())), base_(b), identifier_(f)
 {
-  assert(base_ != NULL && field_ != NULL);
-}
-
-Identifier::Ptr
-FieldAccessExpr::field() {
-  return field_;
-}
-
-Identifier::PtrConst
-FieldAccessExpr::field() const {
-  return field_;
+  assert(base_ != NULL && identifier_);
 }
 
 ClassDecl::PtrConst
@@ -65,25 +53,18 @@ FieldAccessExpr::varDecl() const {
   ClassDecl::PtrConst base_decl = baseDecl();
   if (base_decl) {
     Scope::PtrConst scope = base_decl->scope();
-    var_decl = scope->varDecl(field_, false);
+    var_decl = scope->varDecl(identifier_, false);
   }
 
   return var_decl;
 }
 
-Type::PtrConst
-FieldAccessExpr::type() const {
-  Type::PtrConst type = Type::kError;
-
-  VarDecl::PtrConst var_decl = varDecl();
-  if(var_decl)
-    type = var_decl->type();
-
-  return type;
+Identifier::Ptr
+FieldAccessExpr::identifier() {
+  return identifier_;
 }
 
-Location::Ptr
-FieldAccessExpr::location() const {
-  VarDecl::PtrConst var_decl = this->varDecl();
-  return var_decl->location();
+Identifier::PtrConst
+FieldAccessExpr::identifier() const {
+  return identifier_;
 }

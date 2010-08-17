@@ -121,6 +121,7 @@ public:
   void baseScopeIs(Scope::PtrConst _scope);
 
   virtual bool isLocalScope() const { return false; }
+  virtual bool isObjectScope() const { return false; }
 
 protected:
   typedef Deque<Scope::Ptr>::const_iterator const_child_iter;

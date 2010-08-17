@@ -265,7 +265,7 @@ SemanticAnalyser::NodeFunctor::operator()(FieldAccessExpr *nd) {
   Expr::Ptr base = nd->base();
   process_node(base);
 
-  Identifier::Ptr id = nd->field();
+  Identifier::Ptr id = nd->identifier();
   process_node(id);
 
   ClassDecl::PtrConst base_decl = nd->baseDecl();

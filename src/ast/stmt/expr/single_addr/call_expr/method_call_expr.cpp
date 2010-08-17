@@ -14,6 +14,30 @@
 #include "../../../../type/named_type.h"
 #include "../../../../type/array_type.h"
 
+/* ast/expr includes */
+#include "../../this_expr.h"
+
+/* local includes */
+#include "function_call_expr.h"
+
+MethodCallExpr::Ptr
+MethodCallExpr::MethodCallExprNew(FunctionCallExpr::Ptr _fn_call) {
+  Identifier::Ptr id = _fn_call->identifier();
+  Deque<Expr::Ptr>::Ptr actuals = _fn_call->actuals_;
+
+  ThisExpr::Ptr base = ThisExpr::ThisExprNew(_fn_call->parent(), 
+                                             _fn_call->scope());
+
+  MethodCallExpr::Ptr ex;
+  ex = new MethodCallExpr(*_fn_call->lexLoc(), base, id, actuals);
+  ex->locationIs(_fn_call->location());
+  ex->auxLocationIs(_fn_call->auxLocation());
+  ex->parentIs(_fn_call->parent());
+  ex->scopeIs(_fn_call->scope());
+
+  return ex;
+}
+
 MethodCallExpr::MethodCallExpr(yyltype _loc,
                                Expr::Ptr _base,
                                Identifier::Ptr _identifier,

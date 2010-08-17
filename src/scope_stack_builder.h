@@ -69,7 +69,7 @@ public:
       /* void operator()(ThisExpr *); */
 
       /* stmt/expr/l_value */
-      /* void operator()(LValueExpr *); */
+      void operator()(LValueExpr *);
       void operator()(VarAccessExpr *);
       void operator()(ArrayAccessExpr *);
       void operator()(FieldAccessExpr *);

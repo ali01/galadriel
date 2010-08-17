@@ -5,13 +5,11 @@
 
 /* ast/stmt/expr/call_expr.h includes */
 #include "call_expr.h"
-#include "function_call_expr.h"
-
-#include "../../this_expr.h"
 
 /* forward declarations */
 class FnDecl;
 class ObjectDecl;
+class FunctionCallExpr;
 
 class MethodCallExpr : public CallExpr {
 public:
@@ -25,16 +23,7 @@ public:
     return new MethodCallExpr(_loc, _base, _identifier, _args);
   }
 
-  static Ptr MethodCallExprNew(FunctionCallExpr::Ptr _fn_call) {
-    Identifier::Ptr id = _fn_call->identifier();
-    ThisExpr::Ptr base = ThisExpr::ThisExprNew();
-    Deque<Expr::Ptr>::Ptr actuals = _fn_call->actuals_;
-
-    MethodCallExpr::Ptr ex;
-    ex = new MethodCallExpr(*_fn_call->lexLoc(), base, id, actuals);
-    ex->auxLocationIs(_fn_call->auxLocation());
-    return ex;
-  }
+  static Ptr MethodCallExprNew(Simone::Ptr<FunctionCallExpr> _fn_call);
 
   MethodCallExpr(yyltype _loc,
                  Expr::Ptr _base,

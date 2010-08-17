@@ -253,10 +253,20 @@ ScopeStackBuilder::NodeFunctor::operator()(AssignExpr *nd) {
 /* stmt/expr/l_value */
 
 void
+ScopeStackBuilder::NodeFunctor::operator()(LValueExpr *nd) {
+  LocalScope::Ptr local_scope = Ptr::st_cast<LocalScope>(nd->scope());
+  Location::Ptr loc = local_scope->tempNew();
+  nd->auxLocationIs(loc);
+}
+
+void
 ScopeStackBuilder::NodeFunctor::operator()(VarAccessExpr *nd) {
   Scope::Ptr scope = nd->scope();
   Identifier::Ptr id = nd->identifier();
   process_node(id, nd, scope);
+
+  /* applying this functor to upcasted nd */
+  (*this)(static_cast<LValueExpr*>(nd));
 }
 
 void
@@ -269,9 +279,8 @@ ScopeStackBuilder::NodeFunctor::operator()(ArrayAccessExpr *nd) {
   Expr::Ptr subscript = nd->subscript();
   process_node(subscript, nd, scope);
 
-  LocalScope::Ptr local_scope = Ptr::st_cast<LocalScope>(nd->scope());
-  TmpLocation::Ptr loc = local_scope->tempNew();
-  nd->auxLocationIs(loc);
+  /* applying this functor to upcasted nd */
+  (*this)(static_cast<LValueExpr*>(nd));
 }
 
 void
@@ -281,8 +290,11 @@ ScopeStackBuilder::NodeFunctor::operator()(FieldAccessExpr *nd) {
   Expr::Ptr base = nd->base();
   process_node(base, nd, scope);
 
-  Identifier::Ptr id = nd->field();
+  Identifier::Ptr id = nd->identifier();
   process_node(id, nd, scope);
+
+  /* applying this functor to upcasted nd */
+  (*this)(static_cast<LValueExpr*>(nd));
 }
 
 

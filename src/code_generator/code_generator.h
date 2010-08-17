@@ -14,8 +14,11 @@ using Simone::Deque;
 #include "instruction/label.h"
 
 /* forward declarations */
+class Expr;
 class Program;
 class Location;
+class LValueExpr;
+class Identifier;
 class TACEmitFunctor;
 class MIPSEmitFunctor;
 
@@ -125,6 +128,9 @@ private:
       void process_node(Node::Ptr _nd);
       void process_location(Simone::Ptr<Location> _loc);
       void process_instruction(In::Instruction::Ptr _in);
+      void process_access_expr(Simone::Ptr<LValueExpr> _expr,
+                               Simone::Ptr<Identifier> _id,
+                               Simone::Ptr<Expr> _base);
       void negate_logical_value(Simone::Ptr<Location> dst, 
                                 Simone::Ptr<Location> rhs,
                                 Simone::Ptr<Location> aux);

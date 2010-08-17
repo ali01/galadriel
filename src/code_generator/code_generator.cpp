@@ -337,21 +337,43 @@ CodeGenerator::NodeFunctor::operator()(AssignExpr *nd) {
   Location::Ptr lhs_loc = l_val->location();
   Location::Ptr rhs_loc = rhs->location();
 
-  if (not lhs_loc->reference()) {
-    In::Assign::Ptr assign_i = In::Assign::AssignNew(rhs_loc, lhs_loc);
-    process_instruction(assign_i);
-  } else {
+  if (lhs_loc->reference()) {
     In::Store::Ptr store_i = In::Store::StoreNew(rhs_loc, lhs_loc);
     process_instruction(store_i);
+  } else {
+    In::Assign::Ptr assign_i = In::Assign::AssignNew(rhs_loc, lhs_loc);
+    process_instruction(assign_i);
   }
 }
 
 
 /* stmt/expr/l_value */
+
 void
 CodeGenerator::NodeFunctor::operator()(VarAccessExpr *nd) {
   Identifier::Ptr id = nd->identifier();
   process_node(id);
+
+  VarDecl::PtrConst var_decl = nd->varDecl();
+  if (var_decl->scope()->isObjectScope()) {
+    ThisExpr::Ptr base = ThisExpr::ThisExprNew(nd->parent(), nd->scope());
+    process_access_expr(nd, id, base);
+
+  } else {
+    Identifier::Ptr id = nd->identifier();
+    process_node(id);
+  }
+}
+
+void
+CodeGenerator::NodeFunctor::operator()(FieldAccessExpr *nd) {
+  Expr::Ptr base = nd->base();
+  process_node(base);
+
+  Identifier::Ptr id = nd->identifier();
+  process_node(id);
+
+  process_access_expr(nd, id, base);
 }
 
 void
@@ -367,7 +389,7 @@ CodeGenerator::NodeFunctor::operator()(ArrayAccessExpr *nd) {
 
   /* load elem size into aux_loc */
   In::LoadIntConst::Ptr load_int_i;
-  TmpLocation::Ptr aux_loc = nd->auxLocation();
+  Location::Ptr aux_loc = nd->auxLocation();
   load_int_i = In::LoadIntConst::LoadIntConstNew(aux_loc, (int)elem_size);
   process_instruction(load_int_i);
 
@@ -393,18 +415,6 @@ CodeGenerator::NodeFunctor::operator()(ArrayAccessExpr *nd) {
   aux_loc->referenceIs(true);
   nd->locationIs(aux_loc);
 }
-
-void
-CodeGenerator::NodeFunctor::operator()(FieldAccessExpr *nd) {
-  Expr::Ptr base = nd->base();
-  process_node(base);
-
-  Identifier::Ptr id = nd->field();
-  process_node(id);
-
-  
-}
-
 
 /* stmt/expr/single_addr */
 void
@@ -811,10 +821,8 @@ CodeGenerator::NodeFunctor::process_node(Node::Ptr _node) {
 void
 CodeGenerator::NodeFunctor::process_location(Location::Ptr _loc) {
   if (_loc->reference()) {
-    /* dereference */
     In::Load::Ptr load_i = In::Load::LoadNew(_loc, _loc);
     process_instruction(load_i);
-    _loc->referenceIs(false);
   }
 }
 
@@ -836,18 +844,24 @@ CodeGenerator::NodeFunctor::labelNew() {
 }
 
 void
-CodeGenerator::emit_instruction_stream() {
-  if (IsDebugOn("tac")) {
-    code_emit_functor_ = TACEmitFunctor::TACEmitFunctorNew();
-  } else {
-    code_emit_functor_ = MIPSEmitFunctor::MIPSEmitFunctorNew();
-  }
+CodeGenerator::NodeFunctor::
+process_access_expr(LValueExpr::Ptr _ex, Identifier::Ptr _id, Expr::Ptr _base) {
+  /* obtaining field offset */
+  VarDecl::PtrConst var_decl = _ex->varDecl();
+  Location::Ptr var_decl_loc = var_decl->location();
+  Location::Offset var_decl_off = var_decl_loc->offset() + 1; /* +1 this ptr */
 
-  NodeFunctor::const_instruction_iter it = node_functor_->beginIn();
-  for(; it != node_functor_->endIn(); ++it) {
-    In::Instruction::Ptr in = *it;
-    code_emit_functor_(in);
-  }
+  /* loading field offset into aux_loc */
+  Location::Ptr aux_loc = _ex->auxLocation();
+  Location::Ptr base_loc = _base->location();
+  process_location(base_loc);
+
+  In::Assign::Ptr assign_i = In::Assign::AssignNew(base_loc, aux_loc);
+  process_instruction(assign_i);
+
+  aux_loc->referenceIs(true);
+  aux_loc->secondaryOffsetIs(var_decl_off);
+  _ex->locationIs(aux_loc);
 }
 
 void
@@ -868,4 +882,19 @@ CodeGenerator::NodeFunctor::negate_logical_value(Location::Ptr dst_loc,
   op_code = In::BinaryOp::kModulo;
   binary_op_i = In::BinaryOp::BinaryOpNew(op_code, dst_loc, dst_loc, aux);
   process_instruction(binary_op_i);
+}
+
+void
+CodeGenerator::emit_instruction_stream() {
+  if (IsDebugOn("tac")) {
+    code_emit_functor_ = TACEmitFunctor::TACEmitFunctorNew();
+  } else {
+    code_emit_functor_ = MIPSEmitFunctor::MIPSEmitFunctorNew();
+  }
+
+  NodeFunctor::const_instruction_iter it = node_functor_->beginIn();
+  for(; it != node_functor_->endIn(); ++it) {
+    In::Instruction::Ptr in = *it;
+    code_emit_functor_(in);
+  }
 }

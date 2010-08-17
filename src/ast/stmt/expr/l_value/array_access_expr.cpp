@@ -3,6 +3,9 @@
 /* code_generator includes */
 #include <code_generator/location_includes.h>
 
+/* ast/decl includes */
+#include "../../../decl/var_decl.h"
+
 /* ast/stmt/expr includes */
 #include "../expr.h"
 
@@ -29,22 +32,7 @@ ArrayAccessExpr::type() const {
   return elem_type;
 }
 
-Location::Ptr
-ArrayAccessExpr::location() const {
-  return location_;
-}
-
-void
-ArrayAccessExpr::locationIs(Location::Ptr _loc) {
-  location_ = _loc;
-}
-
-TmpLocation::Ptr
-ArrayAccessExpr::auxLocation() const {
-  return aux_loc_;
-}
-
-void
-ArrayAccessExpr::auxLocationIs(TmpLocation::Ptr _loc) {
-  aux_loc_ = _loc;
+VarDecl::PtrConst
+ArrayAccessExpr::varDecl() const {
+  return NULL;
 }

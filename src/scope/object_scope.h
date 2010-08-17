@@ -34,6 +34,8 @@ private:
       explicit NodeFunctor(ObjectScope::Ptr _s) : Scope::NodeFunctor(_s) {}
   };
 
+  bool isObjectScope() const { return true; }
+
   /* data members */
 
   /* operations disallowed */

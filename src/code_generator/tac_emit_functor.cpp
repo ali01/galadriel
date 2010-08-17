@@ -81,8 +81,8 @@ TACEmitFunctor::operator()(In::Store *in) {
   Location::Ptr src = in->src();
   Location::Ptr dst = in->dst();
 
-  if (src->secondaryOffset() != 0) {
-    s << "*(" << dst->name() << " + " << src->secondaryOffset() << ")";
+  if (dst->secondaryOffset() != 0) {
+    s << "*(" << dst->name() << " + " << dst->secondaryOffset() << ")";
   } else {
     s << "*(" << dst->name() << ")";
   }

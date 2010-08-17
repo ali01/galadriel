@@ -4,23 +4,13 @@
 /* simone includes */
 #include <simone/ptr_interface.h>
 
-/* project includes */
-#include <lex_location.h>
-
 /* ast/stmt/expr/l_value includes */
 #include "l_value_expr.h"
 
 /* forward declarations */
 class Expr;
 class Identifier;
-class Type;
-class VarDecl;
 
-/* Note that field access is used both for qualified names
- * base.field and just field without qualification. We don't
- * know for sure whether there is an implicit "this." in
- * front until later on, so we use one node type for either
- * and sort it out later. */
 class FieldAccessExpr : public LValueExpr {
 public:
   typedef Simone::Ptr<const FieldAccessExpr> PtrConst;
@@ -37,20 +27,19 @@ public:
   Expr::Ptr base() { return base_; }
   Expr::PtrConst base() const { return base_; }
 
-  Simone::Ptr<Identifier> field();
-  Simone::Ptr<const Identifier> field() const;
+  Simone::Ptr<Identifier> identifier();
+  Simone::Ptr<const Identifier> identifier() const;
 
   Simone::Ptr<const ClassDecl> baseDecl() const;
-  Simone::Ptr<const VarDecl> varDecl() const;
-  Simone::Ptr<const Type> type() const;
-  Simone::Ptr<Location> location() const;
+  Simone::Ptr<const VarDecl> varDecl() const; /* override */
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 protected:
-  Expr::Ptr base_; /* will be NULL if no explicit base */
-  Simone::Ptr<Identifier> field_;
+  /* data members */
+  Expr::Ptr base_;
+  Simone::Ptr<Identifier> identifier_;
 };
 
 #endif

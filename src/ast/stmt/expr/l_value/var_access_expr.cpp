@@ -12,16 +12,16 @@
 VarAccessExpr::VarAccessExpr(Identifier::Ptr _id) : 
   LValueExpr(*_id->lexLoc()), identifier_(_id)
 {
-  assert(_id != NULL);
-}
-
-Identifier::PtrConst
-VarAccessExpr::identifier() const {
-  return identifier_;
+  assert(identifier_);
 }
 
 Identifier::Ptr
 VarAccessExpr::identifier() {
+  return identifier_;
+}
+
+Identifier::PtrConst
+VarAccessExpr::identifier() const {
   return identifier_;
 }
 
@@ -31,19 +31,13 @@ VarAccessExpr::varDecl() const {
   return scope->varDecl(identifier_);
 }
 
-Type::PtrConst
-VarAccessExpr::type() const {
-  Type::PtrConst type = Type::kError;
-
-  VarDecl::PtrConst var_decl = this->varDecl();
-  if (var_decl != NULL)
-    type = var_decl->type();
-
-  return type;
-}
-
 Location::Ptr
 VarAccessExpr::location() const {
-  VarDecl::PtrConst var_decl = this->varDecl();
-  return var_decl->location();
+  Location::Ptr loc = LValueExpr::location();
+  if (loc == NULL) {
+    VarDecl::PtrConst var_decl = this->varDecl();
+    loc = var_decl->location();
+  }
+
+  return loc;
 }

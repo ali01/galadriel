@@ -12,9 +12,6 @@ class Identifier;
 class Type;
 class VarDecl;
 
-/* TODO: think about making VarAccessExpr and FieldAccessExpr inherit from a 
-   common base class */
-
 class VarAccessExpr : public LValueExpr {
 public:
   typedef Simone::Ptr<const VarAccessExpr> PtrConst;
@@ -27,9 +24,8 @@ public:
   VarAccessExpr(Simone::Ptr<Identifier> _id);
 
   /* attribute member functions */
-  Simone::Ptr<const Identifier> identifier() const;
   Simone::Ptr<Identifier> identifier();
-  Simone::Ptr<const Type> type() const;
+  Simone::Ptr<const Identifier> identifier() const;
 
   Simone::Ptr<const VarDecl> varDecl() const;
   Simone::Ptr<Location> location() const;
@@ -38,6 +34,7 @@ public:
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
+  /* data members */
   Simone::Ptr<Identifier> identifier_;
 };
 

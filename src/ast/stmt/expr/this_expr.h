@@ -10,16 +10,15 @@
 /* ast/stmt/expr/l_value includes */
 #include "expr.h"
 
+/* forward declarations */
+class Scope;
+
 class ThisExpr : public Expr {
 public:
   typedef Simone::Ptr<const ThisExpr> PtrConst;
   typedef Simone::Ptr<ThisExpr> Ptr;
 
-  static Ptr ThisExprNew() {
-    struct yyltype loc;
-    memset(&loc, 0x0, sizeof loc);
-    return new ThisExpr(loc);
-  }
+  static Ptr ThisExprNew(Node::Ptr _parent, Simone::Ptr<Scope> _scope);
 
   static Ptr ThisExprNew(yyltype loc) {
     return new ThisExpr(loc);
