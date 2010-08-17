@@ -1,14 +1,3 @@
 Ali Yahya (ali01)
 alive@cs.stanford.edu
 SUID: 05416528
-
-
-Added an error message to take care of cycles in the inheritance hierarchy of
-a program.
-
-Most of the implementation of the compiler thus far is in the following two
-sets of files:
-
-- scope_stack_builder.{h,cpp}
-
-- semantic_analyser.{h,cpp}
