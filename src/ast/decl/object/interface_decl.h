@@ -28,6 +28,7 @@ public:
 
   InterfaceDecl(Simone::Ptr<Identifier> name, Deque<Decl::Ptr>::Ptr members);
 
+  size_t size() const { return 0; }
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }

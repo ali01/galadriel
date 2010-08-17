@@ -335,6 +335,10 @@ ScopeStackBuilder::NodeFunctor::operator()(NewExpr *nd) {
   Scope::Ptr scope = nd->scope();
   NamedType::Ptr type = nd->objectType();
   process_node(type, nd, scope);
+
+  LocalScope::Ptr local_scope = Ptr::st_cast<LocalScope>(nd->scope());
+  Location::PtrConst loc = local_scope->tempNew();
+  nd->sizeLocationIs(loc);
 }
 
 void

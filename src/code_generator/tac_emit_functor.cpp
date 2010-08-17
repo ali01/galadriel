@@ -231,7 +231,7 @@ TACEmitFunctor::operator()(In::VTable *in) {
     s << "  " << *fn_label << ",\n";
   }
 
-  emit(s.str());
+  emit(s.str(), true);
 }
 
 

@@ -12,6 +12,9 @@ using Simone::Deque;
 /* ast/type includes */
 #include "../../type/named_type.h"
 
+/* code_generator/instruction includes */
+#include <code_generator/instruction/label.h>
+
 /* forward declarations */
 class Identifier;
 
@@ -34,9 +37,12 @@ public:
   void memberInsert(Decl::Ptr _member) { members_->pushBack(_member); }
 
   NamedType::PtrConst type() const;
+  virtual size_t size() const = 0;
 
   bool indexed() const { return scope_indexed_; }
   void indexedIs(bool _s) { scope_indexed_ = _s; }
+
+  Deque<In::Label::Ptr>::Ptr functionLabels() const;
 
   /* override virtual in Node */
   void scopeIs(Simone::Ptr<Scope> _s);

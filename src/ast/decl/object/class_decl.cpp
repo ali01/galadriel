@@ -83,3 +83,8 @@ ClassDecl::implementsInterface(InterfaceDecl::PtrConst _interface) const {
 
   return ret;
 }
+
+size_t
+ClassDecl::size() const {
+  return this->scope()->varDeclCount();
+}

@@ -31,16 +31,6 @@ class Scope : public Simone::PtrInterface<Scope> {
               VarDecl::Ptr,
               Identifier::less>::iterator var_decl_iter;
 
-
-  typedef Map<Identifier::PtrConst,
-              FnDecl::Ptr,
-              Identifier::less>::const_iterator const_fn_decl_iter;
-
-  typedef Map<Identifier::PtrConst,
-              FnDecl::Ptr,
-              Identifier::less>::iterator fn_decl_iter;
-
-
   typedef Map<Identifier::PtrConst,
               ClassDecl::Ptr,
               Identifier::less>::const_iterator const_class_decl_iter;
@@ -70,6 +60,14 @@ public:
               Decl::Ptr,
               Identifier::less>::iterator decl_iter;
 
+  typedef Map<Identifier::PtrConst,
+              FnDecl::Ptr,
+              Identifier::less>::const_iterator const_fn_decl_iter;
+
+  typedef Map<Identifier::PtrConst,
+              FnDecl::Ptr,
+              Identifier::less>::iterator fn_decl_iter;
+
   /* iterator support */
 
   const_decl_iter declsBegin() const { return decls_.begin(); }
@@ -78,8 +76,13 @@ public:
   const_decl_iter declsEnd() const { return decls_.end(); }
   decl_iter declsEnd() { return decls_.end(); }
 
+  
+  const_fn_decl_iter fnDeclsBegin() const { return fn_decls_.begin(); }
+  fn_decl_iter fnDeclsBegin() { return fn_decls_.begin(); }
 
 
+  const_fn_decl_iter fnDeclsEnd() const { return fn_decls_.end(); }
+  fn_decl_iter fnDeclsEnd() { return fn_decls_.end(); }
 
   /* -- attribute member functions -- */
 

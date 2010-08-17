@@ -85,6 +85,9 @@ public:
   bool isLibraryStub() const { return is_library_stub_; }
   void isLibraryStubIs(bool _s) { is_library_stub_ = true; }
 
+  /* override */
+  size_t size() const;
+
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 

@@ -55,6 +55,12 @@ NamedType::classDecl() const {
 }
 
 
+size_t
+NamedType::allocSize() const {
+  ObjectDecl::PtrConst object = this->objectDecl();
+  return object->size();
+}
+
 NamedType::NamedTypeEqualityFunctor::NamedTypeEqualityFunctor(NamedType::Ptr t):
   TypeEqualityFunctor(t) {}
 

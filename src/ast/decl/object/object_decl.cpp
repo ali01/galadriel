@@ -6,6 +6,9 @@
 /* ast includes */
 #include "../../identifier.h"
 
+/* ast/decl includes */
+#include "../../decl/fn_decl.h"
+
 /* ast/type includes */
 #include "../../type/named_type.h"
 
@@ -23,6 +26,23 @@ ObjectDecl::ObjectDecl(Identifier::Ptr _name, Deque<Decl::Ptr>::Ptr _members) :
 NamedType::PtrConst
 ObjectDecl::type() const {
   return this_type_;
+}
+
+Deque<In::Label::Ptr>::Ptr
+ObjectDecl::functionLabels() const {
+  Deque<In::Label::Ptr>::Ptr labels = Deque<In::Label::Ptr>::DequeNew();
+  Scope::PtrConst scope = this->scope();
+
+  FnDecl::Ptr fn_decl;
+  In::Label::Ptr label;
+  Scope::const_fn_decl_iter it = scope->fnDeclsBegin();
+  for (; it != scope->fnDeclsEnd(); ++it) {
+    fn_decl = it->second;
+    label = In::Label::LabelNew(fn_decl->identifier()->name());
+    labels->pushBack(label);
+  }
+
+  return labels;
 }
 
 void

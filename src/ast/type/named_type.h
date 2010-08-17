@@ -44,6 +44,8 @@ public:
   Simone::Ptr<ClassDecl> classDecl();
   Simone::Ptr<const ClassDecl> classDecl() const;
 
+  size_t allocSize() const;
+
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 

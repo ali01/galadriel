@@ -84,7 +84,6 @@ FieldAccessExpr::type() const {
 
 Location::PtrConst
 FieldAccessExpr::location() const {
-  // VarLocation::PtrConst loc;
-  // loc = VarLocation::VarLocationNew()
-  return NULL;
+  VarDecl::PtrConst var_decl = this->varDecl();
+  return var_decl->location();
 }

@@ -113,6 +113,13 @@ CodeGenerator::NodeFunctor::operator()(ClassDecl *nd) {
   if (not nd->isLibraryStub()) {
     /* apply this functor to upcasted nd */
     (*this)(static_cast<ObjectDecl*>(nd));
+
+    /* emitting v_table */
+    Identifier::PtrConst class_id = nd->identifier();
+    In::Label::Ptr class_label = In::Label::LabelNew(class_id->name());
+    Deque<In::Label::Ptr>::Ptr fn_labels = nd->functionLabels();
+    In::VTable::Ptr v_table_i = In::VTable::VTableNew(class_label, fn_labels);
+    process_instruction(v_table_i);
   }
 }
 
@@ -391,7 +398,24 @@ CodeGenerator::NodeFunctor::operator()(StrConstExpr *nd) {
 
 void
 CodeGenerator::NodeFunctor::operator()(NewExpr *nd) {
+  Location::PtrConst ret_loc = nd->location();
 
+  NamedType::PtrConst type = nd->objectType();
+  size_t size = type->allocSize() * MIPSEmitFunctor::kWordSize;
+   // TODO: remove hardware dependency
+
+  Location::PtrConst int_loc = nd->sizeLocation();
+
+  In::LoadIntConst::Ptr load_i;
+  load_i = In::LoadIntConst::LoadIntConstNew(int_loc, static_cast<int>(size));
+  process_instruction(load_i);
+
+  In::PushParam::Ptr push_param_i = In::PushParam::PushParamNew(int_loc);
+  process_instruction(push_param_i);
+
+  In::Label::PtrConst label_i = In::Label::kAlloc;
+  In::LCall::Ptr l_call_i = In::LCall::LCallNew(label_i, ret_loc);
+  process_instruction(l_call_i);
 }
 
 void
@@ -429,12 +453,13 @@ CodeGenerator::NodeFunctor::operator()(FunctionCallExpr *nd) {
   /* applying this functor on upcasted nd */
   (*this)(static_cast<CallExpr*>(nd));
 
-  Identifier::Ptr fn_id = nd->identifier();
   Location::PtrConst ret_loc = nd->location();
+  Identifier::Ptr fn_id = nd->identifier();
   In::Label::Ptr label_i = In::Label::LabelNew(fn_id);
   In::LCall::Ptr l_call_i = In::LCall::LCallNew(label_i, ret_loc);
-
   process_instruction(l_call_i);
+  
+  // TODO: PopParams
 }
 
 void
@@ -450,7 +475,16 @@ CodeGenerator::NodeFunctor::operator()(MethodCallExpr *nd) {
   In::PushParam::Ptr push_param_i = In::PushParam::PushParamNew(base_loc);
   process_instruction(push_param_i);
 
-  // TODO: ACall
+  // /* obtaining function's location */
+  // Location::PtrConst base_loc = base->location();
+  // Location::PtrConst fn_loc = ...;
+  // 
+  // 
+  // Location::PtrConst ret_loc = nd->location();
+  // In::ACall::Ptr a_call_i = In::ACall:ACallNew(fn_loc, ret_loc);
+  // process_instruction(a_call_i);
+
+  // TODO: PopParams
 }
 
 
