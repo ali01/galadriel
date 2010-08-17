@@ -25,6 +25,8 @@ public:
   typedef Deque<Expr::Ptr>::const_iterator const_actuals_iter;
   typedef Deque<Expr::Ptr>::iterator actuals_iter;
 
+  typedef Deque<Expr::Ptr>::const_reverse_iterator const_reverse_actuals_iter;
+
   Simone::Ptr<Identifier> identifier();
   Simone::Ptr<const Identifier> identifier() const;
 
@@ -33,6 +35,9 @@ public:
 
   const_actuals_iter actualsEnd() const { return actuals_->end(); }
   actuals_iter actualsEnd() { return actuals_->end(); }
+
+  const_reverse_actuals_iter actualsReverseBegin() const;
+  const_reverse_actuals_iter actualsReverseEnd() const;
 
   size_t actualsCount() const { return actuals_->size(); }
 

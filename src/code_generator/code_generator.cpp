@@ -194,7 +194,7 @@ CodeGenerator::NodeFunctor::operator()(ReturnStmt *nd) {
 
 void
 CodeGenerator::NodeFunctor::operator()(BreakStmt *nd) {
-
+  // TODO:
 }
 
 
@@ -409,8 +409,8 @@ CodeGenerator::NodeFunctor::operator()(CallExpr *nd) {
   Expr::Ptr actual;
   Location::PtrConst actual_loc;
   In::PushParam::Ptr push_param_i;
-  FunctionCallExpr::const_actuals_iter it = nd->actualsEnd();
-  for (; it != nd->actualsBegin(); --it) {
+  FunctionCallExpr::const_reverse_actuals_iter it = nd->actualsReverseBegin();
+  for (; it != nd->actualsReverseEnd(); ++it) {
     actual = *it;
     process_node(actual);
 

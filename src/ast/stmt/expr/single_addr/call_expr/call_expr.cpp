@@ -27,6 +27,16 @@ CallExpr::identifier() const {
   return identifier_;
 }
 
+CallExpr::const_reverse_actuals_iter
+CallExpr::actualsReverseBegin() const {
+  return actuals_->rbegin();
+}
+
+CallExpr::const_reverse_actuals_iter
+CallExpr::actualsReverseEnd() const {
+  return actuals_->rend();
+}
+
 Type::PtrConst
 CallExpr::type() const {
   Type::PtrConst type = Type::kError;
