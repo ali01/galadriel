@@ -10,6 +10,10 @@ ParamScope::ParamScope(Scope::Ptr _parent_scope) : Scope(_parent_scope) {
 void
 ParamScope::NodeFunctor::operator()(VarDecl *_d) {
   Location::Offset off = scope_->varDeclCount() + kParamsOffset;
+
+  if (_d->nearestClass() != NULL) /* within class */
+    off += 1; /* take into account space for this ptr */
+
   Location::Segment seg = Location::kStack;
 
   VarLocation::PtrConst loc;
