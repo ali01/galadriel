@@ -10,6 +10,7 @@
 /* forward declarations */
 class Expr;
 class Operator;
+class Location;
 class Type;
 
 class LogicalExpr : public CompoundExpr {
@@ -28,8 +29,14 @@ public:
 
   Simone::Ptr<const Type> type() const;
 
+  Simone::Ptr<const Location> auxLocation() const;
+  void auxLocationIs(Simone::Ptr<const Location> _loc);
+
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
+
+private:
+  Simone::Ptr<const Location> aux_loc_;
 };
 
 #endif

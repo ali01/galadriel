@@ -18,3 +18,14 @@ Type::PtrConst
 RelationalExpr::type() const {
   return Type::kBool;
 }
+
+
+Location::PtrConst
+RelationalExpr::auxLocation() const {
+  return aux_loc_;
+}
+
+void
+RelationalExpr::auxLocationIs(Location::PtrConst _loc) {
+  aux_loc_ = _loc;
+}

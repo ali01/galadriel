@@ -430,11 +430,19 @@ ScopeStackBuilder::NodeFunctor::operator()(ArithmeticExpr *nd) {
 void
 ScopeStackBuilder::NodeFunctor::operator()(LogicalExpr *nd) {
   (*this)(static_cast<CompoundExpr*>(nd));
+
+  LocalScope::Ptr local_scope = Ptr::st_cast<LocalScope>(nd->scope());
+  Location::PtrConst aux_loc = local_scope->tempNew();
+  nd->auxLocationIs(aux_loc);
 }
 
 void
 ScopeStackBuilder::NodeFunctor::operator()(RelationalExpr *nd) {
   (*this)(static_cast<CompoundExpr*>(nd));
+
+  LocalScope::Ptr local_scope = Ptr::st_cast<LocalScope>(nd->scope());
+  Location::PtrConst aux_loc = local_scope->tempNew();
+  nd->auxLocationIs(aux_loc);
 }
 
 

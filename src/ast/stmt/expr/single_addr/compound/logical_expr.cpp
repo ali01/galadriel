@@ -14,3 +14,13 @@ Type::PtrConst
 LogicalExpr::type() const {
   return Type::kBool;
 }
+
+Location::PtrConst
+LogicalExpr::auxLocation() const {
+  return aux_loc_;
+}
+
+void
+LogicalExpr::auxLocationIs(Location::PtrConst _loc) {
+  aux_loc_ = _loc;
+}

@@ -584,16 +584,21 @@ void
 CodeGenerator::NodeFunctor::operator()(LogicalExpr *nd) { // TODO
   (*this)(static_cast<CompoundExpr*>(nd));
 
-  // Operator::OpCode op_type = nd->op()->operatorType();
-  // In::BinaryOp::OpCode op_code;
-  // switch (op_type) {
-  //   case Operator::kAnd:
-  //
-  //   case Operator::kOr:
-  //   case Operator::kNot:
-  //   default:
-  //     ABORT();
-  // }
+  Operator::OpCode op_type = nd->op()->operatorType();
+  In::BinaryOp::OpCode op_code;
+  switch (op_type) {
+    case Operator::kAnd:
+      op_code = In::BinaryOp::kAnd;
+      break;
+
+    case Operator::kOr:
+      op_code = In::BinaryOp::kOr;
+      break;
+
+    case Operator::kNot:
+    default:
+      ABORT();
+  }
 }
 
 void
@@ -639,11 +644,8 @@ CodeGenerator::NodeFunctor::operator()(RelationalExpr *nd) {
   process_instruction(binary_op_i);
 
   if (negate) {
-    // TODO:
-    // In::BinaryOp::OpCode op_code = In::BinaryOp::kAdd;
-    //
-    // In::BinaryOp::Ptr binary_op_i;
-    // binary_op_i = In::BinaryOp::BinaryOpNew(op_code, dst_loc, dst_loc, rhs_loc);
+    Location::PtrConst rhs_loc = nd->auxLocation();
+    negate_logical_value(dst_loc, rhs_loc);
   }
 }
 
@@ -702,4 +704,23 @@ CodeGenerator::emit_instruction_stream() {
     In::Instruction::Ptr in = *it;
     code_emit_functor_(in);
   }
+}
+
+void
+CodeGenerator::NodeFunctor::negate_logical_value(Location::PtrConst dst_loc,
+                                                 Location::PtrConst aux) {
+  In::LoadIntConst::Ptr l_i = In::LoadIntConst::LoadIntConstNew(aux, 1);
+  process_instruction(l_i);
+
+  In::BinaryOp::Ptr binary_op_i;
+  In::BinaryOp::OpCode op_code = In::BinaryOp::kAdd;
+  binary_op_i = In::BinaryOp::BinaryOpNew(op_code, dst_loc, dst_loc, aux);
+  process_instruction(binary_op_i);
+
+  l_i = In::LoadIntConst::LoadIntConstNew(aux, 2);
+  process_instruction(l_i);
+
+  op_code = In::BinaryOp::kModulo;
+  binary_op_i = In::BinaryOp::BinaryOpNew(op_code, dst_loc, dst_loc, aux);
+  process_instruction(binary_op_i);
 }

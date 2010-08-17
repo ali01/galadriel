@@ -15,6 +15,7 @@ using Simone::Deque;
 
 /* forward declarations */
 class Program;
+class Location;
 class TACEmitFunctor;
 class MIPSEmitFunctor;
 
@@ -123,6 +124,8 @@ private:
       /* member functions */
       void process_node(Node::Ptr _nd);
       void process_instruction(In::Instruction::Ptr _in);
+      void negate_logical_value(Simone::Ptr<const Location> dst, 
+                                Simone::Ptr<const Location> aux);
 
       In::Label::Ptr labelNew();
 
