@@ -268,6 +268,10 @@ ScopeStackBuilder::NodeFunctor::operator()(ArrayAccessExpr *nd) {
 
   Expr::Ptr subscript = nd->subscript();
   process_node(subscript, nd, scope);
+
+  LocalScope::Ptr local_scope = Ptr::st_cast<LocalScope>(nd->scope());
+  TmpLocation::PtrConst loc = local_scope->tempNew();
+  nd->auxLocationIs(loc);
 }
 
 void
@@ -356,6 +360,10 @@ ScopeStackBuilder::NodeFunctor::operator()(NewArrayExpr *nd) {
 
   ArrayType::Ptr type = nd->arrayType();
   process_node(type, nd, scope);
+
+  LocalScope::Ptr local_scope = Ptr::st_cast<LocalScope>(nd->scope());
+  Location::PtrConst loc = local_scope->tempNew();
+  nd->auxLocationIs(loc);
 }
 
 

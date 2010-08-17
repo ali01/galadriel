@@ -19,4 +19,4 @@ TmpLocation::TmpLocationNew(Offset _offset) {
 }
 
 TmpLocation::TmpLocation(Offset _offset, const string& _name) :
-  Location::Location(kStack, _offset, _name) {}
+  Location::Location(kStack, _offset, _name), is_reference_(false) {}

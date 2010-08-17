@@ -8,10 +8,9 @@
 #include <lex_location.h>
 
 /* ast/stmt/expr/l_value includes */
-#include "l_value_expr.h"
+#include "expr.h"
 
-// TODO: should not inherit from LValueExpr
-class ThisExpr : public LValueExpr {
+class ThisExpr : public Expr {
 public:
   typedef Simone::Ptr<const ThisExpr> PtrConst;
   typedef Simone::Ptr<ThisExpr> Ptr;
@@ -26,7 +25,7 @@ public:
     return new ThisExpr(loc);
   }
 
-  ThisExpr(yyltype loc) : LValueExpr(loc) {}
+  ThisExpr(yyltype loc) : Expr(loc) {}
 
   Simone::Ptr<const Type> type() const;
   Simone::Ptr<const Location> location() const;

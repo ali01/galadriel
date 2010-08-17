@@ -13,6 +13,7 @@
 /* forward declarations */
 class Expr;
 class Type;
+class TmpLocation;
 
 class ArrayAccessExpr : public LValueExpr {
 public:
@@ -35,13 +36,20 @@ public:
   Expr::PtrConst subscript() const { return subscript_; }
 
   Simone::Ptr<const Type> type() const;
+
   Simone::Ptr<const Location> location() const;
+  void locationIs(Simone::Ptr<const Location> _loc);
+
+  Simone::Ptr<const TmpLocation> auxLocation() const;
+  void auxLocationIs(Simone::Ptr<const TmpLocation> _loc);
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
-protected:
+private:
   Expr::Ptr base_, subscript_;
+  Simone::Ptr<const Location> location_;
+  Simone::Ptr<const TmpLocation> aux_loc_;
 };
 
 #endif

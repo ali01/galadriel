@@ -83,13 +83,13 @@ private:
       void operator()(AssignExpr *);
       /* void operator()(NullExpr *); */
       /* void operator()(EmptyExpr *); */
+      /* void operator()(ThisExpr *); */
 
       /* stmt/expr/l_value */
       /* void operator()(LValueExpr *); */
       void operator()(VarAccessExpr *);
       void operator()(ArrayAccessExpr *);
       void operator()(FieldAccessExpr *);
-      void operator()(ThisExpr *);
 
       /* stmt/expr/single_addr */
       /* void operator()(SingleAddrExpr *); */
@@ -123,6 +123,7 @@ private:
 
       /* member functions */
       void process_node(Node::Ptr _nd);
+      void process_location(Simone::Ptr<const Location> _loc);
       void process_instruction(In::Instruction::Ptr _in);
       void negate_logical_value(Simone::Ptr<const Location> dst, 
                                 Simone::Ptr<const Location> rhs,

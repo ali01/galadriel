@@ -101,13 +101,13 @@ public:
     virtual void operator()(AssignExpr *) {}
     virtual void operator()(NullExpr *) {}
     virtual void operator()(EmptyExpr *) {}
+    virtual void operator()(ThisExpr *) {}
 
     /* stmt/expr/l_value */
     virtual void operator()(LValueExpr *) { ABORT(); }
     virtual void operator()(VarAccessExpr *) {}
     virtual void operator()(ArrayAccessExpr *) {}
     virtual void operator()(FieldAccessExpr *) {}
-    virtual void operator()(ThisExpr *) {}
 
     /* stmt/expr/single_addr */
     virtual void operator()(SingleAddrExpr *) { ABORT(); }

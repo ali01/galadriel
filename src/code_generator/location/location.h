@@ -13,7 +13,7 @@ public:
   typedef Simone::Ptr<const Location> PtrConst;
 
   typedef int Offset;
-  enum Segment { kStack, kData, kHeap }; // TODO: think about kHeap
+  enum Segment { kStack, kData, kHeap };
 
   static PtrConst LocationNew(Segment _seg, Offset _off, const string& _name) {
     return new Location(_seg, _off, _name);
@@ -30,6 +30,8 @@ public:
 
   Offset secondaryOffset() const { return secondary_offset_; }
   void secondaryOffsetIs(Offset _off) const { secondary_offset_ = _off; }
+
+  virtual bool reference() const { return false; }
 
   bool operator==(const Location& _other) const;
 

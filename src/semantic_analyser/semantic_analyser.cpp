@@ -223,6 +223,13 @@ SemanticAnalyser::NodeFunctor::operator()(AssignExpr *nd) {
   }
 }
 
+void
+SemanticAnalyser::NodeFunctor::operator()(ThisExpr *nd) {
+  ClassDecl::PtrConst class_decl = nd->nearestClass();
+  if (class_decl == NULL)
+    Error::ThisOutsideClassScope(nd);
+}
+
 
 /* stmt/expr/l_value */
 void
@@ -279,13 +286,6 @@ SemanticAnalyser::NodeFunctor::operator()(FieldAccessExpr *nd) {
     if (curr == NULL  ||  curr->identifier() != base_decl->identifier())
       Error::InaccessibleField(id, base->type());
   }
-}
-
-void
-SemanticAnalyser::NodeFunctor::operator()(ThisExpr *nd) {
-  ClassDecl::PtrConst class_decl = nd->nearestClass();
-  if (class_decl == NULL)
-    Error::ThisOutsideClassScope(nd);
 }
 
 

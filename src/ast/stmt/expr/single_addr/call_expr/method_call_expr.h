@@ -7,7 +7,7 @@
 #include "call_expr.h"
 #include "function_call_expr.h"
 
-#include "../../l_value/this_expr.h"
+#include "../../this_expr.h"
 
 /* forward declarations */
 class FnDecl;

@@ -8,7 +8,7 @@ ObjectScope::ObjectScope(Scope::Ptr _parent_scope) : Scope(_parent_scope) {
 }
 
 void
-ObjectScope::NodeFunctor::operator()(VarDecl *_d) {
+ObjectScope::NodeFunctor::operator()(VarDecl *_d) { // TODO:is this ever called?
   Location::Offset off = scope_->varDeclCount();
   Location::Segment seg = Location::kHeap;
 

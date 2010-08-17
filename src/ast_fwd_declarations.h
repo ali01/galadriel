@@ -39,13 +39,13 @@ class Expr;
 class AssignExpr;
 class NullExpr;
 class EmptyExpr;
+class ThisExpr;
 
 /* stmt/expr/l_value */
 class LValueExpr;
 class VarAccessExpr;
 class ArrayAccessExpr;
 class FieldAccessExpr;
-class ThisExpr;
 
 /* stmt/expr/single_addr */
 class SingleAddrExpr;

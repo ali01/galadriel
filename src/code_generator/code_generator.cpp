@@ -164,6 +164,8 @@ CodeGenerator::NodeFunctor::operator()(PrintStmt *nd) {
 
     /* PushParam */
     loc = arg->location();
+    process_location(loc);
+
     push_param_i = In::PushParam::PushParamNew(loc);
     process_instruction(push_param_i);
 
@@ -328,8 +330,13 @@ CodeGenerator::NodeFunctor::operator()(AssignExpr *nd) {
   Location::PtrConst lhs_loc = l_val->location();
   Location::PtrConst rhs_loc = rhs->location();
 
-  In::Assign::Ptr assign_i = In::Assign::AssignNew(rhs_loc, lhs_loc);
-  process_instruction(assign_i);
+  if (not lhs_loc->reference()) {
+    In::Assign::Ptr assign_i = In::Assign::AssignNew(rhs_loc, lhs_loc);
+    process_instruction(assign_i);
+  } else {
+    In::Store::Ptr store_i = In::Store::StoreNew(rhs_loc, lhs_loc);
+    process_instruction(store_i);
+  }
 }
 
 
@@ -347,6 +354,29 @@ CodeGenerator::NodeFunctor::operator()(ArrayAccessExpr *nd) {
 
   Expr::Ptr subscript = nd->subscript();
   process_node(subscript);
+
+  size_t elem_size = MIPSEmitFunctor::kWordSize;
+  // todo: remove hardware dependency (requires changing library)
+
+  /* load elem size into aux_loc */
+  In::LoadIntConst::Ptr load_int_i;
+  TmpLocation::PtrConst aux_loc = nd->auxLocation();
+  load_int_i = In::LoadIntConst::LoadIntConstNew(aux_loc, (int)elem_size);
+  process_instruction(load_int_i);
+
+  /* multiply elem size by number of elements */
+  In::BinaryOp::Ptr binary_op_i;
+  Location::PtrConst sub_loc = subscript->location();
+  binary_op_i = In::BinaryOp::BinaryOpNew(In::BinaryOp::kMultiply,
+                                          aux_loc, aux_loc, sub_loc);
+  process_instruction(binary_op_i);
+
+  Location::PtrConst base_loc = nd->base()->location();
+  binary_op_i = In::BinaryOp::BinaryOpNew(In::BinaryOp::kAdd,
+                                          aux_loc, base_loc, aux_loc);
+  process_instruction(binary_op_i);
+  // aux_loc->referenceIs(true);
+  nd->locationIs(aux_loc);
 }
 
 void
@@ -356,11 +386,6 @@ CodeGenerator::NodeFunctor::operator()(FieldAccessExpr *nd) {
 
   Identifier::Ptr id = nd->field();
   process_node(id);
-}
-
-void
-CodeGenerator::NodeFunctor::operator()(ThisExpr *nd) {
-
 }
 
 
@@ -399,9 +424,9 @@ CodeGenerator::NodeFunctor::operator()(NewExpr *nd) {
   Location::PtrConst ret_loc = nd->location();
 
   NamedType::PtrConst type = nd->objectType();
-  size_t size = type->allocSize() + 1;
+  size_t size = type->allocSize() + 1; /* +1 for this ptr */
   size *= MIPSEmitFunctor::kWordSize;
-   // TODO: remove hardware dependency (requires changing library)
+  // todo: remove hardware dependency (requires changing library)
 
   Location::PtrConst int_loc = nd->sizeLocation();
 
@@ -438,6 +463,34 @@ CodeGenerator::NodeFunctor::operator()(NewArrayExpr *nd) {
 
   ArrayType::Ptr type = nd->arrayType();
   process_node(type);
+
+
+  size_t elem_size = MIPSEmitFunctor::kWordSize;
+  // todo: remove hardware dependency (requires changing library)
+
+  /* load elem size into aux_loc */
+  In::LoadIntConst::Ptr load_int_i;
+  Location::PtrConst aux_loc = nd->auxLocation();
+  load_int_i = In::LoadIntConst::LoadIntConstNew(aux_loc, (int)elem_size);
+  process_instruction(load_int_i);
+
+  /* multiply elem size by number of elements */
+  In::BinaryOp::Ptr binary_op_i;
+  Location::PtrConst size_loc = size->location();
+  binary_op_i = In::BinaryOp::BinaryOpNew(In::BinaryOp::kMultiply,
+                                          aux_loc, aux_loc, size_loc);
+  process_instruction(binary_op_i);
+
+  /* PushParam */
+  In::PushParam::Ptr push_param_i = In::PushParam::PushParamNew(aux_loc);
+  process_instruction(push_param_i);
+
+  /* call alloc */
+  Location::PtrConst ret_loc = nd->location();
+  In::Label::PtrConst label_i = In::Label::kAlloc;
+  In::LCall::Ptr l_call_i = In::LCall::LCallNew(label_i, ret_loc);
+  process_instruction(l_call_i);
+  process_instruction(In::PopParams::PopParamsNew(1));
 }
 
 
@@ -695,6 +748,15 @@ CodeGenerator::NodeFunctor::process_node(Node::Ptr _node) {
   if (_node) {
     NodeFunctor::Ptr this_functor = this;
     this_functor(_node);
+  }
+}
+
+void
+CodeGenerator::NodeFunctor::process_location(Location::PtrConst _loc) {
+  if (_loc->reference()) {
+    /* dereference */
+    In::Store::Ptr store_i = In::Store::StoreNew(_loc, _loc);
+    process_instruction(store_i);
   }
 }
 

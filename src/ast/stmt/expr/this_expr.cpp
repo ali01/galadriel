@@ -4,10 +4,10 @@
 #include <code_generator/location_includes.h>
 
 /* ast/decl includes */
-#include "../../../decl/object/class_decl.h"
+#include "../../decl/object/class_decl.h"
 
 /* ast/type includes */
-#include "../../../type/type.h"
+#include "../../type/type.h"
 
 Type::PtrConst
 ThisExpr::type() const {

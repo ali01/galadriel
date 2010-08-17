@@ -34,3 +34,13 @@ Type::PtrConst
 NewArrayExpr::type() const {
   return type_;
 }
+
+Location::PtrConst
+NewArrayExpr::auxLocation() const {
+  return aux_loc_;
+}
+
+void
+NewArrayExpr::auxLocationIs(Location::PtrConst _loc) {
+  aux_loc_ = _loc;
+}

@@ -31,5 +31,20 @@ ArrayAccessExpr::type() const {
 
 Location::PtrConst
 ArrayAccessExpr::location() const {
-  return NULL;
+  return location_;
+}
+
+void
+ArrayAccessExpr::locationIs(Location::PtrConst _loc) {
+  location_ = _loc;
+}
+
+TmpLocation::PtrConst
+ArrayAccessExpr::auxLocation() const {
+  return aux_loc_;
+}
+
+void
+ArrayAccessExpr::auxLocationIs(TmpLocation::PtrConst _loc) {
+  aux_loc_ = _loc;
 }
