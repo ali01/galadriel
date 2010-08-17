@@ -22,8 +22,3 @@ FunctionCallExpr::fnDecl() const {
   Scope::PtrConst scope = this->scope();
   return scope->fnDecl(identifier_);;
 }
-
-Location::PtrConst
-FunctionCallExpr::location() {
-  return NULL;
-}

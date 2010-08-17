@@ -185,11 +185,15 @@ CodeGenerator::NodeFunctor::operator()(ReturnStmt *nd) {
   Expr::Ptr expr = nd->expr();
   process_node(expr);
 
+  Location::PtrConst eval_loc;
   if (expr != NULL) {
-    Location::PtrConst eval_loc = expr->location();
-    In::Return::Ptr return_i = In::Return::ReturnNew(eval_loc);
-    process_instruction(return_i);
+    eval_loc = expr->location();
+  } else {
+    eval_loc = NULL;
   }
+
+  In::Return::Ptr return_i = In::Return::ReturnNew(eval_loc);
+  process_instruction(return_i);
 }
 
 void

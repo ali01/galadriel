@@ -355,8 +355,11 @@ ScopeStackBuilder::NodeFunctor::operator()(NewArrayExpr *nd) {
 /* stmt/expr/single_addr/call_expr */
 void
 ScopeStackBuilder::NodeFunctor::operator()(CallExpr *nd) {
-  /* applying this functor to upcasted nd */
-  (*this)(static_cast<SingleAddrExpr*>(nd));
+  Type::PtrConst return_type = nd->type();
+  if (return_type != Type::kVoid) {
+    /* applying this functor to upcasted nd */
+    (*this)(static_cast<SingleAddrExpr*>(nd));
+  }
 
   Scope::Ptr scope = nd->scope();
 
