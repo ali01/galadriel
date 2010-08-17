@@ -20,7 +20,7 @@ public:
   static const int kLocalsOffset = -2;
 
   Simone::Ptr<const TmpLocation> tempNew();
-  FrameSize frameSize() const;
+  FrameSize size(bool include_parents=true) const;
 
 private:
   LocalScope(Scope::Ptr _parent_scope);
@@ -44,6 +44,9 @@ private:
     private:
       explicit NodeFunctor(LocalScope::Ptr _s) : Scope::NodeFunctor(_s) {}
   };
+
+  /* override */
+  bool isLocalScope() const { return true; }
 
   /* data members */
   uint32_t temps_;

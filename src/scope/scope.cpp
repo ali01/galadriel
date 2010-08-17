@@ -3,8 +3,10 @@
 /* project includes */
 #include <error.h>
 
-Scope::Scope(Scope::Ptr _parent_scope) : parent_scope_(_parent_scope) {
+Scope::Scope(Scope::Ptr _parent_scope) : parent_scope_(_parent_scope.ptr()) {
   node_functor_ = NodeFunctor::NodeFunctorNew(this);
+  if (parent_scope_ != NULL)
+    parent_scope_->childInsert(this);
 }
 
 void

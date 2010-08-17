@@ -18,8 +18,3 @@ Type::PtrConst
 RelationalExpr::type() const {
   return Type::kBool;
 }
-
-Location::PtrConst
-RelationalExpr::location() {
-  return NULL;
-}

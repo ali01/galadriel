@@ -13,17 +13,32 @@ LocalScope::LocalScope(Scope::Ptr _parent_scope) :
 TmpLocation::PtrConst
 LocalScope::tempNew() {
   var_decls_finalized_ = true;
-  Location::Offset off = kLocalsOffset - this->varDeclCount() - temps_;
-
-  TmpLocation::PtrConst loc = TmpLocation::TmpLocationNew(off);
+  Location::Offset off = kLocalsOffset - this->size();
   ++temps_;
 
-  return loc;
+  return TmpLocation::TmpLocationNew(off);;
 }
 
 size_t
-LocalScope::frameSize() const {
-  return this->varDeclCount() + temps_;
+LocalScope::size(bool include_parents) const {
+  size_t size;
+
+  Scope::PtrConst parent_scope = parentScope();
+  if (include_parents && parent_scope && parent_scope->isLocalScope()) {
+    LocalScope::PtrConst parent_scope_local;
+    parent_scope_local = Ptr::st_cast<const LocalScope>(parent_scope);
+    size = parent_scope_local->size();
+  } else {
+    size = this->varDeclCount() + temps_;
+
+    LocalScope::Ptr child;
+    for (const_child_iter it = childrenBegin(); it != childrenEnd(); ++it) {
+      child = Ptr::st_cast<LocalScope>(*it);
+      size += child->size(false);
+    }
+  }
+
+  return size;
 }
 
 void

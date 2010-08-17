@@ -24,11 +24,9 @@ public:
   }
 
   LogicalExpr(Expr::Ptr lhs, Simone::Ptr<Operator> op, Expr::Ptr rhs);
-
   LogicalExpr(Simone::Ptr<Operator> op, Expr::Ptr rhs) : CompoundExpr(op,rhs) {}
 
   Simone::Ptr<const Type> type() const;
-  Simone::Ptr<const Location> location();
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }

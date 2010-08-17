@@ -30,7 +30,7 @@ TACEmitFunctor::operator()(In::LoadStrConst *in) {
   ostringstream s;
 
   Location::PtrConst loc = in->dst();
-  s << loc->name() << " = \"" << in->value() << "\"";
+  s << loc->name() << " = " << in->value();
 
   emit(s.str());
 }

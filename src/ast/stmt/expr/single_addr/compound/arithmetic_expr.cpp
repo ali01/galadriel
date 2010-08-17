@@ -1,19 +1,24 @@
 #include "arithmetic_expr.h"
 
-/* code_generator includes */
-#include <code_generator/location_includes.h>
-
 /* ast includes */
 #include "../../../../operator.h"
 
 /* ast/type includes */
 #include "../../../../type/type.h"
 
-/* ast/stmt/expr/singl_addr/compound includes */
-#include "compound_expr.h"
+/* ast/stmt/expr/single_addr includes */
+#include "../int_const_expr.h"
 
 ArithmeticExpr::ArithmeticExpr(Expr::Ptr lhs, Operator::Ptr op, Expr::Ptr rhs) :
   CompoundExpr(lhs, op, rhs) {}
+
+ArithmeticExpr::ArithmeticExpr(Operator::Ptr op, Expr::Ptr rhs) :
+  CompoundExpr(IntConstExpr::IntConstExprNew(0), op, rhs)
+{
+  assert(op && rhs);
+  /* if unary minus, lhs is set to an
+     int_const_expr that evaluates to zero */
+}
 
 Type::PtrConst
 ArithmeticExpr::type() const {
@@ -28,9 +33,4 @@ ArithmeticExpr::type() const {
   }
 
   return type;
-}
-
-Location::PtrConst
-ArithmeticExpr::location() {
-  return NULL;// TODO
 }

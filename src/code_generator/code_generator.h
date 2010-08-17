@@ -11,6 +11,7 @@ using Simone::Deque;
 
 /* instruction includes */
 #include "instruction/instruction.h"
+#include "instruction/label.h"
 
 /* forward declarations */
 class Program;
@@ -35,13 +36,13 @@ private:
       typedef Simone::Ptr<const NodeFunctor> PtrConst;
       typedef Simone::Ptr<NodeFunctor> Ptr;
 
-      typedef Deque<In::Instruction::Ptr>::const_iterator 
+      typedef Deque<In::Instruction::Ptr>::const_iterator
               const_instruction_iter;
 
       static Ptr NodeFunctorNew() {
         return new NodeFunctor();
       }
-      
+
       const_instruction_iter beginIn() const { return in_stream_.begin(); }
       const_instruction_iter endIn() const { return in_stream_.end(); }
 
@@ -70,7 +71,7 @@ private:
       /* stmt/conditional */
       void operator()(ConditionalStmt *);
       void operator()(IfStmt *);
-      
+
       /* stmt/conditional/loop */
       /* void operator()(LoopStmt *); */
       void operator()(ForStmt *);
@@ -91,10 +92,10 @@ private:
 
       /* stmt/expr/single_addr */
       /* void operator()(SingleAddrExpr *); */
-      void operator()(BoolConstExpr *); 
+      void operator()(BoolConstExpr *);
       void operator()(IntConstExpr *);
       /* void operator()(DblConstExpr *); */
-      void operator()(StrConstExpr *); 
+      void operator()(StrConstExpr *);
       /* void operator()(ReadLineExpr *); */
       /* void operator()(ReadIntegerExpr *); */
       void operator()(NewExpr *);
@@ -117,14 +118,17 @@ private:
       void operator()(ArrayType *);
 
     private:
-      NodeFunctor() {}
+      NodeFunctor() : label_num_(0) {}
 
       /* member functions */
       void process_node(Node::Ptr _nd);
       void process_instruction(In::Instruction::Ptr _in);
 
-      /* data members */      
+      In::Label::Ptr labelNew();
+
+      /* data members */
       Deque<In::Instruction::Ptr> in_stream_;
+      uint32_t label_num_;
   };
 
   void emit_instruction_stream();

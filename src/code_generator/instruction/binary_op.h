@@ -29,10 +29,9 @@ public:
     kAnd, kOr
   };
 
-  static Ptr BinaryOpNew(OpCode _op,
-                         Simone::Ptr<const Location> _dst,
-                         Simone::Ptr<const Location> _lhs,
-                         Simone::Ptr<const Location> _rhs);
+  static Ptr BinaryOpNew(OpCode _op, Simone::Ptr<const Location> _dst,
+                                     Simone::Ptr<const Location> _lhs,
+                                     Simone::Ptr<const Location> _rhs);
 
   /* attribute member functions */
   string op_str() const;
@@ -51,10 +50,9 @@ public:
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
-  BinaryOp(OpCode _op,
-           Simone::Ptr<const Location> _dst,
-           Simone::Ptr<const Location> _lhs,
-           Simone::Ptr<const Location> _rhs);
+  BinaryOp(OpCode _op, Simone::Ptr<const Location> _dst,
+                       Simone::Ptr<const Location> _lhs,
+                       Simone::Ptr<const Location> _rhs);
 
   /* data members */
   OpCode op_code_;

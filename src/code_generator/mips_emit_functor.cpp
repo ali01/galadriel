@@ -2,6 +2,7 @@
 
 /* stl includes */
 #include <iostream>
+#include <sstream>
 using std::cout;
 
 /* local includes */
@@ -65,7 +66,7 @@ MIPSEmitFunctor::operator()(In::LoadIntConst *in) {
   Location::PtrConst dst = in->dst();
   RegisterName reg = alloc_register(dst, kWrite);
 
-  snprintf(buf_, sizeof buf_, "li %s, %d\t\t# load constant value %d into %s",
+  snprintf(buf_, sizeof buf_, "li %s, %d    # load constant value %d into %s",
            registers_[reg].name_, val, val, registers_[reg].name_);
 
   emit(buf_);
@@ -75,9 +76,11 @@ void
 MIPSEmitFunctor::operator()(In::LoadStrConst *in) {
   emit_tac_comment(in);
 
-  str_num_++;
+  stringstream str_num_out;
+  str_num_out << str_num_++;;
+  string label_str = "_string" + str_num_out.str();
+
   string val = in->value();
-  string label_str = "_string" + str_num_;
 
   snprintf(buf_, sizeof buf_, "%s: .asciiz %s", label_str.c_str(), val.c_str());
   emit(".data    # create string constant marked with label");
@@ -390,9 +393,9 @@ MIPSEmitFunctor::alloc_register(Location::PtrConst var,
                                 RegisterName avoid2) {
   RegisterName reg;
 
-  if (!register_with_contents(var, reg)) {
+  if (not register_with_contents(var, reg)) {
 
-    if (!register_with_contents(NULL, reg)) {
+    if (not register_with_contents(NULL, reg)) {
       reg = register_to_spill(avoid1, avoid2);
       spill_register(reg);
     }
@@ -400,7 +403,6 @@ MIPSEmitFunctor::alloc_register(Location::PtrConst var,
     registers_[reg].var_ = var;
 
     if (reason == kRead) { /* load current value */
-      assert(var->offset() % 4 == 0); /* all variables are 4 bytes */
 
       const char *segment;
       if (var->segment() == Location::kStack) {
@@ -409,9 +411,11 @@ MIPSEmitFunctor::alloc_register(Location::PtrConst var,
         segment = registers_[gp].name_;
       }
 
-      snprintf(buf_, sizeof buf_, "lw %s, %d(%s)\t# load %s from %s%+d into %s",
-               registers_[reg].name_, var->offset(), segment,
-               var->name().c_str(), segment, var->offset(),
+      Location::Offset off = var->offset() * kWordSize;
+
+      snprintf(buf_, sizeof buf_, "lw %s, %d(%s)  # load %s from %s%+d into %s",
+               registers_[reg].name_, off, segment,
+               var->name().c_str(), segment, off,
                registers_[reg].name_);
       emit(buf_);
 
@@ -443,7 +447,7 @@ MIPSEmitFunctor::register_to_spill(RegisterName avoid1, RegisterName avoid2) {
   /* first attempt to find a clean register */
   for (RegisterName i = zero; i < num_registers_; i = (RegisterName)(i+1)) {
     if (i != avoid1 && i != avoid2 &&
-        registers_[i].is_general_purpose_ && !registers_[i].is_dirty_)
+        registers_[i].is_general_purpose_ && not registers_[i].is_dirty_)
     {
       return i;
     }
@@ -452,7 +456,7 @@ MIPSEmitFunctor::register_to_spill(RegisterName avoid1, RegisterName avoid2) {
   do { /* otherwise just pick the next usable register */
     reg_last_used_ = (RegisterName)((reg_last_used_ + 1) % num_registers_);
   } while (reg_last_used_ == avoid1 || reg_last_used_ == avoid2 ||
-           !registers_[reg_last_used_].is_general_purpose_);
+           not registers_[reg_last_used_].is_general_purpose_);
 
   return reg_last_used_;
 }
@@ -466,8 +470,7 @@ MIPSEmitFunctor::register_to_spill(RegisterName avoid1, RegisterName avoid2) {
  * realize the register is empty.
  */
 void
-MIPSEmitFunctor::spill_register(RegisterName reg)
-{
+MIPSEmitFunctor::spill_register(RegisterName reg) {
   Location::PtrConst var = registers_[reg].var_;
   if (var && registers_[reg].is_dirty_) {
 
@@ -480,7 +483,7 @@ MIPSEmitFunctor::spill_register(RegisterName reg)
 
     Location::Offset off = var->offset() * kWordSize;
 
-    snprintf(buf_, sizeof buf_, "sw %s, %d(%s)\t# spill %s from %s to %s%+d",
+    snprintf(buf_, sizeof buf_, "sw %s, %d(%s)    # spill %s from %s to %s%+d",
              registers_[reg].name_, off, segment, var->name().c_str(),
              registers_[reg].name_, segment, off);
 
@@ -545,7 +548,8 @@ MIPSEmitFunctor::spill_for_end_func() {
  * register by reference, and returns true/false on whether match found.
  */
 bool
-MIPSEmitFunctor::register_with_contents(Location::PtrConst var, RegisterName& reg) {
+MIPSEmitFunctor::register_with_contents(Location::PtrConst var,
+                                        RegisterName& reg) {
   for (reg = zero; reg < num_registers_; reg = (RegisterName)(reg+1)) {
     Location::PtrConst rvar = registers_[reg].var_;
     bool locations_equal = (var == rvar || (var && rvar && *var == *rvar));

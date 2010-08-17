@@ -1,5 +1,10 @@
 #include "code_generator.h"
 
+/* stl includes */
+#include <sstream>
+using std::stringstream;
+
+
 /* project includes */
 #include <ast_includes.h>
 #include <utility.h> // TODO
@@ -79,7 +84,7 @@ CodeGenerator::NodeFunctor::operator()(FnDecl *nd) {
     /* back patching frame size */
     LocalScope::PtrConst local_scope;
     local_scope = Ptr::st_cast<LocalScope>(stmt_block->scope());
-    In::BeginFunc::FrameSize frame_size = local_scope->frameSize();
+    In::BeginFunc::FrameSize frame_size = local_scope->size();
     begin_func_i->frameSizeIs(frame_size);
 
     /* EndFunc instruction */
@@ -147,7 +152,7 @@ CodeGenerator::NodeFunctor::operator()(PrintStmt *nd) {
   In::PushParam::Ptr push_param_i;
   In::Label::PtrConst label_i;
   In::LCall::Ptr l_call_i;
-  
+
   PrintStmt::const_arg_iterator it = nd->argsBegin();
   for (int i = 1; it != nd->argsEnd(); ++it, ++i) {
     arg = *it;
@@ -169,7 +174,7 @@ CodeGenerator::NodeFunctor::operator()(PrintStmt *nd) {
     } else if (arg_type == Type::kString) {
       label_i = In::Label::kPrintString;
     }
-    
+
     l_call_i = In::LCall::LCallNew(label_i, NULL);
     process_instruction(l_call_i);
   }
@@ -189,7 +194,7 @@ CodeGenerator::NodeFunctor::operator()(ReturnStmt *nd) {
 
 void
 CodeGenerator::NodeFunctor::operator()(BreakStmt *nd) {
-  
+
 }
 
 
@@ -205,16 +210,39 @@ CodeGenerator::NodeFunctor::operator()(ConditionalStmt *nd) {
 
 void
 CodeGenerator::NodeFunctor::operator()(IfStmt *nd) {
-  /* applying this functor on upcasted nd */
-  (*this)(static_cast<ConditionalStmt*>(nd));
-
+  /* processing test */
   Expr::Ptr test = nd->test();
+  process_node(test);
+
   Location::PtrConst test_loc = test->location();
-  In::IfZ::Ptr ifz_i = In::IfZ::IfZNew(test_loc, NULL); // TODO
+  In::Label::Ptr else_label = labelNew();
+  In::IfZ::Ptr ifz_i = In::IfZ::IfZNew(test_loc, else_label);
   process_instruction(ifz_i);
 
+  /* processing if_stmt body */
+  Stmt::Ptr body = nd->body();
+  process_node(body);
+
   Stmt::Ptr else_body = nd->elseBody();
-  process_node(else_body);
+  if (else_body) {
+    /* instructions to skip around else_stmt in case of success */
+    In::Label::Ptr endif_label = labelNew();
+    In::Goto::Ptr goto_i = In::Goto::GotoNew(endif_label);
+    process_instruction(goto_i);
+
+    /* else_stmt label */
+    process_instruction(else_label);
+
+    /* processing else_stmt body */
+    process_node(else_body);
+
+    /* label used to skip around else_stmt if success */
+    process_instruction(endif_label);
+
+  } else {
+    /* else_stmt label */
+    process_instruction(else_label);
+  }
 }
 
 
@@ -233,8 +261,30 @@ CodeGenerator::NodeFunctor::operator()(ForStmt *nd) {
 
 void
 CodeGenerator::NodeFunctor::operator()(WhileStmt *nd) {
-  /* applying this functor on upcasted nd */
-  (*this)(static_cast<ConditionalStmt*>(nd));
+  In::Label::Ptr repeat_label = labelNew();
+  In::Label::Ptr end_label = labelNew();
+
+  process_instruction(repeat_label);
+
+  /* evaluating test expression */
+  Expr::Ptr test = nd->test();
+  process_node(test);
+
+  /* while test logic */
+  Location::PtrConst test_loc = test->location();
+  In::IfZ::Ptr ifz_i = In::IfZ::IfZNew(test_loc, end_label);
+  process_instruction(ifz_i);
+
+  /* while stmt_block */
+  Stmt::Ptr body = nd->body();
+  process_node(body);
+
+  /* return to beginning of while loop */
+  In::Goto::Ptr goto_i = In::Goto::GotoNew(repeat_label);
+  process_instruction(goto_i);
+
+  /* end label */
+  process_instruction(end_label);
 }
 
 
@@ -285,7 +335,7 @@ CodeGenerator::NodeFunctor::operator()(FieldAccessExpr *nd) {
 
 void
 CodeGenerator::NodeFunctor::operator()(ThisExpr *nd) {
-  
+
 }
 
 
@@ -321,7 +371,7 @@ CodeGenerator::NodeFunctor::operator()(StrConstExpr *nd) {
 
 void
 CodeGenerator::NodeFunctor::operator()(NewExpr *nd) {
-  
+
 }
 
 void
@@ -400,16 +450,108 @@ CodeGenerator::NodeFunctor::operator()(CompoundExpr *nd) {
 void
 CodeGenerator::NodeFunctor::operator()(ArithmeticExpr *nd) {
   (*this)(static_cast<CompoundExpr*>(nd));
+
+  Operator::OpCode op_type = nd->op()->operatorType();
+  In::BinaryOp::OpCode op_code;
+  switch (op_type) {
+    case Operator::kAdd:
+      op_code = In::BinaryOp::kAdd;
+      break;
+
+    case Operator::kSubtract:
+      op_code = In::BinaryOp::kSubtract;
+      break;
+
+    case Operator::kMultiply:
+      op_code = In::BinaryOp::kMultiply;
+      break;
+
+    case Operator::kDivide:
+      op_code = In::BinaryOp::kDivide;
+      break;
+
+    case Operator::kModulo:
+      op_code = In::BinaryOp::kModulo;
+      break;
+
+    default:
+      ABORT();
+  }
+
+  Location::PtrConst dst_loc = nd->location();
+  Location::PtrConst lhs_loc = nd->left()->location();
+  Location::PtrConst rhs_loc = nd->right()->location();
+
+  In::BinaryOp::Ptr binary_op_i;
+  binary_op_i = In::BinaryOp::BinaryOpNew(op_code, dst_loc, lhs_loc, rhs_loc);
+  process_instruction(binary_op_i);
 }
 
 void
-CodeGenerator::NodeFunctor::operator()(LogicalExpr *nd) {
+CodeGenerator::NodeFunctor::operator()(LogicalExpr *nd) { // TODO
   (*this)(static_cast<CompoundExpr*>(nd));
+
+  // Operator::OpCode op_type = nd->op()->operatorType();
+  // In::BinaryOp::OpCode op_code;
+  // switch (op_type) {
+  //   case Operator::kAnd:
+  //     
+  //   case Operator::kOr:
+  //   case Operator::kNot:
+  //   default:
+  //     ABORT();
+  // }
 }
 
 void
 CodeGenerator::NodeFunctor::operator()(RelationalExpr *nd) {
   (*this)(static_cast<CompoundExpr*>(nd));
+
+  Location::PtrConst dst_loc = nd->location();
+  Location::PtrConst lhs_loc = nd->left()->location();
+  Location::PtrConst rhs_loc = nd->right()->location();
+
+  bool negate = false;
+  Operator::OpCode op_type = nd->op()->operatorType();
+  In::BinaryOp::OpCode op_code;
+  switch (op_type) {
+    case Operator::kNotEqual: negate = true; /* allow fall through */
+    case Operator::kEqual:
+      op_code = In::BinaryOp::kEqual;
+      break;
+
+    case Operator::kGreaterEqual: negate = true; /* allow fall through */
+    case Operator::kLess:
+      op_code = In::BinaryOp::kLess;
+      break;
+
+    case Operator::kLessEqual: negate = true; /* allow fall through */
+    case Operator::kGreater:
+      {
+        op_code = In::BinaryOp::kLess;
+
+        /* swap */
+        Location::PtrConst tmp_loc = lhs_loc;
+        lhs_loc = rhs_loc;
+        rhs_loc = tmp_loc;
+      }
+      break;
+
+    default:
+      ABORT();
+  }
+
+  In::BinaryOp::Ptr binary_op_i;
+  binary_op_i = In::BinaryOp::BinaryOpNew(op_code, dst_loc, lhs_loc, rhs_loc);
+  process_instruction(binary_op_i);
+
+  if (negate) {
+    // TODO:
+    // In::BinaryOp::OpCode op_code = In::BinaryOp::kAdd;
+    // 
+    // In::BinaryOp::Ptr binary_op_i;
+    // binary_op_i = In::BinaryOp::BinaryOpNew(op_code, dst_loc, dst_loc, rhs_loc);
+  }
 }
 
 
@@ -440,6 +582,18 @@ CodeGenerator::NodeFunctor::process_node(Node::Ptr _node) {
 void
 CodeGenerator::NodeFunctor::process_instruction(In::Instruction::Ptr _in) {
   in_stream_.pushBack(_in);
+}
+
+In::Label::Ptr
+CodeGenerator::NodeFunctor::labelNew() {
+  stringstream label_num_out;
+  label_num_out << label_num_;
+
+  string name = "_L" + label_num_out.str();
+  In::Label::Ptr label = In::Label::LabelNew(name);
+  label_num_++;
+
+  return label;
 }
 
 void

@@ -109,17 +109,19 @@ public:
   InterfaceDecl::PtrConst interfaceDecl(Identifier::PtrConst _id,
                                         bool recursive=true) const;
 
-
   size_t varDeclCount() const { return var_decls_.size(); }
 
   Scope::PtrConst parentScope() const { return parent_scope_; }
   Scope::Ptr parentScope() { return parent_scope_; }
 
-
   void declIs(Decl::Ptr _decl);
   void baseScopeIs(Scope::PtrConst _scope);
 
+  virtual bool isLocalScope() const { return false; }
+
 protected:
+  typedef Deque<Scope::Ptr>::const_iterator const_child_iter;
+
   /* protected constructor called by derived classes;
      scope objects are constructed by factory member function in ScopeStack */
   explicit Scope(Scope::Ptr _parent_scope);
@@ -147,6 +149,11 @@ protected:
       Scope::Ptr scope_;
   };
 
+  void childInsert(Scope::Ptr _child) { children_.pushBack(_child); }
+
+  const_child_iter childrenBegin() const { return children_.begin(); }
+  const_child_iter childrenEnd() const { return children_.end(); }
+
   /* data members */
   NodeFunctor::Ptr node_functor_;
 
@@ -166,7 +173,8 @@ private:
   Map<Identifier::PtrConst,InterfaceDecl::Ptr,Identifier::less>
     intf_decls_;
 
-  Scope::Ptr parent_scope_;
+  Scope *parent_scope_; /* raw pointer to prevent cyclic reference */
+  Deque<Scope::Ptr> children_;
 
   /* operations disallowed */
   Scope(const Scope&);

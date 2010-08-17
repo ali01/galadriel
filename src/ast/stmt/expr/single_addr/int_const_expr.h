@@ -19,6 +19,12 @@ public:
   typedef Simone::Ptr<const IntConstExpr> PtrConst;
   typedef Simone::Ptr<IntConstExpr> Ptr;
 
+  static Ptr IntConstExprNew(int val) {
+    struct yyltype loc;
+    memset(&loc, 0x0, sizeof loc);
+    return new IntConstExpr(loc, val);
+  }
+
   static Ptr IntConstExprNew(yyltype loc, int val) {
     return new IntConstExpr(loc, val);
   }
