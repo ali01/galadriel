@@ -184,7 +184,7 @@ TACEmitFunctor::operator()(In::PushParam *in) {
 void
 TACEmitFunctor::operator()(In::PopParams *in) {
   ostringstream s;
-  s << "PopParams " << in->bytes();
+  s << "PopParams " << in->words();
 
   emit(s.str());
 }

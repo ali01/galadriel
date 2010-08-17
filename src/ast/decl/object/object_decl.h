@@ -42,7 +42,7 @@ public:
   bool indexed() const { return scope_indexed_; }
   void indexedIs(bool _s) { scope_indexed_ = _s; }
 
-  In::Label::Ptr label(bool _prepend_underscore=true) const;
+  In::Label::Ptr label() const;
   Deque<In::Label::Ptr>::Ptr functionLabels() const;
 
   /* override virtual in Node */

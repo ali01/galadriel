@@ -72,7 +72,8 @@ CodeGenerator::NodeFunctor::operator()(FnDecl *nd) {
 
   if (stmt_block) {
     /* BeginFunc instruction */
-    In::BeginFunc::Ptr begin_func_i = In::BeginFunc::BeginFuncNew(nd->label());
+    In::BeginFunc::Ptr begin_func_i;
+    begin_func_i = In::BeginFunc::BeginFuncNew(nd->label());
     process_instruction(begin_func_i);
 
     /* processing function body */
@@ -114,7 +115,7 @@ CodeGenerator::NodeFunctor::operator()(ClassDecl *nd) {
     /* emitting v_table */
     In::VTable::Ptr v_table_i;
     Deque<In::Label::Ptr>::Ptr fn_labels = nd->functionLabels();
-    v_table_i = In::VTable::VTableNew(nd->label(false), fn_labels);
+    v_table_i = In::VTable::VTableNew(nd->label(), fn_labels);
     process_instruction(v_table_i);
   }
 }
@@ -180,6 +181,7 @@ CodeGenerator::NodeFunctor::operator()(PrintStmt *nd) {
 
     l_call_i = In::LCall::LCallNew(label_i, NULL);
     process_instruction(l_call_i);
+    process_instruction(In::PopParams::PopParamsNew(1));
   }
 }
 
@@ -397,7 +399,8 @@ CodeGenerator::NodeFunctor::operator()(NewExpr *nd) {
   Location::PtrConst ret_loc = nd->location();
 
   NamedType::PtrConst type = nd->objectType();
-  size_t size = type->allocSize() * MIPSEmitFunctor::kWordSize;
+  size_t size = type->allocSize() + 1;
+  size *= MIPSEmitFunctor::kWordSize;
    // TODO: remove hardware dependency (requires changing library)
 
   Location::PtrConst int_loc = nd->sizeLocation();
@@ -415,6 +418,7 @@ CodeGenerator::NodeFunctor::operator()(NewExpr *nd) {
   In::Label::PtrConst label_i = In::Label::kAlloc;
   In::LCall::Ptr l_call_i = In::LCall::LCallNew(label_i, ret_loc);
   process_instruction(l_call_i);
+  process_instruction(In::PopParams::PopParamsNew(1));
 
   /* assign v_ptr */
   Location::PtrConst v_ptr_loc = nd->vPtrLocation();
@@ -468,7 +472,10 @@ CodeGenerator::NodeFunctor::operator()(FunctionCallExpr *nd) {
   In::LCall::Ptr l_call_i = In::LCall::LCallNew(label_i, ret_loc);
   process_instruction(l_call_i);
   
-  // TODO: PopParams
+  /* PopParams */
+  uint32_t words = nd->actualsCount();
+  In::PopParams::Ptr pop_params_i = In::PopParams::PopParamsNew(words);
+  process_instruction(pop_params_i);
 }
 
 void
@@ -484,16 +491,26 @@ CodeGenerator::NodeFunctor::operator()(MethodCallExpr *nd) {
   In::PushParam::Ptr push_param_i = In::PushParam::PushParamNew(base_loc);
   process_instruction(push_param_i);
 
-  // /* obtaining function's location */
-  // Location::PtrConst base_loc = base->location();
-  // Location::PtrConst fn_loc = ...;
-  // 
-  // 
-  // Location::PtrConst ret_loc = nd->location();
-  // In::ACall::Ptr a_call_i = In::ACall:ACallNew(fn_loc, ret_loc);
-  // process_instruction(a_call_i);
+  /* return location */
+  Location::PtrConst ret_loc = nd->location();
 
-  // TODO: PopParams
+  /* obtaining function's location */
+  Location::PtrConst method_loc = nd->methodLocation();
+  In::Load::Ptr load_i = In::Load::LoadNew(base_loc, method_loc);
+  process_instruction(load_i);
+  
+  /* dereferencing to obtain v_table */
+  load_i = In::Load::LoadNew(method_loc, method_loc);
+  process_instruction(load_i);
+  
+    /* making l_call */
+  In::ACall::Ptr a_call_i = In::ACall::ACallNew(method_loc, ret_loc);
+  process_instruction(a_call_i);
+
+  /* PopParams */
+  uint32_t words = nd->actualsCount() + 1; /* +1 because of this ptr */
+  In::PopParams::Ptr pop_params_i = In::PopParams::PopParamsNew(words);
+  process_instruction(pop_params_i);
 }
 
 

@@ -11,21 +11,21 @@ public:
   typedef Simone::Ptr<const PopParams> PtrConst;
   typedef Simone::Ptr<PopParams> Ptr;
 
-  static Ptr PopParamsNew(uint32_t _bytes) {
-    return new PopParams(_bytes);
+  static Ptr PopParamsNew(uint32_t _words) {
+    return new PopParams(_words);
   }
 
   /* attribute member functions */
-  uint32_t bytes() const { return bytes_; }
+  uint32_t words() const { return words_; }
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
 private:
-  PopParams(uint32_t _bytes) : bytes_(_bytes) {}
+  PopParams(uint32_t _words) : words_(_words) {}
 
   /* data members */
-  uint32_t bytes_;
+  uint32_t words_;
 
   /* operations disallowed */
   PopParams(const PopParams&);

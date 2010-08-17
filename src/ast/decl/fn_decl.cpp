@@ -53,7 +53,7 @@ FnDecl::label() const {
 
   ClassDecl::PtrConst class_decl = this->nearestClass();
   if (class_decl)
-    label_name += class_decl->label()->str() + ".";
+    label_name += "_" + class_decl->label()->str() + ".";
 
   label_name += this->identifier()->name();
 

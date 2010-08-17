@@ -276,7 +276,7 @@ void
 MIPSEmitFunctor::operator()(In::PopParams *in) {
   emit_tac_comment(in);
 
-  uint32_t bytes = in->bytes();
+  uint32_t bytes = in->words() * kWordSize;
   if (bytes != 0) {
     snprintf(buf_, sizeof buf_, "add $sp, $sp, %u    # pop params off stack", 
              bytes);
@@ -330,8 +330,6 @@ MIPSEmitFunctor::operator()(In::ACall *in) {
 
 void
 MIPSEmitFunctor::operator()(In::VTable *in) {
-  emit_tac_comment(in);
-
   In::Label::PtrConst label = in->classLabel();
   snprintf(buf_, sizeof buf_, "%s:    # label for class %s vtable",
            label->c_str(), label->c_str());

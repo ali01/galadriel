@@ -32,6 +32,9 @@ public:
   Simone::Ptr<const ObjectDecl> baseDecl() const; /* can return NULL */
   Simone::Ptr<const FnDecl> fnDecl() const;
 
+  Simone::Ptr<const Location> methodLocation() const;
+  void methodLocationIs(Simone::Ptr<const Location> _loc);
+
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
 
@@ -63,6 +66,7 @@ private:
   Expr::Ptr base_;
 
   BaseDeclFunctor::Ptr base_decl_functor_;
+  Simone::Ptr<const Location> method_location_;
 
   /* disallowed operations */
   MethodCallExpr(const MethodCallExpr&);

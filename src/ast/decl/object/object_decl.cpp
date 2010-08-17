@@ -29,16 +29,9 @@ ObjectDecl::type() const {
 }
 
 In::Label::Ptr
-ObjectDecl::label(bool _prepend_underscore) const {
+ObjectDecl::label() const {
   Identifier::PtrConst id = this->identifier();
-  string name = "";
-
-  if (_prepend_underscore)
-    name += "_";
-
-  name += id->name();
-
-  return In::Label::LabelNew(name);
+  return In::Label::LabelNew(id->name());
 }
 
 Deque<In::Label::Ptr>::Ptr

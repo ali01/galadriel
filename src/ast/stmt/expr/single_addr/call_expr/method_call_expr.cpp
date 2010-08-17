@@ -56,6 +56,15 @@ MethodCallExpr::BaseDeclFunctor::baseDecl() const {
   return base_decl_;
 }
 
+Location::PtrConst
+MethodCallExpr::methodLocation() const {
+  return method_location_;
+}
+
+void
+MethodCallExpr::methodLocationIs(Location::PtrConst _loc) {
+  method_location_ = _loc;
+}
 
 void
 MethodCallExpr::BaseDeclFunctor::operator()(NamedType *_type) {
