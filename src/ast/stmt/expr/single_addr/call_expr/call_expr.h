@@ -49,8 +49,8 @@ public:
   Simone::Ptr<Location> auxLocation() const;
   void auxLocationIs(Simone::Ptr<Location> _loc);
 
-  /* pure virtual */
   virtual Simone::Ptr<const FnDecl> fnDecl() const = 0;
+  virtual int vTableOffset() const { return 0; }
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }

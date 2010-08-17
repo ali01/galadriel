@@ -18,7 +18,7 @@ using std::stringstream;
 #include "mips_emit_functor.h"
 #include "tac_emit_functor.h"
 
-CodeGenerator::CodeGenerator(Simone::Ptr<Program> _prog) {
+CodeGenerator::CodeGenerator(Program::Ptr _prog) {
   node_functor_ = NodeFunctor::NodeFunctorNew();
   node_functor_(_prog);
   emit_instruction_stream();
@@ -573,12 +573,13 @@ CodeGenerator::NodeFunctor::operator()(CallExpr *nd) {
 
 void
 CodeGenerator::NodeFunctor::operator()(FunctionCallExpr *nd) {
+  /* applying this functor on upcasted nd */
+  (*this)(static_cast<CallExpr*>(nd));
+
   FnDecl::PtrConst fn_decl = nd->fnDecl();
   if (fn_decl->nearestClass() != NULL) {
-    MethodCallExpr::Ptr m_call = MethodCallExpr::MethodCallExprNew(nd);
-
-    Functor::Ptr this_functor = this;
-    this_functor(m_call);
+    ThisExpr::Ptr base = ThisExpr::ThisExprNew(nd->parent(), nd->scope());
+    process_call_expr(nd, base);
 
   } else {
     /* applying this functor on upcasted nd */
@@ -605,37 +606,7 @@ CodeGenerator::NodeFunctor::operator()(MethodCallExpr *nd) {
   Expr::Ptr base = nd->base();
   process_node(base);
 
-  /* pushing "this" pointer onto the stack */
-  Location::Ptr base_loc = base->location();
-  process_location(base_loc);
-
-  In::PushParam::Ptr push_param_i = In::PushParam::PushParamNew(base_loc);
-  process_instruction(push_param_i);
-
-  /* return location */
-  Location::Ptr ret_loc = nd->location();
-
-  /* obtaining function's location */
-  Location::Ptr v_ptr_loc = nd->auxLocation();
-  In::Load::Ptr load_i = In::Load::LoadNew(base_loc, v_ptr_loc);
-  process_instruction(load_i);
-
-  /* offset from bottom of vtable */
-  Location::Ptr method_loc = Location::LocationNew(v_ptr_loc); /* copy */
-  v_ptr_loc->secondaryOffsetIs(nd->vTableOffset());
-
-  /* dereferencing to obtain function address in v_table */
-  load_i = In::Load::LoadNew(v_ptr_loc, method_loc);
-  process_instruction(load_i);
-
-    /* making l_call */
-  In::ACall::Ptr a_call_i = In::ACall::ACallNew(method_loc, ret_loc);
-  process_instruction(a_call_i);
-
-  /* PopParams */
-  uint32_t words = nd->actualsCount() + 1; /* +1 because of this ptr */
-  In::PopParams::Ptr pop_params_i = In::PopParams::PopParamsNew(words);
-  process_instruction(pop_params_i);
+  process_call_expr(nd, base);
 }
 
 
@@ -862,6 +833,42 @@ process_access_expr(LValueExpr::Ptr _ex, Identifier::Ptr _id, Expr::Ptr _base) {
   aux_loc->referenceIs(true);
   aux_loc->secondaryOffsetIs(var_decl_off);
   _ex->locationIs(aux_loc);
+}
+
+void
+CodeGenerator::NodeFunctor::
+process_call_expr(CallExpr::Ptr nd, Expr::Ptr base) {
+  /* pushing "this" pointer onto the stack */
+  Location::Ptr base_loc = base->location();
+  process_location(base_loc);
+
+  In::PushParam::Ptr push_param_i = In::PushParam::PushParamNew(base_loc);
+  process_instruction(push_param_i);
+
+  /* return location */
+  Location::Ptr ret_loc = nd->location();
+
+  /* obtaining function's location */
+  Location::Ptr v_ptr_loc = nd->auxLocation();
+  In::Load::Ptr load_i = In::Load::LoadNew(base_loc, v_ptr_loc);
+  process_instruction(load_i);
+
+  /* offset from bottom of vtable */
+  Location::Ptr method_loc = Location::LocationNew(v_ptr_loc); /* copy */
+  v_ptr_loc->secondaryOffsetIs(nd->vTableOffset());
+
+  /* dereferencing to obtain function address in v_table */
+  load_i = In::Load::LoadNew(v_ptr_loc, method_loc);
+  process_instruction(load_i);
+
+    /* making l_call */
+  In::ACall::Ptr a_call_i = In::ACall::ACallNew(method_loc, ret_loc);
+  process_instruction(a_call_i);
+
+  /* PopParams */
+  uint32_t words = nd->actualsCount() + 1; /* +1 because of this ptr */
+  In::PopParams::Ptr pop_params_i = In::PopParams::PopParamsNew(words);
+  process_instruction(pop_params_i);
 }
 
 void

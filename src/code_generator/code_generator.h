@@ -131,6 +131,8 @@ private:
       void process_access_expr(Simone::Ptr<LValueExpr> _expr,
                                Simone::Ptr<Identifier> _id,
                                Simone::Ptr<Expr> _base);
+      void process_call_expr(Simone::Ptr<CallExpr> _ex,
+                             Simone::Ptr<Expr> _base);
       void negate_logical_value(Simone::Ptr<Location> dst, 
                                 Simone::Ptr<Location> rhs,
                                 Simone::Ptr<Location> aux);
