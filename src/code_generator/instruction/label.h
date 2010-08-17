@@ -25,6 +25,8 @@ public:
   static PtrConst kPrintString;
 
   static PtrConst kAlloc;
+  static PtrConst kReadLine;
+  static PtrConst kReadInteger;
 
   static Ptr LabelNew(const string& _label) {
     return new Label(_label);

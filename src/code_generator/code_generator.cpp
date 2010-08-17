@@ -446,6 +446,24 @@ CodeGenerator::NodeFunctor::operator()(NullConstExpr *nd) {
 }
 
 void
+CodeGenerator::NodeFunctor::operator()(ReadLineExpr *nd) {
+  Location::Ptr ret_loc = nd->location();
+
+  In::LCall::Ptr l_call_i;
+  l_call_i = In::LCall::LCallNew(In::Label::kReadLine, ret_loc);
+  process_instruction(l_call_i);
+}
+
+void
+CodeGenerator::NodeFunctor::operator()(ReadIntegerExpr *nd) {
+  Location::Ptr ret_loc = nd->location();
+
+  In::LCall::Ptr l_call_i;
+  l_call_i = In::LCall::LCallNew(In::Label::kReadInteger, ret_loc);
+  process_instruction(l_call_i);
+}
+
+void
 CodeGenerator::NodeFunctor::operator()(NewExpr *nd) {
   Location::Ptr ret_loc = nd->location();
 

@@ -97,8 +97,8 @@ private:
       /* void operator()(DblConstExpr *); */
       void operator()(StrConstExpr *);
       void operator()(NullConstExpr *);
-      /* void operator()(ReadLineExpr *); */
-      /* void operator()(ReadIntegerExpr *); */
+      void operator()(ReadLineExpr *);
+      void operator()(ReadIntegerExpr *);
       void operator()(NewExpr *);
       void operator()(NewArrayExpr *);
 

@@ -14,6 +14,8 @@ Label::PtrConst Label::kPrintBool   = Label::LabelNew("_PrintBool");
 Label::PtrConst Label::kPrintString = Label::LabelNew("_PrintString");
 
 Label::PtrConst Label::kAlloc = Label::LabelNew("_Alloc");
+Label::PtrConst Label::kReadLine = Label::LabelNew("_ReadLine");
+Label::PtrConst Label::kReadInteger = Label::LabelNew("_ReadInteger");
 
 Label::Ptr
 Label::LabelNew(Identifier::PtrConst _id) {
