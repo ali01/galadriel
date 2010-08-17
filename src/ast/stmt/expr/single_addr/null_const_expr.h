@@ -5,24 +5,23 @@
 #include <simone/ptr_interface.h>
 
 /* ast/stmt/expr includes */
-#include "expr.h"
+#include "single_addr_expr.h"
 
 /* forward declarations */
 class Type;
 
-class NullExpr: public Expr {
+class NullConstExpr: public SingleAddrExpr {
 public:
-  typedef Simone::Ptr<const NullExpr> PtrConst;
-  typedef Simone::Ptr<NullExpr> Ptr;
+  typedef Simone::Ptr<const NullConstExpr> PtrConst;
+  typedef Simone::Ptr<NullConstExpr> Ptr;
 
-  static Ptr NullExprNew(yyltype loc) {
-    return new NullExpr(loc);
+  static Ptr NullConstExprNew(yyltype loc) {
+    return new NullConstExpr(loc);
   }
 
-  NullExpr(yyltype loc) : Expr(loc) {}
+  NullConstExpr(yyltype loc) : SingleAddrExpr(loc) {}
 
   Simone::Ptr<const Type> type() const;
-  Simone::Ptr<Location> location() const;
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }

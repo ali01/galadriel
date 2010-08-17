@@ -320,6 +320,12 @@ ScopeStackBuilder::NodeFunctor::operator()(StrConstExpr *nd) {
 }
 
 void
+ScopeStackBuilder::NodeFunctor::operator()(NullConstExpr *nd) {
+  /* applying this functor to upcasted nd */
+  (*this)(static_cast<SingleAddrExpr*>(nd));
+}
+
+void
 ScopeStackBuilder::NodeFunctor::operator()(ReadLineExpr *nd) {
   /* applying this functor to upcasted nd */
   (*this)(static_cast<SingleAddrExpr*>(nd));

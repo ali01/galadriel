@@ -37,7 +37,6 @@ class WhileStmt;
 /* stmt/expr */
 class Expr;
 class AssignExpr;
-class NullExpr;
 class EmptyExpr;
 class ThisExpr;
 
@@ -53,6 +52,7 @@ class BoolConstExpr;
 class IntConstExpr;
 class DblConstExpr;
 class StrConstExpr;
+class NullConstExpr;
 class ReadLineExpr;
 class ReadIntegerExpr;
 class NewExpr;

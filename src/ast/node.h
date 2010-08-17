@@ -99,7 +99,6 @@ public:
     /* stmt/expr */
     virtual void operator()(Expr *) { ABORT(); }
     virtual void operator()(AssignExpr *) {}
-    virtual void operator()(NullExpr *) {}
     virtual void operator()(EmptyExpr *) {}
     virtual void operator()(ThisExpr *) {}
 
@@ -115,6 +114,7 @@ public:
     virtual void operator()(IntConstExpr *) {}
     virtual void operator()(DblConstExpr *) {}
     virtual void operator()(StrConstExpr *) {}
+    virtual void operator()(NullConstExpr *) {}
     virtual void operator()(ReadLineExpr *) {}
     virtual void operator()(ReadIntegerExpr *) {}
     virtual void operator()(NewExpr *) {}

@@ -72,7 +72,6 @@ private:
       /* stmt/expr */
       /* void operator()(Expr *); */
       void operator()(AssignExpr *);
-      /* void operator()(NullExpr *); */
       /* void operator()(EmptyExpr *); */
       void operator()(ThisExpr *);
 
@@ -88,6 +87,7 @@ private:
       /* void operator()(IntConstExpr *); */
       /* void operator()(DblConstExpr *); */
       /* void operator()(StrConstExpr *); */
+      /* void operator()(NullConstExpr *); */
       /* void operator()(ReadLineExpr *); */
       /* void operator()(ReadIntegerExpr *); */
       void operator()(NewExpr *);

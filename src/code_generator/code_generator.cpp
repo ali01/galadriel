@@ -401,6 +401,8 @@ CodeGenerator::NodeFunctor::operator()(FieldAccessExpr *nd) {
 
   Identifier::Ptr id = nd->field();
   process_node(id);
+
+  
 }
 
 
@@ -430,6 +432,15 @@ CodeGenerator::NodeFunctor::operator()(StrConstExpr *nd) {
   Location::Ptr str_loc = nd->location();
   In::LoadStrConst::Ptr load_i;
   load_i = In::LoadStrConst::LoadStrConstNew(str_loc, nd->value());
+
+  process_instruction(load_i);
+}
+
+void
+CodeGenerator::NodeFunctor::operator()(NullConstExpr *nd) {
+  Location::Ptr loc = nd->location();
+  In::LoadIntConst::Ptr load_i;
+  load_i = In::LoadIntConst::LoadIntConstNew(loc, 0);
 
   process_instruction(load_i);
 }
