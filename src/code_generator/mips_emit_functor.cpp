@@ -131,7 +131,7 @@ MIPSEmitFunctor::operator()(In::Load *in) {
   RegisterName r_src = alloc_register(src, kRead);
   RegisterName r_dst = alloc_register(dst, kWrite, r_src);
 
-  int src_offset = src->secondaryOffset();
+  int src_offset = src->secondaryOffset() * kWordSize;
 
   snprintf(buf_, sizeof buf_, "lw %s, %d(%s)    # load with offset",
            registers_[r_dst].name_, src_offset, registers_[r_src].name_);
@@ -147,7 +147,7 @@ MIPSEmitFunctor::operator()(In::Store *in) {
   RegisterName r_src = alloc_register(src, kRead);
   RegisterName r_dst = alloc_register(dst, kRead, r_src);
 
-  int dst_offset = dst->secondaryOffset();
+  int dst_offset = dst->secondaryOffset() * kWordSize;
 
   snprintf(buf_, sizeof buf_, "sw %s, %d(%s)    # store with offset",
            registers_[r_src].name_, dst_offset, registers_[r_dst].name_);

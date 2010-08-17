@@ -379,6 +379,10 @@ ScopeStackBuilder::NodeFunctor::operator()(CallExpr *nd) {
     actual = *it;
     process_node(actual, nd, scope);
   }
+
+  LocalScope::Ptr local_scope = Ptr::st_cast<LocalScope>(nd->scope());
+  Location::PtrConst fn_loc = local_scope->tempNew();
+  nd->fnLocationIs(fn_loc);
 }
 
 void
@@ -396,10 +400,6 @@ ScopeStackBuilder::NodeFunctor::operator()(MethodCallExpr *nd) {
 
   /* applying this functor on upcasted nd */
   (*this)(static_cast<CallExpr*>(nd));
-
-  LocalScope::Ptr local_scope = Ptr::st_cast<LocalScope>(nd->scope());
-  Location::PtrConst method_location = local_scope->tempNew();
-  nd->methodLocationIs(method_location);
 }
 
 

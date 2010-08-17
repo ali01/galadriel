@@ -10,8 +10,13 @@ Decl::Decl(Identifier::Ptr n) : Node(*n->lexLoc()), id_(n) {
   assert(n != NULL);
 }
 
-Simone::Ptr<Identifier>
+Identifier::PtrConst
 Decl::identifier() const {
+  return id_;
+}
+
+Identifier::Ptr
+Decl::identifier() {
   return id_;
 }
 

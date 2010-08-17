@@ -463,19 +463,28 @@ CodeGenerator::NodeFunctor::operator()(CallExpr *nd) {
 
 void
 CodeGenerator::NodeFunctor::operator()(FunctionCallExpr *nd) {
-  /* applying this functor on upcasted nd */
-  (*this)(static_cast<CallExpr*>(nd));
+  FnDecl::PtrConst fn_decl = nd->fnDecl();
+  if (fn_decl->nearestClass() != NULL) {
+    MethodCallExpr::Ptr m_call = MethodCallExpr::MethodCallExprNew(nd);
 
-  Location::PtrConst ret_loc = nd->location();
-  Identifier::Ptr fn_id = nd->identifier();
-  In::Label::Ptr label_i = In::Label::LabelNew(fn_id);
-  In::LCall::Ptr l_call_i = In::LCall::LCallNew(label_i, ret_loc);
-  process_instruction(l_call_i);
-  
-  /* PopParams */
-  uint32_t words = nd->actualsCount();
-  In::PopParams::Ptr pop_params_i = In::PopParams::PopParamsNew(words);
-  process_instruction(pop_params_i);
+    Functor::Ptr this_functor = this;
+    this_functor(m_call);
+
+  } else {
+    /* applying this functor on upcasted nd */
+    (*this)(static_cast<CallExpr*>(nd));
+
+    Location::PtrConst ret_loc = nd->location();
+    Identifier::Ptr fn_id = nd->identifier();
+    In::Label::Ptr label_i = In::Label::LabelNew(fn_id);
+    In::LCall::Ptr l_call_i = In::LCall::LCallNew(label_i, ret_loc);
+    process_instruction(l_call_i);
+
+    /* PopParams */
+    uint32_t words = nd->actualsCount();
+    In::PopParams::Ptr pop_params_i = In::PopParams::PopParamsNew(words);
+    process_instruction(pop_params_i);
+  }
 }
 
 void
@@ -495,14 +504,18 @@ CodeGenerator::NodeFunctor::operator()(MethodCallExpr *nd) {
   Location::PtrConst ret_loc = nd->location();
 
   /* obtaining function's location */
-  Location::PtrConst method_loc = nd->methodLocation();
-  In::Load::Ptr load_i = In::Load::LoadNew(base_loc, method_loc);
+  Location::PtrConst v_ptr_loc = nd->fnLocation();
+  In::Load::Ptr load_i = In::Load::LoadNew(base_loc, v_ptr_loc);
   process_instruction(load_i);
-  
-  /* dereferencing to obtain v_table */
-  load_i = In::Load::LoadNew(method_loc, method_loc);
+
+  /* offset from bottom of vtable */
+  Location::PtrConst method_loc = Location::LocationNew(v_ptr_loc); /* copy */
+  v_ptr_loc->secondaryOffsetIs(nd->vTableOffset());
+
+  /* dereferencing to obtain function address in v_table */
+  load_i = In::Load::LoadNew(v_ptr_loc, method_loc);
   process_instruction(load_i);
-  
+
     /* making l_call */
   In::ACall::Ptr a_call_i = In::ACall::ACallNew(method_loc, ret_loc);
   process_instruction(a_call_i);
@@ -575,7 +588,7 @@ CodeGenerator::NodeFunctor::operator()(LogicalExpr *nd) { // TODO
   // In::BinaryOp::OpCode op_code;
   // switch (op_type) {
   //   case Operator::kAnd:
-  //     
+  //
   //   case Operator::kOr:
   //   case Operator::kNot:
   //   default:
@@ -628,7 +641,7 @@ CodeGenerator::NodeFunctor::operator()(RelationalExpr *nd) {
   if (negate) {
     // TODO:
     // In::BinaryOp::OpCode op_code = In::BinaryOp::kAdd;
-    // 
+    //
     // In::BinaryOp::Ptr binary_op_i;
     // binary_op_i = In::BinaryOp::BinaryOpNew(op_code, dst_loc, dst_loc, rhs_loc);
   }

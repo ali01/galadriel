@@ -9,6 +9,9 @@ using Simone::Deque;
 /* project includes */
 #include <lex_location.h>
 
+/* code_generator includes */
+#include <code_generator/location_includes.h>
+
 /* ast/stmt/expr includes */
 #include "../single_addr_expr.h"
 
@@ -43,6 +46,9 @@ public:
 
   Simone::Ptr<const Type> type() const;
 
+  Simone::Ptr<const Location> fnLocation() const;
+  void fnLocationIs(Simone::Ptr<const Location> _loc);
+
   /* pure virtual */
   virtual Simone::Ptr<const FnDecl> fnDecl() const = 0;
 
@@ -57,6 +63,8 @@ protected:
   /* data members */
   Simone::Ptr<Identifier> identifier_;
   Deque<Expr::Ptr>::Ptr actuals_;
+
+  Simone::Ptr<const Location> fn_location_;
 
 private:
 

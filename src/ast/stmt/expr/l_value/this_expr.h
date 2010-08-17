@@ -10,11 +10,17 @@
 /* ast/stmt/expr/l_value includes */
 #include "l_value_expr.h"
 
-// TODO: consider if should inherit from LValueExpr
+// TODO: should not inherit from LValueExpr
 class ThisExpr : public LValueExpr {
 public:
   typedef Simone::Ptr<const ThisExpr> PtrConst;
   typedef Simone::Ptr<ThisExpr> Ptr;
+
+  static Ptr ThisExprNew() {
+    struct yyltype loc;
+    memset(&loc, 0x0, sizeof loc);
+    return new ThisExpr(loc);
+  }
 
   static Ptr ThisExprNew(yyltype loc) {
     return new ThisExpr(loc);

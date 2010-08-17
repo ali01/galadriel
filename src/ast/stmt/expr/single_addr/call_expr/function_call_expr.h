@@ -34,6 +34,9 @@ public:
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
+
+private:
+  friend class MethodCallExpr;
 };
 
 #endif

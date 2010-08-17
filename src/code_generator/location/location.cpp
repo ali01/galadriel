@@ -1,7 +1,13 @@
 #include "location.h"
 
 Location::Location(Segment _segment, Offset _offset, const string& _name) :
-  segment_(_segment), offset_(_offset), secondary_offset_(0), name_(_name) {}
+  segment_(_segment), offset_(_offset), name_(_name), secondary_offset_(0) {}
+
+Location::Location(const Location& _o) :
+  segment_(_o.segment_),
+  offset_(_o.offset_),
+  name_(_o.name_),
+  secondary_offset_(_o.secondary_offset_) {}
 
 const string&
 Location::name() const {

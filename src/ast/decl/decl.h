@@ -19,7 +19,8 @@ public:
   typedef Simone::Ptr<const Decl> PtrConst;
   typedef Simone::Ptr<Decl> Ptr;
 
-  Simone::Ptr<Identifier> identifier() const;
+  Simone::Ptr<const Identifier> identifier() const;
+  Simone::Ptr<Identifier> identifier();
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }

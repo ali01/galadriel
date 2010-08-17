@@ -13,7 +13,8 @@ Load::LoadNew(Location::PtrConst _src, Location::PtrConst _dst) {
 Load::Load(Location::PtrConst _src, Location::PtrConst _dst) : 
   src_(_src), dst_(_dst)
 {
-  assert(src_ && dst_);
+  assert(src_);
+  assert(dst_);
 }
 
 Location::PtrConst

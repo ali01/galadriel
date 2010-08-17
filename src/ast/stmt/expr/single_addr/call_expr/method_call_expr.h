@@ -1,8 +1,13 @@
 #ifndef METHOD_CALL_EXPR_H_I2R1ZK8J
 #define METHOD_CALL_EXPR_H_I2R1ZK8J
 
+#include "../../../../identifier.h"
+
 /* ast/stmt/expr/call_expr.h includes */
 #include "call_expr.h"
+#include "function_call_expr.h"
+
+#include "../../l_value/this_expr.h"
 
 /* forward declarations */
 class FnDecl;
@@ -20,6 +25,17 @@ public:
     return new MethodCallExpr(_loc, _base, _identifier, _args);
   }
 
+  static Ptr MethodCallExprNew(FunctionCallExpr::Ptr _fn_call) {
+    Identifier::Ptr id = _fn_call->identifier();
+    ThisExpr::Ptr base = ThisExpr::ThisExprNew();
+    Deque<Expr::Ptr>::Ptr actuals = _fn_call->actuals_;
+
+    MethodCallExpr::Ptr ex;
+    ex = new MethodCallExpr(*_fn_call->lexLoc(), base, id, actuals);
+    ex->fnLocationIs(_fn_call->fnLocation());
+    return ex;
+  }
+
   MethodCallExpr(yyltype _loc,
                  Expr::Ptr _base,
                  Simone::Ptr<Identifier> _identifier,
@@ -32,8 +48,7 @@ public:
   Simone::Ptr<const ObjectDecl> baseDecl() const; /* can return NULL */
   Simone::Ptr<const FnDecl> fnDecl() const;
 
-  Simone::Ptr<const Location> methodLocation() const;
-  void methodLocationIs(Simone::Ptr<const Location> _loc);
+  int vTableOffset() const;
 
   /* support for double dispatch */
   void self_apply(Functor::Ptr _functor) { (*_functor)(this); }
@@ -66,7 +81,6 @@ private:
   Expr::Ptr base_;
 
   BaseDeclFunctor::Ptr base_decl_functor_;
-  Simone::Ptr<const Location> method_location_;
 
   /* disallowed operations */
   MethodCallExpr(const MethodCallExpr&);

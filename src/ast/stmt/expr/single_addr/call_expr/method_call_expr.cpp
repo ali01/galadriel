@@ -3,9 +3,6 @@
 /* project includes */
 #include <scope/scope.h>
 
-/* code_generator includes */
-#include <code_generator/location_includes.h>
-
 /* ast includes */
 #include "../../../../identifier.h"
 
@@ -50,20 +47,32 @@ MethodCallExpr::fnDecl() const {
   return fn_decl;
 }
 
+int
+MethodCallExpr::vTableOffset() const {
+  int off = 0;
+
+  ObjectDecl::PtrConst base_decl = baseDecl();
+  if (base_decl) {
+    FnDecl::PtrConst fn_decl;
+    Scope::PtrConst scope = base_decl->scope();
+    Scope::const_fn_decl_iter it = scope->fnDeclsBegin();
+    for (int i = 0; it != scope->fnDeclsEnd(); ++it, ++i) {
+      fn_decl = it->second;
+
+      if (*fn_decl->identifier() == *this->identifier()) {
+        off = i;
+        break;
+      }
+    }
+  }
+
+  return off;
+}
+
 
 ObjectDecl::Ptr
 MethodCallExpr::BaseDeclFunctor::baseDecl() const {
   return base_decl_;
-}
-
-Location::PtrConst
-MethodCallExpr::methodLocation() const {
-  return method_location_;
-}
-
-void
-MethodCallExpr::methodLocationIs(Location::PtrConst _loc) {
-  method_location_ = _loc;
 }
 
 void

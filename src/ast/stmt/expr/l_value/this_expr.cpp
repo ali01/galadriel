@@ -21,5 +21,5 @@ ThisExpr::type() const {
 
 Location::PtrConst
 ThisExpr::location() const {
-  return NULL;
+  return Location::LocationNew(Location::kStack, 1, "this");
 }
