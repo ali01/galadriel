@@ -6,6 +6,7 @@
 /* ast/decl includes */
 #include "decl.h"
 #include "var_decl.h"
+#include "object/class_decl.h"
 
 /* ast/stmt includes */
 #include "../stmt/stmt_block.h"
@@ -44,6 +45,19 @@ FnDecl::returnType() const {
 StmtBlock::Ptr
 FnDecl::body() const {
   return body_;
+}
+
+In::Label::Ptr
+FnDecl::label() const {
+  string label_name = "";
+
+  ClassDecl::PtrConst class_decl = this->nearestClass();
+  if (class_decl)
+    label_name += class_decl->label()->str() + ".";
+
+  label_name += this->identifier()->name();
+
+  return In::Label::LabelNew(label_name);
 }
 
 bool

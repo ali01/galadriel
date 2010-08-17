@@ -72,10 +72,7 @@ CodeGenerator::NodeFunctor::operator()(FnDecl *nd) {
 
   if (stmt_block) {
     /* BeginFunc instruction */
-    In::BeginFunc::Ptr begin_func_i;
-    Identifier::Ptr fn_id = nd->identifier();
-    In::Label::Ptr label_i = In::Label::LabelNew(fn_id);
-    begin_func_i = In::BeginFunc::BeginFuncNew(label_i);
+    In::BeginFunc::Ptr begin_func_i = In::BeginFunc::BeginFuncNew(nd->label());
     process_instruction(begin_func_i);
 
     /* processing function body */
@@ -115,8 +112,9 @@ CodeGenerator::NodeFunctor::operator()(ClassDecl *nd) {
     (*this)(static_cast<ObjectDecl*>(nd));
 
     /* emitting v_table */
+    In::VTable::Ptr v_table_i;
     Deque<In::Label::Ptr>::Ptr fn_labels = nd->functionLabels();
-    In::VTable::Ptr v_table_i = In::VTable::VTableNew(nd->label(), fn_labels);
+    v_table_i = In::VTable::VTableNew(nd->label(false), fn_labels);
     process_instruction(v_table_i);
   }
 }

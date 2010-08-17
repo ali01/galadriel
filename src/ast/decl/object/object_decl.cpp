@@ -29,9 +29,16 @@ ObjectDecl::type() const {
 }
 
 In::Label::Ptr
-ObjectDecl::label() const {
+ObjectDecl::label(bool _prepend_underscore) const {
   Identifier::PtrConst id = this->identifier();
-  return In::Label::LabelNew(id->name());
+  string name = "";
+
+  if (_prepend_underscore)
+    name += "_";
+
+  name += id->name();
+
+  return In::Label::LabelNew(name);
 }
 
 Deque<In::Label::Ptr>::Ptr
@@ -41,10 +48,15 @@ ObjectDecl::functionLabels() const {
 
   FnDecl::Ptr fn_decl;
   In::Label::Ptr label;
+  string label_name;
   Scope::const_fn_decl_iter it = scope->fnDeclsBegin();
   for (; it != scope->fnDeclsEnd(); ++it) {
     fn_decl = it->second;
-    label = In::Label::LabelNew(fn_decl->identifier()->name());
+    
+    string label_name = "_" + this->identifier()->name() + ".";
+    label_name += fn_decl->identifier()->name();
+    
+    label = In::Label::LabelNew(label_name);
     labels->pushBack(label);
   }
 

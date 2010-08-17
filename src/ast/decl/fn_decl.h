@@ -10,6 +10,9 @@ using Simone::Deque;
 #include "decl.h"
 #include "var_decl.h"
 
+/* code_generator/instruction includes */
+#include <code_generator/instruction/label.h>
+
 /* forward declarations */
 class Identifier;
 class StmtBlock;
@@ -44,11 +47,11 @@ public:
   Simone::Ptr<Type> returnType() const;
   Simone::Ptr<StmtBlock> body() const;
 
+  In::Label::Ptr label() const;
 
   /* attribute member functions */
 
   void bodyIs(Simone::Ptr<StmtBlock> b);
-
 
   /* overloaded operators */
   bool operator==(const FnDecl& _o) const;
