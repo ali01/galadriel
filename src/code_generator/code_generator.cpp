@@ -206,7 +206,9 @@ CodeGenerator::NodeFunctor::operator()(ReturnStmt *nd) {
 
 void
 CodeGenerator::NodeFunctor::operator()(BreakStmt *nd) {
-  // TODO:
+  LoopStmt::PtrConst loop_stmt = nd->nearestLoop();
+  In::Goto::Ptr goto_i = In::Goto::GotoNew(loop_stmt->endLabel());
+  process_instruction(goto_i);
 }
 
 
@@ -262,6 +264,7 @@ CodeGenerator::NodeFunctor::operator()(ForStmt *nd) {
 
   In::Label::Ptr repeat_label = labelNew();
   In::Label::Ptr end_label = labelNew();
+  nd->endLabelIs(end_label);
 
   process_instruction(repeat_label);
 
@@ -295,6 +298,7 @@ void
 CodeGenerator::NodeFunctor::operator()(WhileStmt *nd) {
   In::Label::Ptr repeat_label = labelNew();
   In::Label::Ptr end_label = labelNew();
+  nd->endLabelIs(end_label);
 
   process_instruction(repeat_label);
 
@@ -791,7 +795,7 @@ CodeGenerator::NodeFunctor::process_node(Node::Ptr _node) {
 
 void
 CodeGenerator::NodeFunctor::process_location(Location::Ptr _loc) {
-  if (_loc->reference()) {
+  if (_loc != NULL && _loc->reference()) {
     In::Load::Ptr load_i = In::Load::LoadNew(_loc, _loc);
     process_instruction(load_i);
   }
