@@ -125,6 +125,7 @@ private:
       void process_node(Node::Ptr _nd);
       void process_instruction(In::Instruction::Ptr _in);
       void negate_logical_value(Simone::Ptr<const Location> dst, 
+                                Simone::Ptr<const Location> rhs,
                                 Simone::Ptr<const Location> aux);
 
       In::Label::Ptr labelNew();

@@ -581,10 +581,15 @@ CodeGenerator::NodeFunctor::operator()(ArithmeticExpr *nd) {
 }
 
 void
-CodeGenerator::NodeFunctor::operator()(LogicalExpr *nd) { // TODO
+CodeGenerator::NodeFunctor::operator()(LogicalExpr *nd) {
   (*this)(static_cast<CompoundExpr*>(nd));
 
-  Operator::OpCode op_type = nd->op()->operatorType();
+  Expr::Ptr left = nd->left();
+  Expr::Ptr right = nd->right();
+  Operator::Ptr op = nd->op();
+
+  bool unary = false;
+  Operator::OpCode op_type = op->operatorType();
   In::BinaryOp::OpCode op_code;
   switch (op_type) {
     case Operator::kAnd:
@@ -596,8 +601,27 @@ CodeGenerator::NodeFunctor::operator()(LogicalExpr *nd) { // TODO
       break;
 
     case Operator::kNot:
+      unary = true;
+      break;
+
     default:
       ABORT();
+  }
+
+  Location::PtrConst dst_loc = nd->location();
+  Location::PtrConst rhs_loc = right->location();
+
+  if (not unary) {
+    Location::PtrConst lhs_loc = left->location();
+
+    In::BinaryOp::Ptr binary_op_i;
+    binary_op_i = In::BinaryOp::BinaryOpNew(op_code, dst_loc, lhs_loc, rhs_loc);
+    process_instruction(binary_op_i);
+
+  } else {
+    assert(left == NULL);
+    Location::PtrConst aux_loc = nd->auxLocation();
+    negate_logical_value(dst_loc, rhs_loc, aux_loc);
   }
 }
 
@@ -645,7 +669,7 @@ CodeGenerator::NodeFunctor::operator()(RelationalExpr *nd) {
 
   if (negate) {
     Location::PtrConst rhs_loc = nd->auxLocation();
-    negate_logical_value(dst_loc, rhs_loc);
+    negate_logical_value(dst_loc, dst_loc, rhs_loc);
   }
 }
 
@@ -708,13 +732,14 @@ CodeGenerator::emit_instruction_stream() {
 
 void
 CodeGenerator::NodeFunctor::negate_logical_value(Location::PtrConst dst_loc,
+                                                 Location::PtrConst rhs_loc,
                                                  Location::PtrConst aux) {
   In::LoadIntConst::Ptr l_i = In::LoadIntConst::LoadIntConstNew(aux, 1);
   process_instruction(l_i);
 
   In::BinaryOp::Ptr binary_op_i;
   In::BinaryOp::OpCode op_code = In::BinaryOp::kAdd;
-  binary_op_i = In::BinaryOp::BinaryOpNew(op_code, dst_loc, dst_loc, aux);
+  binary_op_i = In::BinaryOp::BinaryOpNew(op_code, dst_loc, rhs_loc, aux);
   process_instruction(binary_op_i);
 
   l_i = In::LoadIntConst::LoadIntConstNew(aux, 2);
